@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "preact build",
-    "dev": "preact watch"
+    "dev": "preact watch -p 8081"
   },
   "author": "Harystolho",
   "license": "ISC",
