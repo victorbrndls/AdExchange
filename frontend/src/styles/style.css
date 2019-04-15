@@ -1,9 +1,25 @@
-#header{
+#header {
     background-color: #009dff;
     padding: 3px 0;
     display: flex;
 }
 
-#header a{
+#header a {
     color: #fff;
+}
+
+#auth {
+    width: 300px;
+}
+
+.auth-sign {
+    width: 50%;
+    font-size: 24px;
+}
+
+.auth-sign-container {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    padding: 4px 0;
 }
