@@ -1,5 +1,9 @@
+:root{
+    --ad-primary: #009dff;
+}
+
 #header {
-    background-color: #009dff;
+    background-color: var(--ad-primary);
     padding: 3px 0;
     display: flex;
 }
@@ -15,11 +19,15 @@
 .auth-sign {
     width: 50%;
     font-size: 24px;
+    padding: 7px 0px;
+}
+
+.auth-sign.active{
+    background-color: var(--ad-primary);
 }
 
 .auth-sign-container {
     display: flex;
     justify-content: space-around;
     text-align: center;
-    padding: 4px 0;
 }
