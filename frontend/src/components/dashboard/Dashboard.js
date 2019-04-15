@@ -1,6 +1,5 @@
 import {Component} from "preact";
 import {Match, Link} from 'preact-router/match'
-import Header from "../Header";
 
 export default class Dashboard extends Component {
     constructor() {

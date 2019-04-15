@@ -1,5 +1,5 @@
 import {Component} from "preact";
-import {Router} from 'preact-router';
+import {Router} from 'preact-router'
 
 import Dashboard from "./dashboard/Dashboard";
 import Header from "./Header";
@@ -17,9 +17,10 @@ export default class App extends Component {
         return (
             <div>
                 <Header/>
-                <Router onChange={this.handlerRoute}>
-                    <Dashboard path="/dashboard/:?"/>
+                <Router>
+                    <Dashboard path="/dashboard/:*"/>
                 </Router>
+
             </div>
         )
     }
