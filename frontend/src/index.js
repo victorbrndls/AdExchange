@@ -1,9 +1,6 @@
-import {render} from 'preact';
-import {Router} from 'preact-router';
+import './styles/bootstrap.min.css'
 
-import App from './components/App';
+import App from "./components/App";
+import {render} from "preact";
 
-render(
-    <Router>
-        <App path="/"/>
-    </Router>, document.body);
+render(<App/>, document.body);
