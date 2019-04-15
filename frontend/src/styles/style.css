@@ -1,0 +1,9 @@
+#header{
+    background-color: #009dff;
+    padding: 3px 0;
+    display: flex;
+}
+
+#header a{
+    color: #fff;
+}
