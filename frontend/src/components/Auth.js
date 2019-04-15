@@ -1,5 +1,5 @@
 import {Component} from "preact";
-import {route} from 'preact-router';
+import {API_URL} from "../configs";
 
 export default class Header extends Component {
     constructor({url}) {
@@ -8,11 +8,28 @@ export default class Header extends Component {
         this.updateAuthMode(url);
     }
 
+    componentDidMount() {
+        document.getElementById('authSubmit').addEventListener('click', this.createAccount, false);
+    }
+
     componentWillUpdate({url}) {
         this.updateAuthMode(url);
     }
 
+    createAccount() {
+        let formData = new FormData();
+
+        fetch(new Request(`${API_URL}/v1/auth/account`,
+            {
+                method: 'POST',
+                body: formData
+            })).then((response) => {
+
+        })
+    }
+
     updateAuthMode = (url) => {
+        // TODO update url
         if (url.includes('register')) {
             this.setState({mode: 'sign-up'});
         } else {
@@ -36,8 +53,8 @@ export default class Header extends Component {
                         }}>Sign Up
                         </div>
                     </div>
-                    <div style="margin: 12px;">
-                        <form class="text-center">
+                    <div style="margin: 22px 12px;">
+                        <div class="text-center" onClick="">
                             <div class="form-group">
                                 <input type="email" class="form-control" id="authEmailField"
                                        aria-describedby="emailHelp" placeholder="Enter email"/>
@@ -47,8 +64,8 @@ export default class Header extends Component {
                                        placeholder="Password"/>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </form>
+                            <button id="authSubmit" class="btn btn-primary">Submit</button>
+                        </div>
                     </div>
                 </div>
             </div>
