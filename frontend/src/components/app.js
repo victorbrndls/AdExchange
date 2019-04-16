@@ -7,11 +7,13 @@ import Home from "./Home";
 import Auth from "./Auth";
 
 export default class App extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+
+        //TODO log user here
     }
 
-    handleRoute(e){
+    handleRoute(e) {
     }
 
     render() {
@@ -27,3 +29,5 @@ export default class App extends Component {
         )
     }
 }
+
+// TODO class={`console ${isConsoleOpen ? '' : 'is-minimized'}`} - Can use `

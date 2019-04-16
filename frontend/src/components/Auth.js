@@ -2,21 +2,16 @@ import {Component} from "preact";
 import {API_URL} from "../configs";
 
 export default class Header extends Component {
-    constructor({url}) {
-        super();
+    constructor(props) {
+        super(props);
 
-        this.updateAuthMode(url);
-    }
-
-    componentDidMount() {
-        document.getElementById('authSubmit').addEventListener('click', this.createAccount, false);
-    }
-
-    componentWillUpdate({url}) {
-        this.updateAuthMode(url);
+        this.updateAuthMode(props.url);
     }
 
     createAccount() {
+        if(!this.validateFields())
+            return;
+
         let formData = new FormData();
 
         fetch(new Request(`${API_URL}/v1/auth/account`,
@@ -24,12 +19,44 @@ export default class Header extends Component {
                 method: 'POST',
                 body: formData
             })).then((response) => {
-
+            console.log(response);
         })
     }
 
+    login() {
+
+    }
+
+    getFields(){
+        return {
+            email: document.getElementById('authEmailField').value,
+            password: document.getElementById('authPasswordField').value
+        }
+    }
+
+    /**
+     * @return {Boolean} TRUE if the fields required to create an account are valid
+     */
+    validateFields(){
+        let field = this.getFields();
+
+        this.setState({passwordError: undefined});
+        this.setState({emailError: undefined});
+
+        if(field.password.length < 5){
+            this.setState({passwordError: "A senha deve ter pelo menos 5 caracteres"});
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * The authentication mode changes the dispaly in the sign-in/sign-up form
+     * @param url
+     */
     updateAuthMode = (url) => {
-        // TODO update url
+        // TODO update url when the state changes
         if (url.includes('register')) {
             this.setState({mode: 'sign-up'});
         } else {
@@ -37,7 +64,7 @@ export default class Header extends Component {
         }
     };
 
-    render(props, {mode}) {
+    render({}, {mode}) {
         return (
             <div style="display: flex; justify-content: center;">
                 <div id="auth" class="shadow mt-5">
@@ -45,26 +72,35 @@ export default class Header extends Component {
                         <div class={"auth-sign " + (mode === 'sign-in' ? " active" : "")}
                              style="border-radius: .25rem 0 0 0" onClick={() => {
                             this.setState({mode: 'sign-in'});
-                        }}>Sign In
+                        }}>Criar
                         </div>
                         <div class={"auth-sign " + (mode === 'sign-up' ? " active" : "")}
                              style="border-radius: 0 .25rem 0 0" onClick={() => {
                             this.setState({mode: 'sign-up'});
-                        }}>Sign Up
+                        }}>Entrar
                         </div>
                     </div>
                     <div style="margin: 22px 12px;">
-                        <div class="text-center" onClick="">
+                        <div class="text-center">
                             <div class="form-group">
                                 <input type="email" class="form-control" id="authEmailField"
                                        aria-describedby="emailHelp" placeholder="Enter email"/>
+                                {this.state.emailError && (
+                                    <small>{this.state.emailError}</small>
+                                )}
                             </div>
                             <div class="form-group">
                                 <input type="password" class="form-control" id="authPasswordField"
                                        placeholder="Password"/>
+                                {this.state.passwordError && (
+                                    <small>{this.state.passwordError}</small>
+                                )}
                             </div>
 
-                            <button id="authSubmit" class="btn btn-primary">Submit</button>
+                            <button id="authSubmit" class="btn btn-primary"
+                                    onClick={this.state.mode === 'sign-in' ? this.login.bind(this) : this.createAccount.bind(this)}>
+                                Enviar
+                            </button>
                         </div>
                     </div>
                 </div>
