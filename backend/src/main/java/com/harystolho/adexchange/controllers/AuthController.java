@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.harystolho.adexchange.services.AuthService;
+import com.harystolho.adexchange.services.ServiceResponse;
+import com.harystolho.adexchange.utils.JsonResponse;
+import com.harystolho.adexchange.utils.Nothing;
+import com.harystolho.adexchange.utils.Pair;
 
 @RestController()
 public class AuthController {
@@ -24,10 +28,19 @@ public class AuthController {
 	@CrossOrigin
 	public ResponseEntity<Object> createAccount(@RequestParam("email") String email,
 			@RequestParam("password") String password) {
-		
-		
-		
-		return ResponseEntity.status(HttpStatus.OK).body(null);
+
+		Pair<ServiceResponse, Nothing> response = authService.createAccount(email, password);
+
+		switch (response.getFist()) {
+		case INVALID_EMAIL:
+		case EMAIL_ALREADY_EXISTS:
+		case INVALID_PASSWORD:		
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(new JsonResponse().pair("error", response.getFist().toString()).build());
+		default:
+			return ResponseEntity.status(HttpStatus.CREATED).body(null);
+		}
+
 	}
 
 }

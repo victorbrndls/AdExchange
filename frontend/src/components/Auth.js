@@ -11,7 +11,7 @@ export default class Header extends Component {
     }
 
     createAccount() {
-        if(!this.validateFields())
+        if (!this.validateFields())
             return;
 
         let fields = this.getFields();
@@ -24,8 +24,22 @@ export default class Header extends Component {
             headers: {
                 'Content-Type': 'multipart/form-data',
             }
-        }).then((response)=>{
-           console.log(response);
+        }).then((response) => {
+
+        }).catch((error) => {
+            let response = error.response.data;
+
+            switch (response.error){
+                case "EMAIL_ALREADY_EXISTS":
+                    this.setState({emailError: "Esse email ja existe"});
+                    return;
+                case "INVALID_EMAIL":
+                    this.setState({emailError: "Esse email na~o eh valido"});
+                    return;
+                case "INVALID_PASSWORD":
+                    this.setState({passwordError: "Essa senha na~o eh valida"});
+                    return;
+            }
         });
     }
 
@@ -33,7 +47,7 @@ export default class Header extends Component {
 
     }
 
-    getFields(){
+    getFields() {
         return {
             email: document.getElementById('authEmailField').value,
             password: document.getElementById('authPasswordField').value
@@ -43,13 +57,13 @@ export default class Header extends Component {
     /**
      * @return {Boolean} TRUE if the fields required to create an account are valid
      */
-    validateFields(){
+    validateFields() {
         let field = this.getFields();
 
         this.setState({passwordError: undefined});
         this.setState({emailError: undefined});
 
-        if(field.password.length < 5){
+        if (field.password.length < 5) {
             this.setState({passwordError: "A senha deve ter pelo menos 5 caracteres"});
             return false;
         }
