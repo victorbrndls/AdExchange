@@ -1,7 +1,5 @@
 import {Component} from "preact";
 import {route} from 'preact-router';
-import {HOST} from "../configs";
-import Axios from "axios";
 import {login, createAccount} from "../auth";
 
 export default class Header extends Component {
@@ -23,17 +21,9 @@ export default class Header extends Component {
         if (!this.validateFields())
             return;
 
-        let formData = this.getFieldsFormData();
-
-        Axios.post(`${HOST}/auth/account`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            }
-        }).then((response) => {
+        createAccount(this.props.email().value, this.props.password().value).then(()=>{
             route('/');
-        }).catch((error) => {
-            let response = error.response.data;
-
+        }).catch((response)=>{
             switch (response.error){
                 case "EMAIL_ALREADY_EXISTS":
                     this.setState({emailError: "Esse email ja' existe"});
