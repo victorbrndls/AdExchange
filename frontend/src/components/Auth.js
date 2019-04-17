@@ -7,7 +7,15 @@ export default class Header extends Component {
     constructor(props) {
         super(props);
 
+        this.props.email = () => document.getElementById("authEmailField");
+        this.props.password = () => document.getElementById("authPasswordField");
+
         this.updateAuthMode(props.url);
+    }
+
+    componentDidMount(){
+        this.props.email().value = "";
+        this.props.password().value = "";
     }
 
     createAccount() {
@@ -41,7 +49,7 @@ export default class Header extends Component {
 
     login() {
         this.clearFieldsError();
-        
+
         let formData = this.getFieldsFormData();
 
         Axios.post(`${HOST}/auth/login`, formData, {
@@ -63,8 +71,8 @@ export default class Header extends Component {
 
     getFields() {
         return {
-            email: document.getElementById('authEmailField').value,
-            password: document.getElementById('authPasswordField').value
+            email: this.props.email().value,
+            password: this.props.password().value
         }
     }
 

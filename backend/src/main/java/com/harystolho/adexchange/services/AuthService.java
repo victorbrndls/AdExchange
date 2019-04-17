@@ -53,17 +53,17 @@ public class AuthService {
 		Account possibleAccount = authRepository.getAccountByEmail(sanitizeEmail(email));
 
 		if (possibleAccount == null) {
-			logger.severe(String.format("There is no account with the login email[%s]", email));
+			logger.info(String.format("There is no account with the login email[%s]", email));
 			return Pair.of(ServiceResponse.FAIL, "");
 		}
 
 		if (!PasswordSecurity.comparePasswords(possibleAccount.getPassword(),
 				PasswordSecurity.encryptPassword(password))) {
-			logger.severe("Passwords are not equal");
+			logger.info("Passwords are not equal");
 			return Pair.of(ServiceResponse.FAIL, "");
 		}
 
-		return Pair.of(ServiceResponse.OK, "123456789abc");
+		return Pair.of(ServiceResponse.OK, String.valueOf(possibleAccount.getId()));
 	}
 
 	/**
