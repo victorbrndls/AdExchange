@@ -13,7 +13,8 @@ export default class App extends Component {
         //TODO log user here
     }
 
-    handleRoute(e) {
+    handleRoute() {
+
     }
 
     render() {

@@ -1,7 +1,8 @@
 import {Component} from "preact";
+import {route} from 'preact-router';
 import {HOST} from "../configs";
-//import * as axios from "axios";
 import Axios from "axios";
+import {login, createAccount} from "../auth";
 
 export default class Header extends Component {
     constructor(props) {
@@ -29,7 +30,7 @@ export default class Header extends Component {
                 'Content-Type': 'multipart/form-data',
             }
         }).then((response) => {
-            // TODO login user after the account is created
+            route('/');
         }).catch((error) => {
             let response = error.response.data;
 
@@ -47,21 +48,13 @@ export default class Header extends Component {
         });
     }
 
-    login() {
+    login(){
         this.clearFieldsError();
 
-        let formData = this.getFieldsFormData();
-
-        Axios.post(`${HOST}/auth/login`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            }
-        }).then((response) => {
-            console.log(response);
-        }).catch((error) => {
-            let response = error.response.data;
-
-            switch (response.error){
+        login(this.props.email().value, this.props.password().value).then(()=>{
+            route('/');
+        }).catch((response)=>{
+            switch (response.error) {
                 case "FAIL":
                     this.setState({passwordError: "Email ou senha incorretos"});
                     return;
