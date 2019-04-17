@@ -2,6 +2,7 @@ package com.harystolho.adexchange.utils;
 
 /**
  * Encrypts and compares passwords
+ * 
  * @author Harystolho
  *
  */
@@ -17,7 +18,7 @@ public class PasswordSecurity {
 	 * @return TRUE if passwords match
 	 */
 	public static boolean comparePasswords(String password1, String password2) {
-		return true;
+		return password1.equals(password2);
 	}
-	
+
 }

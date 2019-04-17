@@ -14,11 +14,7 @@ export default class Header extends Component {
         if (!this.validateFields())
             return;
 
-        let fields = this.getFields();
-
-        let formData = new FormData();
-        formData.append('email', fields.email);
-        formData.append('password', fields.password);
+        let formData = this.getFieldsFormData();
 
         Axios.post(`${HOST}/auth/account`, formData, {
             headers: {
@@ -44,7 +40,25 @@ export default class Header extends Component {
     }
 
     login() {
+        this.clearFieldsError();
+        
+        let formData = this.getFieldsFormData();
 
+        Axios.post(`${HOST}/auth/login`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            }
+        }).then((response) => {
+            console.log(response);
+        }).catch((error) => {
+            let response = error.response.data;
+
+            switch (response.error){
+                case "FAIL":
+                    this.setState({passwordError: "Email ou senha incorretos"});
+                    return;
+            }
+        });
     }
 
     getFields() {
@@ -54,14 +68,28 @@ export default class Header extends Component {
         }
     }
 
+    getFieldsFormData(){
+        let fields = this.getFields();
+
+        let formData = new FormData();
+        formData.append('email', fields.email);
+        formData.append('password', fields.password);
+
+        return formData;
+    }
+
+    clearFieldsError(){
+        this.setState({passwordError: undefined});
+        this.setState({emailError: undefined});
+    }
+
     /**
      * @return {Boolean} TRUE if the fields required to create an account are valid
      */
     validateFields() {
         let field = this.getFields();
 
-        this.setState({passwordError: undefined});
-        this.setState({emailError: undefined});
+        this.clearFieldsError();
 
         if (field.password.length < 5) {
             this.setState({passwordError: "A senha deve ter pelo menos 5 caracteres"});
@@ -104,14 +132,14 @@ export default class Header extends Component {
                         <div class="text-center">
                             <div class="form-group">
                                 <input type="email" class="form-control" id="authEmailField"
-                                       aria-describedby="emailHelp" placeholder="Email" value=""/>
+                                       aria-describedby="emailHelp" placeholder="Email"/>
                                 {this.state.emailError && (
                                     <small>{this.state.emailError}</small>
                                 )}
                             </div>
                             <div class="form-group">
                                 <input type="password" class="form-control" id="authPasswordField"
-                                       placeholder="Senha" value=""/>
+                                       placeholder="Senha"/>
                                 {this.state.passwordError && (
                                     <small>{this.state.passwordError}</small>
                                 )}

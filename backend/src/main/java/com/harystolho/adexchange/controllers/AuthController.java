@@ -55,7 +55,7 @@ public class AuthController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 					.body(new JsonResponse().pair("error", response.getFist().toString()).build());
 		default:
-			return ResponseEntity.status(HttpStatus.OK).body(new JsonResponse().pair("token", response.getSecond()));
+			return ResponseEntity.status(HttpStatus.OK).body(new JsonResponse().pair("token", response.getSecond()).build());
 		}
 
 	}

@@ -1,5 +1,7 @@
 package com.harystolho.adexchange.services;
 
+import java.util.logging.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,8 @@ import com.harystolho.adexchange.utils.PasswordSecurity;
 
 @Service
 public class AuthService {
+
+	private static final Logger logger = Logger.getLogger(AuthService.class.getName());
 
 	private AuthRepository authRepository;
 
@@ -32,7 +36,7 @@ public class AuthService {
 		if (emailExists(email))
 			return Pair.of(ServiceResponse.EMAIL_ALREADY_EXISTS, null);
 
-		Account account = new Account(email, password);
+		Account account = new Account(email, PasswordSecurity.encryptPassword(password));
 
 		Pair<RepositoryResponse, Account> response = authRepository.saveAccount(account);
 
@@ -48,12 +52,16 @@ public class AuthService {
 
 		Account possibleAccount = authRepository.getAccountByEmail(sanitizeEmail(email));
 
-		if (possibleAccount == null)
+		if (possibleAccount == null) {
+			logger.severe(String.format("There is no account with the login email[%s]", email));
 			return Pair.of(ServiceResponse.FAIL, "");
+		}
 
 		if (!PasswordSecurity.comparePasswords(possibleAccount.getPassword(),
-				PasswordSecurity.encryptPassword(password)))
+				PasswordSecurity.encryptPassword(password))) {
+			logger.severe("Passwords are not equal");
 			return Pair.of(ServiceResponse.FAIL, "");
+		}
 
 		return Pair.of(ServiceResponse.OK, "123456789abc");
 	}
