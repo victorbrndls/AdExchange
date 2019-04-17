@@ -1,6 +1,6 @@
 import {Component} from "preact";
 import {route} from 'preact-router';
-import {login, createAccount, auth} from "../auth";
+import {login, logout, createAccount, auth} from "../auth";
 
 export default class Header extends Component {
     constructor(props) {
@@ -42,7 +42,8 @@ export default class Header extends Component {
         this.clearFieldsError();
 
         login(this.props.email().value, this.props.password().value).then(() => {
-            route('/');
+            route('/dashboard');
+            location.reload();
         }).catch((response) => {
             switch (response.error) {
                 case "FAIL":
@@ -103,9 +104,14 @@ export default class Header extends Component {
         }
     };
 
-    render({}, {mode}) {
-        if(auth.isUserAuthenticated())
-            route("/");
+    render({url}, {mode}) {
+        if (auth.isUserAuthenticated()) {
+            if (url.includes("/logout"))
+                logout();
+
+            route('/');
+            location.reload();
+        }
 
         return (
             <div style="display: flex; justify-content: center;">

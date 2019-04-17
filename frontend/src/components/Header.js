@@ -1,5 +1,6 @@
 import {Component} from "preact";
 import {Link} from 'preact-router/match'
+import {auth} from "../auth";
 
 export default class Header extends Component {
     constructor() {
@@ -12,9 +13,10 @@ export default class Header extends Component {
                 <h2 style="color: #fff; display: inline-block;">
                     Header
                 </h2>
-                <nav style="display: inline-block; align-self: center;">
+                <nav id="header-nav">
                     <Link href="/">Home</Link>
-                    <Link href="/dashboard">Dashboard</Link>
+                    {auth.isUserAuthenticated() && (<Link href="/dashboard">Dashboard</Link>)}
+                    {auth.isUserAuthenticated() && (<Link href="/auth/logout">Log out</Link>)}
                 </nav>
             </div>
         )

@@ -1,4 +1,4 @@
-:root{
+:root {
     --ad-primary: #009dff;
 }
 
@@ -22,7 +22,7 @@
     padding: 7px 0px;
 }
 
-.auth-sign.active{
+.auth-sign.active {
     background-color: var(--ad-primary);
 }
 
@@ -30,4 +30,13 @@
     display: flex;
     justify-content: space-around;
     text-align: center;
+}
+
+#header-nav {
+    display: inline-block;
+    align-self: center;
+}
+
+#header-nav a {
+    margin: 0 7px;
 }

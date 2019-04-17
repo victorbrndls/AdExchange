@@ -47,6 +47,10 @@ function createAccount(email, password) {
     });
 }
 
+function logout() {
+    storage.removeItem('adExchange.authToken');
+}
+
 function saveToken(token) {
     if(token !== undefined)
         storage.setItem('adExchange.authToken', token);
@@ -59,5 +63,6 @@ function getToken() {
 export {
     auth,
     login,
+    logout,
     createAccount
 }
