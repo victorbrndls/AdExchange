@@ -1,6 +1,6 @@
 import {Component} from "preact";
 import {route} from 'preact-router';
-import {login, createAccount} from "../auth";
+import {login, createAccount, auth} from "../auth";
 
 export default class Header extends Component {
     constructor(props) {
@@ -12,7 +12,7 @@ export default class Header extends Component {
         this.updateAuthMode(props.url);
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.props.email().value = "";
         this.props.password().value = "";
     }
@@ -21,10 +21,10 @@ export default class Header extends Component {
         if (!this.validateFields())
             return;
 
-        createAccount(this.props.email().value, this.props.password().value).then(()=>{
+        createAccount(this.props.email().value, this.props.password().value).then(() => {
             route('/');
-        }).catch((response)=>{
-            switch (response.error){
+        }).catch((response) => {
+            switch (response.error) {
                 case "EMAIL_ALREADY_EXISTS":
                     this.setState({emailError: "Esse email ja' existe"});
                     return;
@@ -38,12 +38,12 @@ export default class Header extends Component {
         });
     }
 
-    login(){
+    login() {
         this.clearFieldsError();
 
-        login(this.props.email().value, this.props.password().value).then(()=>{
+        login(this.props.email().value, this.props.password().value).then(() => {
             route('/');
-        }).catch((response)=>{
+        }).catch((response) => {
             switch (response.error) {
                 case "FAIL":
                     this.setState({passwordError: "Email ou senha incorretos"});
@@ -59,7 +59,7 @@ export default class Header extends Component {
         }
     }
 
-    getFieldsFormData(){
+    getFieldsFormData() {
         let fields = this.getFields();
 
         let formData = new FormData();
@@ -69,7 +69,7 @@ export default class Header extends Component {
         return formData;
     }
 
-    clearFieldsError(){
+    clearFieldsError() {
         this.setState({passwordError: undefined});
         this.setState({emailError: undefined});
     }
@@ -104,6 +104,9 @@ export default class Header extends Component {
     };
 
     render({}, {mode}) {
+        if(auth.isUserAuthenticated())
+            route("/");
+
         return (
             <div style="display: flex; justify-content: center;">
                 <div id="auth" class="shadow mt-5">
