@@ -2,7 +2,7 @@ package com.harystolho.adexchange.models;
 
 public class Account {
 
-	private int id;
+	private String id;
 	private String email;
 	private String password;
 
@@ -11,11 +11,11 @@ public class Account {
 		this.password = password;
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

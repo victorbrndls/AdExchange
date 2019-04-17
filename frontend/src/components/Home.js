@@ -12,11 +12,12 @@ export default class Header extends Component {
         return (
             <div>
                 <h2>Home page</h2>
-
-                <Link href="/auth/register">Register</Link>
-                <br/>
-                <Link href="/auth/login">Login</Link>
-
+                {!auth.isUserAuthenticated() && (
+                    <div>
+                        <Link href="/auth/register">Register</Link>
+                        <Link href="/auth/login">Login</Link>
+                    </div>
+                )}
                 <div>
                     auth: {auth.getToken()}
                 </div>

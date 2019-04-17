@@ -10,7 +10,7 @@ export default class App extends Component {
     constructor(props) {
         super(props);
 
-        //TODO log user here
+        //TODO Check if token is valid
     }
 
     handleRoute() {

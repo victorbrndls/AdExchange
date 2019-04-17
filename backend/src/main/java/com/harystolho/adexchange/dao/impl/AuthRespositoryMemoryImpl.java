@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,7 @@ public class AuthRespositoryMemoryImpl implements AuthRepository {
 	public Pair<RepositoryResponse, Account> saveAccount(Account account) {
 		accounts.add(account);
 		
-		account.setId(new Random().nextInt(999999999));
+		account.setId(UUID.randomUUID().toString());
 		return Pair.of(RepositoryResponse.CREATED, account);
 	}
 
