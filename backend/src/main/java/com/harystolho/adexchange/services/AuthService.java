@@ -1,15 +1,24 @@
 package com.harystolho.adexchange.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.harystolho.adexchange.dao.AuthRepository;
+import com.harystolho.adexchange.dao.RepositoryResponse;
+import com.harystolho.adexchange.models.Account;
 import com.harystolho.adexchange.utils.Nothing;
 import com.harystolho.adexchange.utils.Pair;
 
 @Service
 public class AuthService {
 
-	
-	
+	private AuthRepository authRepository;
+
+	@Autowired
+	public AuthService(AuthRepository authRepository) {
+		this.authRepository = authRepository;
+	}
+
 	public Pair<ServiceResponse, Nothing> createAccount(String email, String password) {
 		email = sanitizeEmail(email);
 
@@ -19,7 +28,17 @@ public class AuthService {
 		if (!verifyPassword(password))
 			return Pair.of(ServiceResponse.INVALID_PASSWORD, null);
 
-		return Pair.of(ServiceResponse.OK, null);
+		if (emailExists(email))
+			return Pair.of(ServiceResponse.EMAIL_ALREADY_EXISTS, null);
+
+		Account account = new Account(email, password);
+
+		Pair<RepositoryResponse, Account> response = authRepository.saveAccount(account);
+
+		if (response.getFist() == RepositoryResponse.CREATED)
+			return Pair.of(ServiceResponse.OK, null);
+
+		return Pair.of(ServiceResponse.FAIL, null);
 	}
 
 	/**
@@ -49,4 +68,7 @@ public class AuthService {
 		return password.length() >= 5;
 	}
 
+	private boolean emailExists(String email) {
+		return authRepository.getAccountByEmail(email) != null;
+	}
 }

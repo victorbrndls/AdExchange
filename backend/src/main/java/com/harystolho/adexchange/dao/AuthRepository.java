@@ -8,4 +8,6 @@ public interface AuthRepository {
 
 	public Pair<RepositoryResponse, Account> saveAccount(Account account);
 	
+	public Account getAccountByEmail(String email);
+	
 }

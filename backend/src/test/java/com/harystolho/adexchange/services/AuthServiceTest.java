@@ -6,6 +6,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import com.harystolho.adexchange.dao.AuthRepository;
+import com.harystolho.adexchange.dao.RepositoryResponse;
+import com.harystolho.adexchange.models.Account;
 import com.harystolho.adexchange.services.AuthService;
 import com.harystolho.adexchange.utils.Nothing;
 import com.harystolho.adexchange.utils.Pair;
@@ -13,10 +16,13 @@ import com.harystolho.adexchange.utils.Pair;
 public class AuthServiceTest {
 
 	private static AuthService authService;
+	private static AuthRepository authRepository;
 
 	@BeforeClass
 	public static void init() {
-		authService = new AuthService();
+		authRepository = Mockito.mock(AuthRepository.class);
+
+		authService = new AuthService(authRepository);
 	}
 
 	@Test
@@ -27,7 +33,9 @@ public class AuthServiceTest {
 
 	@Test
 	public void createAccountWithValidEmail() {
-		Pair<ServiceResponse, Nothing> response = authService.createAccount("valid@email.com", "some random password");
+		Mockito.when(authRepository.saveAccount(Mockito.any())).thenReturn(Pair.of(RepositoryResponse.CREATED, null));
+
+		Pair<ServiceResponse, Nothing> response = authService.createAccount("valid2@email.com", "some random password");
 		assertEquals(ServiceResponse.OK, response.getFist());
 	}
 
@@ -36,10 +44,12 @@ public class AuthServiceTest {
 		Pair<ServiceResponse, Nothing> response = authService.createAccount("valid@email.com", "smal");
 		assertEquals(ServiceResponse.INVALID_PASSWORD, response.getFist());
 	}
-	
+
 	@Test
 	public void createAccountWithExistingEmail() {
+		Mockito.when(authRepository.getAccountByEmail("valid@email.com")).thenReturn(new Account("", ""));
+
 		Pair<ServiceResponse, Nothing> response = authService.createAccount("valid@email.com", "123456");
-		
+		assertEquals(ServiceResponse.EMAIL_ALREADY_EXISTS, response.getFist());
 	}
 }

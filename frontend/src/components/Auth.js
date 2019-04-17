@@ -31,7 +31,7 @@ export default class Header extends Component {
 
             switch (response.error){
                 case "EMAIL_ALREADY_EXISTS":
-                    this.setState({emailError: "Esse email ja existe"});
+                    this.setState({emailError: "Esse email ja' existe"});
                     return;
                 case "INVALID_EMAIL":
                     this.setState({emailError: "Esse email na~o eh valido"});
