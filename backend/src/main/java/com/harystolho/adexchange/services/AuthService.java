@@ -8,6 +8,7 @@ import com.harystolho.adexchange.dao.RepositoryResponse;
 import com.harystolho.adexchange.models.Account;
 import com.harystolho.adexchange.utils.Nothing;
 import com.harystolho.adexchange.utils.Pair;
+import com.harystolho.adexchange.utils.PasswordSecurity;
 
 @Service
 public class AuthService {
@@ -41,6 +42,22 @@ public class AuthService {
 		return Pair.of(ServiceResponse.FAIL, null);
 	}
 
+	public Pair<ServiceResponse, String> login(String email, String password) {
+		if (email.length() <= 0 || password.length() <= 0)
+			return Pair.of(ServiceResponse.FAIL, "");
+
+		Account possibleAccount = authRepository.getAccountByEmail(sanitizeEmail(email));
+
+		if (possibleAccount == null)
+			return Pair.of(ServiceResponse.FAIL, "");
+
+		if (!PasswordSecurity.comparePasswords(possibleAccount.getPassword(),
+				PasswordSecurity.encryptPassword(password)))
+			return Pair.of(ServiceResponse.FAIL, "");
+
+		return Pair.of(ServiceResponse.OK, "123456789abc");
+	}
+
 	/**
 	 * Standardizes the email. Make it lower case so it's easier to find accounts by
 	 * email on the database
@@ -71,4 +88,5 @@ public class AuthService {
 	private boolean emailExists(String email) {
 		return authRepository.getAccountByEmail(email) != null;
 	}
+
 }

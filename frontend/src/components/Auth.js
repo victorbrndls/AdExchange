@@ -25,7 +25,7 @@ export default class Header extends Component {
                 'Content-Type': 'multipart/form-data',
             }
         }).then((response) => {
-
+            // TODO login user after the account is created
         }).catch((error) => {
             let response = error.response.data;
 
@@ -89,12 +89,12 @@ export default class Header extends Component {
             <div style="display: flex; justify-content: center;">
                 <div id="auth" class="shadow mt-5">
                     <div class="auth-sign-container">
-                        <div class={"auth-sign " + (mode === 'sign-in' ? " active" : "")}
+                        <div class={`auth-sign ${mode === 'sign-in' ? 'active' : ''}`}
                              style="border-radius: .25rem 0 0 0" onClick={() => {
                             this.setState({mode: 'sign-in'});
                         }}>Entrar
                         </div>
-                        <div class={"auth-sign " + (mode === 'sign-up' ? " active" : "")}
+                        <div class={`auth-sign ${mode === 'sign-up' ? 'active' : ''}`}
                              style="border-radius: 0 .25rem 0 0" onClick={() => {
                             this.setState({mode: 'sign-up'});
                         }}>Criar
@@ -104,14 +104,14 @@ export default class Header extends Component {
                         <div class="text-center">
                             <div class="form-group">
                                 <input type="email" class="form-control" id="authEmailField"
-                                       aria-describedby="emailHelp" placeholder="Email"/>
+                                       aria-describedby="emailHelp" placeholder="Email" value=""/>
                                 {this.state.emailError && (
                                     <small>{this.state.emailError}</small>
                                 )}
                             </div>
                             <div class="form-group">
                                 <input type="password" class="form-control" id="authPasswordField"
-                                       placeholder="Senha"/>
+                                       placeholder="Senha" value=""/>
                                 {this.state.passwordError && (
                                     <small>{this.state.passwordError}</small>
                                 )}

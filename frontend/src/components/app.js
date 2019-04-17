@@ -29,5 +29,3 @@ export default class App extends Component {
         )
     }
 }
-
-// TODO class={`console ${isConsoleOpen ? '' : 'is-minimized'}`} - Can use `

@@ -43,4 +43,21 @@ public class AuthController {
 
 	}
 
+	@PostMapping("/auth/login")
+	@CrossOrigin
+	public ResponseEntity<Object> login(@RequestParam("email") String email,
+			@RequestParam("password") String password) {
+
+		Pair<ServiceResponse, String> response = authService.login(email, password);
+
+		switch (response.getFist()) {
+		case FAIL:		
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(new JsonResponse().pair("error", response.getFist().toString()).build());
+		default:
+			return ResponseEntity.status(HttpStatus.OK).body(new JsonResponse().pair("token", response.getSecond()));
+		}
+
+	}
+	
 }
