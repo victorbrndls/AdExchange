@@ -1,5 +1,7 @@
 import {Component} from "preact";
-import {API_URL} from "../configs";
+import {HOST} from "../configs";
+//import * as axios from "axios";
+import Axios from "axios";
 
 export default class Header extends Component {
     constructor(props) {
@@ -12,18 +14,25 @@ export default class Header extends Component {
         if(!this.validateFields())
             return;
 
-        let formData = new FormData();
+        let fields = this.getFields();
 
-        fetch(new Request(`${API_URL}/v1/auth/account`,
-            {
-                method: 'POST',
-                body: formData
-            })).then((response) => {
-            console.log(response);
-        })
+        let formData = new FormData();
+        formData.append('email', fields.email);
+        formData.append('password', fields.password);
+
+        Axios.post(`${HOST}/auth/account`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            }
+        }).then((response)=>{
+           console.log(response);
+        });
     }
 
     login() {
+        if(!this.validateFields())
+            return;
+
 
     }
 

@@ -7,6 +7,10 @@ import org.springframework.context.ApplicationContext;
 @SpringBootApplication
 public class Main {
 
+	static {
+		System.setProperty("user.timezone", "UTC");
+	}
+
 	public static void main(String[] args) {
 		ApplicationContext ctx = SpringApplication.run(Main.class, args);
 	}
