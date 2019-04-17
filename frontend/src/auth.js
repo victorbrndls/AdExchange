@@ -1,8 +1,9 @@
 import {HOST} from "./configs";
 import Axios from 'axios';
+const storage = window.localStorage;
 
 let auth = {
-    token: null
+    getToken: () => getToken()
 };
 
 function login(email, password) {
@@ -16,7 +17,7 @@ function login(email, password) {
                 'Content-Type': 'multipart/form-data',
             }
         }).then((response) => {
-            auth.token = response.token;
+            saveToken(response.data.getToken);
             resolve();
         }).catch((error) => {
             reject(error.response.data);
@@ -41,6 +42,14 @@ function createAccount(email, password) {
             reject(error.response.data);
         });
     });
+}
+
+function saveToken(token) {
+    storage.setItem('adExchange.authToken', token);
+}
+
+function getToken() {
+    return storage.getItem('adExchange.authToken');
 }
 
 export {
