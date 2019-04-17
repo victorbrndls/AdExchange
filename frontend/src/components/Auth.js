@@ -30,9 +30,6 @@ export default class Header extends Component {
     }
 
     login() {
-        if(!this.validateFields())
-            return;
-
 
     }
 
@@ -81,26 +78,26 @@ export default class Header extends Component {
                         <div class={"auth-sign " + (mode === 'sign-in' ? " active" : "")}
                              style="border-radius: .25rem 0 0 0" onClick={() => {
                             this.setState({mode: 'sign-in'});
-                        }}>Criar
+                        }}>Entrar
                         </div>
                         <div class={"auth-sign " + (mode === 'sign-up' ? " active" : "")}
                              style="border-radius: 0 .25rem 0 0" onClick={() => {
                             this.setState({mode: 'sign-up'});
-                        }}>Entrar
+                        }}>Criar
                         </div>
                     </div>
                     <div style="margin: 22px 12px;">
                         <div class="text-center">
                             <div class="form-group">
                                 <input type="email" class="form-control" id="authEmailField"
-                                       aria-describedby="emailHelp" placeholder="Enter email"/>
+                                       aria-describedby="emailHelp" placeholder="Email"/>
                                 {this.state.emailError && (
                                     <small>{this.state.emailError}</small>
                                 )}
                             </div>
                             <div class="form-group">
                                 <input type="password" class="form-control" id="authPasswordField"
-                                       placeholder="Password"/>
+                                       placeholder="Senha"/>
                                 {this.state.passwordError && (
                                     <small>{this.state.passwordError}</small>
                                 )}
