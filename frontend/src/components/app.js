@@ -2,7 +2,6 @@ import {Component} from "preact";
 import {Router} from 'preact-router'
 
 import Dashboard from "./dashboard/Dashboard";
-import Header from "./Header";
 import Home from "./Home";
 import Auth from "./Auth";
 
