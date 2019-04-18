@@ -55,7 +55,7 @@ public class Token {
 
 	@Override
 	public String toString() {
-		return String.format("Token[%s %s]", token, new Date(expiry));
+		return String.format("Token[%s | Expiry: %s]", token, new Date(expiry));
 	}
 
 }

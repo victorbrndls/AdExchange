@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.harystolho.adexchange.auth.TokenService;
 import com.harystolho.adexchange.dao.AuthRepository;
 import com.harystolho.adexchange.dao.RepositoryResponse;
 import com.harystolho.adexchange.models.Account;
@@ -18,10 +19,12 @@ public class AuthService {
 	private static final Logger logger = Logger.getLogger(AuthService.class.getName());
 
 	private AuthRepository authRepository;
+	private TokenService tokenService;
 
 	@Autowired
-	public AuthService(AuthRepository authRepository) {
+	public AuthService(AuthRepository authRepository, TokenService tokenService) {
 		this.authRepository = authRepository;
+		this.tokenService = tokenService;
 	}
 
 	public Pair<ServiceResponse, Nothing> createAccount(String email, String password) {
@@ -63,7 +66,9 @@ public class AuthService {
 			return Pair.of(ServiceResponse.FAIL, "");
 		}
 
-		return Pair.of(ServiceResponse.OK, String.valueOf(possibleAccount.getId()));
+		String token = tokenService.generateTokenForAccount(possibleAccount.getId());
+
+		return Pair.of(ServiceResponse.OK, String.valueOf(token));
 	}
 
 	/**
