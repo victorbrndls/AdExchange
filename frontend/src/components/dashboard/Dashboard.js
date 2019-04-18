@@ -23,12 +23,12 @@ export default class Dashboard extends Component {
                         </div>
                         <div class="dashboard__sidebar--item">
                             <Link href="/dashboard/proposals" activeClassName="active">
-                                <div class="dashboard__sidebar--item-container">Proposals</div>
+                                <div class="dashboard__sidebar--item-container">Propostas</div>
                             </Link>
                         </div>
                         <div class="dashboard__sidebar--item">
                             <Link href="/dashboard/contracts" activeClassName="active">
-                                <div class="dashboard__sidebar--item-container">Contracts</div>
+                                <div class="dashboard__sidebar--item-container">Contratos</div>
                             </Link>
                         </div>
                     </div>
