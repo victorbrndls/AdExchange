@@ -1,4 +1,5 @@
 import {Component} from "preact";
+import {Router} from "preact-router";
 import {Link} from 'preact-router/match'
 import Websites from './Websites';
 import Match from '../utils/Match';
@@ -43,8 +44,6 @@ export default class Dashboard extends Component {
                                 <Websites/>
                             </Match>
 
-                            <Match path="/dashboard/contracts">
-                            </Match>
                         </div>
                     </div>
                 </div>

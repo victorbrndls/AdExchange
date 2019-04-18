@@ -7,7 +7,7 @@ export default class Match extends Component {
     }
 
     render({children, path = ""}) {
-        if(getCurrentUrl().includes(path))
+        if (getCurrentUrl().includes(path))
             return children[0];
 
         return null;

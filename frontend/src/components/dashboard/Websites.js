@@ -4,6 +4,7 @@ import Axios from 'axios';
 import {HOST} from "../../configs";
 import AddWebsite from "./AddWebsite";
 import {auth} from "../../auth";
+import Match from "../utils/Match";
 
 export default class Websites extends Component {
     constructor(props) {
@@ -53,17 +54,17 @@ export default class Websites extends Component {
     }
 }
 
-class Website extends Component{
-    constructor(props){
+class Website extends Component {
+    constructor(props) {
         super(props);
     }
 
-    displayWebsite(){
-        if(props.id !== null)
+    displayWebsite() {
+        if (props.id !== null)
             route(`/dashboard/websites/show/${this.props.id}`);
     }
 
-    render({id, logoUrl, url, description}){
+    render({id, logoUrl, url, description}) {
         return (
             <div class="website-item shadow" onClick={() => this.displayWebsite()}>
                 <div style="display: flex;">
