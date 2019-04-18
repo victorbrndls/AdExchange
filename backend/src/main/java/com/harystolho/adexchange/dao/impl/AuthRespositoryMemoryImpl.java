@@ -13,6 +13,7 @@ import com.harystolho.adexchange.dao.RepositoryResponse;
 import com.harystolho.adexchange.models.Account;
 import com.harystolho.adexchange.utils.Nothing;
 import com.harystolho.adexchange.utils.Pair;
+import com.harystolho.adexchange.utils.PasswordSecurity;
 
 @Service
 public class AuthRespositoryMemoryImpl implements AuthRepository {
@@ -21,12 +22,16 @@ public class AuthRespositoryMemoryImpl implements AuthRepository {
 
 	public AuthRespositoryMemoryImpl() {
 		accounts = new ArrayList<Account>();
+
+		Account temp = new Account("a@a.com	", PasswordSecurity.encryptPassword("123456"));
+		temp.setId("123456789");
+		accounts.add(temp);
 	}
 
 	@Override
 	public Pair<RepositoryResponse, Account> saveAccount(Account account) {
 		accounts.add(account);
-		
+
 		account.setId(UUID.randomUUID().toString());
 		return Pair.of(RepositoryResponse.CREATED, account);
 	}
