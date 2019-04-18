@@ -19,8 +19,7 @@ export default class App extends Component {
 
     render() {
         return (
-            <div>
-                <Header/>
+            <div class="h-100">
                 <Router onChange={this.handleRoute.bind(this)}>
                     <Home path="/"/>
                     <Dashboard path="/dashboard/:*"/>
