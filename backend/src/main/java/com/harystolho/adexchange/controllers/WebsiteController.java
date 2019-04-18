@@ -36,7 +36,7 @@ public class WebsiteController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 					.body(new JsonResponse().pair("error", response.getFist().toString()).build());
 		default:
-			return ResponseEntity.status(HttpStatus.CREATED).body(null);
+			return ResponseEntity.status(HttpStatus.CREATED).body(response.getSecond());
 		}
 
 	}
