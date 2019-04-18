@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.harystolho.adexchange.models.Website;
 import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.services.WebsiteService;
 import com.harystolho.adexchange.utils.JsonResponse;
-import com.harystolho.adexchange.utils.Nothing;
 import com.harystolho.adexchange.utils.Pair;
 
 @RestController
@@ -29,7 +29,7 @@ public class WebsiteController {
 	public ResponseEntity<Object> createWebsite(@RequestParam("url") String url,
 			@RequestParam("logoURL") String logoURL, @RequestParam("description") String description) {
 
-		Pair<ServiceResponse, Nothing> response = websiteService.createWebsite(url, logoURL, description);
+		Pair<ServiceResponse, Website> response = websiteService.createWebsite(url, logoURL, description);
 
 		switch (response.getFist()) {
 		case FAIL:
