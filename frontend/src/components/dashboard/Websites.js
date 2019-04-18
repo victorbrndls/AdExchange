@@ -1,6 +1,9 @@
 import {Component} from "preact";
 import {Router, route} from "preact-router";
+import Axios from 'axios';
+import {HOST} from "../../configs";
 import AddWebsite from "./AddWebsite";
+import {auth} from "../../auth";
 
 export default class Websites extends Component {
     constructor(props) {
@@ -16,45 +19,54 @@ export default class Websites extends Component {
     }
 
     requestWebsites() {
+        Axios.get(`${HOST}/api/v1/websites`, {
+            params: {
+                token: auth.getToken()
+            }
+        }).then((response) => {
+            this.setState({
+                websites: response.data
+            })
+        });
     }
 
     render({}, {websites}) {
         return (
-            <Router>
-                <AddWebsite path="/dashboard/websites/add"/>
-                <div path="/dashboard/websites">
-                    <div>
-                        <div class="websites-add" onClick={() => {
-                            route('/dashboard/websites/add')
-                        }}>
-                            Adicionar seu Website
+            <div style="width: 1000px; margin: auto;">
+                <Router>
+                    <AddWebsite path="/dashboard/websites/add"/>
+                    <div path="/dashboard/websites">
+                        <div>
+                            <div class="websites-add" onClick={() => {
+                                route('/dashboard/websites/add')
+                            }}>
+                                Adicionar seu Website
+                            </div>
+                        </div>
+                        <div style="margin-top: 15px;">
+                            {websites.map((ws) => (
+                                <div>
+                                    <Website {...ws} />
+                                </div>
+                            ))}
                         </div>
                     </div>
-                    <div>
-                        {websites.map((ws) => (
-                            <div>
-                                <Website {...ws} />
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </Router>
+                </Router>
+            </div>
         )
     }
 }
 
 const Website = ({name, logoUrl, url, description}) => (
-    <div>
-        <div>
-            <div>
-                <img src={logoUrl}/>
+    <div class="website-item shadow">
+        <div style="display: flex;">
+            <img class="website-item__image" src={logoUrl}/>
+        </div>
+        <div style="margin-left: 9px; width: calc(100% - 60px - 9px);">
+            <div class="website-item__name">
+                <a href={url} native>{url}</a>
             </div>
-            <div>
-                <div>
-                    <a href={url} native>{name}</a>
-                </div>
-                <div>{description}</div>
-            </div>
+            <div class="website-item__description">{description}</div>
         </div>
     </div>
 );

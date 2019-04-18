@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.harystolho.adexchange.dao.RepositoryResponse;
 import com.harystolho.adexchange.dao.WebsiteRepository;
 import com.harystolho.adexchange.models.Website;
-import com.harystolho.adexchange.services.WebsiteService;
 import com.harystolho.adexchange.utils.Pair;
 
 @Service
@@ -18,6 +17,30 @@ public class WebsiteServiceMemoryImpl implements WebsiteRepository {
 
 	public WebsiteServiceMemoryImpl() {
 		websites = new ArrayList<>();
+
+		Website w1 = new Website(null, "ad-exchange.com");
+		Website w2 = new Website(null, "youtube.com");
+		Website w3 = new Website(null, "reddit.com");
+
+		w1.setDescription(
+				"2019-04-18 16:31:49.926  INFO 6236 --- [  restartedMain] o.s.b.w.servlet.ServletRegistrationBean  : Servlet dispatcherServlet mapped to [/]");
+		w2.setDescription(
+				"Servlet dispatcherServlet Servlet dispatcherServlet Servlet dispatcherServlet Servlet dispatcherServlet Servlet dispatcherServlet ");
+		w3.setDescription("This is a really long description of this website");
+
+		w1.setLogoUrl("https://startuptracker.io/cdn/startups/6f/6FoZv0i0kJ4pNWZ2oSe5whyxZmZot8Ly74HbmqxtCL8.png");
+
+		w2.setLogoUrl("https://picsum.photos/200/?random");
+		w3.setLogoUrl("https://picsum.photos/200/?random");
+
+		websites.add(w1);
+		websites.add(w2);
+		websites.add(w3);
+	}
+
+	@Override
+	public List<Website> getWebsites() {
+		return websites;
 	}
 
 	@Override

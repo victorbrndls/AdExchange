@@ -121,9 +121,33 @@ body.auth #header {
     cursor: pointer;
 }
 
-.websites-add__container{
+.websites-add__container {
     max-width: 1000px;
     height: 500px;
     margin: auto;
 }
 
+.website-item {
+    background-color: white;
+    margin: 9px 0;
+    border-radius: 6px;
+    padding: 10px;
+    display: flex;
+}
+
+.website-item__image{
+    height: 60px;
+    width: 60px;
+    align-self: center;
+    background-color: #414141;
+}
+
+.website-item__name{
+    width: max-content;
+}
+
+.website-item__description{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

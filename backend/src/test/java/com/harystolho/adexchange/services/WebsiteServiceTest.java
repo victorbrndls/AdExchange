@@ -33,7 +33,8 @@ public class WebsiteServiceTest {
 
 	@Test
 	public void createWebsiteWithNoDescription() {
-		Pair<ServiceResponse, Website> response = websiteService.createWebsite("https://ad-exchange.com", "", "to small");
+		Pair<ServiceResponse, Website> response = websiteService.createWebsite("https://ad-exchange.com", "",
+				"to small");
 
 		assertEquals(ServiceResponse.FAIL, response.getFist());
 	}
@@ -43,7 +44,7 @@ public class WebsiteServiceTest {
 		String url = "https://ad-exchange.com";
 		String description = "this is a very big description for this website";
 
-		Website website = new Website(url);
+		Website website = new Website(null, url);
 		website.setDescription(description);
 
 		Mockito.when(websiteRepository.saveWebsite(Mockito.any()))

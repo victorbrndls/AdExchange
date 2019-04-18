@@ -1,5 +1,7 @@
 package com.harystolho.adexchange.services;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.harystolho.adexchange.dao.RepositoryResponse;
@@ -16,11 +18,15 @@ public class WebsiteService {
 		this.websiteRepository = websiteRepository;
 	}
 
+	public Pair<ServiceResponse, List<Website>> getWebsites() {
+		return Pair.of(ServiceResponse.OK, websiteRepository.getWebsites());
+	}
+	
 	public Pair<ServiceResponse, Website> createWebsite(String url, String logoURL, String description) {
 		if (!verifyWebsiteCreationFields(url, logoURL, description))
 			return Pair.of(ServiceResponse.FAIL, null);
 
-		Website website = new Website(url);
+		Website website = new Website("05b1aedc-e44e-4cea-85a7-0d2b594f4363", url);
 		website.setLogoUrl(logoURL);
 		website.setDescription(description);
 
