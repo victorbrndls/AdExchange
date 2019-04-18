@@ -6,11 +6,11 @@
     --dashboard-sidebar-width: 250px;
 }
 
-html, body{
+html, body {
     height: 100%;
 }
 
-body.auth #header{
+body.auth #header {
     display: none;
 }
 
@@ -54,59 +54,76 @@ body.auth #header{
     margin: 0 7px;
 }
 
-#dashboard{
+#dashboard {
     display: flex;
 }
 
-.dashboard__sidebar{
+.dashboard__sidebar {
     width: var(--dashboard-sidebar-width);
 }
 
-.dashboard__main{
+.dashboard__main {
     width: calc(100% - var(--dashboard-sidebar-width));
 }
 
-.dashboard__sidebar-logo, .dashboard__main-topbar{
+.dashboard__sidebar-logo, .dashboard__main-topbar {
     height: var(--header-height);
 }
 
-.dashboard__sidebar-logo{
+.dashboard__sidebar-logo {
     background: linear-gradient(45deg, #2B47BF, #0F76CC);
     color: white;
     padding: 5px 0 0 8px;
 }
 
-.dashboard__sidebar-logo span{
+.dashboard__sidebar-logo span {
     font-family: Raleway, serif;
     font-size: 25px;
 }
 
-.dashboard__sidebar-bar{
+.dashboard__sidebar-bar {
     height: calc(100% - var(--header-height));
     box-shadow: 7px 0 15px 0 rgba(69, 90, 100, 0.09);
 }
 
-.dashboard__main-content{
+.dashboard__main-content {
     height: calc(100% - var(--header-height));
     background-color: #eff3f6;
 }
 
-.dashboard__sidebar--item > a.active .dashboard__sidebar--item-container{
-    border-left: solid 3px #1024b0;
+.dashboard__sidebar--item > a.active .dashboard__sidebar--item-container {
+    border-left: solid 3px #04a7a6;
     background-color: #f6f6f6;
 }
 
-.dashboard__sidebar--item-container{
+.dashboard__sidebar--item-container {
     padding: 7px 0 7px 15px;
     border-left: solid 3px transparent;
 }
 
-.dashboard__sidebar--item.selected{
+.dashboard__sidebar--item.selected {
     background-color: #ededed;
 }
 
-.dashboard__sidebar--item a{
+.dashboard__sidebar--item a {
     font-family: Raleway, serif;
     font-size: 19px;
     color: black;
 }
+
+.websites-add {
+    background-color: rgb(255, 64, 104);
+    display: inline-block;
+    color: white;
+    font-weight: bold;
+    padding: 11px 13px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.websites-add__container{
+    max-width: 1000px;
+    height: 500px;
+    margin: auto;
+}
+
