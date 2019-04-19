@@ -26,11 +26,12 @@ public class WebsiteService {
 		return Pair.of(ServiceResponse.OK, websiteRepository.getWebsiteById(id));
 	}
 
-	public Pair<ServiceResponse, Website> createWebsite(String url, String logoURL, String description) {
-		if (!verifyWebsiteCreationFields(url, logoURL, description))
+	public Pair<ServiceResponse, Website> createWebsite(String name, String url, String logoURL, String description) {
+		if (!verifyWebsiteCreationFields(name, url, logoURL, description))
 			return Pair.of(ServiceResponse.FAIL, null);
 
 		Website website = new Website("05b1aedc-e44e-4cea-85a7-0d2b594f4363", url);
+		website.setName(name);
 		website.setLogoUrl(logoURL);
 		website.setDescription(description);
 
@@ -42,7 +43,7 @@ public class WebsiteService {
 		return Pair.of(ServiceResponse.FAIL, null);
 	}
 
-	private boolean verifyWebsiteCreationFields(String url, String logoUrl, String description) {
+	private boolean verifyWebsiteCreationFields(String name, String url, String logoUrl, String description) {
 		return true; // TODO verify website creation fields
 	}
 

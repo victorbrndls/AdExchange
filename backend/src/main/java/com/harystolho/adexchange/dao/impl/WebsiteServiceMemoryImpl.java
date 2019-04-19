@@ -22,6 +22,10 @@ public class WebsiteServiceMemoryImpl implements WebsiteRepository {
 		Website w1 = new Website(null, "ad-exchange.com");
 		Website w2 = new Website(null, "youtube.com");
 		Website w3 = new Website(null, "reddit.com");
+		
+		w1.setName("My Website Number 1");
+		w2.setName("Die kuhe");
+		w3.setName("Ein neues buch");
 
 		w1.setDescription(
 				"2019-04-18 16:31:49.926  INFO 6236 --- [  restartedMain] o.s.b.w.servlet.ServletRegistrationBean  : Servlet dispatcherServlet mapped to [/]");

@@ -72,7 +72,7 @@ class Website extends Component {
             route(`/dashboard/websites/show/${this.props.id}`);
     }
 
-    render({id, logoUrl, url, description}) {
+    render({id, name, logoUrl, url, description}) {
         return (
             <div class="website-item shadow" onClick={() => this.displayWebsite()}>
                 <div style="display: flex;">
@@ -80,7 +80,7 @@ class Website extends Component {
                 </div>
                 <div style="margin-left: 9px; width: calc(100% - 60px - 9px);">
                     <div class="website-item__name">
-                        <span>{url}</span>
+                        <span>{name}</span>
                     </div>
                     <div class="website-item__description">{description}</div>
                 </div>

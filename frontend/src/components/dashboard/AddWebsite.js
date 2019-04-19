@@ -10,9 +10,17 @@ export default class AddWebsite extends Component {
             error: undefined
         };
 
+        this.props.webName = () => document.getElementById('name');
         this.props.url = () => document.getElementById('url');
         this.props.logoUrl = () => document.getElementById('logoURL');
         this.props.description = () => document.getElementById('description');
+    }
+
+    componentDidMount(){
+        this.props.webName().value = "";
+        this.props.url().value = "";
+        this.props.logoUrl().value = "";
+        this.props.description().value = "";
     }
 
     addWebsite() {
@@ -20,6 +28,7 @@ export default class AddWebsite extends Component {
             return;
 
         let formData = new FormData();
+        formData.append('name', this.props.webName().value);
         formData.append('url', this.props.url().value);
         formData.append('logoURL', this.props.logoUrl().value);
         formData.append('description', this.props.description().value);
@@ -30,11 +39,17 @@ export default class AddWebsite extends Component {
             }
         }).then((response) => {
             console.log(response);
+            // TODO route to
         });
     }
 
     verifyFields() {
         this.setState({error: undefined});
+
+        if (this.props.webName().value.length < 2) {
+            this.setState({error: "Nome muito pequeno"});
+            return false;
+        }
 
         if (this.props.url().value.length < 5) {
             this.setState({error: "URL invalido"});
@@ -69,17 +84,21 @@ export default class AddWebsite extends Component {
 
                     <div style="margin-top: 5px;">
                         <div class="form-group">
-                            <label>URL*</label>
-                            <input id="url" class="form-control w-25 " value="" placeholder="https://..."/>
+                            <label>Nome</label>
+                            <input id="name" class="form-control w-25 " maxLength="30"/>
+                        </div>
+                        <div class="form-group">
+                            <label>URL</label>
+                            <input id="url" class="form-control w-25 " placeholder="https://..."/>
                         </div>
                         <div class="form-group">
                             <label>URL da logo</label>
-                            <input id="logoURL" class="form-control w-25 " value="" placeholder="https://..."/>
+                            <input id="logoURL" class="form-control w-25" placeholder="https://..."/>
                         </div>
 
                         <div class="form-group">
-                            <label>Descricao*</label>
-                            <textarea id="description" class="form-control w-50" value="" maxlength="150"
+                            <label>Descricao</label>
+                            <textarea id="description" class="form-control w-50" maxlength="150"
                                       placeholder="Descricao"/>
                         </div>
 

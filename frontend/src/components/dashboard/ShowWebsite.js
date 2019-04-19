@@ -48,7 +48,7 @@ export default class ShowWebsite extends Component {
                         <img src="https://startuptracker.io/cdn/startups/6f/6FoZv0i0kJ4pNWZ2oSe5whyxZmZot8Ly74HbmqxtCL8.png"/>
                     </div>
                     <div class="dashboard-website__up-url">
-                        <a href="" native>{website.url}</a>
+                        <a href={website.url} native>{website.name}</a>
                     </div>
                 </div>
                 <div class="dashboard-website__down">

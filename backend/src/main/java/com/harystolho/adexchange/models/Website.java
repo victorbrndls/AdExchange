@@ -10,6 +10,7 @@ public class Website {
 	private String id;
 
 	private String owner;
+	private String name;
 	private String url;
 	private String logoUrl;
 	private String description;
@@ -20,6 +21,14 @@ public class Website {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getUrl() {
