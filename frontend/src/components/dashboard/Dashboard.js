@@ -40,8 +40,12 @@ export default class Dashboard extends Component {
                     <div class="dashboard__main-content">
                         <div style="height: 100%; padding: 16px;">
 
-                            <Match path="/dashboard/websites">
+                            <Match path="/dashboard/websites" include>
                                 <Websites/>
+                            </Match>
+
+                            <Match path="/dashboard/proposals" include>
+                                Proposals
                             </Match>
 
                         </div>
