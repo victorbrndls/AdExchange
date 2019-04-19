@@ -175,6 +175,7 @@ body.auth #header {
 .dashboard-website__up-logo img {
     width: 110px;
     height: 110px;
+    background-color: red;
 }
 
 .dashboard-website__up-url {
