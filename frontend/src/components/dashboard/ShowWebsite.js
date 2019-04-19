@@ -54,7 +54,7 @@ export default class ShowWebsite extends Component {
                 <div class="dashboard-website__down">
                     <div style="margin: 0 49px;">
                         <div style="text-align: center; margin: 40px 0;">
-                            ${website.description}
+                            {website.description}
                         </div>
                         <div>
                             <div class="dashboard-website__tag">

@@ -3,6 +3,7 @@ package com.harystolho.adexchange.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -54,6 +55,7 @@ public class WebsiteServiceMemoryImpl implements WebsiteRepository {
 
 	@Override
 	public Pair<RepositoryResponse, Website> saveWebsite(Website website) {
+		website.setId(UUID.randomUUID().toString());
 		websites.add(website);
 
 		return Pair.of(RepositoryResponse.CREATED, website);

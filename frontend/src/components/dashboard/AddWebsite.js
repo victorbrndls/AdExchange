@@ -3,6 +3,10 @@ import Axios from 'axios';
 import {HOST} from "../../configs";
 import {route} from "preact-router";
 
+const CATEGORIES = ["Adulto", "Artes", "Blogs", "Negócios", "Computadores", "Educacao", "Jogos", "Saúde", "Casa", "Crianças",
+    "Notícias", "Entreterimento", "Ciência", "Compras", "Sociedade", "Esportes", "Mundo", "Musica", "Religioso", "Viagem",
+    "Tecnologia"];
+
 export default class AddWebsite extends Component {
     constructor(props) {
         super(props);
@@ -40,7 +44,7 @@ export default class AddWebsite extends Component {
             headers: {
                 'Content-Type': 'multipart/form-data',
             }
-        }).then((response) => {
+        }).then(() => {
             route('/dashboard/websites');
         });
     }
@@ -85,46 +89,31 @@ export default class AddWebsite extends Component {
                     </div>
 
                     <div style="margin-top: 5px;">
-                        <div class="form-group">
+                        <div class="form-group websites-add__form">
                             <label>Nome</label>
                             <input id="name" class="form-control w-25 " maxLength="30"/>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group websites-add__form">
                             <label>URL</label>
                             <input id="url" class="form-control w-25 " placeholder="https://..."/>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group websites-add__form">
                             <label>URL da logo</label>
                             <input id="logoURL" class="form-control w-25" placeholder="https://..."/>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group websites-add__form">
                             <label>Descricao</label>
-                            <textarea id="description" class="form-control w-50" maxlength="150"
+                            <textarea id="description" class="form-control w-50" maxlength="500"
                                       placeholder="Descricao"/>
                         </div>
 
                         <div class="form-group">
                             <label>Categorias</label>
                             <div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" value="" id="checkbox-1"/>
-                                    <label class="form-check-label" for="checkbox-1">
-                                        Educacao
-                                    </label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1"/>
-                                    <label class="form-check-label" for="defaultCheck1">
-                                        Desenvolvimento Pessoal
-                                    </label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1"/>
-                                    <label class="form-check-label" for="defaultCheck1">
-                                        Inovacao
-                                    </label>
-                                </div>
+                                {CATEGORIES.map((category) => (
+                                    <Category name={category}/>
+                                ))}
                             </div>
                         </div>
 
@@ -140,3 +129,12 @@ export default class AddWebsite extends Component {
         )
     }
 }
+
+let Category = ({name}) => (
+    <div class="custom-control custom-checkbox custom-control-inline websites-add__checkbox">
+        <input class="custom-control-input" type="checkbox" value="" id={`${name}-id`}/>
+        <label class="custom-control-label" for={`${name}-id`}>
+            {name}
+        </label>
+    </div>
+);

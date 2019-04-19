@@ -123,7 +123,6 @@ body.auth #header {
 
 .websites-add__container {
     max-width: 1000px;
-    height: 500px;
     margin: auto;
 }
 
@@ -200,4 +199,17 @@ body.auth #header {
 
 .dashboard-website, .dashboard-website__up-logo{
     border-radius: 8px 8px 0 0;
+}
+
+.custom-control-label::before{
+    background-color: #d5d5d5;
+}
+
+.websites-add__checkbox{
+    width: 164px;
+}
+
+.websites-add__form label{
+    font-variant: small-caps;
+    color: #2455c0;
 }
