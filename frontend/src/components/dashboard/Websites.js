@@ -34,9 +34,8 @@ export default class Websites extends Component {
     render({}, {websites}) {
         return (
             <div style="width: 1000px; margin: auto;">
-                <Router>
-                    <AddWebsite path="/dashboard/websites/add"/>
-                    <div path="/dashboard/websites">
+                <Match path="/dashboard/websites" exact>
+                    <div>
                         <div>
                             <div class="websites-add" onClick={() => route('/dashboard/websites/add')}>
                                 Adicionar seu Website
@@ -48,7 +47,11 @@ export default class Websites extends Component {
                             ))}
                         </div>
                     </div>
-                </Router>
+                </Match>
+
+                <Match path="/dashboard/websites/add" exact>
+                    <AddWebsite/>
+                </Match>
             </div>
         )
     }

@@ -1,5 +1,4 @@
 import {Component} from "preact";
-import {Router} from "preact-router";
 import {Link} from 'preact-router/match'
 import Websites from './Websites';
 import Match from '../utils/Match';
