@@ -1,6 +1,7 @@
 import {Component} from "preact";
 import Axios from 'axios';
 import {HOST} from "../../configs";
+import {route} from "preact-router";
 
 export default class AddWebsite extends Component {
     constructor(props) {
@@ -10,17 +11,19 @@ export default class AddWebsite extends Component {
             error: undefined
         };
 
-        this.props.webName = () => document.getElementById('name');
-        this.props.url = () => document.getElementById('url');
-        this.props.logoUrl = () => document.getElementById('logoURL');
-        this.props.description = () => document.getElementById('description');
+        this.fields = {
+            name: () => document.getElementById('name'),
+            url: () => document.getElementById('url'),
+            logoUrl: () => document.getElementById('logoURL'),
+            description: () => document.getElementById('description')
+        };
     }
 
-    componentDidMount(){
-        this.props.webName().value = "";
-        this.props.url().value = "";
-        this.props.logoUrl().value = "";
-        this.props.description().value = "";
+    componentDidMount() {
+        this.fields.name().value = "";
+        this.fields.url().value = "";
+        this.fields.logoUrl().value = "";
+        this.fields.description().value = "";
     }
 
     addWebsite() {
@@ -28,35 +31,34 @@ export default class AddWebsite extends Component {
             return;
 
         let formData = new FormData();
-        formData.append('name', this.props.webName().value);
-        formData.append('url', this.props.url().value);
-        formData.append('logoURL', this.props.logoUrl().value);
-        formData.append('description', this.props.description().value);
+        formData.append('name', this.fields.name().value);
+        formData.append('url', this.fields.url().value);
+        formData.append('logoURL', this.fields.logoUrl().value);
+        formData.append('description', this.fields.description().value);
 
         Axios.post(`${HOST}/api/v1/websites`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             }
         }).then((response) => {
-            console.log(response);
-            // TODO route to
+            route('/dashboard/websites');
         });
     }
 
     verifyFields() {
         this.setState({error: undefined});
 
-        if (this.props.webName().value.length < 2) {
+        if (this.fields.name().value.length < 2) {
             this.setState({error: "Nome muito pequeno"});
             return false;
         }
 
-        if (this.props.url().value.length < 5) {
+        if (this.fields.url().value.length < 5) {
             this.setState({error: "URL invalido"});
             return false;
         }
 
-        if (this.props.description().value.length < 25) {
+        if (this.fields.description().value.length < 25) {
             this.setState({error: "Por favor descreva seu website melhor (pelo menos 25 caracteres)"});
             return false;
         }
