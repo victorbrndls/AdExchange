@@ -11,4 +11,6 @@ public interface WebsiteRepository {
 
 	public Pair<RepositoryResponse, Website> saveWebsite(Website website);
 
+	public Website getWebsiteById(String id);
+
 }

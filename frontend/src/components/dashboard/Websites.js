@@ -5,6 +5,7 @@ import {HOST} from "../../configs";
 import AddWebsite from "./AddWebsite";
 import {auth} from "../../auth";
 import Match from "../utils/Match";
+import ShowWebsite from "./ShowWebsite";
 
 export default class Websites extends Component {
     constructor(props) {
@@ -52,6 +53,10 @@ export default class Websites extends Component {
                 <Match path="/dashboard/websites/add" exact>
                     <AddWebsite/>
                 </Match>
+
+                <Match path="/dashboard/websites/show/" include>
+                    <ShowWebsite/>
+                </Match>
             </div>
         )
     }
@@ -63,7 +68,7 @@ class Website extends Component {
     }
 
     displayWebsite() {
-        if (props.id !== null)
+        if (this.props.id !== null)
             route(`/dashboard/websites/show/${this.props.id}`);
     }
 

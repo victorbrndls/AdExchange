@@ -19,11 +19,11 @@ export default class Match extends Component {
     render({children, path = ""}, {mode}) {
         switch (mode) {
             case "EXACT":
-                if (Match.getCurrentPath() === path)
+                if (getCurrentPath() === path)
                     return children[0];
                 return null;
             case "INCLUDE":
-                if (Match.getCurrentPath().includes(path))
+                if (getCurrentPath().includes(path))
                     return children[0];
                 return null;
             default:
@@ -31,7 +31,8 @@ export default class Match extends Component {
         }
     }
 
-    static getCurrentPath(){
-        return location.pathname;
-    }
+}
+
+export function getCurrentPath(){
+    return location.pathname;
 }

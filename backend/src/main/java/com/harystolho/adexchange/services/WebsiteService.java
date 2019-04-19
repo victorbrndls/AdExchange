@@ -21,7 +21,11 @@ public class WebsiteService {
 	public Pair<ServiceResponse, List<Website>> getWebsites() {
 		return Pair.of(ServiceResponse.OK, websiteRepository.getWebsites());
 	}
-	
+
+	public Pair<ServiceResponse, Website> getWebsiteById(String id) {
+		return Pair.of(ServiceResponse.OK, websiteRepository.getWebsiteById(id));
+	}
+
 	public Pair<ServiceResponse, Website> createWebsite(String url, String logoURL, String description) {
 		if (!verifyWebsiteCreationFields(url, logoURL, description))
 			return Pair.of(ServiceResponse.FAIL, null);

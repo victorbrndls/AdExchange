@@ -135,19 +135,68 @@ body.auth #header {
     display: flex;
 }
 
-.website-item__image{
+.website-item__image {
     height: 60px;
     width: 60px;
     align-self: center;
     background-color: #414141;
 }
 
-.website-item__name{
+.website-item__name {
     width: max-content;
 }
 
-.website-item__description{
+.website-item__description {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+.dashboard-website {
+    background-color: white;
+}
+
+.dashboard-website__up {
+
+}
+
+.dashboard-website__down {
+    padding-bottom: 15px;
+}
+
+.dashboard-website__up-logo {
+    background-color: silver;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+}
+
+.dashboard-website__up-logo img {
+    width: 110px;
+    height: 110px;
+}
+
+.dashboard-website__up-url {
+    text-align: center;
+    margin: 10px 0;
+}
+
+.dashboard-website__up-url a {
+    font-size: 33px;
+    font-weight: bold;
+}
+
+.dashboard-website__tag{
+    display: inline-block;
+    background-color: #166ac9;
+    border-radius: 7px;
+    padding: 2px 11px;
+    color: white;
+    font-variant: small-caps;
+    margin: 0 5px;
+}
+
+.dashboard-website, .dashboard-website__up-logo{
+    border-radius: 8px 8px 0 0;
 }

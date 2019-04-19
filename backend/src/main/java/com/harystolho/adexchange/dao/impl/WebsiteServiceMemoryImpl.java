@@ -2,6 +2,7 @@ package com.harystolho.adexchange.dao.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,10 @@ public class WebsiteServiceMemoryImpl implements WebsiteRepository {
 		w2.setLogoUrl("https://picsum.photos/200/?random");
 		w3.setLogoUrl("https://picsum.photos/200/?random");
 
+		w1.setId("1");
+		w2.setId("2");
+		w3.setId("3");
+
 		websites.add(w1);
 		websites.add(w2);
 		websites.add(w3);
@@ -48,6 +53,18 @@ public class WebsiteServiceMemoryImpl implements WebsiteRepository {
 		websites.add(website);
 
 		return Pair.of(RepositoryResponse.CREATED, website);
+	}
+
+	@Override
+	public Website getWebsiteById(String id) {
+		Optional<Website> website = websites.stream().filter((w) -> {
+			return w.getId().equals(id);
+		}).findFirst();
+
+		if (website.isPresent())
+			return website.get();
+
+		return null;
 	}
 
 }
