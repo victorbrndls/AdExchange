@@ -31,8 +31,8 @@ public class WebsiteServiceMemoryImpl implements WebsiteRepository {
 
 		w1.setLogoUrl("https://startuptracker.io/cdn/startups/6f/6FoZv0i0kJ4pNWZ2oSe5whyxZmZot8Ly74HbmqxtCL8.png");
 
-		w2.setLogoUrl("https://picsum.photos/200/?random");
-		w3.setLogoUrl("https://picsum.photos/200/?random");
+		w2.setLogoUrl("http://lorempixel.com/200/200/");
+		w3.setLogoUrl("http://lorempixel.com/200/200/");
 
 		w1.setId("1");
 		w2.setId("2");

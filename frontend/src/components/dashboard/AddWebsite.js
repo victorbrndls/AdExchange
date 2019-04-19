@@ -70,16 +70,16 @@ export default class AddWebsite extends Component {
                     <div style="margin-top: 5px;">
                         <div class="form-group">
                             <label>URL*</label>
-                            <input id="url" class="form-control w-25 " placeholder="https://..."/>
+                            <input id="url" class="form-control w-25 " value="" placeholder="https://..."/>
                         </div>
                         <div class="form-group">
                             <label>URL da logo</label>
-                            <input id="logoURL" class="form-control w-25 " placeholder="https://..."/>
+                            <input id="logoURL" class="form-control w-25 " value="" placeholder="https://..."/>
                         </div>
 
                         <div class="form-group">
                             <label>Descricao*</label>
-                            <textarea id="description" class="form-control w-50" maxlength="150"
+                            <textarea id="description" class="form-control w-50" value="" maxlength="150"
                                       placeholder="Descricao"/>
                         </div>
 

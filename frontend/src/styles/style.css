@@ -133,6 +133,7 @@ body.auth #header {
     border-radius: 6px;
     padding: 10px;
     display: flex;
+    cursor: pointer;
 }
 
 .website-item__image {

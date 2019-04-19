@@ -80,7 +80,7 @@ class Website extends Component {
                 </div>
                 <div style="margin-left: 9px; width: calc(100% - 60px - 9px);">
                     <div class="website-item__name">
-                        <a href={url} target="_blank" native>{url}</a>
+                        <span>{url}</span>
                     </div>
                     <div class="website-item__description">{description}</div>
                 </div>
