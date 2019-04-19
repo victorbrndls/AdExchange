@@ -15,6 +15,8 @@ export default class AddWebsite extends Component {
             error: undefined
         };
 
+        this.selectedCheckBox = 0;
+
         this.fields = {
             name: () => document.getElementById('name'),
             url: () => document.getElementById('url'),
@@ -70,6 +72,19 @@ export default class AddWebsite extends Component {
         return true;
     }
 
+    handleCheckBoxClick(e) {
+        if (this.selectedCheckBox === 3) {
+            if (e.target.checked)
+                e.preventDefault();
+        }
+
+        if (e.target.checked) {
+            this.selectedCheckBox < 3 ? this.selectedCheckBox++ : this.selectedCheckBox = 3;
+        } else {
+            this.selectedCheckBox > 1 ? this.selectedCheckBox-- : this.selectedCheckBox = 0;
+        }
+    }
+
     render({}, {error}) {
         return (
             <div>
@@ -112,7 +127,7 @@ export default class AddWebsite extends Component {
                             <label>Categorias</label>
                             <div>
                                 {CATEGORIES.map((category) => (
-                                    <Category name={category}/>
+                                    <Category name={category} onClickCb={this.handleCheckBoxClick.bind(this)}/>
                                 ))}
                             </div>
                         </div>
@@ -130,9 +145,9 @@ export default class AddWebsite extends Component {
     }
 }
 
-let Category = ({name}) => (
+let Category = ({name, onClickCb}) => (
     <div class="custom-control custom-checkbox custom-control-inline websites-add__checkbox">
-        <input class="custom-control-input" type="checkbox" value="" id={`${name}-id`}/>
+        <input class="custom-control-input" type="checkbox" value="" id={`${name}-id`} onClick={onClickCb}/>
         <label class="custom-control-label" for={`${name}-id`}>
             {name}
         </label>
