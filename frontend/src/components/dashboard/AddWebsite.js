@@ -57,6 +57,7 @@ export default class AddWebsite extends Component {
             }
         }).then(() => {
             route('/dashboard/websites');
+            this.props.reload();
         });
     }
 

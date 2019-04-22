@@ -32,6 +32,13 @@ export default class Websites extends Component {
         });
     }
 
+    /**
+     * Callback function to reload websites
+     */
+    reload() {
+        this.requestWebsites();
+    }
+
     render({}, {websites}) {
         return (
             <div style="width: 1000px; margin: auto;">
@@ -51,7 +58,7 @@ export default class Websites extends Component {
                 </Match>
 
                 <Match path="/dashboard/websites/add" exact>
-                    <AddWebsite/>
+                    <AddWebsite reload={this.reload.bind(this)}/>
                 </Match>
 
                 <Match path="/dashboard/websites/show/" include>
