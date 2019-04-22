@@ -29,11 +29,16 @@ export default class AddWebsite extends Component {
         this.resetFields();
     }
 
-    resetFields(){
+    resetFields() {
         this.fields.name().value = "";
         this.fields.url().value = "";
         this.fields.logoUrl().value = "";
         this.fields.description().value = "";
+
+        this.selectedCheckBox = 0;
+        Array.from(document.getElementById("addWebsiteCategories").querySelectorAll("input[type='checkbox']")).forEach((checkbox)=>{
+           checkbox.checked = false;
+        });
     }
 
     addWebsite() {
@@ -129,7 +134,7 @@ export default class AddWebsite extends Component {
 
                         <div class="form-group">
                             <label>Categorias</label>
-                            <div>
+                            <div id="addWebsiteCategories">
                                 {CATEGORIES.sort().map((category) => (
                                     <Category name={category} onClickCb={this.handleCheckBoxClick.bind(this)}/>
                                 ))}

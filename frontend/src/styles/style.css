@@ -89,6 +89,7 @@ body.auth #header {
 .dashboard__main-content {
     height: calc(100% - var(--header-height));
     background-color: #eff3f6;
+    overflow-y: auto;
 }
 
 .dashboard__sidebar--item > a.active .dashboard__sidebar--item-container {
@@ -208,6 +209,7 @@ body.auth #header {
 
 .websites-add__checkbox{
     width: 164px;
+    margin-bottom: 7px;
 }
 
 .websites-add__form label{
