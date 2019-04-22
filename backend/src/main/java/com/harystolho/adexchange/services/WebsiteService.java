@@ -44,7 +44,7 @@ public class WebsiteService {
 	}
 
 	private boolean verifyWebsiteCreationFields(String name, String url, String logoUrl, String description) {
-		return true; // TODO verify website creation fields
+		return description.length() > 10 && url.length() > 5; // TODO verify website creation fields
 	}
 
 }

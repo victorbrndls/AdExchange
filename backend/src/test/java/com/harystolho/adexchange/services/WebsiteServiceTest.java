@@ -25,7 +25,7 @@ public class WebsiteServiceTest {
 
 	@Test
 	public void createWebsiteWithInvalidURL() {
-		Pair<ServiceResponse, Website> response = websiteService.createWebsite("invalid", "",
+		Pair<ServiceResponse, Website> response = websiteService.createWebsite("some name", "http", "",
 				"this is a very big description for this website");
 
 		assertEquals(ServiceResponse.FAIL, response.getFist());
@@ -33,8 +33,8 @@ public class WebsiteServiceTest {
 
 	@Test
 	public void createWebsiteWithNoDescription() {
-		Pair<ServiceResponse, Website> response = websiteService.createWebsite("https://ad-exchange.com", "",
-				"to small");
+		Pair<ServiceResponse, Website> response = websiteService.createWebsite("some name", "https://ad-exchange.com",
+				"", "to small");
 
 		assertEquals(ServiceResponse.FAIL, response.getFist());
 	}
@@ -50,7 +50,7 @@ public class WebsiteServiceTest {
 		Mockito.when(websiteRepository.saveWebsite(Mockito.any()))
 				.thenReturn(Pair.of(RepositoryResponse.CREATED, website));
 
-		Pair<ServiceResponse, Website> response = websiteService.createWebsite(url, "", description);
+		Pair<ServiceResponse, Website> response = websiteService.createWebsite("some name", url, "", description);
 
 		assertEquals(ServiceResponse.OK, response.getFist());
 

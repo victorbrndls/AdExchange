@@ -25,6 +25,10 @@ export default class Header extends Component {
                 <div>
                     auth: {auth.getToken()}
                 </div>
+				
+				<div>
+					<h2>Good things take time to build, If this service takes 4+ months thats normal</h2>
+				</div>
             </div>
         )
     }

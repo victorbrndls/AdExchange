@@ -26,6 +26,10 @@ export default class AddWebsite extends Component {
     }
 
     componentDidMount() {
+        this.resetFields();
+    }
+
+    resetFields(){
         this.fields.name().value = "";
         this.fields.url().value = "";
         this.fields.logoUrl().value = "";
@@ -106,7 +110,7 @@ export default class AddWebsite extends Component {
                     <div style="margin-top: 5px;">
                         <div class="form-group websites-add__form">
                             <label>Nome</label>
-                            <input id="name" class="form-control w-25 " maxLength="30"/>
+                            <input id="name" class="form-control w-25 " maxLength="40"/>
                         </div>
                         <div class="form-group websites-add__form">
                             <label>URL</label>
@@ -120,13 +124,13 @@ export default class AddWebsite extends Component {
                         <div class="form-group websites-add__form">
                             <label>Descricao</label>
                             <textarea id="description" class="form-control w-50" maxlength="500"
-                                      placeholder="Descricao"/>
+                                      placeholder="Descricao" style="height: 150px;"/>
                         </div>
 
                         <div class="form-group">
                             <label>Categorias</label>
                             <div>
-                                {CATEGORIES.map((category) => (
+                                {CATEGORIES.sort().map((category) => (
                                     <Category name={category} onClickCb={this.handleCheckBoxClick.bind(this)}/>
                                 ))}
                             </div>

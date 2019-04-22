@@ -6,6 +6,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import com.harystolho.adexchange.auth.TokenService;
 import com.harystolho.adexchange.dao.AuthRepository;
 import com.harystolho.adexchange.dao.RepositoryResponse;
 import com.harystolho.adexchange.models.Account;
@@ -17,13 +18,16 @@ import com.harystolho.adexchange.utils.PasswordSecurity;
 public class AuthServiceTest {
 
 	private static AuthService authService;
+
 	private static AuthRepository authRepository;
+	private static TokenService tokenService;
 
 	@BeforeClass
 	public static void init() {
 		authRepository = Mockito.mock(AuthRepository.class);
+		tokenService = Mockito.mock(TokenService.class);
 
-		authService = new AuthService(authRepository);
+		authService = new AuthService(authRepository, tokenService);
 	}
 
 	@Test
@@ -37,7 +41,8 @@ public class AuthServiceTest {
 		Mockito.when(authRepository.saveAccount(Mockito.any())).thenReturn(Pair.of(RepositoryResponse.CREATED, null));
 		Mockito.when(authRepository.getAccountByEmail(Mockito.anyString())).thenReturn(null);
 
-		Pair<ServiceResponse, Nothing> response = authService.createAccount("valid2123@email.com", "some random password");
+		Pair<ServiceResponse, Nothing> response = authService.createAccount("valid2123@email.com",
+				"some random password");
 		assertEquals(ServiceResponse.OK, response.getFist());
 	}
 
@@ -80,14 +85,15 @@ public class AuthServiceTest {
 		Pair<ServiceResponse, String> response = authService.login("email@valid.com", "abc123");
 		assertEquals(ServiceResponse.FAIL, response.getFist());
 	}
-	
+
 	@Test
 	public void loginWithCorrectPassword() {
 		Mockito.when(authRepository.getAccountByEmail(Mockito.anyString()))
 				.thenReturn(new Account("email@valid.com", PasswordSecurity.encryptPassword("123456")));
 
-		Pair<ServiceResponse, String> response = authService.login("email@valid.com", PasswordSecurity.encryptPassword("123456"));
+		Pair<ServiceResponse, String> response = authService.login("email@valid.com",
+				PasswordSecurity.encryptPassword("123456"));
 		assertEquals(ServiceResponse.OK, response.getFist());
 	}
-	
+
 }
