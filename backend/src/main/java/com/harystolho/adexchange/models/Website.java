@@ -14,6 +14,7 @@ public class Website {
 	private String url;
 	private String logoUrl;
 	private String description;
+	private String[] categories;
 
 	public String getId() {
 		return id;
@@ -61,6 +62,14 @@ public class Website {
 
 	public void setOwner(String owner) {
 		this.owner = owner;
+	}
+
+	public String[] getCategories() {
+		return categories;
+	}
+
+	public void setCategories(String[] categories) {
+		this.categories = categories;
 	}
 
 }

@@ -19,6 +19,7 @@ export const CATEGORIES_PT = {
     "MUSIC": "Musica",
     "BUSINESS": "Negócios",
     "NEWS": "Notícias",
+    "OTHER": "Outros",
     "RELIGIOUS": "Religioso",
     "HEALTH": "Saúde",
     "SOCIETY": "Sociedade",

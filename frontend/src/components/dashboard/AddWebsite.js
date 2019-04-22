@@ -2,6 +2,7 @@ import {Component} from "preact";
 import Axios from 'axios';
 import {HOST} from "../../configs";
 import {CATEGORIES_PT} from "../utils/WebsiteCategory";
+import {route} from "preact-router";
 
 export default class AddWebsite extends Component {
     constructor(props) {
@@ -55,8 +56,8 @@ export default class AddWebsite extends Component {
                 'Content-Type': 'multipart/form-data',
             }
         }).then(() => {
-            /*route('/dashboard/websites');
-            this.props.reload();*/
+            route('/dashboard/websites');
+            this.props.reload();
         });
     }
 
@@ -75,6 +76,11 @@ export default class AddWebsite extends Component {
 
         if (this.fields.description().value.length < 25) {
             this.setState({error: "Por favor descreva seu website melhor (pelo menos 25 caracteres)"});
+            return false;
+        }
+
+        if (this.selectedCheckBox < 1) {
+            this.setState({error: "Por favor selecione pelo menos uma categoria"});
             return false;
         }
 
@@ -110,7 +116,7 @@ export default class AddWebsite extends Component {
     /**
      * @return {Array}
      */
-    getCategoriesInputs(){
+    getCategoriesInputs() {
         return Array.from(document.getElementById("addWebsiteCategories").querySelectorAll("input[type='checkbox']:checked"));
     }
 
@@ -153,7 +159,9 @@ export default class AddWebsite extends Component {
                         </div>
 
                         <div class="form-group">
-                            <label>Categorias</label>
+                            <label>Categorias
+                                <small> (máx 3)</small>
+                            </label>
                             <div id="addWebsiteCategories">
                                 {Object.entries(this.categories).map((category) => (
                                     <Category name={category[1]} catId={category[0]}

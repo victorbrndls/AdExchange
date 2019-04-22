@@ -3,10 +3,13 @@ import {getCurrentPath} from "../utils/Match"
 import Axios from 'axios';
 import {HOST} from "../../configs";
 import {auth} from "../../auth";
+import {CATEGORIES_PT} from "../utils/WebsiteCategory";
 
 export default class ShowWebsite extends Component {
     constructor(props) {
         super(props);
+
+        this.categories = CATEGORIES_PT;
 
         this.state = {
             website: null
@@ -57,15 +60,11 @@ export default class ShowWebsite extends Component {
                             {website.description}
                         </div>
                         <div>
-                            <div class="dashboard-website__tag">
-                                Health
-                            </div>
-                            <div class="dashboard-website__tag">
-                                Learning
-                            </div>
-                            <div class="dashboard-website__tag">
-                                Web
-                            </div>
+                            {website.categories && website.categories.map((cat)=>(
+                                <div class="dashboard-website__tag">
+                                    {this.categories[cat]}
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>

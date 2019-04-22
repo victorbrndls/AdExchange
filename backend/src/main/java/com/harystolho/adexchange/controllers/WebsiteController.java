@@ -59,9 +59,10 @@ public class WebsiteController {
 	@PostMapping("/api/v1/websites")
 	@CrossOrigin // TODO only allow crossorigin from 8081
 	public ResponseEntity<Object> createWebsite(@RequestParam("name") String name, @RequestParam("url") String url,
-			@RequestParam("logoURL") String logoURL, @RequestParam("description") String description) {
+			@RequestParam("logoURL") String logoURL, @RequestParam("description") String description,
+			@RequestParam("categories") String categories) {
 
-		Pair<ServiceResponse, Website> response = websiteService.createWebsite(name, url, logoURL, description);
+		Pair<ServiceResponse, Website> response = websiteService.createWebsite(name, url, logoURL, description, categories);
 
 		switch (response.getFist()) {
 		case FAIL:

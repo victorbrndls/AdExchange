@@ -26,7 +26,7 @@ public class WebsiteServiceTest {
 	@Test
 	public void createWebsiteWithInvalidURL() {
 		Pair<ServiceResponse, Website> response = websiteService.createWebsite("some name", "http", "",
-				"this is a very big description for this website");
+				"this is a very big description for this website", "OTHER");
 
 		assertEquals(ServiceResponse.FAIL, response.getFist());
 	}
@@ -34,7 +34,7 @@ public class WebsiteServiceTest {
 	@Test
 	public void createWebsiteWithNoDescription() {
 		Pair<ServiceResponse, Website> response = websiteService.createWebsite("some name", "https://ad-exchange.com",
-				"", "to small");
+				"", "to small", "OTHER");
 
 		assertEquals(ServiceResponse.FAIL, response.getFist());
 	}
@@ -50,12 +50,32 @@ public class WebsiteServiceTest {
 		Mockito.when(websiteRepository.saveWebsite(Mockito.any()))
 				.thenReturn(Pair.of(RepositoryResponse.CREATED, website));
 
-		Pair<ServiceResponse, Website> response = websiteService.createWebsite("some name", url, "", description);
+		Pair<ServiceResponse, Website> response = websiteService.createWebsite("some name", url, "", description,
+				"OTHER");
 
 		assertEquals(ServiceResponse.OK, response.getFist());
 
 		assertEquals(url, response.getSecond().getUrl());
 		assertEquals(description, response.getSecond().getDescription());
+	}
+
+	@Test
+	public void createWebsiteWithInvalidCategory() {
+		Pair<ServiceResponse, Website> response = websiteService.createWebsite("some name", "https://ad-exchange.com",
+				"", "some description to use", "lower");
+
+		assertEquals(ServiceResponse.FAIL, response.getFist());
+	}
+
+	@Test
+	public void createWebsiteWithValidCategory() {
+		Mockito.when(websiteRepository.saveWebsite(Mockito.any()))
+				.thenReturn(Pair.of(RepositoryResponse.CREATED, null));
+
+		Pair<ServiceResponse, Website> response = websiteService.createWebsite("some name", "https://ad-exchange.com",
+				"", "some description to use", "UPPER");
+
+		assertEquals(ServiceResponse.OK, response.getFist());
 	}
 
 }
