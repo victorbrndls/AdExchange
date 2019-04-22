@@ -140,7 +140,6 @@ body.auth #header {
     height: 60px;
     width: 60px;
     align-self: center;
-    background-color: #414141;
 }
 
 .website-item__name {
@@ -189,7 +188,7 @@ body.auth #header {
     font-weight: bold;
 }
 
-.dashboard-website__tag{
+.dashboard-website__tag {
     display: inline-block;
     background-color: #166ac9;
     border-radius: 7px;
@@ -199,20 +198,29 @@ body.auth #header {
     margin: 0 5px;
 }
 
-.dashboard-website, .dashboard-website__up-logo{
+.dashboard-website, .dashboard-website__up-logo {
     border-radius: 8px 8px 0 0;
 }
 
-.custom-control-label::before{
+.custom-control-label::before {
     background-color: #d5d5d5;
 }
 
-.websites-add__checkbox{
+.websites-add__checkbox {
     width: 164px;
     margin-bottom: 7px;
 }
 
-.websites-add__form label{
+.websites-add__form label {
     font-variant: small-caps;
     color: #2455c0;
+}
+
+#websiteBackIcon {
+    width: 30px;
+    cursor: pointer;
+}
+
+#websiteBackIcon:hover {
+    transform: scale(1.1);
 }

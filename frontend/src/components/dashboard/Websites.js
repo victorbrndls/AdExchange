@@ -1,5 +1,5 @@
 import {Component} from "preact";
-import {Router, route} from "preact-router";
+import {route} from "preact-router";
 import Axios from 'axios';
 import {HOST} from "../../configs";
 import AddWebsite from "./AddWebsite";
@@ -41,29 +41,38 @@ export default class Websites extends Component {
 
     render({}, {websites}) {
         return (
-            <div style="width: 1000px; margin: auto;">
-                <Match path="/dashboard/websites" exact>
-                    <div>
-                        <div>
-                            <div class="websites-add" onClick={() => route('/dashboard/websites/add')}>
-                                Adicionar seu Website
-                            </div>
-                        </div>
-                        <div style="margin-top: 15px;">
-                            {websites.map((ws) => (
-                                <Website {...ws} />
-                            ))}
-                        </div>
+            <div>
+                <Match path={"/dashboard/websites"} not>
+                    <div style="position: absolute;">
+                        <img id="websiteBackIcon" src="/assets/left-arrow.png"
+                             onClick={() => route('/dashboard/websites')}/>
                     </div>
                 </Match>
 
-                <Match path="/dashboard/websites/add" exact>
-                    <AddWebsite reload={this.reload.bind(this)}/>
-                </Match>
+                <div style="width: 1000px; margin: auto;">
+                    <Match path="/dashboard/websites" exact>
+                        <div>
+                            <div>
+                                <div class="websites-add" onClick={() => route('/dashboard/websites/add')}>
+                                    Adicionar seu Website
+                                </div>
+                            </div>
+                            <div style="margin-top: 15px;">
+                                {websites.map((ws) => (
+                                    <Website {...ws} />
+                                ))}
+                            </div>
+                        </div>
+                    </Match>
 
-                <Match path="/dashboard/websites/show/" include>
-                    <ShowWebsite/>
-                </Match>
+                    <Match path="/dashboard/websites/add" exact>
+                        <AddWebsite reload={this.reload.bind(this)}/>
+                    </Match>
+
+                    <Match path="/dashboard/websites/show/" include>
+                        <ShowWebsite/>
+                    </Match>
+                </div>
             </div>
         )
     }

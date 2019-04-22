@@ -5,15 +5,18 @@ export default class Match extends Component {
         super(props);
 
         this.state = {
-          mode: "EXACT"
+            mode: "EXACT"
         };
 
         this.updateRoutingMode(props);
     }
 
     updateRoutingMode(props) {
-        if (props.include === true)
+        if (props.include) {
             this.setState({mode: "INCLUDE"});
+        } else if (props.not) {
+            this.setState({mode: "NOT"});
+        }
     }
 
     render({children, path = ""}, {mode}) {
@@ -26,6 +29,10 @@ export default class Match extends Component {
                 if (getCurrentPath().includes(path))
                     return children[0];
                 return null;
+            case "NOT":
+                if (getCurrentPath() !== path)
+                    return children[0];
+                return null;
             default:
                 return null;
         }
@@ -33,6 +40,6 @@ export default class Match extends Component {
 
 }
 
-export function getCurrentPath(){
+export function getCurrentPath() {
     return location.pathname;
 }
