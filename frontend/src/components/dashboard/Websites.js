@@ -6,6 +6,7 @@ import AddWebsite from "./AddWebsite";
 import {auth} from "../../auth";
 import Match from "../utils/Match";
 import ShowWebsite from "./ShowWebsite";
+import {CATEGORIES_PT} from "../utils/WebsiteCategory";
 
 export default class Websites extends Component {
     constructor(props) {
@@ -81,6 +82,8 @@ export default class Websites extends Component {
 class Website extends Component {
     constructor(props) {
         super(props);
+
+        this.categories = CATEGORIES_PT;
     }
 
     displayWebsite() {
@@ -88,7 +91,7 @@ class Website extends Component {
             route(`/dashboard/websites/show/${this.props.id}`);
     }
 
-    render({id, name, logoUrl, url, description}) {
+    render({id, name, logoUrl, url, description, categories}) {
         return (
             <div class="website-item shadow" onClick={() => this.displayWebsite()}>
                 <div style="display: flex;">
@@ -99,6 +102,13 @@ class Website extends Component {
                         <span>{name}</span>
                     </div>
                     <div class="website-item__description">{description}</div>
+                    <div class="website-categories">
+                        {categories && categories.map((cat) => (
+                            <div class="dashboard-website__tag">
+                                {this.categories[cat]}
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
         )
