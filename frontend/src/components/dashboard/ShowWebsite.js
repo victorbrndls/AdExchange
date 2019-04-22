@@ -48,7 +48,7 @@ export default class ShowWebsite extends Component {
                         <img src={website.logoUrl}/>
                     </div>
                     <div class="dashboard-website__up-url">
-                        <a href={website.url} native>{website.name}</a>
+                        <a href={website.url} native target="_blank">{website.name}</a>
                     </div>
                 </div>
                 <div class="dashboard-website__down">

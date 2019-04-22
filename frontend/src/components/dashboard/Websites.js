@@ -13,7 +13,7 @@ export default class Websites extends Component {
 
         this.state = {
             websites: []
-        }
+        };
     }
 
     componentDidMount() {
