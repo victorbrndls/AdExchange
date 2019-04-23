@@ -45,14 +45,14 @@ export default class Websites extends Component {
         return (
             <div>
                 <Match path={"/dashboard/websites"} not>
-                    <LeftArrow cb={() => route('/')}/>
+                    <LeftArrow cb={() => route('/dashboard/websites')}/>
                 </Match>
 
-                <div style="width: 1000px; margin: auto;">
+                <div class="dashboard__main-content-container">
                     <Match path="/dashboard/websites" exact>
                         <div>
                             <div>
-                                <div class="websites-add" onClick={() => route('/dashboard/websites/add')}>
+                                <div class="websites-add dashboard-website__rounded-button" onClick={() => route('/dashboard/websites/add')}>
                                     Adicionar seu Website
                                 </div>
                             </div>
@@ -77,7 +77,7 @@ export default class Websites extends Component {
     }
 }
 
-class Website extends Component {
+export class Website extends Component {
     constructor(props) {
         super(props);
 

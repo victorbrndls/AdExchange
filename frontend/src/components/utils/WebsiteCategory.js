@@ -8,6 +8,7 @@ export const CATEGORIES_PT = {
     "BLOG": "Blog",
     "HOME": "Casa",
     "SCIENCE": "Ciência",
+    "FOOD": "Comida",
     "SHOPPING": "Compras",
     "COMPUTER": "Computadores",
     "CHILD": "Crianças",

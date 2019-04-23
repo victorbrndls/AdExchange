@@ -112,16 +112,6 @@ body.auth #header {
     color: black;
 }
 
-.websites-add {
-    background-color: rgb(255, 64, 104);
-    display: inline-block;
-    color: white;
-    font-weight: bold;
-    padding: 11px 13px;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
 .websites-add__container {
     max-width: 1000px;
     margin: auto;
@@ -225,11 +215,11 @@ body.auth #header {
     transform: scale(1.1);
 }
 
-.website-categories{
+.website-categories {
     margin-top: 5px;
 }
 
-.website-categories > .dashboard-website__tag{
+.website-categories > .dashboard-website__tag {
     font-variant: normal;
     padding: 2px 7px;
     font-size: 11px;
@@ -237,4 +227,32 @@ body.auth #header {
     background-color: white;
     color: black;
     border: solid 1px #0006;
+}
+
+.dashboard__main-content-container {
+    width: 1000px;
+    margin: auto;
+}
+
+.dashboard-website__rounded-button {
+    display: inline-block;
+    color: white;
+    font-weight: bold;
+    padding: 11px 13px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.websites-add {
+    background-color: rgb(255, 64, 104);
+}
+
+.dashboard-website__create-proposal {
+    background-color: rgb(29, 188, 64);
+}
+
+.blocking-container{
+    position: absolute;
+    width: 100%;
+    height: 100%;
 }

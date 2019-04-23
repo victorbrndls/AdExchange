@@ -4,6 +4,7 @@ import Axios from 'axios';
 import {HOST} from "../../configs";
 import {auth} from "../../auth";
 import {CATEGORIES_PT} from "../utils/WebsiteCategory";
+import {route} from "preact-router";
 
 export default class ShowWebsite extends Component {
     constructor(props) {
@@ -60,11 +61,17 @@ export default class ShowWebsite extends Component {
                             {website.description}
                         </div>
                         <div>
-                            {website.categories && website.categories.map((cat)=>(
+                            {website.categories && website.categories.map((cat) => (
                                 <div class="dashboard-website__tag">
                                     {this.categories[cat]}
                                 </div>
                             ))}
+                        </div>
+                        <div style="margin-top: 15px;">
+                            <div class="dashboard-website__rounded-button dashboard-website__create-proposal"
+                                 onClick={() => route(`/dashboard/proposals/edit/new?websiteId=${this.getIdFromUrl()}`)}>
+                                Fazer Proposta
+                            </div>
                         </div>
                     </div>
                 </div>
