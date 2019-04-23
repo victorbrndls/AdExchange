@@ -3,6 +3,7 @@ import {Website} from "./Websites";
 import Axios from "axios";
 import {HOST} from "../../configs";
 import {auth} from "../../auth";
+import Ad from "../Ad";
 
 export default class AddProposal extends Component {
     constructor(props) {
@@ -12,7 +13,8 @@ export default class AddProposal extends Component {
             error: null,
             mode: "EDIT", // EDIT or NEW
             proposalId: parseInt(Math.random() * 1000),
-            website: {}
+            website: {},
+            adId: undefined
         };
 
         this.updateMode();
@@ -68,6 +70,44 @@ export default class AddProposal extends Component {
                     <div style="position: relative;">
                         <div class="blocking-container"/>
                         <Website {...website}/>
+                    </div>
+
+                    <div>
+                        <div>
+                            <div class="form-group websites-add__form">
+                                <label>Anúncio</label>
+                                <select class="custom-select">
+                                    <option>Anúncio #1</option>
+                                    <option>Anúncio #2</option>
+                                </select>
+                                <div class="mb-4"/>
+                                <div style="justify-content: center; display: flex;">
+                                    <Ad/>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group websites-add__form">
+                                <label>Duracao (dias)</label>
+                                <input id="p_duration" class="form-control" placeholder="15"/>
+                                <small class="form-text text-muted">Por quanto tempo o anuncio ficara ativo</small>
+                            </div>
+
+                            <div class="form-group websites-add__form">
+                                <label>Pagamento</label>
+                                <select class="custom-select">
+                                    <option>Custo por Click</option>
+                                    <option>Custo por Visualizacao</option>
+                                </select>
+                                <div class="mb-2"/>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">R$</span>
+                                    </div>
+                                    <input class="form-control" aria-label="Valor" placeholder="1.50"/>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
