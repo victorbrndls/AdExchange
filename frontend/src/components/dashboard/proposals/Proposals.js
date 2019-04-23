@@ -1,6 +1,6 @@
 import {Component} from "preact";
-import Match from "../utils/Match";
-import {LeftArrow} from "../utils/Components";
+import Match from "../../utils/Match";
+import {LeftArrow} from "../../utils/Components";
 import {route} from "preact-router";
 import AddProposal from "./EditProposal";
 

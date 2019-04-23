@@ -1,9 +1,9 @@
 import {Component} from "preact";
-import {Website} from "./Websites";
+import {Website} from "../websites/Websites";
 import Axios from "axios";
-import {HOST} from "../../configs";
-import {auth} from "../../auth";
-import Ad from "../Ad";
+import {HOST} from "../../../configs";
+import {auth} from "../../../auth";
+import Ad from "../../Ad";
 
 export default class AddProposal extends Component {
     constructor(props) {

@@ -1,7 +1,7 @@
 import {Component} from "preact";
 import Axios from 'axios';
-import {HOST} from "../../configs";
-import {CATEGORIES_PT} from "../utils/WebsiteCategory";
+import {HOST} from "../../../configs";
+import {CATEGORIES_PT} from "../../utils/WebsiteCategory";
 import {route} from "preact-router";
 
 export default class AddWebsite extends Component {

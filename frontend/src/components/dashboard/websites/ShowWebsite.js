@@ -1,9 +1,9 @@
 import {Component} from "preact";
-import {getCurrentPath} from "../utils/Match"
+import {getCurrentPath} from "../../utils/Match"
 import Axios from 'axios';
-import {HOST} from "../../configs";
-import {auth} from "../../auth";
-import {CATEGORIES_PT} from "../utils/WebsiteCategory";
+import {HOST} from "../../../configs";
+import {auth} from "../../../auth";
+import {CATEGORIES_PT} from "../../utils/WebsiteCategory";
 import {route} from "preact-router";
 
 export default class ShowWebsite extends Component {

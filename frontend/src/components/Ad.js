@@ -9,7 +9,7 @@ export default class Ad extends Component{
     render(){
         return (
             <div class="ae-ad">
-                Ad
+
             </div>
         )
     }

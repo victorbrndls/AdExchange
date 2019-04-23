@@ -1,8 +1,9 @@
 import {Component} from "preact";
 import {Link} from 'preact-router/match'
-import Websites from './Websites';
+import Websites from './websites/Websites';
 import Match from '../utils/Match';
-import Proposals from "./Proposals";
+import Proposals from "./proposals/Proposals";
+import Ads from "./ads/Ads";
 
 export default class Dashboard extends Component {
     constructor(props) {
@@ -32,6 +33,11 @@ export default class Dashboard extends Component {
                                 <div class="dashboard__sidebar--item-container">Contratos</div>
                             </Link>
                         </div>
+                        <div class="dashboard__sidebar--item">
+                            <Link href="/dashboard/ads" activeClassName="active">
+                                <div class="dashboard__sidebar--item-container">Anúncios</div>
+                            </Link>
+                        </div>
                     </div>
                 </div>
                 <div class="dashboard__main">
@@ -48,6 +54,9 @@ export default class Dashboard extends Component {
                                 <Proposals/>
                             </Match>
 
+                            <Match path="/dashboard/ads" include>
+                                <Ads/>
+                            </Match>
                         </div>
                     </div>
                 </div>

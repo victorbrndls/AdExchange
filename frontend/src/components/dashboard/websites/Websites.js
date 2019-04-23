@@ -1,13 +1,13 @@
 import {Component} from "preact";
 import {route} from "preact-router";
 import Axios from 'axios';
-import {HOST} from "../../configs";
+import {HOST} from "../../../configs";
 import AddWebsite from "./AddWebsite";
-import {auth} from "../../auth";
-import Match from "../utils/Match";
+import {auth} from "../../../auth";
+import Match from "../../utils/Match";
 import ShowWebsite from "./ShowWebsite";
-import {CATEGORIES_PT} from "../utils/WebsiteCategory";
-import {LeftArrow} from "../utils/Components";
+import {CATEGORIES_PT} from "../../utils/WebsiteCategory";
+import {LeftArrow} from "../../utils/Components";
 
 export default class Websites extends Component {
     constructor(props) {
