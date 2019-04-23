@@ -7,6 +7,7 @@ import {auth} from "../../auth";
 import Match from "../utils/Match";
 import ShowWebsite from "./ShowWebsite";
 import {CATEGORIES_PT} from "../utils/WebsiteCategory";
+import {LeftArrow} from "../utils/Components";
 
 export default class Websites extends Component {
     constructor(props) {
@@ -44,10 +45,7 @@ export default class Websites extends Component {
         return (
             <div>
                 <Match path={"/dashboard/websites"} not>
-                    <div style="position: absolute;">
-                        <img id="websiteBackIcon" src="/assets/left-arrow.png"
-                             onClick={() => route('/dashboard/websites')}/>
-                    </div>
+                    <LeftArrow cb={() => route('/')}/>
                 </Match>
 
                 <div style="width: 1000px; margin: auto;">

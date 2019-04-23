@@ -2,6 +2,7 @@ import {Component} from "preact";
 import {Link} from 'preact-router/match'
 import Websites from './Websites';
 import Match from '../utils/Match';
+import Proposals from "./Proposals";
 
 export default class Dashboard extends Component {
     constructor(props) {
@@ -44,7 +45,7 @@ export default class Dashboard extends Component {
                             </Match>
 
                             <Match path="/dashboard/proposals" include>
-                                Proposals
+                                <Proposals/>
                             </Match>
 
                         </div>
