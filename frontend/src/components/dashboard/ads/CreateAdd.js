@@ -160,7 +160,9 @@ export default class CreateAdd extends Component {
                             <div style="display: flex;">
                                 <div class="ads-ad__checkbox" onClick={this.handleAdCheckbox.bind(this, 'TEXT')}>
                                     <div class="shadow ads-ad-wrapper">
-                                        <TextAd/>
+                                        <TextAd
+                                            text="Anúncio que contem somente texto, voce pode alterar a cor de fundo, cor do texto e outras items abaixo"
+                                            bgColor="" textColor=""/>
                                     </div>
                                     <div
                                         class={`ads-ad__checkbox-box ${this.state.adType === 'TEXT' ? "active" : ""}`}/>
@@ -168,7 +170,7 @@ export default class CreateAdd extends Component {
 
                                 <div class="ads-ad__checkbox" onClick={this.handleAdCheckbox.bind(this, 'IMAGE')}>
                                     <div class="shadow ads-ad-wrapper">
-                                        <ImageAd/>
+                                        <ImageAd imageUrl="https://i.imgur.com/k2AxKqQ.png"/>
                                     </div>
                                     <div
                                         class={`ads-ad__checkbox-box ${this.state.adType === 'IMAGE' ? "active" : ""}`}/>
@@ -277,7 +279,7 @@ export let TextAd = ({refUrl, text, bgColor, textColor}) => (
 export let ImageAd = ({refUrl, imageUrl}) => (
     <a native href={refUrl} target="_blank">
         <div class="ae-ad">
-            <img src={`${imageUrl || "https://i.imgur.com/EVOFpNF.png"}`}/>
+            <img src={`${imageUrl || "https://i.imgur.com/Rf1yqaY.png"}`}/>
         </div>
     </a>
 );
