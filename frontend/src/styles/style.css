@@ -14,15 +14,37 @@ body.auth #header {
     display: none;
 }
 
-#header {
-    background-color: var(--ad-primary);
-    display: flex;
-    height: var(--header-height);
-    padding: 0 20px;
+.header {
+    height: 60px;
+    font-family: Raleway, serif;
+    font-size: 30px;
+    padding: 7px 0px 0px 15px;
+    background: linear-gradient(45deg, #2B47BF, #0F76CC);
+    color: white;
 }
 
-#header a {
-    color: #fff;
+.home-card {
+    border-radius: 2px;
+    height: 150px;
+    width: 375px;
+    display: flex;
+    margin-bottom: 30px;
+}
+
+#dashboardCard {
+    background: linear-gradient(45deg, #2ca961, #2ed88a);
+    width: 270px;
+    height: 80px;
+    padding-left: 10px;
+}
+
+#dashboardCard > * {
+    align-self: center;
+}
+
+#dashboardCard a {
+    font-size: 50px;
+    color: white;
 }
 
 #auth {
@@ -288,6 +310,6 @@ body.auth #header {
     height: 35px;
 }
 
-.ad-error{
+.ad-error {
     color: red;
 }

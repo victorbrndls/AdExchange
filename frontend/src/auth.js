@@ -63,15 +63,13 @@ function getToken() {
 const AdAxiosPost = Axios.create({
     headers: {
         'Content-Type': 'multipart/form-data',
-    },
-    params: {
-        token: getToken()
+        Authorization: `Token ${getToken()}`
     }
 });
 
 const AdAxiosGet = Axios.create({
-    params: {
-        token: getToken()
+    headers: {
+        Authorization: `Token ${getToken()}`
     }
 });
 

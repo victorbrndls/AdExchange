@@ -39,27 +39,20 @@ export default class CreateAdd extends Component {
     handleSubmit() {
         switch (this.state.adType) {
             case 'TEXT':
-                this.submitTextAd();
+                if (!this.verifyTextAdFields())
+                    return;
+
+                this.submitAd();
                 return;
             case 'IMAGE':
-                this.submitImageAd();
+                if (!this.verifyImageAdFields())
+                    return;
+
+                this.submitAd();
                 return;
             default:
                 return;
         }
-    }
-
-    submitTextAd() {
-        /*if (!this.verifyTextAdFields())
-            return;*/
-
-        let formData = new FormData();
-        formData.append('name', this.fields.adName().value);
-
-        AdAxiosPost.post(`${HOST}/api/v1/ads`, formData
-        ).then((response) => {
-
-        });
     }
 
     verifyTextAdFields() {
@@ -77,11 +70,6 @@ export default class CreateAdd extends Component {
             return false;
 
         return true;
-    }
-
-    submitImageAd() {
-        if (!this.verifyImageAdFields())
-            return;
     }
 
     verifyImageAdFields() {
@@ -122,6 +110,29 @@ export default class CreateAdd extends Component {
         }
 
         return true;
+    }
+
+    submitAd(){
+        let formData = new FormData();
+        formData.append('name', this.fields.adName().value);
+        formData.append('type', this.state.adType);
+        formData.append('refUrl', this.fields.adRefUrl().value);
+
+        switch (this.state.adType){
+            case 'TEXT':
+                formData.append('text', this.fields.adText().value);
+                formData.append('bgColor', this.fields.adBgColor().value);
+                formData.append('textColor', this.fields.adTextColor().value);
+                break;
+            case 'IMAGE':
+                formData.append('imageUrl', this.fields.adImageUrl().value);
+                break;
+        }
+
+        AdAxiosPost.post(`${HOST}/api/v1/ads`, formData
+        ).then((response) => {
+
+        });
     }
 
     render({}, state) {
