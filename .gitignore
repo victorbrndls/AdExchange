@@ -16,6 +16,7 @@ target/
 node_modules/
 application.properties
 .classpath
+backend/todo
 
 # External tool builders
 .externalToolBuilders/

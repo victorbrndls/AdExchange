@@ -46,6 +46,15 @@ export default class Dashboard extends Component {
                     <div class="dashboard__main-content">
                         <div style="height: 100%; padding: 16px;">
 
+                            {/*Remove this in the future*/}
+                            <Match path="/dashboard" exact>
+                                <div>
+                                    <div>How can I develop this feature better or in a different way?<br/></div>
+                                    <div>Design Pattern? / Different Architecture?<br/></div>
+                                    <div>What is the simplest thing that could possibly work?<br/></div>
+                                </div>
+                            </Match>
+
                             <Match path="/dashboard/websites" include>
                                 <Websites/>
                             </Match>

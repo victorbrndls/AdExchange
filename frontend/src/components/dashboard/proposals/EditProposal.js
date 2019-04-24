@@ -2,7 +2,7 @@ import {Component} from "preact";
 import {Website} from "../websites/Websites";
 import Axios from "axios";
 import {HOST} from "../../../configs";
-import {auth} from "../../../auth";
+import {AdAxiosGet, auth} from "../../../auth";
 
 export default class AddProposal extends Component {
     constructor(props) {
@@ -13,12 +13,13 @@ export default class AddProposal extends Component {
             mode: "EDIT", // EDIT or NEW
             proposalId: parseInt(Math.random() * 1000),
             website: {},
-            adId: undefined
+            ads: []
         };
 
         this.updateMode();
 
         this.requestWebsiteInformation();
+        this.requestAdsInformation();
     }
 
     updateMode() {
@@ -46,16 +47,18 @@ export default class AddProposal extends Component {
             return;
         }
 
-        Axios.get(`${HOST}/api/v1/websites/${id}`, {
-            params: {
-                token: auth.getToken()
-            }
-        }).then((response) => {
+        AdAxiosGet.get(`${HOST}/api/v1/websites/${id}`).then((response) => {
             this.setState({website: response.data});
         });
     }
 
-    render({}, {website, proposalId, error}) {
+    requestAdsInformation() {
+        AdAxiosGet.get(`${HOST}/api/v1/ads/me`).then((response) => {
+            this.setState({ads: response.data});
+        });
+    }
+
+    render({}, {website, proposalId, error, ads}) {
         return (
             <div>
                 <div style="font-family: Raleway; font-size: 30px;">
@@ -76,12 +79,12 @@ export default class AddProposal extends Component {
                             <div class="form-group websites-add__form">
                                 <label>Anúncio</label>
                                 <select class="custom-select">
-                                    <option>Anúncio #1</option>
-                                    <option>Anúncio #2</option>
+                                    {ads && ads.map((ad)=> (
+                                        <option>{ad.name}</option>
+                                    ))}
                                 </select>
                                 <div class="mb-4"/>
                                 <div style="justify-content: center; display: flex;">
-                                    add
                                 </div>
 
                             </div>

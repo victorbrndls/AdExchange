@@ -41,9 +41,9 @@ export default class Ads extends Component {
                                  onClick={() => route('/dashboard/ads/create')}>
                                 Criar Anúncio
                             </div>
-                            <div style="display: flex; flex-wrap: wrap;">
+                            <div style="display: flex; flex-direction: column;">
                                 {ads.map((ad) => (
-                                    <div class="ads-ad__container">
+                                    <div class="ads-ad__container shadow">
                                         <div class="ads-ad__container-name">
                                             <div class="ad__container-header">
                                                 <h5>{ad.name}</h5>

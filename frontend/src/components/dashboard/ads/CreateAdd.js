@@ -188,14 +188,14 @@ export default class CreateAdd extends Component {
                                 <div class="form-group websites-add__form">
                                     <label>Cor de fundo</label>
                                     <input id="ad-bgColor" class="form-control ads-ad__color-picker" type="color"
-                                           value="#FFD700"
+                                           value="#000"
                                            onChange={this.updateAdBgColor.bind(this)}/>
                                 </div>
 
                                 <div class="form-group websites-add__form">
                                     <label>Cor do texto</label>
                                     <input id="ad-textColor" class="form-control ads-ad__color-picker" type="color"
-                                           value="#000"
+                                           value="#ffffff"
                                            onChange={this.updateAdTextColor.bind(this)}/>
                                 </div>
 
@@ -262,7 +262,7 @@ export default class CreateAdd extends Component {
 
 export let TextAd = ({refUrl, text, bgColor, textColor}) => (
     <a native href={refUrl} target="_blank" style="text-decoration: none;">
-        <div class="ae-ad text" style={`background-color: ${bgColor || "#000"}; color: ${textColor || "#fff"};`}>
+        <div class="ae-ad text" style={`background-color: ${bgColor || "#000"}; color: ${textColor || "#ffffff"};`}>
             {text || "Erro ao carregar anuncio"}
         </div>
     </a>
