@@ -217,6 +217,11 @@ export default class CreateAdd extends Component {
 
                         {this.state.adType === 'IMAGE' && (
                             <div>
+                                <span class="form-text text-muted mb-3">Formato da imagem dever ser 1.61 : 1. Por
+                                    exemplo se a imagem tiver 284px de largura, a altura deve ser 176px (176 * 1.61
+                                    = 284)
+                                </span>
+
                                 <div class="form-group websites-add__form">
                                     <label>URL da Imagem</label>
                                     <div class="input-group mb-3">
