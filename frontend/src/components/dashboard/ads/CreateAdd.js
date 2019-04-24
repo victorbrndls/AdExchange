@@ -131,7 +131,7 @@ export default class CreateAdd extends Component {
         }
 
         AdAxiosPost.post(`${HOST}/api/v1/ads`, formData
-        ).then((response) => {
+        ).then(() => {
             route('/dashboard/ads');
             this.props.reload();
         });

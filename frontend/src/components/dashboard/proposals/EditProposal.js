@@ -18,6 +18,8 @@ export default class AddProposal extends Component {
             selectedAd: null
         };
 
+        this.moneyPattern = "(\\d+\\.\\d{1,2})$";
+
         this.updateMode();
 
         this.requestWebsiteInformation();
@@ -128,7 +130,8 @@ export default class AddProposal extends Component {
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">R$</span>
                                 </div>
-                                <input class="form-control" aria-label="Valor" placeholder="1.50"/>
+                                <input class="form-control" pattern={this.moneyPattern}
+                                       placeholder="Valores com no maximo 2 casas decimais (1.50, 4.54, 0.10, 18.01, 0.50)"/>
                             </div>
                         </div>
                     </div>
