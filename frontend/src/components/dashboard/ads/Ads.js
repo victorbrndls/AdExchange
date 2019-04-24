@@ -43,10 +43,21 @@ export default class Ads extends Component {
                             </div>
                             <div style="display: flex; flex-wrap: wrap;">
                                 {ads.map((ad) => (
-                                    <div style="margin: 12px;" class="ads-ad-wrapper">
-                                        {ad.type === 'TEXT' ?
-                                            (<TextAd {...ad}/>) :
-                                            (<ImageAd {...ad}/>)}
+                                    <div class="ads-ad__container">
+                                        <div class="ads-ad__container-name">
+                                            <div class="ad__container-header">
+                                                <h5>{ad.name}</h5>
+                                            </div>
+                                            <div style="margin-left: 7px;">
+                                                <span class="ad__container-option">Editar</span>
+                                                <span class="ad__container-option">Deletar</span>
+                                            </div>
+                                        </div>
+                                        <div style="margin: 12px; box-shadow: 0 0 11px -2px #0000004d;" class="ads-ad-wrapper">
+                                            {ad.type === 'TEXT' ?
+                                                (<TextAd {...ad}/>) :
+                                                (<ImageAd {...ad}/>)}
+                                        </div>
                                     </div>
                                 ))}
                             </div>

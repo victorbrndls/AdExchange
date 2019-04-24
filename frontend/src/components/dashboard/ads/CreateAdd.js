@@ -261,15 +261,17 @@ export default class CreateAdd extends Component {
 }
 
 export let TextAd = ({refUrl, text, bgColor, textColor}) => (
-    <a native href={refUrl} target="_blank">
+    <a native href={refUrl} target="_blank" style="text-decoration: none;">
         <div class="ae-ad text" style={`background-color: ${bgColor || "#000"}; color: ${textColor || "#fff"};`}>
             {text || "Erro ao carregar anuncio"}
         </div>
     </a>
 );
 
-export let ImageAd = ({imageUrl}) => (
-    <div class="ae-ad">
-        <img src={`${imageUrl || "https://i.imgur.com/EVOFpNF.png"}`}/>
-    </div>
+export let ImageAd = ({refUrl, imageUrl}) => (
+    <a native href={refUrl} target="_blank">
+        <div class="ae-ad">
+            <img src={`${imageUrl || "https://i.imgur.com/EVOFpNF.png"}`}/>
+        </div>
+    </a>
 );

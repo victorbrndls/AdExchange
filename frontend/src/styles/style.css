@@ -314,3 +314,36 @@ body.auth #header {
 .ad-error {
     color: red;
 }
+
+.ads-ad__container {
+    background-color: white;
+    margin: 0 11px 11px 0;
+    padding: 5px 6px;
+}
+
+.ads-ad__container-name {
+    display: flex;
+    justify-content: space-between;
+    font-family: Raleway, serif;
+    color: #bf2b47;
+}
+
+.ad__container-option{
+    font-size: 12px;
+    margin: 0 3px;
+    cursor: pointer;
+}
+
+.ad__container-option:hover{
+    text-decoration: underline;
+}
+
+.ad__container-header{
+
+}
+
+.ad__container-header > * {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
