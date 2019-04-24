@@ -3,7 +3,6 @@ import {Website} from "../websites/Websites";
 import Axios from "axios";
 import {HOST} from "../../../configs";
 import {auth} from "../../../auth";
-import Ad from "../../Ad";
 
 export default class AddProposal extends Component {
     constructor(props) {
@@ -82,7 +81,7 @@ export default class AddProposal extends Component {
                                 </select>
                                 <div class="mb-4"/>
                                 <div style="justify-content: center; display: flex;">
-                                    <Ad/>
+                                    add
                                 </div>
 
                             </div>

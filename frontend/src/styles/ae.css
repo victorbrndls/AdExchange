@@ -1,5 +1,19 @@
 .ae-ad{
-    width: 284px;
-    height: 176px;
-    background-color: black;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.ae-ad img{
+    width: 100%;
+    height: 100%;
+}
+
+.ae-ad.text{
+    background-color: gold;
+    padding: 5px;
+}
+
+.ae-ad.image{
+
 }
