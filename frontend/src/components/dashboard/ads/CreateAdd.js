@@ -1,5 +1,7 @@
 import {Component} from "preact";
 import "../../../styles/ae.css";
+import {HOST} from "../../../configs";
+import {AdAxiosPost} from "../../../auth";
 
 export default class CreateAdd extends Component {
     constructor(props) {
@@ -48,10 +50,16 @@ export default class CreateAdd extends Component {
     }
 
     submitTextAd() {
-        if (!this.verifyTextAdFields())
-            return;
+        /*if (!this.verifyTextAdFields())
+            return;*/
 
-        
+        let formData = new FormData();
+        formData.append('name', this.fields.adName().value);
+
+        AdAxiosPost.post(`${HOST}/api/v1/ads`, formData
+        ).then((response) => {
+
+        });
     }
 
     verifyTextAdFields() {

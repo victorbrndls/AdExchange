@@ -60,9 +60,26 @@ function getToken() {
     return storage.getItem('adExchange.authToken');
 }
 
+const AdAxiosPost = Axios.create({
+    headers: {
+        'Content-Type': 'multipart/form-data',
+    },
+    params: {
+        token: getToken()
+    }
+});
+
+const AdAxiosGet = Axios.create({
+    params: {
+        token: getToken()
+    }
+});
+
 export {
     auth,
     login,
     logout,
-    createAccount
+    createAccount,
+    AdAxiosPost,
+    AdAxiosGet
 }
