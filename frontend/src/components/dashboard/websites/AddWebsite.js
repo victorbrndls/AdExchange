@@ -170,8 +170,7 @@ export default class AddWebsite extends Component {
                             </div>
                         </div>
 
-                        <div class="btn"
-                             style="background-color: #156dc9; color: white; font-size: 17px; font-weight: bold;"
+                        <div class="btn dashboard-add__button"
                              onClick={this.addWebsite.bind(this)}>
                             Adicionar
                         </div>

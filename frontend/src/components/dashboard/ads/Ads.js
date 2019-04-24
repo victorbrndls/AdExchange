@@ -27,6 +27,10 @@ export default class Ads extends Component {
         });
     }
 
+    reload(){
+        this.requestAds();
+    }
+
     render({}, {ads}) {
         return (
             <div>
@@ -65,7 +69,7 @@ export default class Ads extends Component {
                     </Match>
 
                     <Match path="/dashboard/ads/create" exact>
-                        <CreateAdd/>
+                        <CreateAdd reload={this.reload.bind(this)}/>
                     </Match>
                 </div>
             </div>

@@ -329,17 +329,17 @@ body.auth #header {
     color: #bf2b47;
 }
 
-.ad__container-option{
+.ad__container-option {
     font-size: 12px;
     margin: 0 3px;
     cursor: pointer;
 }
 
-.ad__container-option:hover{
+.ad__container-option:hover {
     text-decoration: underline;
 }
 
-.ad__container-header{
+.ad__container-header {
 
 }
 
@@ -347,4 +347,11 @@ body.auth #header {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+.dashboard-add__button {
+    background-color: #156dc9;
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
 }

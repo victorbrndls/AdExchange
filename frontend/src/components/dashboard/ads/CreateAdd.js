@@ -2,6 +2,7 @@ import {Component} from "preact";
 import "../../../styles/ae.css";
 import {HOST} from "../../../configs";
 import {AdAxiosPost} from "../../../auth";
+import {route} from "preact-router";
 
 export default class CreateAdd extends Component {
     constructor(props) {
@@ -131,7 +132,8 @@ export default class CreateAdd extends Component {
 
         AdAxiosPost.post(`${HOST}/api/v1/ads`, formData
         ).then((response) => {
-
+            route('/dashboard/ads');
+            this.props.reload();
         });
     }
 
@@ -248,8 +250,7 @@ export default class CreateAdd extends Component {
                             </div>
                         )}
 
-                        <div class="btn"
-                             style="background-color: #156dc9; color: white; font-size: 17px; font-weight: bold;"
+                        <div class="btn dashboard-add__button"
                              onClick={this.handleSubmit.bind(this)}>
                             Criar
                         </div>

@@ -67,12 +67,16 @@ export default class AddProposal extends Component {
     }
 
     handleAdChange(e) {
-        if(e.target.value === "-1")
+        if (e.target.value === "-1")
             return;
 
         AdAxiosGet.get(`${HOST}/api/v1/ads/${e.target.value}`).then((response) => {
             this.setState({selectedAd: response.data});
         });
+    }
+
+    submitProposal() {
+
     }
 
     render({}, {website, proposalId, error, ads, selectedAd}) {
@@ -82,57 +86,55 @@ export default class AddProposal extends Component {
                     Proposta #{proposalId}
                 </div>
                 <div>
-                    <div>
-                        WebsiteId: {this.getWebsiteId()}
-                    </div>
-
                     <div style="position: relative;">
                         <div class="blocking-container"/>
                         <Website {...website}/>
                     </div>
 
                     <div>
-                        <div>
-                            <div class="form-group websites-add__form">
-                                <label>Anúncio</label>
-                                <select class="custom-select" onChange={this.handleAdChange.bind(this)}>
-                                    <option value="-1">Selecione um anuncio</option>
-                                    {ads && ads.map((ad) => (
-                                        <option value={ad.id}>{ad.name}</option>
-                                    ))}
-                                </select>
-                                <div class="mb-4"/>
-                                <div style="justify-content: center; display: flex;">
-                                    {selectedAd && (
-                                        <div class="ads-ad-wrapper">
-                                            {selectedAd.type === 'TEXT' ? (<TextAd {...selectedAd}/>) : (
-                                                <ImageAd {...selectedAd}/>)}
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-
-                            <div class="form-group websites-add__form">
-                                <label>Duracao (dias)</label>
-                                <input id="p_duration" class="form-control" placeholder="15"/>
-                                <small class="form-text text-muted">Por quanto tempo o anuncio ficara ativo</small>
-                            </div>
-
-                            <div class="form-group websites-add__form">
-                                <label>Pagamento</label>
-                                <select class="custom-select">
-                                    <option>Custo por Click</option>
-                                    <option>Custo por Visualizacao</option>
-                                </select>
-                                <div class="mb-2"/>
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">R$</span>
+                        <div class="form-group websites-add__form">
+                            <label>Anúncio</label>
+                            <select class="custom-select mb-4" onChange={this.handleAdChange.bind(this)}>
+                                <option value="-1">Selecione um anuncio</option>
+                                {ads && ads.map((ad) => (
+                                    <option value={ad.id}>{ad.name}</option>
+                                ))}
+                            </select>
+                            <div style="justify-content: center; display: flex; position: relative;">
+                                <div class="blocking-container"/>
+                                {selectedAd && (
+                                    <div class="ads-ad-wrapper">
+                                        {selectedAd.type === 'TEXT' ? (<TextAd {...selectedAd}/>) : (
+                                            <ImageAd {...selectedAd}/>)}
                                     </div>
-                                    <input class="form-control" aria-label="Valor" placeholder="1.50"/>
-                                </div>
+                                )}
                             </div>
                         </div>
+
+                        <div class="form-group websites-add__form">
+                            <label>Duracao (dias)</label>
+                            <input id="p_duration" class="form-control" placeholder="15"/>
+                            <small class="form-text text-muted">Por quanto tempo o anuncio ficara ativo</small>
+                        </div>
+
+                        <div class="form-group websites-add__form">
+                            <label>Pagamento</label>
+                            <select class="custom-select">
+                                <option>Custo por Click</option>
+                                <option>Custo por Visualizacao</option>
+                            </select>
+                            <div class="mb-2"/>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">R$</span>
+                                </div>
+                                <input class="form-control" aria-label="Valor" placeholder="1.50"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="btn dashboard-add__button" onClick={this.submitProposal.bind(this)}>
+                        Enviar Proposta
                     </div>
                 </div>
             </div>
