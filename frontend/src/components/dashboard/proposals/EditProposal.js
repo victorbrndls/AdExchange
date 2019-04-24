@@ -3,6 +3,7 @@ import {Website} from "../websites/Websites";
 import Axios from "axios";
 import {HOST} from "../../../configs";
 import {AdAxiosGet, auth} from "../../../auth";
+import {ImageAd, TextAd} from "../ads/CreateAdd";
 
 export default class AddProposal extends Component {
     constructor(props) {
@@ -13,7 +14,8 @@ export default class AddProposal extends Component {
             mode: "EDIT", // EDIT or NEW
             proposalId: parseInt(Math.random() * 1000),
             website: {},
-            ads: []
+            ads: [],
+            selectedAd: null
         };
 
         this.updateMode();
@@ -39,6 +41,9 @@ export default class AddProposal extends Component {
         }
     }
 
+    /**
+     * Requests information of the website that is this proposal is for
+     */
     requestWebsiteInformation() {
         let id = this.getWebsiteId();
 
@@ -52,13 +57,25 @@ export default class AddProposal extends Component {
         });
     }
 
+    /**
+     * Requests all ads that belong to the user
+     */
     requestAdsInformation() {
         AdAxiosGet.get(`${HOST}/api/v1/ads/me`).then((response) => {
             this.setState({ads: response.data});
         });
     }
 
-    render({}, {website, proposalId, error, ads}) {
+    handleAdChange(e) {
+        if(e.target.value === "-1")
+            return;
+
+        AdAxiosGet.get(`${HOST}/api/v1/ads/${e.target.value}`).then((response) => {
+            this.setState({selectedAd: response.data});
+        });
+    }
+
+    render({}, {website, proposalId, error, ads, selectedAd}) {
         return (
             <div>
                 <div style="font-family: Raleway; font-size: 30px;">
@@ -78,15 +95,21 @@ export default class AddProposal extends Component {
                         <div>
                             <div class="form-group websites-add__form">
                                 <label>Anúncio</label>
-                                <select class="custom-select">
-                                    {ads && ads.map((ad)=> (
-                                        <option>{ad.name}</option>
+                                <select class="custom-select" onChange={this.handleAdChange.bind(this)}>
+                                    <option value="-1">Selecione um anuncio</option>
+                                    {ads && ads.map((ad) => (
+                                        <option value={ad.id}>{ad.name}</option>
                                     ))}
                                 </select>
                                 <div class="mb-4"/>
                                 <div style="justify-content: center; display: flex;">
+                                    {selectedAd && (
+                                        <div class="ads-ad-wrapper">
+                                            {selectedAd.type === 'TEXT' ? (<TextAd {...selectedAd}/>) : (
+                                                <ImageAd {...selectedAd}/>)}
+                                        </div>
+                                    )}
                                 </div>
-
                             </div>
 
                             <div class="form-group websites-add__form">

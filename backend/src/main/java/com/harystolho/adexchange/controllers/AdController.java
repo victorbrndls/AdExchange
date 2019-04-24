@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,7 +42,21 @@ public class AdController {
 		}
 
 	}
-	
+
+	@GetMapping("/api/v1/ads/{id}")
+	@CrossOrigin
+	public ResponseEntity<Object> getAdById(@PathVariable String id) {
+		Pair<ServiceResponse, Ad> response = adService.getAdById(id);
+
+		switch (response.getFist()) {
+		case FAIL:
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		default:
+			return ResponseEntity.status(HttpStatus.CREATED).body(response.getSecond());
+		}
+
+	}
+
 	@PostMapping("/api/v1/ads")
 	@CrossOrigin
 	public ResponseEntity<Object> createAd(@RequestParam("name") String name, @RequestParam("type") String type,

@@ -28,6 +28,10 @@ public class AdService {
 		return Pair.of(ServiceResponse.OK, adRepository.getAdsByAccountId());
 	}
 
+	public Pair<ServiceResponse, Ad> getAdById(String id) {
+		return Pair.of(ServiceResponse.OK, adRepository.getAdById(id));
+	}
+
 	public Pair<ServiceResponse, Ad> createAd(String name, String type, String refUrl, String text, String bgColor,
 			String textColor, String imageUrl) {
 		if (!type.equals("TEXT") && !type.equals("IMAGE")) {

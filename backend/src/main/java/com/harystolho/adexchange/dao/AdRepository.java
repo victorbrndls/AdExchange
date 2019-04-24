@@ -10,4 +10,6 @@ public interface AdRepository {
 
 	List<Ad> getAdsByAccountId();
 
+	Ad getAdById(String id);
+
 }

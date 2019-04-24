@@ -2,6 +2,7 @@ package com.harystolho.adexchange.dao.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -56,6 +57,16 @@ public class AdRepositoryMemoryImpl implements AdRepository {
 	@Override
 	public List<Ad> getAdsByAccountId() {
 		return ads;
+	}
+
+	@Override
+	public Ad getAdById(String id) {
+		Optional<Ad> optional = ads.stream().filter(ad -> ad.getId().equals(id)).findFirst();
+
+		if (optional.isPresent())
+			return optional.get();
+
+		return null;
 	}
 
 }
