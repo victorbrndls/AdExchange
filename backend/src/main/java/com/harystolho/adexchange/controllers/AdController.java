@@ -1,13 +1,17 @@
 package com.harystolho.adexchange.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.harystolho.adexchange.models.Website;
 import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.services.AdService;
 import com.harystolho.adexchange.services.ServiceResponse;
@@ -24,6 +28,20 @@ public class AdController {
 		this.adService = adService;
 	}
 
+	@GetMapping("/api/v1/ads/me")
+	@CrossOrigin
+	public ResponseEntity<Object> getUseAds() {
+		Pair<ServiceResponse, List<Ad>> response = adService.getUserAds();
+
+		switch (response.getFist()) {
+		case FAIL:
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		default:
+			return ResponseEntity.status(HttpStatus.CREATED).body(response.getSecond());
+		}
+
+	}
+	
 	@PostMapping("/api/v1/ads")
 	@CrossOrigin
 	public ResponseEntity<Object> createAd(@RequestParam("name") String name, @RequestParam("type") String type,

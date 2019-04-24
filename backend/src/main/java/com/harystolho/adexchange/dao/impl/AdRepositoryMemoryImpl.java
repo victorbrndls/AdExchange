@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.stereotype.Service;
+
 import com.harystolho.adexchange.dao.AdRepository;
 import com.harystolho.adexchange.models.ads.Ad;
 
+@Service
 public class AdRepositoryMemoryImpl implements AdRepository {
 
 	private List<Ad> ads;
@@ -22,6 +25,11 @@ public class AdRepositoryMemoryImpl implements AdRepository {
 		ads.add(ad);
 
 		return ad;
+	}
+
+	@Override
+	public List<Ad> getAdsByAccountId() {
+		return ads;
 	}
 
 }

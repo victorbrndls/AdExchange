@@ -1,5 +1,7 @@
 package com.harystolho.adexchange.services;
 
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,10 @@ public class AdService {
 		this.adRepository = adRepository;
 	}
 
+	public Pair<ServiceResponse, List<Ad>> getUserAds() {
+		return Pair.of(ServiceResponse.OK, adRepository.getAdsByAccountId());
+	}
+
 	public Pair<ServiceResponse, Ad> createAd(String name, String type, String refUrl, String text, String bgColor,
 			String textColor, String imageUrl) {
 		if (!type.equals("TEXT") && !type.equals("IMAGE")) {
@@ -31,21 +37,14 @@ public class AdService {
 
 		Ad ad = null;
 
-		switch (type) {
-		case "TEXT":
+		if (type.equals("TEXT")) {
 			ad = createTextAd(name, text, bgColor, textColor, refUrl);
-
-			if (ad == null)
-				return Pair.of(ServiceResponse.FAIL, null);
-
-			break;
-		case "IMAGE":
+		} else if (type.equals("IMAGE")) {
 			ad = createImageAd(name, imageUrl, refUrl);
-
-			if (ad == null)
-				return Pair.of(ServiceResponse.FAIL, null);
-			break;
 		}
+
+		if (ad == null)
+			return Pair.of(ServiceResponse.FAIL, null);
 
 		return Pair.of(ServiceResponse.OK, ad);
 	}

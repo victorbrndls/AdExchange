@@ -112,13 +112,13 @@ export default class CreateAdd extends Component {
         return true;
     }
 
-    submitAd(){
+    submitAd() {
         let formData = new FormData();
         formData.append('name', this.fields.adName().value);
         formData.append('type', this.state.adType);
         formData.append('refUrl', this.fields.adRefUrl().value);
 
-        switch (this.state.adType){
+        switch (this.state.adType) {
             case 'TEXT':
                 formData.append('text', this.fields.adText().value);
                 formData.append('bgColor', this.fields.adBgColor().value);
@@ -260,14 +260,16 @@ export default class CreateAdd extends Component {
     }
 }
 
-let TextAd = ({}) => (
-    <div class="ae-ad text">
-        Utilize texto para fazer o seu anuncio. Quando o texto for clicado, uma nova jenela abrira no navegador
-    </div>
+export let TextAd = ({refUrl, text, bgColor, textColor}) => (
+    <a native href={refUrl} target="_blank">
+        <div class="ae-ad text" style={`background-color: ${bgColor || "#000"}; color: ${textColor || "#fff"};`}>
+            {text || "Erro ao carregar anuncio"}
+        </div>
+    </a>
 );
 
-let ImageAd = ({}) => (
+export let ImageAd = ({imageUrl}) => (
     <div class="ae-ad">
-        <img src="https://intravert.co/static/images/img_7.jpg"/>
+        <img src={`${imageUrl || "https://i.imgur.com/EVOFpNF.png"}`}/>
     </div>
 );
