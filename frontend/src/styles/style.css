@@ -21,6 +21,7 @@ body.auth #header {
     padding: 7px 0px 0px 15px;
     background: linear-gradient(45deg, #2B47BF, #0F76CC);
     color: white;
+    margin-bottom: 90px;
 }
 
 .home-card {
