@@ -357,8 +357,24 @@ body.auth #header {
 }
 
 .proposal{
-    padding: 2px 5px;
+    padding: 7px 11px;
     background-color: white;
     margin-bottom: 15px;
     border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.proposal-type__header{
+    font-size: 25px;
+    font-family: Raleway, serif;
+    border-bottom: solid 2px #1768c8;
+}
+
+.proposal-type__container{
+    margin-bottom: 9px;
+}
+
+.proposal-type__button{
+    background-color: rgb(207, 113, 34);
 }

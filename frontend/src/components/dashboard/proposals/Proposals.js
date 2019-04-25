@@ -35,13 +35,22 @@ export default class Proposals extends Component {
                 <div class="dashboard__main-content-container">
                     <Match path="/dashboard/proposals" exact>
                         <div>
-                            {proposals.length === 0 && (
-                                <span>Nenhuma proposta no momento</span>
-                            )}
+                            <div>
+                                <div class="proposal-type__container">
+                                    <span class="proposal-type__header">Recebidas</span>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="proposal-type__container">
+                                    <span class="proposal-type__header">Enviadas</span>
+                                </div>
+                                <div>
+                                    {proposals.map((proposal) => (
+                                        <Proposal {...proposal}/>
+                                    ))}
+                                </div>
+                            </div>
 
-                            {proposals.map((proposal) => (
-                                <Proposal {...proposal}/>
-                            ))}
                         </div>
                     </Match>
 
@@ -54,13 +63,42 @@ export default class Proposals extends Component {
     }
 }
 
-let Proposal = ({id, websiteId, adId, duration, paymentMethod, paymentValue}) => (
-    <div class="proposal shadow">
-        <div>
-            <span>Proposta para {websiteId}</span>
-        </div>
-        <div>
+// TODO improve request performance, make less request to get the website name
+class Proposal extends Component {
+    constructor(props) {
+        super(props);
 
-        </div>
-    </div>
-);
+        this.state = {
+            websiteName: ""
+        };
+
+        this.requestWebsiteInformation();
+    }
+
+    requestWebsiteInformation() {
+        if (this.props.websiteId === null)
+            return;
+
+        AdAxiosGet.get(`${HOST}/api/v1/websites/${this.props.websiteId}`).then((response) => {
+            this.setState({websiteName: response.data.name});
+        });
+
+    }
+
+    render({id, websiteId, adId, duration, paymentMethod, paymentValue, creationDate}, {websiteName}) {
+        return (
+            <div class="proposal shadow">
+                <div>
+                    <span>Proposta para "{websiteName}"</span>
+                    <div class="text-muted" style="font-size: 13px; margin-top: 2px;">
+                        <span style="margin-right: 50px;">De: {websiteId}</span> // TODO display the creator name
+                        <span>Enviada: {new Date(creationDate).toLocaleDateString()}</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="dashboard-website__rounded-button proposal-type__button">Ver Proposta</div>
+                </div>
+            </div>
+        )
+    }
+}

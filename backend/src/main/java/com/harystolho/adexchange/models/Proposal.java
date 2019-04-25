@@ -1,9 +1,16 @@
 package com.harystolho.adexchange.models;
 
+import java.time.Instant;
+import java.util.Date;
+
 public class Proposal {
 
 	public enum PaymentMethod {
 		PAY_PER_CLICK, PAY_PER_VIEW
+	}
+
+	public Proposal() {
+		creationDate = Date.from(Instant.now());
 	}
 
 	private String id;
@@ -12,6 +19,7 @@ public class Proposal {
 	private int duration;
 	private PaymentMethod paymentMethod;
 	private String paymentValue;
+	private Date creationDate;
 
 	public String getId() {
 		return id;
@@ -59,5 +67,13 @@ public class Proposal {
 
 	public void setPaymentValue(String paymentValue) {
 		this.paymentValue = paymentValue;
+	}
+
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
 	}
 }

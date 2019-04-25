@@ -104,6 +104,7 @@ export default class AddProposal extends Component {
         AdAxiosPost.post(`${HOST}/api/v1/proposals`, formData).then((response) => {
             route('/dashboard/proposals');
         }).catch((error) => {
+            // TODO handle proposal errors
             console.log(error.response.data.error);
         });
     }
