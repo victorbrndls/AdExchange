@@ -3,16 +3,21 @@ package com.harystolho.adexchange.services;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.harystolho.adexchange.dao.ProposalRepository;
 import com.harystolho.adexchange.models.Proposal;
+import com.harystolho.adexchange.models.Proposal.PaymentMethod;
 import com.harystolho.adexchange.utils.Pair;
 
 @Service
 public class ProposalService {
 
+	private ProposalRepository proposalRepository;
+
 	private WebsiteService websiteService;
 	private AdService adService;
 
-	public ProposalService(WebsiteService websiteService, AdService adService) {
+	public ProposalService(ProposalRepository proposalRepository, WebsiteService websiteService, AdService adService) {
+		this.proposalRepository = proposalRepository;
 		this.websiteService = websiteService;
 		this.adService = adService;
 	}
@@ -24,9 +29,16 @@ public class ProposalService {
 		if (validation != null)
 			return Pair.of(validation, null);
 
-		
-		
-		return Pair.of(ServiceResponse.OK, null);
+		Proposal proposal = new Proposal();
+		proposal.setWebsiteId(websiteId);
+		proposal.setAdId(adId);
+		proposal.setDuration(Integer.parseInt(duration));
+		proposal.setPaymentMethod(PaymentMethod.valueOf(paymentMethod));
+		proposal.setPaymentValue(paymentValue);
+
+		Proposal saved = proposalRepository.save(proposal);
+
+		return Pair.of(ServiceResponse.OK, saved);
 	}
 
 	/**

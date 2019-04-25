@@ -6,6 +6,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import com.harystolho.adexchange.dao.ProposalRepository;
 import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.models.Website;
 import com.harystolho.adexchange.models.ads.Ad;
@@ -16,13 +17,18 @@ public class ProposalServiceTest {
 
 	private static ProposalService proposalService;
 
+	private static ProposalRepository proposalRepository;
+
 	private static WebsiteService websiteService;
 	private static AdService adService;
 
 	@BeforeClass
 	public static void init() {
+		proposalRepository = Mockito.mock(ProposalRepository.class);
 		websiteService = Mockito.mock(WebsiteService.class);
 		adService = Mockito.mock(AdService.class);
+
+		Mockito.when(proposalRepository.save(Mockito.any())).thenReturn(new Proposal());
 
 		Mockito.when(websiteService.getWebsiteById(Mockito.anyString()))
 				.thenReturn(Pair.of(ServiceResponse.OK, new Website("", "")));
@@ -30,7 +36,7 @@ public class ProposalServiceTest {
 		Mockito.when(adService.getAdById(Mockito.anyString()))
 				.thenReturn(Pair.of(ServiceResponse.OK, new Ad(AdType.TEXT)));
 
-		proposalService = new ProposalService(websiteService, adService);
+		proposalService = new ProposalService(proposalRepository, websiteService, adService);
 	}
 
 	@Test
