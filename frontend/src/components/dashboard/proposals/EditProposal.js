@@ -2,7 +2,7 @@ import {Component} from "preact";
 import {Website} from "../websites/Websites";
 import Axios from "axios";
 import {HOST} from "../../../configs";
-import {AdAxiosGet, auth} from "../../../auth";
+import {AdAxiosGet, AdAxiosPost, auth} from "../../../auth";
 import {ImageAd, TextAd} from "../ads/CreateAdd";
 
 export default class AddProposal extends Component {
@@ -12,7 +12,7 @@ export default class AddProposal extends Component {
         this.state = {
             error: null,
             mode: "EDIT", // EDIT or NEW
-            proposalId: parseInt(Math.random() * 1000),
+            proposalId: -1,
             website: {},
             ads: [],
             selectedAd: null
@@ -22,6 +22,7 @@ export default class AddProposal extends Component {
 
         this.updateMode();
 
+        this.setState({proposalId: this.getProposalId()});
         this.requestWebsiteInformation();
         this.requestAdsInformation();
     }
@@ -38,6 +39,16 @@ export default class AddProposal extends Component {
             case "NEW":
                 let query = new URLSearchParams(location.search);
                 return query.get('websiteId') || -1;
+            default:
+                return -1;
+        }
+    }
+
+    getProposalId(){
+        switch (this.state.mode) {
+            case "EDIT":
+                return location.pathname.split("edit/")[1] || -1;
+            case "NEW":
             default:
                 return -1;
         }
@@ -78,14 +89,21 @@ export default class AddProposal extends Component {
     }
 
     submitProposal() {
+        let formData = new FormData();
+        formData.append("websiteId", this.getWebsiteId());
 
+        AdAxiosPost.post(`${HOST}/api/v1/proposals`, formData).then((response) => {
+
+        }).catch((error)=>{
+            console.log(error);
+        });
     }
 
     render({}, {website, proposalId, error, ads, selectedAd}) {
         return (
             <div>
                 <div style="font-family: Raleway; font-size: 30px;">
-                    Proposta #{proposalId}
+                    Proposta para "{website.name}"
                 </div>
                 <div>
                     <div style="position: relative;">
@@ -96,7 +114,7 @@ export default class AddProposal extends Component {
                     <div>
                         <div class="form-group websites-add__form">
                             <label>Anúncio</label>
-                            <select class="custom-select mb-4" onChange={this.handleAdChange.bind(this)}>
+                            <select class="custom-select" onChange={this.handleAdChange.bind(this)}>
                                 <option value="-1">Selecione um anuncio</option>
                                 {ads && ads.map((ad) => (
                                     <option value={ad.id}>{ad.name}</option>
@@ -105,7 +123,7 @@ export default class AddProposal extends Component {
                             <div style="justify-content: center; display: flex; position: relative;">
                                 <div class="blocking-container"/>
                                 {selectedAd && (
-                                    <div class="ads-ad-wrapper">
+                                    <div class="ads-ad-wrapper mt-4">
                                         {selectedAd.type === 'TEXT' ? (<TextAd {...selectedAd}/>) : (
                                             <ImageAd {...selectedAd}/>)}
                                     </div>
