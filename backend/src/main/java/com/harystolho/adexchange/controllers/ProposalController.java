@@ -25,11 +25,18 @@ public class ProposalController {
 
 	@PostMapping("/api/v1/proposals")
 	@CrossOrigin
-	public ResponseEntity<Object> createProposal() {
+	public ResponseEntity<Object> createProposal(String websiteId, String adId, String duration, String paymentMethod,
+			String paymentValue) {
 
-		Pair<ServiceResponse, Proposal> response = proposalService.createProposal();
+		Pair<ServiceResponse, Proposal> response = proposalService.createProposal(websiteId, adId, duration,
+				paymentMethod, paymentValue);
 
 		switch (response.getFist()) {
+		case INVALID_WEBSITE_ID:
+		case INVALID_AD_ID:
+		case INVALID_DURATION:
+		case INVALID_PAYMENT_METHOD:
+		case INVALID_PAYMENT_VALUE:
 		case FAIL:
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 					.body(new JsonResponse().pair("error", response.getFist().toString()).build());

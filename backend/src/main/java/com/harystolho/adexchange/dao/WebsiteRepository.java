@@ -11,6 +11,10 @@ public interface WebsiteRepository {
 
 	public Pair<RepositoryResponse, Website> saveWebsite(Website website);
 
+	/**
+	 * @param id
+	 * @return the {@link Website} or <code>null</code>
+	 */
 	public Website getWebsiteById(String id);
 
 }

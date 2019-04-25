@@ -12,19 +12,26 @@ export default class AddProposal extends Component {
         this.state = {
             error: null,
             mode: "EDIT", // EDIT or NEW
-            proposalId: -1,
+            proposal: null,
             website: {},
             ads: [],
             selectedAd: null
+        };
+
+        this.fields = {
+            duration: () => document.getElementById("p_duration"),
+            paymentMethod: () => document.getElementById("p_paymentMethod"),
+            paymentValue: () => document.getElementById("p_paymentValue")
         };
 
         this.moneyPattern = "(\\d+\\.\\d{1,2})$";
 
         this.updateMode();
 
-        this.setState({proposalId: this.getProposalId()});
-        this.requestWebsiteInformation();
-        this.requestAdsInformation();
+        this.requestProposalInformation().then(() => {
+            this.requestWebsiteInformation();
+            this.requestAdsInformation();
+        });
     }
 
     updateMode() {
@@ -32,35 +39,29 @@ export default class AddProposal extends Component {
             this.setState({mode: "NEW"});
     }
 
-    getWebsiteId() {
-        switch (this.state.mode) {
-            case "EDIT":
-                return 0;
-            case "NEW":
-                let query = new URLSearchParams(location.search);
-                return query.get('websiteId') || -1;
-            default:
-                return -1;
-        }
-    }
+    async requestProposalInformation() {
+        let proposalId = this.state.mode === 'EDIT' ? location.pathname.split("edit/")[1] : -1;
 
-    getProposalId(){
-        switch (this.state.mode) {
-            case "EDIT":
-                return location.pathname.split("edit/")[1] || -1;
-            case "NEW":
-            default:
-                return -1;
+        if (proposalId === -1) {
+            this.setState({
+                proposal: {
+                    id: "-1",
+                    websiteId: new URLSearchParams(location.search).get('websiteId') || "-1"
+                }
+            });
+            return;
         }
+
+        let req = await AdAxiosGet.get(`${HOST}/api/v1/proposals/${proposalId}`);
     }
 
     /**
      * Requests information of the website that is this proposal is for
      */
     requestWebsiteInformation() {
-        let id = this.getWebsiteId();
+        let id = this.state.proposal.websiteId;
 
-        if (id === -1) {
+        if (id === "-1") {
             this.setState({error: "websiteId invalido"});
             return;
         }
@@ -80,26 +81,36 @@ export default class AddProposal extends Component {
     }
 
     handleAdChange(e) {
-        if (e.target.value === "-1")
+        let id = e.target.value;
+
+        if (id === "-1")
             return;
 
-        AdAxiosGet.get(`${HOST}/api/v1/ads/${e.target.value}`).then((response) => {
+        this.adId = id;
+        AdAxiosGet.get(`${HOST}/api/v1/ads/${id}`).then((response) => {
             this.setState({selectedAd: response.data});
         });
     }
 
     submitProposal() {
         let formData = new FormData();
-        formData.append("websiteId", this.getWebsiteId());
+        formData.append("websiteId", this.state.proposal.websiteId);
+        formData.append("adId", this.adId);
+        formData.append("duration", this.fields.duration().value);
+        formData.append("paymentMethod", this.fields.paymentMethod().value);
+        formData.append("paymentValue", this.fields.paymentValue().value);
 
         AdAxiosPost.post(`${HOST}/api/v1/proposals`, formData).then((response) => {
 
-        }).catch((error)=>{
-            console.log(error);
+        }).catch((error) => {
+            console.log(error.response.data.error);
         });
     }
 
-    render({}, {website, proposalId, error, ads, selectedAd}) {
+    render({}, {proposal, website, proposalId, error, ads, selectedAd}) {
+        if (proposal === null)
+            return;
+
         return (
             <div>
                 <div style="font-family: Raleway; font-size: 30px;">
@@ -134,21 +145,21 @@ export default class AddProposal extends Component {
                         <div class="form-group websites-add__form">
                             <label>Duracao (dias)</label>
                             <input id="p_duration" class="form-control" placeholder="15"/>
-                            <small class="form-text text-muted">Por quanto tempo o anuncio ficara ativo</small>
+                            <small class="form-text text-muted">Por quanto tempo o anuncio ficara ativo (de 0 a 365)</small>
                         </div>
 
                         <div class="form-group websites-add__form">
                             <label>Pagamento</label>
-                            <select class="custom-select">
-                                <option>Custo por Click</option>
-                                <option>Custo por Visualizacao</option>
+                            <select id="p_paymentMethod" class="custom-select">
+                                <option value="PAY_PER_CLICK">Custo por Click</option>
+                                <option value="PAY_PER_VIEW">Custo por Visualizacao</option>
                             </select>
                             <div class="mb-2"/>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">R$</span>
                                 </div>
-                                <input class="form-control" pattern={this.moneyPattern}
+                                <input id="p_paymentValue" class="form-control" pattern={this.moneyPattern}
                                        placeholder="Valores com no maximo 2 casas decimais (1.50, 4.54, 0.10, 18.01, 0.50)"/>
                             </div>
                         </div>
