@@ -86,12 +86,13 @@ class Proposal extends Component {
     }
 
     render({id, websiteId, adId, duration, paymentMethod, paymentValue, creationDate}, {websiteName}) {
+        // TODO display the creator name
         return (
             <div class="proposal shadow">
                 <div>
                     <span>Proposta para "{websiteName}"</span>
                     <div class="text-muted" style="font-size: 13px; margin-top: 2px;">
-                        <span style="margin-right: 50px;">De: {websiteId}</span> // TODO display the creator name
+                        <span style="margin-right: 50px;">De: {websiteId}</span>
                         <span>Enviada: {new Date(creationDate).toLocaleDateString()}</span>
                     </div>
                 </div>

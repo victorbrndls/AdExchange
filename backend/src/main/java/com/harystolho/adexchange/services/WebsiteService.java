@@ -78,4 +78,9 @@ public class WebsiteService {
 		return true;
 	}
 
+	public String getAccountIdUsingWebsiteId(String id) {
+		Website website = websiteRepository.getWebsiteById(id);
+		return website.getAccountId();
+	}
+
 }

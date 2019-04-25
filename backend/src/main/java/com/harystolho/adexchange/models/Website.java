@@ -2,14 +2,14 @@ package com.harystolho.adexchange.models;
 
 public class Website {
 
-	public Website(String ownerId, String url) {
-		this.owner = ownerId;
+	public Website(String accountId, String url) {
+		this.accountId = accountId;
 		this.url = url;
 	}
 
 	private String id;
+	private String accountId;
 
-	private String owner;
 	private String name;
 	private String url;
 	private String logoUrl;
@@ -56,14 +56,6 @@ public class Website {
 		this.description = description;
 	}
 
-	public String getOwner() {
-		return owner;
-	}
-
-	public void setOwner(String owner) {
-		this.owner = owner;
-	}
-
 	public String[] getCategories() {
 		return categories;
 	}
@@ -72,4 +64,11 @@ public class Website {
 		this.categories = categories;
 	}
 
+	public String getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(String accountId) {
+		this.accountId = accountId;
+	}
 }

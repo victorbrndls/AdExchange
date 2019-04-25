@@ -7,6 +7,7 @@ public class Ad {
 	}
 
 	private String id;
+	private String accountId;
 	private String name;
 	private String refUrl;
 	private AdType type;
@@ -45,6 +46,14 @@ public class Ad {
 
 	public void setRefUrl(String refUrl) {
 		this.refUrl = refUrl;
+	}
+
+	public String getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(String accountId) {
+		this.accountId = accountId;
 	}
 
 }

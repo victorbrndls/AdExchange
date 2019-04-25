@@ -75,4 +75,9 @@ public class AdService {
 		return adRepository.save(ad);
 	}
 
+	public String getAccountIdUsingAdId(String id) {
+		Ad ad = adRepository.getAdById(id);
+		return ad.getAccountId();
+	}
+
 }

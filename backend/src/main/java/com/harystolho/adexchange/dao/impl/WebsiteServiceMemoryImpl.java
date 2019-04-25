@@ -20,10 +20,11 @@ public class WebsiteServiceMemoryImpl implements WebsiteRepository {
 	public WebsiteServiceMemoryImpl() {
 		websites = new ArrayList<>();
 
-		Website w1 = new Website(null, "ad-exchange.com");
-		Website w2 = new Website(null, "youtube.com");
-		Website w3 = new Website(null, "reddit.com");
-		Website w4 = new Website(null, "https://g1.globo.com/economia/pme/pequenas-empresas-grandes-negocios/");
+		Website w1 = new Website("b3179c4bbe464e9ab7e7e76aa15fc4d2", "ad-exchange.com");
+		Website w2 = new Website("b3179c4bbe464e9ab7e7e76aa15fc4d2", "youtube.com");
+		Website w3 = new Website("b3179c4bbe464e9ab7e7e76aa15fc4d2", "reddit.com");
+		Website w4 = new Website("b3179c4bbe464e9ab7e7e76aa15fc4d2",
+				"https://g1.globo.com/economia/pme/pequenas-empresas-grandes-negocios/");
 
 		w1.setName("My Website Number 1");
 		w2.setName("Die kuhe");
@@ -43,15 +44,16 @@ public class WebsiteServiceMemoryImpl implements WebsiteRepository {
 		w1.setLogoUrl("https://startuptracker.io/cdn/startups/6f/6FoZv0i0kJ4pNWZ2oSe5whyxZmZot8Ly74HbmqxtCL8.png");
 		w2.setLogoUrl("http://lorempixel.com/200/200/");
 		w3.setLogoUrl("http://lorempixel.com/200/200/");
-		w4.setLogoUrl("https://s2.glbimg.com/t6vs30XINbZPvH32vIqayTXguYw=/570x620/smart/http://s2.glbimg.com/gzq1YiokquUEyyzw_ZlOX9TsbwE=/0x0:640x360/640x360/s.glbimg.com/jo/g1/f/original/2019/04/21/7552031_640x360.jpg");
+		w4.setLogoUrl(
+				"https://s2.glbimg.com/t6vs30XINbZPvH32vIqayTXguYw=/570x620/smart/http://s2.glbimg.com/gzq1YiokquUEyyzw_ZlOX9TsbwE=/0x0:640x360/640x360/s.glbimg.com/jo/g1/f/original/2019/04/21/7552031_640x360.jpg");
 
 		w1.setId("1dwakdwajwdajk150dfhdsjktwej");
 		w2.setId("2gw42158hg4wq578sdw1");
 		w3.setId("f1wf1gawwggwg311621456542161166wgwg");
 		w4.setId("27792eaa-abc3-46c0-88c7-82464673bf90");
 
-		w4.setCategories(new String[]{"ART", "GAME", "BUSINESS"});
-		
+		w4.setCategories(new String[] { "ART", "GAME", "BUSINESS" });
+
 		websites.add(w1);
 		websites.add(w2);
 		websites.add(w3);

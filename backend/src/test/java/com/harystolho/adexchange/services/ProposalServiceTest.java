@@ -19,12 +19,14 @@ public class ProposalServiceTest {
 
 	private static ProposalRepository proposalRepository;
 
+	private static ProposalsHolderService proposalsHolderService;
 	private static WebsiteService websiteService;
 	private static AdService adService;
 
 	@BeforeClass
 	public static void init() {
 		proposalRepository = Mockito.mock(ProposalRepository.class);
+		proposalsHolderService = Mockito.mock(ProposalsHolderService.class);
 		websiteService = Mockito.mock(WebsiteService.class);
 		adService = Mockito.mock(AdService.class);
 
@@ -36,7 +38,7 @@ public class ProposalServiceTest {
 		Mockito.when(adService.getAdById(Mockito.anyString()))
 				.thenReturn(Pair.of(ServiceResponse.OK, new Ad(AdType.TEXT)));
 
-		proposalService = new ProposalService(proposalRepository, websiteService, adService);
+		proposalService = new ProposalService(proposalRepository, proposalsHolderService, websiteService, adService);
 	}
 
 	@Test

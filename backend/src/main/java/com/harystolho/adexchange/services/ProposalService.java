@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.harystolho.adexchange.dao.ProposalRepository;
+import com.harystolho.adexchange.dao.impl.ProposalsHolderRepositoryImpl;
 import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.models.Proposal.PaymentMethod;
 import com.harystolho.adexchange.utils.Pair;
@@ -14,12 +15,15 @@ import com.harystolho.adexchange.utils.Pair;
 public class ProposalService {
 
 	private ProposalRepository proposalRepository;
+	private ProposalsHolderService proposalsHolderService;
 
 	private WebsiteService websiteService;
 	private AdService adService;
 
-	public ProposalService(ProposalRepository proposalRepository, WebsiteService websiteService, AdService adService) {
+	public ProposalService(ProposalRepository proposalRepository, ProposalsHolderService proposalsHolderService,
+			WebsiteService websiteService, AdService adService) {
 		this.proposalRepository = proposalRepository;
+		this.proposalsHolderService = proposalsHolderService;
 		this.websiteService = websiteService;
 		this.adService = adService;
 	}
@@ -43,6 +47,8 @@ public class ProposalService {
 		proposal.setPaymentValue(paymentValue);
 
 		Proposal saved = proposalRepository.save(proposal);
+
+		proposalsHolderService.addProposal(saved);
 
 		return Pair.of(ServiceResponse.OK, saved);
 	}

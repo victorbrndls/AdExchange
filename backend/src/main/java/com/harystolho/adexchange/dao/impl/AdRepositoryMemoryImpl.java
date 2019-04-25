@@ -21,6 +21,7 @@ public class AdRepositoryMemoryImpl implements AdRepository {
 		ads = new ArrayList<>();
 
 		TextAd ad1 = new TextAd();
+		ad1.setAccountId("b3179c4bbe464e9ab7e7e76aa15fc4d2");
 		ad1.setName("Anuncio do Youtube");
 		ad1.setText("Novo computador gamer que vai rodar todos os seus jogos em 200 fps");
 		ad1.setBgColor("rgb(219, 3, 3)");
@@ -29,6 +30,7 @@ public class AdRepositoryMemoryImpl implements AdRepository {
 		save(ad1);
 
 		TextAd ad2 = new TextAd();
+		ad2.setAccountId("b3179c4bbe464e9ab7e7e76aa15fc4d2");
 		ad2.setName("Campanha do livro \"Minha Casa Minha Vida\"");
 		ad2.setText("Conquiste a sua casa propia em 36 vezes sem juros");
 		ad2.setBgColor("rgb(0, 255, 56)");
@@ -38,6 +40,7 @@ public class AdRepositoryMemoryImpl implements AdRepository {
 		save(ad2);
 
 		ImageAd ad3 = new ImageAd();
+		ad3.setAccountId("b3179c4bbe464e9ab7e7e76aa15fc4d2");
 		ad3.setName("Viagem para Chile");
 		ad3.setImageUrl(
 				"https://images.unsplash.com/photo-1556104577-0acb77967586?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80");
