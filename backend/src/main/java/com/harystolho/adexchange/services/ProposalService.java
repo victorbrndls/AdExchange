@@ -1,6 +1,7 @@
 package com.harystolho.adexchange.services;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.utils.Pair;
@@ -23,6 +24,8 @@ public class ProposalService {
 		if (validation != null)
 			return Pair.of(validation, null);
 
+		
+		
 		return Pair.of(ServiceResponse.OK, null);
 	}
 
@@ -47,25 +50,30 @@ public class ProposalService {
 		try {
 			int iDuration = Integer.parseInt(duration);
 
-			if (iDuration < 0 || iDuration > 365)
+			if (iDuration <= 0 || iDuration > 365)
 				return ServiceResponse.INVALID_DURATION;
 		} catch (Exception e) {
 			return ServiceResponse.INVALID_DURATION;
 		}
 
 		// Payment Method
-		if (!(paymentMethod.equals("PAY_PER_CLICK") || paymentMethod.equals("PAY_PER_VIEW")))
+		if (paymentMethod != null && !(paymentMethod.equals("PAY_PER_CLICK") || paymentMethod.equals("PAY_PER_VIEW")))
 			return ServiceResponse.INVALID_PAYMENT_METHOD;
 
 		// Payment Value
 		try {
+			int occurences = StringUtils.countOccurrencesOf(paymentValue, ".");
+
+			if (occurences > 1)
+				return ServiceResponse.INVALID_PAYMENT_VALUE;
+
 			double value = Double.parseDouble(paymentValue);
 
-			if (value < 0.0)
+			if (value <= 0.0)
 				return ServiceResponse.INVALID_PAYMENT_VALUE;
 
 			if (paymentValue.contains("."))
-				if (paymentMethod.split(".")[1].length() > 2)
+				if (paymentValue.split("\\.")[1].length() > 2)
 					return ServiceResponse.INVALID_PAYMENT_VALUE;
 		} catch (Exception e) {
 			return ServiceResponse.INVALID_PAYMENT_VALUE;
@@ -79,11 +87,15 @@ public class ProposalService {
 	 * @return TRUE if the website matched by the id exists
 	 */
 	private boolean websiteExists(String websiteId) {
-		return websiteService.getWebsiteById(websiteId).getSecond() != null;
+		return websiteId != null && websiteService.getWebsiteById(websiteId).getSecond() != null;
 	}
 
+	/**
+	 * @param websiteId
+	 * @return TRUE if the ad matched by the id exists
+	 */
 	private boolean adExists(String adId) {
-		return adService.getAdById(adId).getSecond() != null;
+		return adId != null && adService.getAdById(adId).getSecond() != null;
 	}
 
 }
