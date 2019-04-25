@@ -355,3 +355,10 @@ body.auth #header {
     font-size: 17px;
     font-weight: bold;
 }
+
+.proposal{
+    padding: 2px 5px;
+    background-color: white;
+    margin-bottom: 15px;
+    border-radius: 4px;
+}

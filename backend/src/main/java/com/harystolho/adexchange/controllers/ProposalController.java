@@ -1,9 +1,12 @@
 package com.harystolho.adexchange.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,6 +24,23 @@ public class ProposalController {
 	@Autowired
 	public ProposalController(ProposalService proposalService) {
 		this.proposalService = proposalService;
+	}
+
+	@GetMapping("/api/v1/proposals/me")
+	@CrossOrigin
+	/**
+	 * @param websiteId
+	 * @param adId
+	 * @param duration
+	 * @param paymentMethod
+	 * @param paymentValue
+	 * @return the proposals that belong to the account that made the request
+	 */
+	public ResponseEntity<Object> getAccountProposals() {
+
+		Pair<ServiceResponse, List<Proposal>> response = proposalService.getAccountProposals();
+
+		return ResponseEntity.status(HttpStatus.OK).body(response.getSecond());
 	}
 
 	@PostMapping("/api/v1/proposals")

@@ -5,9 +5,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.stereotype.Service;
+
 import com.harystolho.adexchange.dao.ProposalRepository;
 import com.harystolho.adexchange.models.Proposal;
 
+@Service
 public class ProposalRepositoryMemoryImpl implements ProposalRepository {
 
 	private List<Proposal> proposals;
@@ -32,7 +35,7 @@ public class ProposalRepositoryMemoryImpl implements ProposalRepository {
 
 	@Override
 	public List<Proposal> getByAccountId(String accountId) {
-		return new ArrayList<>();
+		return proposals;
 	}
 
 }

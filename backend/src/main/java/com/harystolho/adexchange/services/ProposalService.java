@@ -1,5 +1,7 @@
 package com.harystolho.adexchange.services;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -20,6 +22,10 @@ public class ProposalService {
 		this.proposalRepository = proposalRepository;
 		this.websiteService = websiteService;
 		this.adService = adService;
+	}
+
+	public Pair<ServiceResponse, List<Proposal>> getAccountProposals() {
+		return Pair.of(ServiceResponse.OK, proposalRepository.getByAccountId(""));
 	}
 
 	public Pair<ServiceResponse, Proposal> createProposal(String websiteId, String adId, String duration,

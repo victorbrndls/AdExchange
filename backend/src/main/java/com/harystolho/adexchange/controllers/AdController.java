@@ -31,14 +31,14 @@ public class AdController {
 
 	@GetMapping("/api/v1/ads/me")
 	@CrossOrigin
-	public ResponseEntity<Object> getUseAds() {
+	public ResponseEntity<Object> getAccountAds() {
 		Pair<ServiceResponse, List<Ad>> response = adService.getUserAds();
 
 		switch (response.getFist()) {
 		case FAIL:
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		default:
-			return ResponseEntity.status(HttpStatus.CREATED).body(response.getSecond());
+			return ResponseEntity.status(HttpStatus.OK).body(response.getSecond());
 		}
 
 	}
@@ -52,7 +52,7 @@ public class AdController {
 		case FAIL:
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		default:
-			return ResponseEntity.status(HttpStatus.CREATED).body(response.getSecond());
+			return ResponseEntity.status(HttpStatus.OK).body(response.getSecond());
 		}
 
 	}

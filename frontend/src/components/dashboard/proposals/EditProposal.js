@@ -4,6 +4,7 @@ import Axios from "axios";
 import {HOST} from "../../../configs";
 import {AdAxiosGet, AdAxiosPost, auth} from "../../../auth";
 import {ImageAd, TextAd} from "../ads/CreateAdd";
+import {route} from "preact-router";
 
 export default class AddProposal extends Component {
     constructor(props) {
@@ -101,7 +102,7 @@ export default class AddProposal extends Component {
         formData.append("paymentValue", this.fields.paymentValue().value);
 
         AdAxiosPost.post(`${HOST}/api/v1/proposals`, formData).then((response) => {
-
+            route('/dashboard/proposals');
         }).catch((error) => {
             console.log(error.response.data.error);
         });
