@@ -3,6 +3,7 @@ import Axios from 'axios';
 import {HOST} from "../../../configs";
 import {CATEGORIES_PT} from "../../utils/WebsiteCategory";
 import {route} from "preact-router";
+import {AdAxiosPost} from "../../../auth";
 
 export default class AddWebsite extends Component {
     constructor(props) {
@@ -51,11 +52,7 @@ export default class AddWebsite extends Component {
         formData.append('description', this.fields.description().value);
         formData.append('categories', this.getCheckedCategories());
 
-        Axios.post(`${HOST}/api/v1/websites`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            }
-        }).then(() => {
+        AdAxiosPost.post(`${HOST}/api/v1/websites`, formData).then(() => {
             route('/dashboard/websites');
             this.props.reload();
         });

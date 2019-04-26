@@ -2,7 +2,7 @@ import {Component} from "preact";
 import {getCurrentPath} from "../../utils/Match"
 import Axios from 'axios';
 import {HOST} from "../../../configs";
-import {auth} from "../../../auth";
+import {AdAxiosGet, auth} from "../../../auth";
 import {CATEGORIES_PT} from "../../utils/WebsiteCategory";
 import {route} from "preact-router";
 
@@ -27,7 +27,7 @@ export default class ShowWebsite extends Component {
         if (id === null || id === undefined)
             return;
 
-        Axios.get(`${HOST}/api/v1/websites/${id}`, {
+        AdAxiosGet.get(`${HOST}/api/v1/websites/${id}`, {
             params: {
                 token: auth.getToken()
             }

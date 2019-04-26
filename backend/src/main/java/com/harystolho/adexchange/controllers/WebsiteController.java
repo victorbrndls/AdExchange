@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -58,11 +59,11 @@ public class WebsiteController {
 
 	@PostMapping("/api/v1/websites")
 	@CrossOrigin // TODO only allow crossorigin from 8081
-	public ResponseEntity<Object> createWebsite(@RequestParam("name") String name, @RequestParam("url") String url,
-			@RequestParam("logoURL") String logoURL, @RequestParam("description") String description,
-			@RequestParam("categories") String categories) {
+	public ResponseEntity<Object> createWebsite(@RequestAttribute("ae.accountId") String accountId, String name,
+			String url, String logoURL, String description, String categories) {
 
-		Pair<ServiceResponse, Website> response = websiteService.createWebsite(name, url, logoURL, description, categories);
+		Pair<ServiceResponse, Website> response = websiteService.createWebsite(name, url, logoURL, description,
+				categories);
 
 		switch (response.getFist()) {
 		case FAIL:
