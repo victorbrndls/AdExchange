@@ -18,15 +18,6 @@ public class ProposalsHolderRepoMemoryImpl implements ProposalsHolderRepository 
 
 	public ProposalsHolderRepoMemoryImpl() {
 		holders = new HashSet<>();
-		
-		ProposalsHolder p1 = new ProposalsHolder();
-		p1.setAccountId("b3179c4bbe464e9ab7e7e76aa15fc4d2");
-		p1.addSentProposal("1b1f7e4d-08a7-4007-816b-d89af5803dce");
-		p1.addSentProposal("79c4bbe468a7-4007-816b4");
-		p1.addNewProposal("1234567");
-		p1.addNewProposal("abc");
-		p1.addNewProposal("1b1f7e4d-08a7-4007-816b-d89af5803dce");
-		save(p1);
 	}
 
 	@Override

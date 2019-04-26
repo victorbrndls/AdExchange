@@ -87,7 +87,7 @@ export default class Proposals extends Component {
                                     {newProposals.map((proposal) => (
                                         <div>
                                             {this.state.proposals[proposal] !== undefined && (
-                                                <Proposal {...this.state.proposals[proposal]}/>
+                                                <Proposal {...this.state.proposals[proposal]} type="NEW"/>
                                             )}
                                         </div>
                                     ))}
@@ -101,7 +101,7 @@ export default class Proposals extends Component {
                                     {sentProposals.map((proposal) => (
                                         <div>
                                             {this.state.proposals[proposal] !== undefined && (
-                                                <Proposal {...this.state.proposals[proposal]}/>
+                                                <Proposal {...this.state.proposals[proposal]} type="SENT"/>
                                             )}
                                         </div>
                                     ))}
@@ -142,15 +142,15 @@ class Proposal extends Component {
         });
     }
 
-    render({id, websiteId, adId, duration, paymentMethod, paymentValue, creationDate}, {websiteName}) {
+    render({id, websiteId, adId, duration, paymentMethod, paymentValue, creationDate, type}, {websiteName}) {
         // TODO display the creator name
         return (
             <div class="proposal shadow">
                 <div>
                     <span>Proposta para "{websiteName}"</span>
                     <div class="text-muted" style="font-size: 13px; margin-top: 2px;">
-                        <span style="margin-right: 50px;">De: {websiteId}</span>
-                        <span>Enviada: {new Date(creationDate).toLocaleDateString()}</span>
+                        {type === 'NEW' ? (<span style="margin-right: 50px;">De: Alguem Para Min</span>) : ""}
+                        <span>Enviada em: {new Date(creationDate).toLocaleDateString()}</span>
                     </div>
                 </div>
                 <div>
