@@ -44,7 +44,7 @@ public class ProposalRepositoryMemoryImpl implements ProposalRepository {
 
 	@Override
 	public Optional<Proposal> getById(String id) {
-		return Optional.empty();
+		return proposals.stream().filter(prop -> prop.getId().equals(id)).findFirst();
 	}
 
 	@Override

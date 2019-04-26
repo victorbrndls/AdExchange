@@ -1,14 +1,16 @@
 package com.harystolho.adexchange.services;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.harystolho.adexchange.dao.ProposalRepository;
-import com.harystolho.adexchange.dao.impl.ProposalsHolderRepositoryImpl;
 import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.models.Proposal.PaymentMethod;
+import com.harystolho.adexchange.models.ProposalsHolder;
 import com.harystolho.adexchange.utils.Pair;
 
 @Service
@@ -28,8 +30,24 @@ public class ProposalService {
 		this.adService = adService;
 	}
 
-	public Pair<ServiceResponse, List<Proposal>> getAccountProposals() {
-		return Pair.of(ServiceResponse.OK, proposalRepository.getByAccountId(""));
+	public Pair<ServiceResponse, ProposalsHolder> getAccountProposals() {
+		return Pair.of(ServiceResponse.OK,
+				proposalsHolderService.getHolderByAccountId("b3179c4bbe464e9ab7e7e76aa15fc4d2"));
+	}
+
+	public Pair<ServiceResponse, List<Proposal>> getProposalsById(String proposalIds) {
+		String[] proposalsIds = proposalIds.split(",");
+
+		List<Proposal> proposals = new ArrayList<>();
+
+		for (String id : proposalsIds) {
+			Optional<Proposal> opt = proposalRepository.getById(id);
+
+			if (opt.isPresent())
+				proposals.add(opt.get());
+		}
+
+		return Pair.of(ServiceResponse.OK, proposals);
 	}
 
 	public Pair<ServiceResponse, Proposal> createProposal(String websiteId, String adId, String duration,

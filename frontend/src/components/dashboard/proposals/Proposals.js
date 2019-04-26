@@ -11,21 +11,65 @@ export default class Proposals extends Component {
         super(props);
 
         this.state = {
+            newProposals: [],
+            sentProposals: [],
             proposals: []
         };
 
-        this.requestProposals();
+        this.requestProposalsHolder();
     }
 
-    requestProposals() {
+    requestProposalsHolder() {
         AdAxiosGet.get(`${HOST}/api/v1/proposals/me`).then((response) => {
             this.setState(
-                {proposals: response.data}
+                {
+                    newProposals: response.data.newProposals,
+                    sentProposals: response.data.sentProposals
+                }
             );
+
+            this.requestProposals();
         });
     }
 
-    render({}, {proposals}) {
+    requestProposals() {
+        let proposals = new Set();
+
+        [this.state.newProposals, this.state.sentProposals].forEach(list =>
+            list.forEach(prop => proposals.add(prop))
+        );
+
+        let idx = 0;
+        let proposalsIdList = "";
+        let setSize = proposals.size;
+
+        proposals.forEach((prop) => {
+            if (prop !== undefined) {
+                proposalsIdList += prop;
+
+                if (idx !== setSize - 1)
+                    proposalsIdList += ",";
+            }
+
+            idx++;
+        });
+
+        AdAxiosGet.get(`${HOST}/api/v1/proposals/batch`, {
+            params: {
+                ids: proposalsIdList
+            }
+        }).then((response) => {
+            let proposals = {};
+
+            response.data.forEach((prop)=>{
+                proposals[prop.id] = prop;
+            });
+
+            this.setState({proposals: proposals});
+        });
+    }
+
+    render({}, {newProposals, sentProposals}) {
         return (
             <div>
                 <Match path={"/dashboard/proposals"} not>
@@ -39,14 +83,27 @@ export default class Proposals extends Component {
                                 <div class="proposal-type__container">
                                     <span class="proposal-type__header">Recebidas</span>
                                 </div>
+                                <div>
+                                    {newProposals.map((proposal) => (
+                                        <div>
+                                            {this.state.proposals[proposal] !== undefined && (
+                                                <Proposal {...this.state.proposals[proposal]}/>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                             <div>
                                 <div class="proposal-type__container">
                                     <span class="proposal-type__header">Enviadas</span>
                                 </div>
                                 <div>
-                                    {proposals.map((proposal) => (
-                                        <Proposal {...proposal}/>
+                                    {sentProposals.map((proposal) => (
+                                        <div>
+                                            {this.state.proposals[proposal] !== undefined && (
+                                                <Proposal {...this.state.proposals[proposal]}/>
+                                            )}
+                                        </div>
                                     ))}
                                 </div>
                             </div>
@@ -65,7 +122,7 @@ export default class Proposals extends Component {
 
 // TODO improve request performance, make less request to get the website name
 class Proposal extends Component {
-    constructor(props) {
+    constructor(props, state) {
         super(props);
 
         this.state = {
@@ -76,13 +133,13 @@ class Proposal extends Component {
     }
 
     requestWebsiteInformation() {
-        if (this.props.websiteId === null)
+        if (this.props.websiteId === undefined)
             return;
 
+        //TODO cache the website in the Proposals component
         AdAxiosGet.get(`${HOST}/api/v1/websites/${this.props.websiteId}`).then((response) => {
             this.setState({websiteName: response.data.name});
         });
-
     }
 
     render({id, websiteId, adId, duration, paymentMethod, paymentValue, creationDate}, {websiteName}) {

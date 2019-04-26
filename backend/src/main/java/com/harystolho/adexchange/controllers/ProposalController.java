@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.harystolho.adexchange.models.Proposal;
+import com.harystolho.adexchange.models.ProposalsHolder;
 import com.harystolho.adexchange.services.ProposalService;
 import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.utils.JsonResponse;
@@ -29,16 +30,23 @@ public class ProposalController {
 	@GetMapping("/api/v1/proposals/me")
 	@CrossOrigin
 	/**
-	 * @param websiteId
-	 * @param adId
-	 * @param duration
-	 * @param paymentMethod
-	 * @param paymentValue
 	 * @return the proposals that belong to the account that made the request
 	 */
 	public ResponseEntity<Object> getAccountProposals() {
 
-		Pair<ServiceResponse, List<Proposal>> response = proposalService.getAccountProposals();
+		Pair<ServiceResponse, ProposalsHolder> response = proposalService.getAccountProposals();
+
+		return ResponseEntity.status(HttpStatus.OK).body(response.getSecond());
+	}
+
+	@GetMapping("/api/v1/proposals/batch")
+	@CrossOrigin
+	/**
+	 * @param ids list of proposals ids separated by comma
+	 * @return
+	 */
+	public ResponseEntity<Object> getProposalsById(String ids) {
+		Pair<ServiceResponse, List<Proposal>> response = proposalService.getProposalsById(ids);
 
 		return ResponseEntity.status(HttpStatus.OK).body(response.getSecond());
 	}

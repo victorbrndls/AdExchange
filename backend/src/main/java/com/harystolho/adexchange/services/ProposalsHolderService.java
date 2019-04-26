@@ -5,22 +5,22 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.harystolho.adexchange.dao.impl.ProposalsHolderRepositoryImpl;
+import com.harystolho.adexchange.dao.ProposalsHolderRepository;
 import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.models.ProposalsHolder;
 
 @Service
 public class ProposalsHolderService {
 
-	private ProposalsHolderRepositoryImpl proposalsHolder;
+	private ProposalsHolderRepository proposalsHolderRepository;
 
 	private AdService adService;
 	private WebsiteService websiteService;
 
 	@Autowired
-	public ProposalsHolderService(ProposalsHolderRepositoryImpl proposalsHolder, AdService adService,
+	public ProposalsHolderService(ProposalsHolderRepository proposalsHolder, AdService adService,
 			WebsiteService websiteService) {
-		this.proposalsHolder = proposalsHolder;
+		this.proposalsHolderRepository = proposalsHolder;
 		this.adService = adService;
 		this.websiteService = websiteService;
 	}
@@ -29,14 +29,14 @@ public class ProposalsHolderService {
 		ProposalsHolder holder = getProposalHolderByAccountId(accountId);
 
 		holder.addNewProposal(proposalId);
-		proposalsHolder.save(holder);
+		proposalsHolderRepository.save(holder);
 	}
 
 	private void addSentProposalToAccount(String accountId, String proposalId) {
 		ProposalsHolder holder = getProposalHolderByAccountId(accountId);
 
 		holder.addSentProposal(proposalId);
-		proposalsHolder.save(holder);
+		proposalsHolderRepository.save(holder);
 	}
 
 	private void removeNewProposalFromAccount(String accountId, String proposalId) {
@@ -51,7 +51,7 @@ public class ProposalsHolderService {
 		ProposalsHolder holder = new ProposalsHolder();
 		holder.setAccountId(accountId);
 
-		proposalsHolder.save(holder);
+		proposalsHolderRepository.save(holder);
 
 		return holder;
 	}
@@ -68,7 +68,7 @@ public class ProposalsHolderService {
 	}
 
 	private ProposalsHolder getProposalHolderByAccountId(String accountId) {
-		return proposalsHolder.getByAccountId(accountId).orElse(createProposalsHolderForAccount(accountId));
+		return proposalsHolderRepository.getByAccountId(accountId).orElse(createProposalsHolderForAccount(accountId));
 	}
 
 	private String getSenderIdUsingAdId(String adId) {
@@ -77,6 +77,12 @@ public class ProposalsHolderService {
 
 	private String getRecieverIdUsingWebsiteId(String websiteId) {
 		return websiteService.getAccountIdUsingWebsiteId(websiteId);
+	}
+
+	public ProposalsHolder getHolderByAccountId(String accountId) {
+		Optional<ProposalsHolder> opt = proposalsHolderRepository.getByAccountId(accountId);
+
+		return opt.orElse(new ProposalsHolder());
 	}
 
 }
