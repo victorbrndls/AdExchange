@@ -24,16 +24,23 @@ public class AdService {
 		this.adRepository = adRepository;
 	}
 
-	public Pair<ServiceResponse, List<Ad>> getUserAds() {
-		return Pair.of(ServiceResponse.OK, adRepository.getAdsByAccountId());
+	public Pair<ServiceResponse, List<Ad>> getAdsByAccountId(String accountId) {
+		List<Ad> ads = adRepository.getAdsByAccountId(accountId);
+
+		for (Ad ad : ads) {
+			if(ad instanceof TextAd)
+				System.out.println("t");
+		}
+
+		return Pair.of(ServiceResponse.OK, adRepository.getAdsByAccountId(accountId));
 	}
 
 	public Pair<ServiceResponse, Ad> getAdById(String id) {
 		return Pair.of(ServiceResponse.OK, adRepository.getAdById(id));
 	}
 
-	public Pair<ServiceResponse, Ad> createAd(String name, String type, String refUrl, String text, String bgColor,
-			String textColor, String imageUrl) {
+	public Pair<ServiceResponse, Ad> createAd(String accountId, String name, String type, String refUrl, String text,
+			String bgColor, String textColor, String imageUrl) {
 		if (!type.equals("TEXT") && !type.equals("IMAGE")) {
 			logger.error("The ad type must be either 'TEXT' or 'IMAGE' (value: {})", type);
 			return Pair.of(ServiceResponse.FAIL, null);
@@ -50,6 +57,9 @@ public class AdService {
 		if (ad == null)
 			return Pair.of(ServiceResponse.FAIL, null);
 
+		ad.setAccountId(accountId);
+		adRepository.save(ad);
+
 		return Pair.of(ServiceResponse.OK, ad);
 	}
 
@@ -62,7 +72,7 @@ public class AdService {
 		ad.setTextColor(textColor);
 		ad.setRefUrl(refUrl);
 
-		return adRepository.save(ad);
+		return ad;
 	}
 
 	private Ad createImageAd(String name, String imageUrl, String refUrl) {
@@ -72,7 +82,7 @@ public class AdService {
 		ad.setImageUrl(imageUrl);
 		ad.setRefUrl(refUrl);
 
-		return adRepository.save(ad);
+		return ad;
 	}
 
 	public String getAccountIdUsingAdId(String id) {

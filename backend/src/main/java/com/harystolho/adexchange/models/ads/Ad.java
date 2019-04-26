@@ -1,5 +1,8 @@
 package com.harystolho.adexchange.models.ads;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document("ads")
 public class Ad {
 
 	public static enum AdType {

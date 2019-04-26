@@ -1,5 +1,8 @@
 package com.harystolho.adexchange.models;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document("websites")
 public class Website {
 
 	public Website(String accountId, String url) {

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,8 +32,8 @@ public class AdController {
 
 	@GetMapping("/api/v1/ads/me")
 	@CrossOrigin
-	public ResponseEntity<Object> getAccountAds() {
-		Pair<ServiceResponse, List<Ad>> response = adService.getUserAds();
+	public ResponseEntity<Object> getAccountAds(@RequestAttribute("ae.accountId") String accountId) {
+		Pair<ServiceResponse, List<Ad>> response = adService.getAdsByAccountId(accountId);
 
 		switch (response.getFist()) {
 		case FAIL:
@@ -59,14 +60,14 @@ public class AdController {
 
 	@PostMapping("/api/v1/ads")
 	@CrossOrigin
-	public ResponseEntity<Object> createAd(@RequestParam("name") String name, @RequestParam("type") String type,
-			@RequestParam("refUrl") String refUrl, //
+	public ResponseEntity<Object> createAd(@RequestAttribute("ae.accountId") String accountId, String name, String type,
+			String refUrl, //
 			@RequestParam(value = "text", required = false) String text,
 			@RequestParam(value = "bgColor", required = false) String bgColor,
 			@RequestParam(value = "textColor", required = false) String textColor,
 			@RequestParam(value = "imageUrl", required = false) String imageUrl) {
 
-		Pair<ServiceResponse, Ad> response = adService.createAd(name, type, refUrl, text, bgColor, textColor, imageUrl);
+		Pair<ServiceResponse, Ad> response = adService.createAd(accountId, name, type, refUrl, text, bgColor, textColor, imageUrl);
 
 		switch (response.getFist()) {
 		case FAIL:

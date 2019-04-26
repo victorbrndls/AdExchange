@@ -9,7 +9,7 @@ public interface AdRepository {
 
 	Ad save(Ad ad);
 
-	List<Ad> getAdsByAccountId();
+	List<Ad> getAdsByAccountId(String accountId);
 
 	/**
 	 * @param id
