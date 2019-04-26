@@ -3,7 +3,7 @@ import {route} from "preact-router";
 import Axios from 'axios';
 import {HOST} from "../../../configs";
 import AddWebsite from "./AddWebsite";
-import {auth} from "../../../auth";
+import {AdAxiosGet, auth} from "../../../auth";
 import Match from "../../utils/Match";
 import ShowWebsite from "./ShowWebsite";
 import {CATEGORIES_PT} from "../../utils/WebsiteCategory";
@@ -23,11 +23,7 @@ export default class Websites extends Component {
     }
 
     requestWebsites() {
-        Axios.get(`${HOST}/api/v1/websites`, {
-            params: {
-                token: auth.getToken()
-            }
-        }).then((response) => {
+        AdAxiosGet.get(`${HOST}/api/v1/websites`).then((response) => {
             this.setState({
                 websites: response.data
             })
