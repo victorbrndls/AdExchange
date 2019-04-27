@@ -17,5 +17,6 @@ function getCurrentPath() {
 export default {
     exact,
     include,
-    not
+    not,
+    getCurrentPath
 }

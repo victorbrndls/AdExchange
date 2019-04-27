@@ -30,9 +30,8 @@ public class ProposalService {
 		this.adService = adService;
 	}
 
-	public Pair<ServiceResponse, ProposalsHolder> getAccountProposals() {
-		return Pair.of(ServiceResponse.OK,
-				proposalsHolderService.getProposalHolderByAccountId("b3179c4bbe464e9ab7e7e76aa15fc4d2"));
+	public Pair<ServiceResponse, ProposalsHolder> getProposalsByAccountId(String accountId) {
+		return Pair.of(ServiceResponse.OK, proposalsHolderService.getProposalHolderByAccountId(accountId));
 	}
 
 	public Pair<ServiceResponse, List<Proposal>> getProposalsById(String proposalIds) {

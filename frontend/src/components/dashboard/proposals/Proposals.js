@@ -40,6 +40,9 @@ export default class Proposals extends Component {
             list.forEach(prop => proposals.add(prop))
         );
 
+        if(proposals.size === 0)
+            return;
+
         let idx = 0;
         let proposalsIdList = "";
         let setSize = proposals.size;

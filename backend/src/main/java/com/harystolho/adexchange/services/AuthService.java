@@ -41,19 +41,16 @@ public class AuthService {
 
 		Account account = new Account(email, PasswordSecurity.encryptPassword(password));
 
-		Pair<RepositoryResponse, Account> response = authRepository.saveAccount(account);
+		Account response = authRepository.save(account);
 
-		if (response.getFist() == RepositoryResponse.CREATED)
-			return Pair.of(ServiceResponse.OK, null);
-
-		return Pair.of(ServiceResponse.FAIL, null);
+		return Pair.of(ServiceResponse.OK, null);
 	}
 
 	public Pair<ServiceResponse, String> login(String email, String password) {
 		if (email.length() <= 0 || password.length() <= 0)
 			return Pair.of(ServiceResponse.FAIL, "");
 
-		Account possibleAccount = authRepository.getAccountByEmail(sanitizeEmail(email));
+		Account possibleAccount = authRepository.getByEmail(sanitizeEmail(email));
 
 		if (possibleAccount == null) {
 			logger.info(String.format("There is no account with the login email[%s]", email));
@@ -99,7 +96,7 @@ public class AuthService {
 	}
 
 	private boolean emailExists(String email) {
-		return authRepository.getAccountByEmail(email) != null;
+		return authRepository.getByEmail(email) != null;
 	}
 
 }

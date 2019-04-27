@@ -34,6 +34,7 @@ public class AdReaderConverter implements Converter<Document, Ad> {
 		}
 
 		ad.setId(source.getObjectId("_id").toString());
+		ad.setAccountId(source.getString("accountId"));
 		ad.setName(source.getString("name"));
 		ad.setRefUrl(source.getString("refUrl"));
 

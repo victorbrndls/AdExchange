@@ -51,9 +51,7 @@ public class ProposalsHolderService {
 		ProposalsHolder holder = new ProposalsHolder();
 		holder.setAccountId(accountId);
 
-		proposalsHolderRepository.save(holder);
-
-		return holder;
+		return proposalsHolderRepository.save(holder);
 	}
 
 	public void addProposal(Proposal proposal) {

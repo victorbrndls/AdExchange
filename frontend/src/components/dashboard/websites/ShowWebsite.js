@@ -1,10 +1,10 @@
 import {Component} from "preact";
-import {getCurrentPath} from "../../utils/Match"
 import Axios from 'axios';
 import {HOST} from "../../../configs";
 import {AdAxiosGet, auth} from "../../../auth";
 import {CATEGORIES_PT} from "../../utils/WebsiteCategory";
 import {route} from "preact-router";
+import UrlUtils from "../../utils/UrlUtils";
 
 export default class ShowWebsite extends Component {
     constructor(props) {
@@ -38,7 +38,7 @@ export default class ShowWebsite extends Component {
     }
 
     getIdFromUrl() {
-        return getCurrentPath().split("show/")[1];
+        return UrlUtils.getCurrentPath().split("show/")[1];
     }
 
     render({}, {website}) {

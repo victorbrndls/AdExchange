@@ -38,8 +38,8 @@ public class AuthServiceTest {
 
 	@Test
 	public void createAccountWithValidEmail() {
-		Mockito.when(authRepository.saveAccount(Mockito.any())).thenReturn(Pair.of(RepositoryResponse.CREATED, null));
-		Mockito.when(authRepository.getAccountByEmail(Mockito.anyString())).thenReturn(null);
+		Mockito.when(authRepository.save(Mockito.any())).thenReturn(null);
+		Mockito.when(authRepository.getByEmail(Mockito.anyString())).thenReturn(null);
 
 		Pair<ServiceResponse, Nothing> response = authService.createAccount("valid2123@email.com",
 				"some random password");
@@ -54,7 +54,7 @@ public class AuthServiceTest {
 
 	@Test
 	public void createAccountWithExistingEmail() {
-		Mockito.when(authRepository.getAccountByEmail("valid@email.com")).thenReturn(new Account("", ""));
+		Mockito.when(authRepository.getByEmail("valid@email.com")).thenReturn(new Account("", ""));
 
 		Pair<ServiceResponse, Nothing> response = authService.createAccount("valid@email.com", "123456");
 		assertEquals(ServiceResponse.EMAIL_ALREADY_EXISTS, response.getFist());
@@ -71,7 +71,7 @@ public class AuthServiceTest {
 
 	@Test
 	public void loginWithNonExistentEmail() {
-		Mockito.when(authRepository.getAccountByEmail(Mockito.anyString())).thenReturn(null);
+		Mockito.when(authRepository.getByEmail(Mockito.anyString())).thenReturn(null);
 
 		Pair<ServiceResponse, String> response = authService.login("this@doesnt.exist", "123456");
 		assertEquals(ServiceResponse.FAIL, response.getFist());
@@ -79,7 +79,7 @@ public class AuthServiceTest {
 
 	@Test
 	public void loginWithWrongPassword() {
-		Mockito.when(authRepository.getAccountByEmail(Mockito.anyString()))
+		Mockito.when(authRepository.getByEmail(Mockito.anyString()))
 				.thenReturn(new Account("email@valid.com", PasswordSecurity.encryptPassword("123456")));
 
 		Pair<ServiceResponse, String> response = authService.login("email@valid.com", "abc123");
@@ -88,7 +88,7 @@ public class AuthServiceTest {
 
 	@Test
 	public void loginWithCorrectPassword() {
-		Mockito.when(authRepository.getAccountByEmail(Mockito.anyString()))
+		Mockito.when(authRepository.getByEmail(Mockito.anyString()))
 				.thenReturn(new Account("email@valid.com", PasswordSecurity.encryptPassword("123456")));
 
 		Pair<ServiceResponse, String> response = authService.login("email@valid.com",

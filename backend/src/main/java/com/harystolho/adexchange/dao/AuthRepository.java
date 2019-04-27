@@ -6,8 +6,8 @@ import com.harystolho.adexchange.utils.Pair;
 
 public interface AuthRepository {
 
-	public Pair<RepositoryResponse, Account> saveAccount(Account account);
+	public Account save(Account account);
 	
-	public Account getAccountByEmail(String email);
+	public Account getByEmail(String email);
 	
 }
