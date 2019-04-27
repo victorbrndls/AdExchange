@@ -130,22 +130,23 @@ public class ProposalService {
 	}
 
 	public Pair<ServiceResponse, Nothing> deleteProposalById(String accountId, String id) {
-		if (proposalBelongsToUser(accountId, id)) {
-			proposalRepository.deleteById(id);
-			return Pair.of(ServiceResponse.OK, null);
-		}
+		Proposal proposal = proposalRepository.getById(id);
 
-		return Pair.of(ServiceResponse.FAIL, null);
+		if (!proposalBelongsToUser(accountId, proposal))
+			return Pair.of(ServiceResponse.FAIL, null);
+		
+		proposalRepository.deleteById(id);
+		proposalsHolderService.removeProposal(proposal);
+		
+		return Pair.of(ServiceResponse.OK, null);
 	}
 
 	/**
 	 * @param accountId
-	 * @param id proposal id
+	 * @param id        proposal id
 	 * @return TRUE if the {accountId} is the user who created the proposal
 	 */
-	private boolean proposalBelongsToUser(String accountId, String id) {
-		Proposal proposal = proposalRepository.getById(id);
-
+	private boolean proposalBelongsToUser(String accountId, Proposal proposal) {
 		if (proposal != null) {
 			Pair<ServiceResponse, Ad> ad = adService.getAdById(proposal.getAdId());
 

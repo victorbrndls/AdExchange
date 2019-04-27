@@ -144,7 +144,8 @@ export default class AddProposal extends Component {
 
     deleteProposal() {
         AdAxiosPost.delete(`${HOST}/api/v1/proposals/${this.state.proposal.id}`).then((response) => {
-
+            route('/dashboard/proposals');
+            this.props.reload();
         }).catch((error) => {
             console.log(error.response);
         });
@@ -201,7 +202,7 @@ export default class AddProposal extends Component {
 
                         <div class="form-group websites-add__form">
                             <label>Pagamento</label>
-                            <select id="p_paymentMethod" class="custom-select" value={proposal.paymentMethod || ""}
+                            <select id="p_paymentMethod" class="custom-select" value={proposal.paymentMethod || "PAY_PER_CLICK"}
                                     disabled={sent_t}>
                                 <option value="PAY_PER_CLICK">Custo por Click</option>
                                 <option value="PAY_PER_VIEW">Custo por Visualizacao</option>

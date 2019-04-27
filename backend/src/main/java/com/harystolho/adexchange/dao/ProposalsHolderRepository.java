@@ -8,4 +8,7 @@ public interface ProposalsHolderRepository {
 
 	ProposalsHolder getByAccountId(String accountId);
 
+	void removeProposalFromSent(String accountId, String proposalId);
+
+	void removeProposalFromNew(String accountId, String proposalId);
 }

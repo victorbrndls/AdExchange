@@ -44,11 +44,11 @@ public class ProposalsHolderService {
 	}
 
 	private void removeNewProposalFromAccount(String accountId, String proposalId) {
-
+		proposalsHolderRepository.removeProposalFromNew(accountId, proposalId);
 	}
 
 	private void removeSentProposalFromAccount(String accountId, String proposalId) {
-
+		proposalsHolderRepository.removeProposalFromSent(accountId, proposalId);
 	}
 
 	private ProposalsHolder createProposalsHolderForAccount(String accountId) {
@@ -72,6 +72,26 @@ public class ProposalsHolderService {
 
 		addSentProposalToAccount(senderId, proposal.getId());
 		addNewProposalToAccount(recieverId, proposal.getId());
+	}
+
+	/**
+	 * Deletes the proposal from the sender and reciever's proposals holder. This
+	 * method deletes the proposal from the sender's perspective, if you wish to
+	 * delete the proposal from the reciver's perspective call
+	 * {@link #rejectProposal(Proposal)}
+	 * 
+	 * @param proposal
+	 */
+	public void removeProposal(Proposal proposal) {
+		String senderId = getSenderIdUsingAdId(proposal.getAdId());
+		String recieverId = getRecieverIdUsingWebsiteId(proposal.getWebsiteId());
+
+		removeSentProposalFromAccount(senderId, proposal.getId());
+		removeNewProposalFromAccount(recieverId, proposal.getId());
+	}
+
+	public void rejectProposal(Proposal proposal) {
+
 	}
 
 	public ProposalsHolder getProposalHolderByAccountId(String accountId) {
