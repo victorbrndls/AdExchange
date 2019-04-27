@@ -19,8 +19,8 @@ public class TokenService {
 		tokenToAccountId = new ConcurrentHashMap<>();
 
 		tokenToAccountId.put(new Token(
-				"4ea6334f600f4dd3bef1c39e036b931b85dfbcea57fa4b47b9561f53c2eac979ec044707015a4143be0b3f793558c99462a8b162e06f4e8586be2b203de5643e",
-				tokenDuration), "b3179c4bbe464e9ab7e7e76aa15fc4d2");
+				"eca70362be2f4b3eb7013210fd71e940cdc3a0a86bf743de88a344a70848a48bc5a58e9d65f443a7b1e9ccd62ef33b204aca4756fdf84e8cba3629a02f49d90f",
+				tokenDuration), "5cc47954f669ff0e3cacbdd0");
 	}
 
 	public String generateTokenForAccount(String accountId) {

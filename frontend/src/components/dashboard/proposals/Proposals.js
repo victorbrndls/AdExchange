@@ -116,7 +116,7 @@ export default class Proposals extends Component {
                     </Match>
 
                     <Match path="/dashboard/proposals/edit" include>
-                        <AddProposal/>
+                        <AddProposal reload={this.requestProposalsHolder.bind(this)}/>
                     </Match>
                 </div>
             </div>
