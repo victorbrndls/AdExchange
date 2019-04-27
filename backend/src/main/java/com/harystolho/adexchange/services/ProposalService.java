@@ -32,7 +32,7 @@ public class ProposalService {
 
 	public Pair<ServiceResponse, ProposalsHolder> getAccountProposals() {
 		return Pair.of(ServiceResponse.OK,
-				proposalsHolderService.getHolderByAccountId("b3179c4bbe464e9ab7e7e76aa15fc4d2"));
+				proposalsHolderService.getProposalHolderByAccountId("b3179c4bbe464e9ab7e7e76aa15fc4d2"));
 	}
 
 	public Pair<ServiceResponse, List<Proposal>> getProposalsById(String proposalIds) {
@@ -41,10 +41,10 @@ public class ProposalService {
 		List<Proposal> proposals = new ArrayList<>();
 
 		for (String id : proposalsIds) {
-			Optional<Proposal> opt = proposalRepository.getById(id);
+			Proposal prop = proposalRepository.getById(id);
 
-			if (opt.isPresent())
-				proposals.add(opt.get());
+			if (prop != null)
+				proposals.add(prop);
 		}
 
 		return Pair.of(ServiceResponse.OK, proposals);

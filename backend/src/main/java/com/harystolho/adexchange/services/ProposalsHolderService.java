@@ -67,8 +67,9 @@ public class ProposalsHolderService {
 		addNewProposalToAccount(recieverId, proposal.getId());
 	}
 
-	private ProposalsHolder getProposalHolderByAccountId(String accountId) {
-		return proposalsHolderRepository.getByAccountId(accountId).orElse(createProposalsHolderForAccount(accountId));
+	public ProposalsHolder getProposalHolderByAccountId(String accountId) {
+		ProposalsHolder ph = proposalsHolderRepository.getByAccountId(accountId);
+		return ph != null ? ph : createProposalsHolderForAccount(accountId);
 	}
 
 	private String getSenderIdUsingAdId(String adId) {
@@ -77,12 +78,6 @@ public class ProposalsHolderService {
 
 	private String getRecieverIdUsingWebsiteId(String websiteId) {
 		return websiteService.getAccountIdUsingWebsiteId(websiteId);
-	}
-
-	public ProposalsHolder getHolderByAccountId(String accountId) {
-		Optional<ProposalsHolder> opt = proposalsHolderRepository.getByAccountId(accountId);
-
-		return opt.orElse(new ProposalsHolder());
 	}
 
 }

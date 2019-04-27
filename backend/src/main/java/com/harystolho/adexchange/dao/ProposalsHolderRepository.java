@@ -1,7 +1,5 @@
 package com.harystolho.adexchange.dao;
 
-import java.util.Optional;
-
 import com.harystolho.adexchange.models.ProposalsHolder;
 
 public interface ProposalsHolderRepository {
@@ -14,6 +12,6 @@ public interface ProposalsHolderRepository {
 	 */
 	ProposalsHolder save(ProposalsHolder proposalsHolder);
 
-	Optional<ProposalsHolder> getByAccountId(String accountId);
+	ProposalsHolder getByAccountId(String accountId);
 
 }

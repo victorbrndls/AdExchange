@@ -1,5 +1,8 @@
 package com.harystolho.adexchange.models;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document("accounts")
 public class Account {
 
 	private String id;

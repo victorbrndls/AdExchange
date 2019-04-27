@@ -3,6 +3,9 @@ package com.harystolho.adexchange.models;
 import java.time.Instant;
 import java.util.Date;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document("proposals")
 public class Proposal {
 
 	public enum PaymentMethod {

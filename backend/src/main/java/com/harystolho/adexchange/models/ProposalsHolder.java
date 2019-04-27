@@ -3,6 +3,8 @@ package com.harystolho.adexchange.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 /**
  * Stores which proposals were sent by the user and which proposals the user can
  * review
@@ -10,6 +12,7 @@ import java.util.List;
  * @author Harystolho
  *
  */
+@Document("proposalsHolders")
 public class ProposalsHolder {
 
 	private String id;

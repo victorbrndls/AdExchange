@@ -1,4 +1,5 @@
 import {Component} from "preact";
+import * as UrlUtils from "./UrlUtils";
 
 export default class Match extends Component {
     constructor(props) {
@@ -22,15 +23,15 @@ export default class Match extends Component {
     render({children, path = ""}, {mode}) {
         switch (mode) {
             case "EXACT":
-                if (getCurrentPath() === path)
+                if (UrlUtils.exact(path))
                     return children[0];
                 return null;
             case "INCLUDE":
-                if (getCurrentPath().includes(path))
+                if (UrlUtils.include(path))
                     return children[0];
                 return null;
             case "NOT":
-                if (getCurrentPath() !== path)
+                if (UrlUtils.not(path))
                     return children[0];
                 return null;
             default:
@@ -38,8 +39,4 @@ export default class Match extends Component {
         }
     }
 
-}
-
-export function getCurrentPath() {
-    return location.pathname;
 }

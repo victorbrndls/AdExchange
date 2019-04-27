@@ -5,6 +5,7 @@ import {route} from "preact-router";
 import AddProposal from "./EditProposal";
 import {AdAxiosGet} from "../../../auth";
 import {HOST} from "../../../configs";
+import UrlUtls from "../../utils/UrlUtils";
 
 export default class Proposals extends Component {
     constructor(props) {
@@ -16,7 +17,7 @@ export default class Proposals extends Component {
             proposals: []
         };
 
-        this.requestProposalsHolder();
+        UrlUtls.exact('/dashboard/proposals') && this.requestProposalsHolder();
     }
 
     requestProposalsHolder() {
@@ -61,7 +62,7 @@ export default class Proposals extends Component {
         }).then((response) => {
             let proposals = {};
 
-            response.data.forEach((prop)=>{
+            response.data.forEach((prop) => {
                 proposals[prop.id] = prop;
             });
 
