@@ -2,6 +2,8 @@ package com.harystolho.adexchange.services;
 
 import java.util.Optional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,8 @@ import com.harystolho.adexchange.models.ProposalsHolder;
 
 @Service
 public class ProposalsHolderService {
+
+	private static final Logger logger = LogManager.getLogger();
 
 	private ProposalsHolderRepository proposalsHolderRepository;
 
@@ -61,8 +65,10 @@ public class ProposalsHolderService {
 		// The proposal contains the website id, and it contains the creator's id
 		String recieverId = getRecieverIdUsingWebsiteId(proposal.getWebsiteId());
 
-		if (senderId.equals(recieverId)) // you can't sent a proposal to your own website
+		if (senderId.equals(recieverId)) {
+			logger.info("User tried to create a proposal for his/her website. accountId:{}", senderId);
 			return;
+		}
 
 		addSentProposalToAccount(senderId, proposal.getId());
 		addNewProposalToAccount(recieverId, proposal.getId());
