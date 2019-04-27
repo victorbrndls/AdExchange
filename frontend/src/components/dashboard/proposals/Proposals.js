@@ -40,7 +40,7 @@ export default class Proposals extends Component {
             list.forEach(prop => proposals.add(prop))
         );
 
-        if(proposals.size === 0)
+        if (proposals.size === 0)
             return;
 
         let idx = 0;
@@ -158,7 +158,9 @@ class Proposal extends Component {
                     </div>
                 </div>
                 <div>
-                    <div class="dashboard-website__rounded-button proposal-type__button">Ver Proposta</div>
+                    <div class="dashboard-website__rounded-button proposal-type__button"
+                         onClick={() => route(`/dashboard/proposals/edit/${id}`)}>Ver Proposta
+                    </div>
                 </div>
             </div>
         )

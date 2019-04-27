@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,6 +37,16 @@ public class ProposalController {
 	public ResponseEntity<Object> getProposals(@RequestAttribute("ae.accountId") String accountId) {
 
 		Pair<ServiceResponse, ProposalsHolder> response = proposalService.getProposalsByAccountId(accountId);
+
+		return ResponseEntity.status(HttpStatus.OK).body(response.getSecond());
+	}
+
+	@GetMapping("/api/v1/proposals/{id}")
+	@CrossOrigin
+	public ResponseEntity<Object> getProposalById(@RequestAttribute("ae.accountId") String accountId,
+			@PathVariable String id) {
+
+		Pair<ServiceResponse, Proposal> response = proposalService.getProposalById(accountId, id);
 
 		return ResponseEntity.status(HttpStatus.OK).body(response.getSecond());
 	}

@@ -5,6 +5,7 @@ import {HOST} from "../../../configs";
 import {AdAxiosGet, AdAxiosPost, auth} from "../../../auth";
 import {ImageAd, TextAd} from "../ads/CreateAdd";
 import {route} from "preact-router";
+import UrlUtils from "../../utils/UrlUtils";
 
 export default class AddProposal extends Component {
     constructor(props) {
@@ -25,7 +26,7 @@ export default class AddProposal extends Component {
             paymentValue: () => document.getElementById("p_paymentValue")
         };
 
-        this.moneyPattern = "(\\d+\\.\\d{1,2})$";
+        this.moneyPattern = "^(\\d+(\\.\\d{1,2}){0,1})$";
 
         this.updateMode();
 
@@ -36,7 +37,7 @@ export default class AddProposal extends Component {
     }
 
     updateMode() {
-        if (location.pathname.includes("/edit/new"))
+        if (UrlUtils.include("/edit/new"))
             this.setState({mode: "NEW"});
     }
 
@@ -53,7 +54,8 @@ export default class AddProposal extends Component {
             return;
         }
 
-        let req = await AdAxiosGet.get(`${HOST}/api/v1/proposals/${proposalId}`);
+        let res = await AdAxiosGet.get(`${HOST}/api/v1/proposals/${proposalId}`);
+        this.setState({proposal: res.data});
     }
 
     /**
@@ -76,9 +78,15 @@ export default class AddProposal extends Component {
      * Requests all ads that belong to the user
      */
     requestAdsInformation() {
-        AdAxiosGet.get(`${HOST}/api/v1/ads/me`).then((response) => {
-            this.setState({ads: response.data});
-        });
+        if (this.state.proposal.adId !== undefined) {
+            AdAxiosGet.get(`${HOST}/api/v1/ads/${this.state.proposal.adId}`).then((response) => {
+                this.setState({selectedAd: response.data});
+            });
+        } else {
+            AdAxiosGet.get(`${HOST}/api/v1/ads/me`).then((response) => {
+                this.setState({ads: response.data});
+            });
+        }
     }
 
     handleAdChange(e) {
@@ -128,7 +136,8 @@ export default class AddProposal extends Component {
                     <div>
                         <div class="form-group websites-add__form">
                             <label>Anúncio</label>
-                            <select class="custom-select" onChange={this.handleAdChange.bind(this)}>
+                            <select class="custom-select" onChange={this.handleAdChange.bind(this)}
+                                    disabled={this.state.mode === 'EDIT'}>
                                 <option value="-1">Selecione um anuncio</option>
                                 {ads && ads.map((ad) => (
                                     <option value={ad.id}>{ad.name}</option>
@@ -147,13 +156,15 @@ export default class AddProposal extends Component {
 
                         <div class="form-group websites-add__form">
                             <label>Duracao (dias)</label>
-                            <input id="p_duration" class="form-control" placeholder="15"/>
-                            <small class="form-text text-muted">Por quanto tempo o anuncio ficara ativo (de 0 a 365)</small>
+                            <input id="p_duration" class="form-control" placeholder="15"
+                                   value={proposal.duration || ""}/>
+                            <small class="form-text text-muted">Por quanto tempo o anuncio ficara ativo (de 0 a 365)
+                            </small>
                         </div>
 
                         <div class="form-group websites-add__form">
                             <label>Pagamento</label>
-                            <select id="p_paymentMethod" class="custom-select">
+                            <select id="p_paymentMethod" class="custom-select" value={proposal.paymentMethod || ""}>
                                 <option value="PAY_PER_CLICK">Custo por Click</option>
                                 <option value="PAY_PER_VIEW">Custo por Visualizacao</option>
                             </select>
@@ -163,7 +174,8 @@ export default class AddProposal extends Component {
                                     <span class="input-group-text">R$</span>
                                 </div>
                                 <input id="p_paymentValue" class="form-control" pattern={this.moneyPattern}
-                                       placeholder="Valores com no maximo 2 casas decimais (1.50, 4.54, 0.10, 18.01, 0.50)"/>
+                                       placeholder="Valores com no maximo 2 casas decimais (1.50, 4.54, 0.10, 18.01, 0.50)"
+                                       value={proposal.paymentValue || ""}/>
                             </div>
                         </div>
                     </div>

@@ -34,6 +34,10 @@ public class ProposalService {
 		return Pair.of(ServiceResponse.OK, proposalsHolderService.getProposalHolderByAccountId(accountId));
 	}
 
+	public Pair<ServiceResponse, Proposal> getProposalById(String accountId, String id) {
+		return Pair.of(ServiceResponse.OK, proposalRepository.getById(id));
+	}
+
 	public Pair<ServiceResponse, List<Proposal>> getProposalsById(String proposalIds) {
 		String[] proposalsIds = proposalIds.split(",");
 
