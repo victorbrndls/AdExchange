@@ -61,6 +61,9 @@ public class ProposalsHolderService {
 		// The proposal contains the website id, and it contains the creator's id
 		String recieverId = getRecieverIdUsingWebsiteId(proposal.getWebsiteId());
 
+		if (senderId.equals(recieverId)) // you can't sent a proposal to your own website
+			return;
+
 		addSentProposalToAccount(senderId, proposal.getId());
 		addNewProposalToAccount(recieverId, proposal.getId());
 	}
