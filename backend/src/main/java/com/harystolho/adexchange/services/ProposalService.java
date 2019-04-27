@@ -3,14 +3,16 @@ package com.harystolho.adexchange.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import com.harystolho.adexchange.dao.ProposalRepository;
 import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.models.Proposal.PaymentMethod;
 import com.harystolho.adexchange.models.ProposalsHolder;
+import com.harystolho.adexchange.models.ads.Ad;
+import com.harystolho.adexchange.utils.Nothing;
 import com.harystolho.adexchange.utils.Pair;
 
 @Service
@@ -125,6 +127,35 @@ public class ProposalService {
 		}
 
 		return null;
+	}
+
+	public Pair<ServiceResponse, Nothing> deleteProposalById(String accountId, String id) {
+		if (proposalBelongsToUser(accountId, id)) {
+			proposalRepository.deleteById(id);
+			return Pair.of(ServiceResponse.OK, null);
+		}
+
+		return Pair.of(ServiceResponse.FAIL, null);
+	}
+
+	/**
+	 * @param accountId
+	 * @param id proposal id
+	 * @return TRUE if the {accountId} is the user who created the proposal
+	 */
+	private boolean proposalBelongsToUser(String accountId, String id) {
+		Proposal proposal = proposalRepository.getById(id);
+
+		if (proposal != null) {
+			Pair<ServiceResponse, Ad> ad = adService.getAdById(proposal.getAdId());
+
+			if (ad.getSecond() != null) {
+				if (ad.getSecond().getAccountId().equals(accountId))
+					return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**

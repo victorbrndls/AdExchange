@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,7 @@ import com.harystolho.adexchange.models.ProposalsHolder;
 import com.harystolho.adexchange.services.ProposalService;
 import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.utils.JsonResponse;
+import com.harystolho.adexchange.utils.Nothing;
 import com.harystolho.adexchange.utils.Pair;
 
 @RestController
@@ -82,6 +84,22 @@ public class ProposalController {
 					.body(new JsonResponse().pair("error", response.getFist().toString()).build());
 		default:
 			return ResponseEntity.status(HttpStatus.CREATED).body(response.getSecond());
+		}
+	}
+
+	@DeleteMapping("/api/v1/proposals/{id}")
+	@CrossOrigin
+	public ResponseEntity<Object> deleteProposal(@RequestAttribute("ae.accountId") String accountId,
+			@PathVariable String id) {
+
+		Pair<ServiceResponse, Nothing> response = proposalService.deleteProposalById(accountId, id);
+
+		switch (response.getFist()) {
+		case FAIL:
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(new JsonResponse().pair("error", response.getFist().toString()).build());
+		default:
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}
 
 	}

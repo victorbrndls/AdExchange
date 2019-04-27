@@ -13,4 +13,6 @@ public interface ProposalRepository {
 
 	List<Proposal> getByAccountId(String accountId);
 
+	void deleteById(String id);
+
 }

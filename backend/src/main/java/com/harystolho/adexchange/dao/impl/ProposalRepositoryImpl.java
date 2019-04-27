@@ -36,4 +36,10 @@ public class ProposalRepositoryImpl implements ProposalRepository {
 		return mongoOperations.find(query, Proposal.class);
 	}
 
+	@Override
+	public void deleteById(String id) {
+		Query query = Query.query(Criteria.where("_id").is(id));
+		mongoOperations.remove(query, Proposal.class);
+	}
+
 }

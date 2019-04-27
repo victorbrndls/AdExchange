@@ -378,3 +378,15 @@ body.auth #header {
 .proposal-type__button{
     background-color: rgb(207, 113, 34);
 }
+
+#dashboardDeleteButton{
+    background-color: rgb(255, 64, 104);
+}
+
+.proposals-edit__buttons .btn{
+    margin-right: 17px;
+}
+
+#dashboardAcceptButton{
+    background-color: rgb(62, 216, 58);
+}

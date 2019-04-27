@@ -159,7 +159,7 @@ class Proposal extends Component {
                 </div>
                 <div>
                     <div class="dashboard-website__rounded-button proposal-type__button"
-                         onClick={() => route(`/dashboard/proposals/edit/${id}`)}>Ver Proposta
+                         onClick={() => route(`/dashboard/proposals/edit/${id}?type=${type}`)}>Ver Proposta
                     </div>
                 </div>
             </div>

@@ -14,6 +14,7 @@ export default class AddProposal extends Component {
         this.state = {
             error: null,
             mode: "EDIT", // EDIT or NEW
+            type: null, // NEW or SENT
             proposal: null,
             website: {},
             ads: [],
@@ -29,6 +30,7 @@ export default class AddProposal extends Component {
         this.moneyPattern = "^(\\d+(\\.\\d{1,2}){0,1})$";
 
         this.updateMode();
+        this.updateType();
 
         this.requestProposalInformation().then(() => {
             this.requestWebsiteInformation();
@@ -39,6 +41,12 @@ export default class AddProposal extends Component {
     updateMode() {
         if (UrlUtils.include("/edit/new"))
             this.setState({mode: "NEW"});
+    }
+
+    updateType() {
+        if (this.state.mode === 'EDIT') {
+            this.setState({type: new URLSearchParams(location.search).get('type')});
+        }
     }
 
     async requestProposalInformation() {
@@ -118,9 +126,38 @@ export default class AddProposal extends Component {
         });
     }
 
-    render({}, {proposal, website, proposalId, error, ads, selectedAd}) {
+    acceptProposal() {
+        AdAxiosPost.post(`${HOST}/api/v1/proposals/accept/${this.state.proposal.id}`).then((response) => {
+
+        }).catch((error) => {
+            console.log(error.response);
+        });
+    }
+
+    resendProposal() {
+
+    }
+
+    rejectProposal() {
+
+    }
+
+    deleteProposal() {
+        AdAxiosPost.delete(`${HOST}/api/v1/proposals/${this.state.proposal.id}`).then((response) => {
+
+        }).catch((error) => {
+            console.log(error.response);
+        });
+    }
+
+    render({}, {proposal, website, error, ads, selectedAd, mode, type}) {
         if (proposal === null)
             return;
+
+        let edit_m = mode === 'EDIT';
+        let new_m = mode === 'NEW';
+        let sent_t = type === 'SENT';
+        let new_t = type === 'NEW';
 
         return (
             <div>
@@ -137,7 +174,7 @@ export default class AddProposal extends Component {
                         <div class="form-group websites-add__form">
                             <label>Anúncio</label>
                             <select class="custom-select" onChange={this.handleAdChange.bind(this)}
-                                    disabled={this.state.mode === 'EDIT'}>
+                                    disabled={edit_m}>
                                 <option value="-1">Selecione um anuncio</option>
                                 {ads && ads.map((ad) => (
                                     <option value={ad.id}>{ad.name}</option>
@@ -157,14 +194,15 @@ export default class AddProposal extends Component {
                         <div class="form-group websites-add__form">
                             <label>Duracao (dias)</label>
                             <input id="p_duration" class="form-control" placeholder="15"
-                                   value={proposal.duration || ""}/>
+                                   value={proposal.duration || ""} disabled={sent_t}/>
                             <small class="form-text text-muted">Por quanto tempo o anuncio ficara ativo (de 0 a 365)
                             </small>
                         </div>
 
                         <div class="form-group websites-add__form">
                             <label>Pagamento</label>
-                            <select id="p_paymentMethod" class="custom-select" value={proposal.paymentMethod || ""}>
+                            <select id="p_paymentMethod" class="custom-select" value={proposal.paymentMethod || ""}
+                                    disabled={sent_t}>
                                 <option value="PAY_PER_CLICK">Custo por Click</option>
                                 <option value="PAY_PER_VIEW">Custo por Visualizacao</option>
                             </select>
@@ -175,13 +213,35 @@ export default class AddProposal extends Component {
                                 </div>
                                 <input id="p_paymentValue" class="form-control" pattern={this.moneyPattern}
                                        placeholder="Valores com no maximo 2 casas decimais (1.50, 4.54, 0.10, 18.01, 0.50)"
-                                       value={proposal.paymentValue || ""}/>
+                                       value={proposal.paymentValue || ""} disabled={sent_t}/>
                             </div>
                         </div>
                     </div>
 
-                    <div class="btn dashboard-add__button" onClick={this.submitProposal.bind(this)}>
-                        Enviar Proposta
+                    <div class="proposals-edit__buttons">
+                        {new_m && (
+                            <div class="btn dashboard-add__button" onClick={this.submitProposal.bind(this)}>
+                                Enviar Proposta
+                            </div>)}
+                        {edit_m && sent_t && (
+                            <div id="dashboardDeleteButton" class="btn dashboard-add__button"
+                                 onClick={this.deleteProposal.bind(this)}>
+                                Deletar Proposta
+                            </div>)}
+                        {edit_m && new_t && (
+                            <div>
+                                <div id="dashboardAcceptButton" class="btn dashboard-add__button"
+                                     onClick={this.acceptProposal.bind(this)}>
+                                    Aceitar Proposta
+                                </div>
+                                <div class="btn dashboard-add__button" onClick={this.resendProposal.bind(this)}>
+                                    Enviar Revisao
+                                </div>
+                                <div id="dashboardDeleteButton" class="btn dashboard-add__button"
+                                     onClick={this.rejectProposal.bind(this)}>
+                                    Rejeitar Proposta
+                                </div>
+                            </div>)}
                     </div>
                 </div>
             </div>
