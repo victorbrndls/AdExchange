@@ -76,59 +76,6 @@ public class ProposalService {
 		return Pair.of(ServiceResponse.OK, saved);
 	}
 
-	/**
-	 * @param websiteId
-	 * @param adId
-	 * @param duration
-	 * @param paymentMethod
-	 * @param paymentValue
-	 * @return <code>null</code> if the fields are valid for the proposal creation
-	 *         or the corresponding error
-	 */
-	private ServiceResponse validateProposalFields(String websiteId, String adId, String duration, String paymentMethod,
-			String paymentValue) {
-		if (!websiteExists(websiteId))
-			return ServiceResponse.INVALID_WEBSITE_ID;
-
-		if (!adExists(adId))
-			return ServiceResponse.INVALID_AD_ID;
-
-		// Duration
-		try {
-			int iDuration = Integer.parseInt(duration);
-
-			if (iDuration <= 0 || iDuration > 365)
-				return ServiceResponse.INVALID_DURATION;
-		} catch (Exception e) {
-			return ServiceResponse.INVALID_DURATION;
-		}
-
-		// Payment Method
-		if (paymentMethod != null && !(paymentMethod.equals("PAY_PER_CLICK") || paymentMethod.equals("PAY_PER_VIEW")))
-			return ServiceResponse.INVALID_PAYMENT_METHOD;
-
-		// Payment Value
-		try {
-			int occurences = StringUtils.countOccurrencesOf(paymentValue, ".");
-
-			if (occurences > 1)
-				return ServiceResponse.INVALID_PAYMENT_VALUE;
-
-			double value = Double.parseDouble(paymentValue);
-
-			if (value <= 0.0)
-				return ServiceResponse.INVALID_PAYMENT_VALUE;
-
-			if (paymentValue.contains("."))
-				if (paymentValue.split("\\.")[1].length() > 2)
-					return ServiceResponse.INVALID_PAYMENT_VALUE;
-		} catch (Exception e) {
-			return ServiceResponse.INVALID_PAYMENT_VALUE;
-		}
-
-		return null;
-	}
-
 	public Pair<ServiceResponse, Nothing> deleteProposalById(String accountId, String id) {
 		Proposal proposal = proposalRepository.getById(id);
 
@@ -153,6 +100,34 @@ public class ProposalService {
 		return Pair.of(ServiceResponse.OK, null);
 	}
 
+	public Pair<ServiceResponse, Nothing> reviewProposal(String accountId, String id, String duration,
+			String paymentMethod, String paymentValue) {
+		if (!validateDuration(duration))
+			return Pair.of(ServiceResponse.INVALID_DURATION, null);
+		if (!validatePaymentMethod(paymentMethod))
+			return Pair.of(ServiceResponse.INVALID_PAYMENT_METHOD, null);
+		if (!validatePaymentValue(paymentValue))
+			return Pair.of(ServiceResponse.INVALID_PAYMENT_VALUE, null);
+
+		Proposal prop = proposalRepository.getById(id);
+
+		if (prop == null)
+			return Pair.of(ServiceResponse.FAIL, null);
+
+		if (!proposalsHolderService.containsProposalInNew(accountId, prop))
+			return Pair.of(ServiceResponse.FAIL, null);
+
+		prop.setDuration(Integer.parseInt(duration));
+		prop.setPaymentMethod(PaymentMethod.valueOf(paymentMethod));
+		prop.setPaymentValue(paymentValue);
+
+		proposalRepository.save(prop);
+
+		proposalsHolderService.reviewProposal(prop);
+		
+		return Pair.of(ServiceResponse.OK, null);
+	}
+
 	/**
 	 * @param accountId
 	 * @param id        proposal id
@@ -169,6 +144,83 @@ public class ProposalService {
 		}
 
 		return false;
+	}
+
+	/**
+	 * @param websiteId
+	 * @param adId
+	 * @param duration
+	 * @param paymentMethod
+	 * @param paymentValue
+	 * @return <code>null</code> if the fields are valid for the proposal creation
+	 *         or the corresponding error
+	 */
+	private ServiceResponse validateProposalFields(String websiteId, String adId, String duration, String paymentMethod,
+			String paymentValue) {
+		if (!websiteExists(websiteId))
+			return ServiceResponse.INVALID_WEBSITE_ID;
+
+		if (!adExists(adId))
+			return ServiceResponse.INVALID_AD_ID;
+
+		// Duration
+		if (!validateDuration(duration))
+			return ServiceResponse.INVALID_DURATION;
+
+		// Payment Method
+		if (!validatePaymentMethod(paymentMethod))
+			return ServiceResponse.INVALID_PAYMENT_METHOD;
+
+		// Payment Value
+		if (!validatePaymentValue(paymentValue))
+			return ServiceResponse.INVALID_PAYMENT_VALUE;
+
+		return null;
+	}
+
+	private boolean validateDuration(String duration) {
+		try {
+			int iDuration = Integer.parseInt(duration);
+
+			if (iDuration <= 0 || iDuration > 365)
+				return false;
+		} catch (Exception e) {
+			return false;
+		}
+
+		return true;
+	}
+
+	private boolean validatePaymentMethod(String method) {
+		if (method == null)
+			return false;
+
+		if (!(method.equals("PAY_PER_CLICK") || method.equals("PAY_PER_VIEW")))
+			return false;
+
+		return true;
+	}
+
+	private boolean validatePaymentValue(String pValue) {
+		try {
+			int occurences = StringUtils.countOccurrencesOf(pValue, ".");
+
+			if (occurences > 1)
+				return false;
+
+			if (pValue.contains("."))
+				if (pValue.split("\\.")[1].length() > 2) // More than 2 places after the '.'
+					return false;
+
+			double value = Double.parseDouble(pValue);
+
+			if (value <= 0.0)
+				return false;
+		} catch (Exception e) {
+			return false;
+		}
+
+		return true;
 	}
 
 	/**

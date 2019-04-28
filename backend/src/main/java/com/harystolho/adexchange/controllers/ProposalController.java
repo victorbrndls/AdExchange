@@ -119,20 +119,42 @@ public class ProposalController {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}
 	}
-	
+
+	@PostMapping("/api/v1/proposals/revision/{id}")
+	@CrossOrigin
+	public ResponseEntity<Object> reviewProposal(@RequestAttribute("ae.accountId") String accountId,
+			@PathVariable String id, String duration, String paymentMethod, String paymentValue) {
+
+		Pair<ServiceResponse, Nothing> response = proposalService.reviewProposal(accountId, id, duration, paymentMethod,
+				paymentValue);
+
+		switch (response.getFist()) {
+		case INVALID_DURATION:
+		case INVALID_PAYMENT_METHOD:
+		case INVALID_PAYMENT_VALUE:
+		case FAIL:
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(new JsonResponse().pair("error", response.getFist().toString()).build());
+		default:
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		}
+	}
+
 	@PostMapping("/api/v1/proposals/accept/{id}")
 	@CrossOrigin
 	public ResponseEntity<Object> acceptProposal(@RequestAttribute("ae.accountId") String accountId,
 			@PathVariable String id) {
 
-		//Pair<ServiceResponse, Nothing> response = proposalService.acceptProposalById(accountId, id);
+		// Pair<ServiceResponse, Nothing> response =
+		// proposalService.acceptProposalById(accountId, id);
 
-		//switch (response.getFist()) {
-		//case FAIL:
-			//return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					//.body(new JsonResponse().pair("error", response.getFist().toString()).build());
-		//default:
-			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-		//}
+		// switch (response.getFist()) {
+		// case FAIL:
+		// return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+		// .body(new JsonResponse().pair("error",
+		// response.getFist().toString()).build());
+		// default:
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		// }
 	}
 }

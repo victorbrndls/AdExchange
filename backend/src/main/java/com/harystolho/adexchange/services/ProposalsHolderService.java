@@ -116,6 +116,36 @@ public class ProposalsHolderService {
 		addNewProposalToAccount(other, proposal.getId());
 	}
 
+	public void reviewProposal(Proposal proposal) {
+		String acc1 = getSenderIdUsingAdId(proposal.getAdId());
+		String acc2 = getRecieverIdUsingWebsiteId(proposal.getWebsiteId());
+
+		String reviewer = acc2;
+		String other = acc1;
+
+		if (containsProposalInNew(acc1, proposal)) {
+			reviewer = acc1;
+			other = acc2;
+		}
+
+		swapProposal(reviewer, other, proposal);
+	}
+
+	/**
+	 * Swaps the proposal in the {@link ProposalsHolder}
+	 * 
+	 * @param inNew    the proposal is in 'new' for this account
+	 * @param inSent   the proposal is in 'sent' for this account
+	 * @param proposal
+	 */
+	private void swapProposal(String inNew, String inSent, Proposal proposal) {
+		removeNewProposalFromAccount(inNew, proposal.getId());
+		addSentProposalToAccount(inNew, proposal.getId());
+
+		removeSentProposalFromAccount(inSent, proposal.getId());
+		addNewProposalToAccount(inSent, proposal.getId());
+	}
+
 	public boolean containsProposalInNew(String accountId, Proposal proposal) {
 		List<String> proposals = phRepository.getNewProposalsByAccountId(accountId);
 

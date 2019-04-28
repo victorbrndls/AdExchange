@@ -130,8 +130,18 @@ export default class AddProposal extends Component {
 
     }
 
-    resendProposal() {
+    sendProposalRevision() {
+        let formData = new FormData();
+        formData.append("duration", this.fields.duration().value);
+        formData.append("paymentMethod", this.fields.paymentMethod().value);
+        formData.append("paymentValue", this.fields.paymentValue().value);
 
+        AdAxiosPost.post(`${HOST}/api/v1/proposals/revision/${this.state.proposal.id}`, formData).then((response) => {
+            route('/dashboard/proposals');
+            this.props.reload();
+        }).catch((error) => {
+            console.log(error.response);
+        });
     }
 
     rejectProposal() {
@@ -240,7 +250,7 @@ export default class AddProposal extends Component {
                                      onClick={this.acceptProposal.bind(this)}>
                                     Aceitar Proposta
                                 </div>
-                                <div class="btn dashboard-add__button" onClick={this.resendProposal.bind(this)}>
+                                <div class="btn dashboard-add__button" onClick={this.sendProposalRevision.bind(this)}>
                                     Enviar Revisao
                                 </div>
                                 <div id="dashboardDeleteButton" class="btn dashboard-add__button"
