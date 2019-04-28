@@ -1,5 +1,10 @@
 package com.harystolho.adexchange.services;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Arrays;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -56,4 +61,25 @@ public class ProposalsHolderServiceTest {
 		Mockito.verify(phRepository).removeProposalFromSent("ac2", "p1");
 	}
 
+	@Test
+	public void phDoesntContainProposalInNew() {
+		Mockito.when(phRepository.getNewProposalsByAccountId("ac1")).thenReturn(Arrays.asList("p2", "p3", "p4"));
+
+		Proposal p1 = new Proposal();
+		p1.setId("p1");
+		boolean contains = phService.containsProposalInNew("ac1", p1);
+
+		assertFalse(contains);
+	}
+
+	@Test
+	public void phContainsProposalInNew() {
+		Mockito.when(phRepository.getNewProposalsByAccountId("ac2")).thenReturn(Arrays.asList("p2", "p3", "p4"));
+
+		Proposal p1 = new Proposal();
+		p1.setId("p3");
+		boolean contains = phService.containsProposalInNew("ac2", p1);
+
+		assertTrue(contains);
+	}
 }

@@ -1,5 +1,6 @@
 package com.harystolho.adexchange.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
@@ -93,7 +94,28 @@ public class ProposalsHolderService {
 	}
 
 	public void rejectProposal(Proposal proposal) {
+		String senderId = getSenderIdUsingAdId(proposal.getAdId());
+		String recieverId = getRecieverIdUsingWebsiteId(proposal.getWebsiteId());
 
+		String deleter = recieverId;
+		String other = deleter.equals(recieverId) ? senderId : recieverId;
+
+		// Remove the proposal from new for the account that rejected it
+		removeNewProposalFromAccount(deleter, proposal.getId());
+
+		// Remove the proposal from sent for the account that was the other user
+		// involved
+		removeSentProposalFromAccount(other, proposal.getId());
+
+		// Add the proposal to new for the other user, the proposal
+		// 'rejected' field must be set to true
+		addNewProposalToAccount(other, proposal.getId());
+	}
+
+	public boolean containsProposalInNew(String accountId, Proposal proposal) {
+		List<String> proposals = phRepository.getNewProposalsByAccountId(accountId);
+
+		return proposals.stream().anyMatch(propId -> propId.equals(proposal.getId()));
 	}
 
 	public ProposalsHolder getProposalHolderByAccountId(String accountId) {

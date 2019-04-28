@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import com.harystolho.adexchange.dao.ProposalRepository;
@@ -40,6 +41,14 @@ public class ProposalRepositoryImpl implements ProposalRepository {
 	public void deleteById(String id) {
 		Query query = Query.query(Criteria.where("_id").is(id));
 		mongoOperations.remove(query, Proposal.class);
+	}
+
+	@Override
+	public void setRejected(String id) {
+		Query query = Query.query(Criteria.where("_id").is(id));
+		Update update = new Update().set("rejected", true);
+
+		mongoOperations.findAndModify(query, update, Proposal.class);
 	}
 
 }

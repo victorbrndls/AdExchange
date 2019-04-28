@@ -134,10 +134,22 @@ public class ProposalService {
 
 		if (!proposalBelongsToUser(accountId, proposal))
 			return Pair.of(ServiceResponse.FAIL, null);
-		
+
 		proposalRepository.deleteById(id);
 		proposalsHolderService.removeProposal(proposal);
-		
+
+		return Pair.of(ServiceResponse.OK, null);
+	}
+
+	public Pair<ServiceResponse, Nothing> rejectProposalById(String accountId, String id) {
+		Proposal proposal = proposalRepository.getById(id);
+
+		if (!proposalsHolderService.containsProposalInNew(accountId, proposal))
+			return Pair.of(ServiceResponse.FAIL, null);
+
+		proposalRepository.setRejected(id);
+		proposalsHolderService.rejectProposal(proposal);
+
 		return Pair.of(ServiceResponse.OK, null);
 	}
 

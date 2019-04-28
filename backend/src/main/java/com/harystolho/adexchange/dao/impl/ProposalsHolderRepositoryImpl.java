@@ -1,5 +1,7 @@
 package com.harystolho.adexchange.dao.impl;
 
+import java.util.List;
+
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -7,6 +9,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import com.harystolho.adexchange.dao.ProposalsHolderRepository;
+import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.models.ProposalsHolder;
 
 @Service
@@ -59,6 +62,15 @@ public class ProposalsHolderRepositoryImpl implements ProposalsHolderRepository 
 		Update update = new Update().pull("newProposals", proposalId);
 
 		mongoOperations.findAndModify(query, update, ProposalsHolder.class);
+	}
+
+	@Override
+	public List<String> getNewProposalsByAccountId(String accountId) {
+		Query query = Query.query(Criteria.where("accountId").is(accountId));
+		query.fields().include("newProposals");
+		
+		ProposalsHolder ph = mongoOperations.findOne(query, ProposalsHolder.class);
+		return ph.getNewProposals();
 	}
 
 }

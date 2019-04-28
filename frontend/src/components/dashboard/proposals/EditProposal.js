@@ -127,11 +127,7 @@ export default class AddProposal extends Component {
     }
 
     acceptProposal() {
-        AdAxiosPost.post(`${HOST}/api/v1/proposals/accept/${this.state.proposal.id}`).then((response) => {
 
-        }).catch((error) => {
-            console.log(error.response);
-        });
     }
 
     resendProposal() {
@@ -139,7 +135,11 @@ export default class AddProposal extends Component {
     }
 
     rejectProposal() {
+        AdAxiosPost.post(`${HOST}/api/v1/proposals/reject/${this.state.proposal.id}`).then((response) => {
 
+        }).catch((error) => {
+            console.log(error.response);
+        });
     }
 
     deleteProposal() {
@@ -224,12 +224,12 @@ export default class AddProposal extends Component {
                             <div class="btn dashboard-add__button" onClick={this.submitProposal.bind(this)}>
                                 Enviar Proposta
                             </div>)}
-                        {edit_m && sent_t && (
+                        {edit_m && (proposal.rejected || sent_t) && (
                             <div id="dashboardDeleteButton" class="btn dashboard-add__button"
                                  onClick={this.deleteProposal.bind(this)}>
                                 Deletar Proposta
                             </div>)}
-                        {edit_m && new_t && (
+                        {edit_m && new_t && !proposal.rejected &&(
                             <div>
                                 <div id="dashboardAcceptButton" class="btn dashboard-add__button"
                                      onClick={this.acceptProposal.bind(this)}>

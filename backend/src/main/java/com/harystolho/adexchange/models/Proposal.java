@@ -14,6 +14,7 @@ public class Proposal {
 
 	public Proposal() {
 		creationDate = Date.from(Instant.now());
+		rejected = false;
 	}
 
 	private String id;
@@ -23,6 +24,7 @@ public class Proposal {
 	private PaymentMethod paymentMethod;
 	private String paymentValue;
 	private Date creationDate;
+	private boolean rejected;
 
 	public String getId() {
 		return id;
@@ -78,5 +80,13 @@ public class Proposal {
 
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
+	}
+
+	public boolean isRejected() {
+		return rejected;
+	}
+
+	public void setRejected(boolean rejected) {
+		this.rejected = rejected;
 	}
 }

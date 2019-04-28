@@ -104,4 +104,35 @@ public class ProposalController {
 
 	}
 
+	@PostMapping("/api/v1/proposals/reject/{id}")
+	@CrossOrigin
+	public ResponseEntity<Object> rejectProposal(@RequestAttribute("ae.accountId") String accountId,
+			@PathVariable String id) {
+
+		Pair<ServiceResponse, Nothing> response = proposalService.rejectProposalById(accountId, id);
+
+		switch (response.getFist()) {
+		case FAIL:
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(new JsonResponse().pair("error", response.getFist().toString()).build());
+		default:
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		}
+	}
+	
+	@PostMapping("/api/v1/proposals/accept/{id}")
+	@CrossOrigin
+	public ResponseEntity<Object> acceptProposal(@RequestAttribute("ae.accountId") String accountId,
+			@PathVariable String id) {
+
+		//Pair<ServiceResponse, Nothing> response = proposalService.acceptProposalById(accountId, id);
+
+		//switch (response.getFist()) {
+		//case FAIL:
+			//return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					//.body(new JsonResponse().pair("error", response.getFist().toString()).build());
+		//default:
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		//}
+	}
 }

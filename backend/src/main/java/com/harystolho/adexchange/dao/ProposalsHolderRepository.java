@@ -1,5 +1,8 @@
 package com.harystolho.adexchange.dao;
 
+import java.util.List;
+
+import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.models.ProposalsHolder;
 
 public interface ProposalsHolderRepository {
@@ -15,4 +18,6 @@ public interface ProposalsHolderRepository {
 	void removeProposalFromSent(String accountId, String proposalId);
 
 	void removeProposalFromNew(String accountId, String proposalId);
+
+	List<String> getNewProposalsByAccountId(String accountId);
 }
