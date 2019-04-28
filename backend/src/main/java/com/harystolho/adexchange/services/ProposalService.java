@@ -59,7 +59,7 @@ public class ProposalService {
 			String paymentMethod, String paymentValue) {
 		ServiceResponse validation = validateProposalFields(websiteId, adId, duration, paymentMethod, paymentValue);
 
-		if (validation != null)
+		if (validation != ServiceResponse.OK)
 			return Pair.of(validation, null);
 
 		Proposal proposal = new Proposal();
@@ -79,11 +79,11 @@ public class ProposalService {
 	public Pair<ServiceResponse, Nothing> deleteProposalById(String accountId, String id) {
 		Proposal proposal = proposalRepository.getById(id);
 
-		if (!proposal.isRejected()) {
-			if (!proposalsHolderService.containsProposalInSent(accountId, proposal))
+		if (proposal.isRejected()) {
+			if (!proposalsHolderService.containsProposalInNew(accountId, proposal))
 				return Pair.of(ServiceResponse.FAIL, null);
 		} else {
-			if (!proposalsHolderService.containsProposalInNew(accountId, proposal))
+			if (!proposalsHolderService.containsProposalInSent(accountId, proposal))
 				return Pair.of(ServiceResponse.FAIL, null);
 		}
 
@@ -134,24 +134,6 @@ public class ProposalService {
 	}
 
 	/**
-	 * @param accountId
-	 * @param id        proposal id
-	 * @return TRUE if the {accountId} is the user who created the proposal
-	 */
-	private boolean userCreatedProposal(String accountId, Proposal proposal) {
-		if (proposal != null) {
-			Pair<ServiceResponse, Ad> ad = adService.getAdById(proposal.getAdId());
-
-			if (ad.getSecond() != null) {
-				if (ad.getSecond().getAccountId().equals(accountId))
-					return true;
-			}
-		}
-
-		return false;
-	}
-
-	/**
 	 * @param websiteId
 	 * @param adId
 	 * @param duration
@@ -180,7 +162,7 @@ public class ProposalService {
 		if (!validatePaymentValue(paymentValue))
 			return ServiceResponse.INVALID_PAYMENT_VALUE;
 
-		return null;
+		return ServiceResponse.OK;
 	}
 
 	private boolean validateDuration(String duration) {

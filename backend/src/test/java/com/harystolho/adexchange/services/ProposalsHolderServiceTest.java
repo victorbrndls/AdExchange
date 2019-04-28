@@ -82,4 +82,74 @@ public class ProposalsHolderServiceTest {
 
 		assertTrue(contains);
 	}
+
+	@Test
+	public void removeProposal_AdOwner_NotRejected() {
+		Proposal p1 = new Proposal();
+		p1.setId("p1");
+		p1.setWebsiteId("w1");
+		p1.setAdId("ad2");
+		p1.setRejected(false);
+
+		Mockito.when(adService.getAccountIdUsingAdId("ad2")).thenReturn("ac1");
+		Mockito.when(websiteService.getAccountIdUsingWebsiteId("w1")).thenReturn("ac2");
+		Mockito.when(phRepository.getSentProposalsByAccountId("ac2")).thenReturn(Arrays.asList(""));
+		
+		phService.removeProposal(p1);
+
+		Mockito.verify(phRepository).removeProposalFromSent("ac1", "p1");
+		Mockito.verify(phRepository).removeProposalFromNew("ac2", "p1");
+	}
+
+	@Test
+	public void removeProposal_AdOwner_Rejected() {
+		Proposal p1 = new Proposal();
+		p1.setId("p1");
+		p1.setWebsiteId("w1");
+		p1.setAdId("ad2");
+		p1.setRejected(true);
+
+		Mockito.when(adService.getAccountIdUsingAdId("ad2")).thenReturn("ac123");
+		Mockito.when(websiteService.getAccountIdUsingWebsiteId("w1")).thenReturn("ac2");
+		Mockito.when(phRepository.getNewProposalsByAccountId("ac2")).thenReturn(Arrays.asList(""));
+		
+		phService.removeProposal(p1);
+
+		Mockito.verify(phRepository).removeProposalFromNew("ac123", "p1");
+	}
+	
+	@Test
+	public void removeProposal_WebsiteOwner_NotRejected() {
+		Proposal p2 = new Proposal();
+		p2.setId("p2");
+		p2.setWebsiteId("w2");
+		p2.setAdId("ad22");
+		p2.setRejected(false);
+
+		Mockito.when(adService.getAccountIdUsingAdId("ad22")).thenReturn("ac_ad1");
+		Mockito.when(websiteService.getAccountIdUsingWebsiteId("w2")).thenReturn("ac_web1");
+		Mockito.when(phRepository.getSentProposalsByAccountId("ac_web1")).thenReturn(Arrays.asList("p2"));
+		
+		phService.removeProposal(p2);
+
+		Mockito.verify(phRepository).removeProposalFromSent("ac_web1", "p2");
+		Mockito.verify(phRepository).removeProposalFromNew("ac_ad1", "p2");
+	}
+	
+	@Test
+	public void removeProposal_WebsiteOwner_Rejected() {
+		Proposal p3 = new Proposal();
+		p3.setId("p3");
+		p3.setWebsiteId("w3");
+		p3.setAdId("ad3");
+		p3.setRejected(true);
+
+		Mockito.when(adService.getAccountIdUsingAdId("ad3")).thenReturn("ac3_ad");
+		Mockito.when(websiteService.getAccountIdUsingWebsiteId("w3")).thenReturn("ac3_web");
+		Mockito.when(phRepository.getNewProposalsByAccountId("ac3_web")).thenReturn(Arrays.asList("p3"));
+		
+		phService.removeProposal(p3);
+
+		Mockito.verify(phRepository).removeProposalFromNew("ac3_web", "p3");
+	}
 }
