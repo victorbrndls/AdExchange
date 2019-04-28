@@ -47,6 +47,20 @@ public class WebsiteService {
 		return Pair.of(ServiceResponse.FAIL, null);
 	}
 
+	/**
+	 * @param accountId
+	 * @param websiteId
+	 * @return TRUE if the {accountId} was the account who created the website
+	 */
+	public boolean accountOwnsWebsite(String accountId, String websiteId) {
+		Website website = websiteRepository.getWebsiteById(websiteId);
+
+		if (website != null)
+			return website.getAccountId().equals(accountId);
+
+		return false;
+	}
+
 	private boolean verifyWebsiteCreationFields(String name, String url, String logoUrl, String description,
 			String[] categories) {
 		if (description.length() < 10)

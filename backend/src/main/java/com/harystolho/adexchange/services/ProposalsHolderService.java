@@ -126,6 +126,14 @@ public class ProposalsHolderService {
 		swapProposal(pair.getFist(), pair.getSecond(), proposal);
 	}
 
+	public void acceptProposal(Proposal prop) {
+		String adOwner = getSenderIdUsingAdId(prop.getAdId());
+		String websiteOwner = getRecieverIdUsingWebsiteId(prop.getWebsiteId());
+
+		removeNewProposalFromAccount(websiteOwner, prop.getId());
+		removeSentProposalFromAccount(adOwner, prop.getId());
+	}
+
 	private Pair<String, String> getExecutorAndOther(Proposal p) {
 		String adOwner = getSenderIdUsingAdId(p.getAdId());
 		String websiteOwner = getRecieverIdUsingWebsiteId(p.getWebsiteId());

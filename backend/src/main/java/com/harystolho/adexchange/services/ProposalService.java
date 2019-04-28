@@ -140,9 +140,16 @@ public class ProposalService {
 		if (!proposalsHolderService.containsProposalInNew(accountId, prop))
 			return Pair.of(ServiceResponse.FAIL, null);
 
-		ServiceResponse resp = contractService.createContractFromProposal(prop);
+		// Only the website owner can accept the proposal
+		if(!websiteService.accountOwnsWebsite(accountId, prop.getWebsiteId())){
+			return Pair.of(ServiceResponse.FAIL, null);
+		}
 		
-		return Pair.of(resp, null);
+		contractService.createContractFromProposal(prop);
+
+		proposalsHolderService.acceptProposal(prop);
+		
+		return Pair.of(ServiceResponse.OK, null);
 	}
 
 	/**

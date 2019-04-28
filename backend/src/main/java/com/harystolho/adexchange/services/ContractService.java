@@ -33,10 +33,9 @@ public class ContractService {
 		return contract;
 	}
 
-	public ServiceResponse createContractFromProposal(Proposal prop) {
+	public void createContractFromProposal(Proposal prop) {
 		createContract(prop.getWebsiteId(), prop.getAdId(), prop.getPaymentMethod(), prop.getPaymentValue(),
 				prop.getDuration());
-		return ServiceResponse.OK;
 	}
 
 }
