@@ -136,7 +136,8 @@ export default class AddProposal extends Component {
 
     rejectProposal() {
         AdAxiosPost.post(`${HOST}/api/v1/proposals/reject/${this.state.proposal.id}`).then((response) => {
-
+            route('/dashboard/proposals');
+            this.props.reload();
         }).catch((error) => {
             console.log(error.response);
         });
@@ -160,10 +161,13 @@ export default class AddProposal extends Component {
         let sent_t = type === 'SENT';
         let new_t = type === 'NEW';
 
+        let disabledFields = sent_t || proposal.rejected;
+
         return (
             <div>
                 <div style="font-family: Raleway; font-size: 30px;">
                     Proposta para "{website.name}"
+                    {proposal.rejected && (<span class="badge badge-danger ml-3">Rejeitada</span>)}
                 </div>
                 <div>
                     <div style="position: relative;">
@@ -195,15 +199,16 @@ export default class AddProposal extends Component {
                         <div class="form-group websites-add__form">
                             <label>Duracao (dias)</label>
                             <input id="p_duration" class="form-control" placeholder="15"
-                                   value={proposal.duration || ""} disabled={sent_t}/>
+                                   value={proposal.duration || ""} disabled={disabledFields}/>
                             <small class="form-text text-muted">Por quanto tempo o anuncio ficara ativo (de 0 a 365)
                             </small>
                         </div>
 
                         <div class="form-group websites-add__form">
                             <label>Pagamento</label>
-                            <select id="p_paymentMethod" class="custom-select" value={proposal.paymentMethod || "PAY_PER_CLICK"}
-                                    disabled={sent_t}>
+                            <select id="p_paymentMethod" class="custom-select"
+                                    value={proposal.paymentMethod || "PAY_PER_CLICK"}
+                                    disabled={disabledFields}>
                                 <option value="PAY_PER_CLICK">Custo por Click</option>
                                 <option value="PAY_PER_VIEW">Custo por Visualizacao</option>
                             </select>
@@ -214,7 +219,7 @@ export default class AddProposal extends Component {
                                 </div>
                                 <input id="p_paymentValue" class="form-control" pattern={this.moneyPattern}
                                        placeholder="Valores com no maximo 2 casas decimais (1.50, 4.54, 0.10, 18.01, 0.50)"
-                                       value={proposal.paymentValue || ""} disabled={sent_t}/>
+                                       value={proposal.paymentValue || ""} disabled={disabledFields}/>
                             </div>
                         </div>
                     </div>
@@ -229,7 +234,7 @@ export default class AddProposal extends Component {
                                  onClick={this.deleteProposal.bind(this)}>
                                 Deletar Proposta
                             </div>)}
-                        {edit_m && new_t && !proposal.rejected &&(
+                        {edit_m && new_t && !proposal.rejected && (
                             <div>
                                 <div id="dashboardAcceptButton" class="btn dashboard-add__button"
                                      onClick={this.acceptProposal.bind(this)}>

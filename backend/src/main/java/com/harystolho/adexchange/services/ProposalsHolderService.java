@@ -89,8 +89,12 @@ public class ProposalsHolderService {
 		String senderId = getSenderIdUsingAdId(proposal.getAdId());
 		String recieverId = getRecieverIdUsingWebsiteId(proposal.getWebsiteId());
 
-		removeSentProposalFromAccount(senderId, proposal.getId());
-		removeNewProposalFromAccount(recieverId, proposal.getId());
+		if (!proposal.isRejected()) {
+			removeSentProposalFromAccount(senderId, proposal.getId());
+			removeNewProposalFromAccount(recieverId, proposal.getId());
+		} else {
+			removeNewProposalFromAccount(senderId, proposal.getId());
+		}
 	}
 
 	public void rejectProposal(Proposal proposal) {

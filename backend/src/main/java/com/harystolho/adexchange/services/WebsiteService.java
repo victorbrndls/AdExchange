@@ -26,14 +26,14 @@ public class WebsiteService {
 		return Pair.of(ServiceResponse.OK, websiteRepository.getWebsiteById(id));
 	}
 
-	public Pair<ServiceResponse, Website> createWebsite(String name, String url, String logoURL, String description,
-			String cats) {
+	public Pair<ServiceResponse, Website> createWebsite(String accountId, String name, String url, String logoURL,
+			String description, String cats) {
 		String[] categories = cats.split(",");
 
 		if (!verifyWebsiteCreationFields(name, url, logoURL, description, categories))
 			return Pair.of(ServiceResponse.FAIL, null);
 
-		Website website = new Website("05b1aedc-e44e-4cea-85a7-0d2b594f4363", url);
+		Website website = new Website(accountId, url);
 		website.setName(name);
 		website.setLogoUrl(logoURL);
 		website.setDescription(description);
@@ -72,9 +72,9 @@ public class WebsiteService {
 			if (!category.toUpperCase().equals(category))
 				return false;
 
-		if(categories.length > 3)
+		if (categories.length > 3)
 			return false;
-		
+
 		return true;
 	}
 
