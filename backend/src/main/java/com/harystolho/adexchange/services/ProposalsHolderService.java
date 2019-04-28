@@ -16,7 +16,7 @@ public class ProposalsHolderService {
 
 	private static final Logger logger = LogManager.getLogger();
 
-	private ProposalsHolderRepository proposalsHolderRepository;
+	private ProposalsHolderRepository phRepository;
 
 	private AdService adService;
 	private WebsiteService websiteService;
@@ -24,32 +24,40 @@ public class ProposalsHolderService {
 	@Autowired
 	public ProposalsHolderService(ProposalsHolderRepository proposalsHolder, AdService adService,
 			WebsiteService websiteService) {
-		this.proposalsHolderRepository = proposalsHolder;
+		this.phRepository = proposalsHolder;
 		this.adService = adService;
 		this.websiteService = websiteService;
 	}
 
 	private void addNewProposalToAccount(String accountId, String proposalId) {
-		proposalsHolderRepository.addProposalToNew(accountId, proposalId);
+		if (phRepository.getByAccountId(accountId) == null) {
+			createProposalsHolderForAccount(accountId);
+		}
+
+		phRepository.addProposalToNew(accountId, proposalId);
 	}
 
 	private void addSentProposalToAccount(String accountId, String proposalId) {
-		proposalsHolderRepository.addProposalToSent(accountId, proposalId);
+		if (phRepository.getByAccountId(accountId) == null) {
+			createProposalsHolderForAccount(accountId);
+		}
+
+		phRepository.addProposalToSent(accountId, proposalId);
 	}
 
 	private void removeNewProposalFromAccount(String accountId, String proposalId) {
-		proposalsHolderRepository.removeProposalFromNew(accountId, proposalId);
+		phRepository.removeProposalFromNew(accountId, proposalId);
 	}
 
 	private void removeSentProposalFromAccount(String accountId, String proposalId) {
-		proposalsHolderRepository.removeProposalFromSent(accountId, proposalId);
+		phRepository.removeProposalFromSent(accountId, proposalId);
 	}
 
 	private ProposalsHolder createProposalsHolderForAccount(String accountId) {
 		ProposalsHolder holder = new ProposalsHolder();
 		holder.setAccountId(accountId);
 
-		return proposalsHolderRepository.save(holder);
+		return phRepository.save(holder);
 	}
 
 	public void addProposal(Proposal proposal) {
@@ -89,7 +97,7 @@ public class ProposalsHolderService {
 	}
 
 	public ProposalsHolder getProposalHolderByAccountId(String accountId) {
-		ProposalsHolder ph = proposalsHolderRepository.getByAccountId(accountId);
+		ProposalsHolder ph = phRepository.getByAccountId(accountId);
 		return ph != null ? ph : createProposalsHolderForAccount(accountId);
 	}
 

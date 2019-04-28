@@ -21,6 +21,10 @@ public class TokenService {
 		tokenToAccountId.put(new Token(
 				"eca70362be2f4b3eb7013210fd71e940cdc3a0a86bf743de88a344a70848a48bc5a58e9d65f443a7b1e9ccd62ef33b204aca4756fdf84e8cba3629a02f49d90f",
 				tokenDuration), "5cc47954f669ff0e3cacbdd0");
+
+		tokenToAccountId.put(new Token(
+				"8e9d65f443a7b1e9cceca70362be2f4b3eb7013210fd71e86bf743de88a344a70848a48bc5a5df84e8cba36d62ef33b204aca4756fc3a0a29a02f49d90f940cd",
+				tokenDuration), "5cc48320f669ff0e3cacbddf");
 	}
 
 	public String generateTokenForAccount(String accountId) {

@@ -43,6 +43,11 @@ export default class Dashboard extends Component {
                                 <div class="dashboard__sidebar--item-container" onClick={() => localStorage.removeItem("adExchange.authToken")}>Logout</div>
                             </Link>
                         </div>
+                        <div class="dashboard__sidebar--item">
+                            <Link href="/" activeClassName="active">
+                                <div class="dashboard__sidebar--item-container">Home</div>
+                            </Link>
+                        </div>
                     </div>
                 </div>
                 <div class="dashboard__main">
