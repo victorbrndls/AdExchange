@@ -11,6 +11,7 @@ import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.models.Website;
 import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.models.ads.Ad.AdType;
+import com.harystolho.adexchange.utils.Nothing;
 import com.harystolho.adexchange.utils.Pair;
 
 public class ProposalServiceTest {
@@ -79,5 +80,20 @@ public class ProposalServiceTest {
 					"PAY_PER_CLICK", value);
 			assertEquals("Payment value should be valid: " + value, ServiceResponse.OK, response.getFist());
 		}
+	}
+
+	@Test
+	public void deleteProposalThatDoesntBelongToUser() {
+		Proposal p = new Proposal();
+		p.setAdId("ad123");
+		Mockito.when(proposalRepository.getById("123")).thenReturn(p);
+
+		Ad ad = new Ad(AdType.TEXT);
+		ad.setAccountId("acc1");
+		Mockito.when(adService.getAdById("ad123")).thenReturn(Pair.of(ServiceResponse.OK, ad));
+
+		Pair<ServiceResponse, Nothing> response = proposalService.deleteProposalById("acc123", "123");
+
+		assertEquals(ServiceResponse.FAIL, response.getFist());
 	}
 }

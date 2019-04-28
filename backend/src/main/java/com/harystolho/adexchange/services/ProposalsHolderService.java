@@ -30,17 +30,11 @@ public class ProposalsHolderService {
 	}
 
 	private void addNewProposalToAccount(String accountId, String proposalId) {
-		ProposalsHolder holder = getProposalHolderByAccountId(accountId);
-
-		holder.addNewProposal(proposalId);
-		proposalsHolderRepository.save(holder);
+		proposalsHolderRepository.addProposalToNew(accountId, proposalId);
 	}
 
 	private void addSentProposalToAccount(String accountId, String proposalId) {
-		ProposalsHolder holder = getProposalHolderByAccountId(accountId);
-
-		holder.addSentProposal(proposalId);
-		proposalsHolderRepository.save(holder);
+		proposalsHolderRepository.addProposalToSent(accountId, proposalId);
 	}
 
 	private void removeNewProposalFromAccount(String accountId, String proposalId) {

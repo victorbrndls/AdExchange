@@ -30,19 +30,34 @@ public class ProposalsHolderRepositoryImpl implements ProposalsHolderRepository 
 	}
 
 	@Override
+	public void addProposalToSent(String accountId, String proposalId) {
+		Query query = Query.query(Criteria.where("accountId").is(accountId));
+		Update update = new Update().push("sentProposals", proposalId);
+
+		mongoOperations.findAndModify(query, update, ProposalsHolder.class);
+	}
+
+	@Override
+	public void addProposalToNew(String accountId, String proposalId) {
+		Query query = Query.query(Criteria.where("accountId").is(accountId));
+		Update update = new Update().push("newProposals", proposalId);
+
+		mongoOperations.findAndModify(query, update, ProposalsHolder.class);
+	}
+
+	@Override
 	public void removeProposalFromSent(String accountId, String proposalId) {
 		Query query = Query.query(Criteria.where("accountId").is(accountId));
 		Update update = new Update().pull("sentProposals", proposalId);
-		
-		mongoOperations.findAndModify(query, update, ProposalsHolder.class);
 
+		mongoOperations.findAndModify(query, update, ProposalsHolder.class);
 	}
 
 	@Override
 	public void removeProposalFromNew(String accountId, String proposalId) {
 		Query query = Query.query(Criteria.where("accountId").is(accountId));
 		Update update = new Update().pull("newProposals", proposalId);
-		
+
 		mongoOperations.findAndModify(query, update, ProposalsHolder.class);
 	}
 
