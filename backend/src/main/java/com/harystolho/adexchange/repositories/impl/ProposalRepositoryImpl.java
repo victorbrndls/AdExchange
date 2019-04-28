@@ -1,4 +1,4 @@
-package com.harystolho.adexchange.dao.impl;
+package com.harystolho.adexchange.repositories.impl;
 
 import java.util.List;
 
@@ -8,8 +8,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
-import com.harystolho.adexchange.dao.ProposalRepository;
 import com.harystolho.adexchange.models.Proposal;
+import com.harystolho.adexchange.repositories.ProposalRepository;
 
 @Service
 public class ProposalRepositoryImpl implements ProposalRepository {

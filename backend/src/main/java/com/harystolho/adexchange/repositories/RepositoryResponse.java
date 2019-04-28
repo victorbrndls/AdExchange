@@ -1,4 +1,4 @@
-package com.harystolho.adexchange.dao;
+package com.harystolho.adexchange.repositories;
 
 public enum RepositoryResponse {
 	CREATED, FAIL

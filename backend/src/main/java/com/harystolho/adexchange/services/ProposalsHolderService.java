@@ -8,9 +8,9 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.harystolho.adexchange.dao.ProposalsHolderRepository;
 import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.models.ProposalsHolder;
+import com.harystolho.adexchange.repositories.ProposalsHolderRepository;
 import com.harystolho.adexchange.utils.Pair;
 
 @Service

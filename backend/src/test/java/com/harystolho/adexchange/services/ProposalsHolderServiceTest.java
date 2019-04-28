@@ -7,27 +7,27 @@ import java.util.Arrays;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import com.harystolho.adexchange.dao.ProposalsHolderRepository;
 import com.harystolho.adexchange.models.Proposal;
+import com.harystolho.adexchange.repositories.ProposalsHolderRepository;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ProposalsHolderServiceTest {
 
-	private static ProposalsHolderService phService;
+	@InjectMocks
+	ProposalsHolderService phService;
 
-	private static ProposalsHolderRepository phRepository;
-	private static AdService adService;
-	private static WebsiteService websiteService;
-
-	@BeforeClass
-	public static void init() {
-		phRepository = Mockito.mock(ProposalsHolderRepository.class);
-		adService = Mockito.mock(AdService.class);
-		websiteService = Mockito.mock(WebsiteService.class);
-
-		phService = new ProposalsHolderService(phRepository, adService, websiteService);
-	}
+	@Mock
+	ProposalsHolderRepository phRepository;
+	@Mock
+	AdService adService;
+	@Mock
+	WebsiteService websiteService;
 
 	@Test
 	public void addProposalWithValidArguments() {
@@ -94,7 +94,7 @@ public class ProposalsHolderServiceTest {
 		Mockito.when(adService.getAccountIdUsingAdId("ad2")).thenReturn("ac1");
 		Mockito.when(websiteService.getAccountIdUsingWebsiteId("w1")).thenReturn("ac2");
 		Mockito.when(phRepository.getSentProposalsByAccountId("ac2")).thenReturn(Arrays.asList(""));
-		
+
 		phService.removeProposal(p1);
 
 		Mockito.verify(phRepository).removeProposalFromSent("ac1", "p1");
@@ -112,12 +112,12 @@ public class ProposalsHolderServiceTest {
 		Mockito.when(adService.getAccountIdUsingAdId("ad2")).thenReturn("ac123");
 		Mockito.when(websiteService.getAccountIdUsingWebsiteId("w1")).thenReturn("ac2");
 		Mockito.when(phRepository.getNewProposalsByAccountId("ac2")).thenReturn(Arrays.asList(""));
-		
+
 		phService.removeProposal(p1);
 
 		Mockito.verify(phRepository).removeProposalFromNew("ac123", "p1");
 	}
-	
+
 	@Test
 	public void removeProposal_WebsiteOwner_NotRejected() {
 		Proposal p2 = new Proposal();
@@ -129,13 +129,13 @@ public class ProposalsHolderServiceTest {
 		Mockito.when(adService.getAccountIdUsingAdId("ad22")).thenReturn("ac_ad1");
 		Mockito.when(websiteService.getAccountIdUsingWebsiteId("w2")).thenReturn("ac_web1");
 		Mockito.when(phRepository.getSentProposalsByAccountId("ac_web1")).thenReturn(Arrays.asList("p2"));
-		
+
 		phService.removeProposal(p2);
 
 		Mockito.verify(phRepository).removeProposalFromSent("ac_web1", "p2");
 		Mockito.verify(phRepository).removeProposalFromNew("ac_ad1", "p2");
 	}
-	
+
 	@Test
 	public void removeProposal_WebsiteOwner_Rejected() {
 		Proposal p3 = new Proposal();
@@ -147,7 +147,7 @@ public class ProposalsHolderServiceTest {
 		Mockito.when(adService.getAccountIdUsingAdId("ad3")).thenReturn("ac3_ad");
 		Mockito.when(websiteService.getAccountIdUsingWebsiteId("w3")).thenReturn("ac3_web");
 		Mockito.when(phRepository.getNewProposalsByAccountId("ac3_web")).thenReturn(Arrays.asList("p3"));
-		
+
 		phService.removeProposal(p3);
 
 		Mockito.verify(phRepository).removeProposalFromNew("ac3_web", "p3");

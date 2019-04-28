@@ -1,4 +1,4 @@
-package com.harystolho.adexchange.dao.impl;
+package com.harystolho.adexchange.repositories.impl;
 
 import java.util.List;
 
@@ -8,9 +8,9 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import com.harystolho.adexchange.dao.RepositoryResponse;
-import com.harystolho.adexchange.dao.WebsiteRepository;
 import com.harystolho.adexchange.models.Website;
+import com.harystolho.adexchange.repositories.RepositoryResponse;
+import com.harystolho.adexchange.repositories.WebsiteRepository;
 import com.harystolho.adexchange.utils.Pair;
 
 @Service

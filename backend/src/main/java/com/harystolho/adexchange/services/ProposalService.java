@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-import com.harystolho.adexchange.dao.ProposalRepository;
 import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.models.Proposal.PaymentMethod;
 import com.harystolho.adexchange.models.ProposalsHolder;
 import com.harystolho.adexchange.models.ads.Ad;
+import com.harystolho.adexchange.repositories.ProposalRepository;
 import com.harystolho.adexchange.utils.Nothing;
 import com.harystolho.adexchange.utils.Pair;
 

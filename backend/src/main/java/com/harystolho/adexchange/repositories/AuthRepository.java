@@ -1,4 +1,4 @@
-package com.harystolho.adexchange.dao;
+package com.harystolho.adexchange.repositories;
 
 import com.harystolho.adexchange.models.Account;
 import com.harystolho.adexchange.utils.Nothing;

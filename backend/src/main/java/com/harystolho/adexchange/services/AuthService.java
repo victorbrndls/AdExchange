@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.harystolho.adexchange.auth.TokenService;
-import com.harystolho.adexchange.dao.AuthRepository;
-import com.harystolho.adexchange.dao.RepositoryResponse;
 import com.harystolho.adexchange.models.Account;
+import com.harystolho.adexchange.repositories.AuthRepository;
+import com.harystolho.adexchange.repositories.RepositoryResponse;
 import com.harystolho.adexchange.utils.Nothing;
 import com.harystolho.adexchange.utils.Pair;
 import com.harystolho.adexchange.utils.PasswordSecurity;

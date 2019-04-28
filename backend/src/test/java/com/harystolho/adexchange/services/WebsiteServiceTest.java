@@ -4,24 +4,25 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import com.harystolho.adexchange.dao.RepositoryResponse;
-import com.harystolho.adexchange.dao.WebsiteRepository;
 import com.harystolho.adexchange.models.Website;
+import com.harystolho.adexchange.repositories.RepositoryResponse;
+import com.harystolho.adexchange.repositories.WebsiteRepository;
 import com.harystolho.adexchange.utils.Pair;
 
+@RunWith(MockitoJUnitRunner.class)
 public class WebsiteServiceTest {
 
-	private static WebsiteService websiteService;
-	private static WebsiteRepository websiteRepository;
+	@InjectMocks
+	WebsiteService websiteService;
 
-	@BeforeClass
-	public static void init() {
-		websiteRepository = Mockito.mock(WebsiteRepository.class);
-
-		websiteService = new WebsiteService(websiteRepository);
-	}
+	@Mock
+	WebsiteRepository websiteRepository;
 
 	@Test
 	public void createWebsiteWithInvalidURL() {

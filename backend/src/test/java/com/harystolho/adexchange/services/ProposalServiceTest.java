@@ -2,44 +2,42 @@ package com.harystolho.adexchange.services;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import com.harystolho.adexchange.dao.ProposalRepository;
 import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.models.Website;
 import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.models.ads.Ad.AdType;
+import com.harystolho.adexchange.repositories.ProposalRepository;
 import com.harystolho.adexchange.utils.Nothing;
 import com.harystolho.adexchange.utils.Pair;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ProposalServiceTest {
 
-	private static ProposalService proposalService;
+	@InjectMocks
+	ProposalService proposalService;
 
-	private static ProposalRepository proposalRepository;
+	@Mock
+	ProposalRepository proposalRepository;
+	@Mock
+	ProposalsHolderService proposalsHolderService;
+	@Mock
+	WebsiteService websiteService;
+	@Mock
+	AdService adService;
 
-	private static ProposalsHolderService proposalsHolderService;
-	private static WebsiteService websiteService;
-	private static AdService adService;
-
-	@BeforeClass
-	public static void init() {
-		proposalRepository = Mockito.mock(ProposalRepository.class);
-		proposalsHolderService = Mockito.mock(ProposalsHolderService.class);
-		websiteService = Mockito.mock(WebsiteService.class);
-		adService = Mockito.mock(AdService.class);
-
-		Mockito.when(proposalRepository.save(Mockito.any())).thenReturn(new Proposal());
-
-		Mockito.when(websiteService.getWebsiteById(Mockito.anyString()))
+	@Before
+	public void beforeTests() {
+		Mockito.when(websiteService.getWebsiteById(Mockito.any()))
 				.thenReturn(Pair.of(ServiceResponse.OK, new Website("", "")));
-
-		Mockito.when(adService.getAdById(Mockito.anyString()))
-				.thenReturn(Pair.of(ServiceResponse.OK, new Ad(AdType.TEXT)));
-
-		proposalService = new ProposalService(proposalRepository, proposalsHolderService, websiteService, adService);
+		Mockito.when(adService.getAdById(Mockito.any())).thenReturn(Pair.of(ServiceResponse.OK, new Ad(AdType.TEXT)));
 	}
 
 	@Test
@@ -90,7 +88,6 @@ public class ProposalServiceTest {
 
 		Ad ad = new Ad(AdType.TEXT);
 		ad.setAccountId("acc1");
-		Mockito.when(adService.getAdById("ad123")).thenReturn(Pair.of(ServiceResponse.OK, ad));
 
 		Pair<ServiceResponse, Nothing> response = proposalService.deleteProposalById("acc123", "123");
 

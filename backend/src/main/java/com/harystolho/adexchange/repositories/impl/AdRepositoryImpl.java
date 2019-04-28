@@ -1,4 +1,4 @@
-package com.harystolho.adexchange.dao.impl;
+package com.harystolho.adexchange.repositories.impl;
 
 import java.util.List;
 
@@ -7,8 +7,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import com.harystolho.adexchange.dao.AdRepository;
 import com.harystolho.adexchange.models.ads.Ad;
+import com.harystolho.adexchange.repositories.AdRepository;
 
 @Service
 public class AdRepositoryImpl implements AdRepository {

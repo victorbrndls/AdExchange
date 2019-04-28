@@ -4,31 +4,31 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import com.harystolho.adexchange.auth.TokenService;
-import com.harystolho.adexchange.dao.AuthRepository;
-import com.harystolho.adexchange.dao.RepositoryResponse;
 import com.harystolho.adexchange.models.Account;
+import com.harystolho.adexchange.repositories.AuthRepository;
+import com.harystolho.adexchange.repositories.RepositoryResponse;
 import com.harystolho.adexchange.services.AuthService;
 import com.harystolho.adexchange.utils.Nothing;
 import com.harystolho.adexchange.utils.Pair;
 import com.harystolho.adexchange.utils.PasswordSecurity;
 
+@RunWith(MockitoJUnitRunner.class)
 public class AuthServiceTest {
 
+	@InjectMocks
 	private static AuthService authService;
 
+	@Mock
 	private static AuthRepository authRepository;
+	@Mock
 	private static TokenService tokenService;
-
-	@BeforeClass
-	public static void init() {
-		authRepository = Mockito.mock(AuthRepository.class);
-		tokenService = Mockito.mock(TokenService.class);
-
-		authService = new AuthService(authRepository, tokenService);
-	}
 
 	@Test
 	public void createAccountWithInvalidEmail() {
