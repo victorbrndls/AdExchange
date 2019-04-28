@@ -146,13 +146,14 @@ class Proposal extends Component {
         });
     }
 
-    render({id, websiteId, adId, duration, paymentMethod, paymentValue, creationDate, type, rejected}, {websiteName}) {
+    render({id, websiteId, adId, duration, paymentMethod, paymentValue, creationDate, type, version, rejected}, {websiteName}) {
         // TODO display the creator name
         return (
             <div class="proposal shadow">
                 <div>
                     <div>
                         <span class="mr-3">Proposta para "{websiteName}"</span>
+                        <span class="badge badge-secondary" style="font-variant: small-caps;">v {version}</span>
                         {rejected && (<span class="badge badge-danger">Rejeitada</span>)}
                     </div>
                     <div class="text-muted" style="font-size: 13px; margin-top: 2px;">

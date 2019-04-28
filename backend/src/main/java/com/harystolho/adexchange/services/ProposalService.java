@@ -125,6 +125,7 @@ public class ProposalService {
 		prop.setDuration(Integer.parseInt(duration));
 		prop.setPaymentMethod(PaymentMethod.valueOf(paymentMethod));
 		prop.setPaymentValue(paymentValue);
+		prop.setVersion(prop.getVersion() + 1);
 
 		proposalRepository.save(prop);
 

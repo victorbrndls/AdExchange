@@ -256,7 +256,7 @@ export default class AddProposal extends Component {
                                 <div id="dashboardDeleteButton" class="btn dashboard-add__button"
                                      onClick={this.rejectProposal.bind(this)}>
                                     Rejeitar Proposta
-                                </div>
+                                </div> {/*//TODO add a confirm modal to 'reject proposal'*/}
                             </div>)}
                     </div>
                 </div>
