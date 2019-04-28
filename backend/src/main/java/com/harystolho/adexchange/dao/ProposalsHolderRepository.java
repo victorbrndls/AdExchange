@@ -20,4 +20,6 @@ public interface ProposalsHolderRepository {
 	void removeProposalFromNew(String accountId, String proposalId);
 
 	List<String> getNewProposalsByAccountId(String accountId);
+
+	List<String> getSentProposalsByAccountId(String accountId);
 }

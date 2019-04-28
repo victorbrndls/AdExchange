@@ -79,8 +79,13 @@ public class ProposalService {
 	public Pair<ServiceResponse, Nothing> deleteProposalById(String accountId, String id) {
 		Proposal proposal = proposalRepository.getById(id);
 
-		if (!proposalBelongsToUser(accountId, proposal))
-			return Pair.of(ServiceResponse.FAIL, null);
+		if (!proposal.isRejected()) {
+			if (!proposalsHolderService.containsProposalInSent(accountId, proposal))
+				return Pair.of(ServiceResponse.FAIL, null);
+		} else {
+			if (!proposalsHolderService.containsProposalInNew(accountId, proposal))
+				return Pair.of(ServiceResponse.FAIL, null);
+		}
 
 		proposalRepository.deleteById(id);
 		proposalsHolderService.removeProposal(proposal);
@@ -124,7 +129,7 @@ public class ProposalService {
 		proposalRepository.save(prop);
 
 		proposalsHolderService.reviewProposal(prop);
-		
+
 		return Pair.of(ServiceResponse.OK, null);
 	}
 
@@ -133,7 +138,7 @@ public class ProposalService {
 	 * @param id        proposal id
 	 * @return TRUE if the {accountId} is the user who created the proposal
 	 */
-	private boolean proposalBelongsToUser(String accountId, Proposal proposal) {
+	private boolean userCreatedProposal(String accountId, Proposal proposal) {
 		if (proposal != null) {
 			Pair<ServiceResponse, Ad> ad = adService.getAdById(proposal.getAdId());
 

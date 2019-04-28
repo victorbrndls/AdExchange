@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.harystolho.adexchange.dao.ProposalsHolderRepository;
 import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.models.ProposalsHolder;
+import com.harystolho.adexchange.utils.Pair;
 
 @Service
 public class ProposalsHolderService {
@@ -77,32 +78,36 @@ public class ProposalsHolderService {
 		addNewProposalToAccount(recieverId, proposal.getId());
 	}
 
-	/**
-	 * Deletes the proposal from the sender and reciever's proposals holder. This
-	 * method deletes the proposal from the sender's perspective, if you wish to
-	 * delete the proposal from the reciver's perspective call
-	 * {@link #rejectProposal(Proposal)}
-	 * 
-	 * @param proposal
-	 */
 	public void removeProposal(Proposal proposal) {
-		String senderId = getSenderIdUsingAdId(proposal.getAdId());
-		String recieverId = getRecieverIdUsingWebsiteId(proposal.getWebsiteId());
+		String adOwner = getSenderIdUsingAdId(proposal.getAdId());
+		String websiteOwner = getRecieverIdUsingWebsiteId(proposal.getWebsiteId());
 
-		if (!proposal.isRejected()) {
-			removeSentProposalFromAccount(senderId, proposal.getId());
-			removeNewProposalFromAccount(recieverId, proposal.getId());
+		String remover = adOwner;
+		String other = websiteOwner;
+
+		if (proposal.isRejected()) {
+			if (containsProposalInNew(websiteOwner, proposal)) {
+				remover = websiteOwner;
+				other = adOwner;
+			}
+
+			removeNewProposalFromAccount(remover, proposal.getId());
 		} else {
-			removeNewProposalFromAccount(senderId, proposal.getId());
+			if (containsProposalInSent(websiteOwner, proposal)) {
+				remover = websiteOwner;
+				other = adOwner;
+			}
+
+			removeSentProposalFromAccount(remover, proposal.getId());
+			removeNewProposalFromAccount(other, proposal.getId());
 		}
 	}
 
 	public void rejectProposal(Proposal proposal) {
-		String senderId = getSenderIdUsingAdId(proposal.getAdId());
-		String recieverId = getRecieverIdUsingWebsiteId(proposal.getWebsiteId());
+		Pair<String, String> pair = getExecutorAndOther(proposal);
 
-		String deleter = recieverId;
-		String other = deleter.equals(recieverId) ? senderId : recieverId;
+		String deleter = pair.getFist();
+		String other = pair.getSecond();
 
 		// Remove the proposal from new for the account that rejected it
 		removeNewProposalFromAccount(deleter, proposal.getId());
@@ -117,18 +122,24 @@ public class ProposalsHolderService {
 	}
 
 	public void reviewProposal(Proposal proposal) {
-		String acc1 = getSenderIdUsingAdId(proposal.getAdId());
-		String acc2 = getRecieverIdUsingWebsiteId(proposal.getWebsiteId());
+		Pair<String, String> pair = getExecutorAndOther(proposal);
 
-		String reviewer = acc2;
-		String other = acc1;
+		swapProposal(pair.getFist(), pair.getSecond(), proposal);
+	}
 
-		if (containsProposalInNew(acc1, proposal)) {
-			reviewer = acc1;
-			other = acc2;
+	private Pair<String, String> getExecutorAndOther(Proposal p) {
+		String adOwner = getSenderIdUsingAdId(p.getAdId());
+		String websiteOwner = getRecieverIdUsingWebsiteId(p.getWebsiteId());
+
+		String executor = websiteOwner;
+		String other = adOwner;
+
+		if (containsProposalInNew(adOwner, p)) {
+			executor = adOwner;
+			other = websiteOwner;
 		}
 
-		swapProposal(reviewer, other, proposal);
+		return Pair.of(executor, other);
 	}
 
 	/**
@@ -148,6 +159,12 @@ public class ProposalsHolderService {
 
 	public boolean containsProposalInNew(String accountId, Proposal proposal) {
 		List<String> proposals = phRepository.getNewProposalsByAccountId(accountId);
+
+		return proposals.stream().anyMatch(propId -> propId.equals(proposal.getId()));
+	}
+
+	public boolean containsProposalInSent(String accountId, Proposal proposal) {
+		List<String> proposals = phRepository.getSentProposalsByAccountId(accountId);
 
 		return proposals.stream().anyMatch(propId -> propId.equals(proposal.getId()));
 	}

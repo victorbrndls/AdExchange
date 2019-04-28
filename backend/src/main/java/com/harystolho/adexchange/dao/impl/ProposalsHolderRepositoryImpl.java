@@ -68,9 +68,18 @@ public class ProposalsHolderRepositoryImpl implements ProposalsHolderRepository 
 	public List<String> getNewProposalsByAccountId(String accountId) {
 		Query query = Query.query(Criteria.where("accountId").is(accountId));
 		query.fields().include("newProposals");
-		
+
 		ProposalsHolder ph = mongoOperations.findOne(query, ProposalsHolder.class);
 		return ph.getNewProposals();
+	}
+
+	@Override
+	public List<String> getSentProposalsByAccountId(String accountId) {
+		Query query = Query.query(Criteria.where("accountId").is(accountId));
+		query.fields().include("sentProposals");
+
+		ProposalsHolder ph = mongoOperations.findOne(query, ProposalsHolder.class);
+		return ph.getSentProposals();
 	}
 
 }
