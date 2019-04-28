@@ -1,8 +1,7 @@
-package com.harystolho.adexchange.repositories;
+package com.harystolho.adexchange.repositories.ad;
 
 import java.util.List;
 
-import com.harystolho.adexchange.models.Website;
 import com.harystolho.adexchange.models.ads.Ad;
 
 public interface AdRepository {

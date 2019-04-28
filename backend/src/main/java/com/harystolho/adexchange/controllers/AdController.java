@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.harystolho.adexchange.models.Website;
 import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.services.AdService;
 import com.harystolho.adexchange.services.ServiceResponse;

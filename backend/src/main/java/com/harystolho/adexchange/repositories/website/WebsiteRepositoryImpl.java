@@ -1,4 +1,4 @@
-package com.harystolho.adexchange.repositories.impl;
+package com.harystolho.adexchange.repositories.website;
 
 import java.util.List;
 
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.harystolho.adexchange.models.Website;
 import com.harystolho.adexchange.repositories.RepositoryResponse;
-import com.harystolho.adexchange.repositories.WebsiteRepository;
 import com.harystolho.adexchange.utils.Pair;
 
 @Service

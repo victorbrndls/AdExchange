@@ -127,7 +127,11 @@ export default class AddProposal extends Component {
     }
 
     acceptProposal() {
-
+        AdAxiosPost.post(`${HOST}/api/v1/proposals/accept/${this.state.proposal.id}`).then((response) => {
+            route('/dashboard/contracts');
+        }).catch((error) => {
+            console.log(error.response);
+        });
     }
 
     sendProposalRevision() {
@@ -248,7 +252,7 @@ export default class AddProposal extends Component {
                             <div>
                                 <div id="dashboardAcceptButton" class="btn dashboard-add__button"
                                      onClick={this.acceptProposal.bind(this)}>
-                                    Aceitar Proposta
+                                    Aceitar Proposta {/*//TODO don't show this if i am the proposal owner*/}
                                 </div>
                                 <div class="btn dashboard-add__button" onClick={this.sendProposalRevision.bind(this)}>
                                     Enviar Revisao

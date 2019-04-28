@@ -5,12 +5,10 @@ import java.util.Date;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.harystolho.adexchange.models.Contract.PaymentMethod;
+
 @Document("proposals")
 public class Proposal {
-
-	public enum PaymentMethod {
-		PAY_PER_CLICK, PAY_PER_VIEW
-	}
 
 	public Proposal() {
 		creationDate = Date.from(Instant.now());

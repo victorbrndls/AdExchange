@@ -12,7 +12,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import com.harystolho.adexchange.models.Website;
 import com.harystolho.adexchange.repositories.RepositoryResponse;
-import com.harystolho.adexchange.repositories.WebsiteRepository;
+import com.harystolho.adexchange.repositories.website.WebsiteRepository;
 import com.harystolho.adexchange.utils.Pair;
 
 @RunWith(MockitoJUnitRunner.class)

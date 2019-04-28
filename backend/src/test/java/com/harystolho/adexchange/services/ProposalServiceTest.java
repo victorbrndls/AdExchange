@@ -14,7 +14,7 @@ import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.models.Website;
 import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.models.ads.Ad.AdType;
-import com.harystolho.adexchange.repositories.ProposalRepository;
+import com.harystolho.adexchange.repositories.proposal.ProposalRepository;
 import com.harystolho.adexchange.utils.Nothing;
 import com.harystolho.adexchange.utils.Pair;
 

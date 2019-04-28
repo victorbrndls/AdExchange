@@ -14,7 +14,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import com.harystolho.adexchange.models.Proposal;
-import com.harystolho.adexchange.repositories.ProposalsHolderRepository;
+import com.harystolho.adexchange.repositories.proposalsHolder.ProposalsHolderRepository;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProposalsHolderServiceTest {

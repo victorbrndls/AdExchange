@@ -146,7 +146,7 @@ class Proposal extends Component {
         });
     }
 
-    render({id, websiteId, adId, duration, paymentMethod, paymentValue, creationDate, type, version, rejected}, {websiteName}) {
+    render({id, creationDate, type, version, rejected}, {websiteName}) {
         // TODO display the creator name
         return (
             <div class="proposal shadow">
@@ -157,7 +157,8 @@ class Proposal extends Component {
                         {rejected && (<span class="badge badge-danger">Rejeitada</span>)}
                     </div>
                     <div class="text-muted" style="font-size: 13px; margin-top: 2px;">
-                        {type === 'NEW' ? (<span style="margin-right: 50px;">De: Alguem Para Min</span>) : ""}
+                        {type === 'NEW' ? (
+                            <span style="margin-right: 50px;">De: Alguem Para Min</span>) : ""}
                         <span>Enviada em: {new Date(creationDate).toLocaleDateString()}</span>
                     </div>
                 </div>

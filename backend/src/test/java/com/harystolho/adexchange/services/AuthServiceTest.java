@@ -12,8 +12,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import com.harystolho.adexchange.auth.TokenService;
 import com.harystolho.adexchange.models.Account;
-import com.harystolho.adexchange.repositories.AuthRepository;
 import com.harystolho.adexchange.repositories.RepositoryResponse;
+import com.harystolho.adexchange.repositories.auth.AuthRepository;
 import com.harystolho.adexchange.services.AuthService;
 import com.harystolho.adexchange.utils.Nothing;
 import com.harystolho.adexchange.utils.Pair;

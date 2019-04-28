@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 
 import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
 
 @Configuration
 public class MongoConfig extends AbstractMongoConfiguration{

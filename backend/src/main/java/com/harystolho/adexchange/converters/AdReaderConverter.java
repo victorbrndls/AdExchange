@@ -1,13 +1,12 @@
 package com.harystolho.adexchange.converters;
 
 import org.bson.Document;
-import org.bson.types.ObjectId;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.ReadingConverter;
+
 import com.harystolho.adexchange.models.ads.Ad;
-import com.harystolho.adexchange.models.ads.TextAd;
-import com.harystolho.adexchange.models.ads.Ad.AdType;
 import com.harystolho.adexchange.models.ads.ImageAd;
+import com.harystolho.adexchange.models.ads.TextAd;
 
 @ReadingConverter
 public class AdReaderConverter implements Converter<Document, Ad> {

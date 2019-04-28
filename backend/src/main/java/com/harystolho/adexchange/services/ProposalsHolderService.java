@@ -1,7 +1,6 @@
 package com.harystolho.adexchange.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.models.ProposalsHolder;
-import com.harystolho.adexchange.repositories.ProposalsHolderRepository;
+import com.harystolho.adexchange.repositories.proposalsHolder.ProposalsHolderRepository;
 import com.harystolho.adexchange.utils.Pair;
 
 @Service

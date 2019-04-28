@@ -1,4 +1,4 @@
-package com.harystolho.adexchange.repositories.impl;
+package com.harystolho.adexchange.repositories.auth;
 
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -6,7 +6,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.harystolho.adexchange.models.Account;
-import com.harystolho.adexchange.repositories.AuthRepository;
 
 @Service
 public class AuthRespositoryImpl implements AuthRepository {

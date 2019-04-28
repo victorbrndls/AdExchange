@@ -2,16 +2,14 @@ package com.harystolho.adexchange.services;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import com.harystolho.adexchange.models.Contract.PaymentMethod;
+import com.harystolho.adexchange.repositories.proposal.ProposalRepository;
 import com.harystolho.adexchange.models.Proposal;
-import com.harystolho.adexchange.models.Proposal.PaymentMethod;
 import com.harystolho.adexchange.models.ProposalsHolder;
-import com.harystolho.adexchange.models.ads.Ad;
-import com.harystolho.adexchange.repositories.ProposalRepository;
 import com.harystolho.adexchange.utils.Nothing;
 import com.harystolho.adexchange.utils.Pair;
 
@@ -23,13 +21,15 @@ public class ProposalService {
 
 	private WebsiteService websiteService;
 	private AdService adService;
+	private ContractService contractService;
 
 	public ProposalService(ProposalRepository proposalRepository, ProposalsHolderService proposalsHolderService,
-			WebsiteService websiteService, AdService adService) {
+			WebsiteService websiteService, AdService adService, ContractService contractService) {
 		this.proposalRepository = proposalRepository;
 		this.proposalsHolderService = proposalsHolderService;
 		this.websiteService = websiteService;
 		this.adService = adService;
+		this.contractService = contractService;
 	}
 
 	public Pair<ServiceResponse, ProposalsHolder> getProposalsByAccountId(String accountId) {
@@ -132,6 +132,17 @@ public class ProposalService {
 		proposalsHolderService.reviewProposal(prop);
 
 		return Pair.of(ServiceResponse.OK, null);
+	}
+
+	public Pair<ServiceResponse, Nothing> acceptProposal(String accountId, String id) {
+		Proposal prop = proposalRepository.getById(id);
+
+		if (!proposalsHolderService.containsProposalInNew(accountId, prop))
+			return Pair.of(ServiceResponse.FAIL, null);
+
+		ServiceResponse resp = contractService.createContractFromProposal(prop);
+		
+		return Pair.of(resp, null);
 	}
 
 	/**

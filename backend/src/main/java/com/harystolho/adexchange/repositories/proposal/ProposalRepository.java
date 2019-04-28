@@ -1,7 +1,6 @@
-package com.harystolho.adexchange.repositories;
+package com.harystolho.adexchange.repositories.proposal;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.harystolho.adexchange.models.Proposal;
 

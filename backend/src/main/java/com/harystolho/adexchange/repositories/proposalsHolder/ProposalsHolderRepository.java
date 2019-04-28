@@ -1,8 +1,7 @@
-package com.harystolho.adexchange.repositories;
+package com.harystolho.adexchange.repositories.proposalsHolder;
 
 import java.util.List;
 
-import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.models.ProposalsHolder;
 
 public interface ProposalsHolderRepository {
