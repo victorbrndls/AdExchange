@@ -356,7 +356,7 @@ body.auth #header {
     font-weight: bold;
 }
 
-.proposal{
+.proposal {
     padding: 7px 11px;
     background-color: white;
     margin-bottom: 15px;
@@ -365,28 +365,48 @@ body.auth #header {
     justify-content: space-between;
 }
 
-.proposal-type__header{
+.proposal-type__header {
     font-size: 25px;
     font-family: Raleway, serif;
     border-bottom: solid 2px #1768c8;
 }
 
-.proposal-type__container{
+.proposal-type__container {
     margin-bottom: 9px;
 }
 
-.proposal-type__button{
+.proposal-type__button {
     background-color: rgb(207, 113, 34);
 }
 
-#dashboardDeleteButton{
+#dashboardDeleteButton {
     background-color: rgb(255, 64, 104);
 }
 
-.proposals-edit__buttons .btn{
+.proposals-edit__buttons .btn {
     margin-right: 17px;
 }
 
-#dashboardAcceptButton{
+#dashboardAcceptButton {
     background-color: rgb(62, 216, 58);
+}
+
+.contract {
+    background-color: white;
+    border-radius: 6px;
+}
+
+.contract__header {
+    border-bottom: 1px solid #e2e5e8;
+    padding: 10px 19px;
+    font-family: Raleway, serif;
+    font-size: 24px;
+}
+
+.contract__body{
+    padding: 11px 19px;
+}
+
+.contract__body-item{
+    padding: 2px 0;
 }

@@ -8,6 +8,13 @@ import com.harystolho.adexchange.models.ProposalsHolder;
 import com.harystolho.adexchange.models.UserData;
 import com.harystolho.adexchange.repositories.userData.UserDataRepository;
 
+/**
+ * Don't forget to call {@link #createUserDataIfNonExistent(String)} before
+ * adding something to the database
+ * 
+ * @author Harystolho
+ *
+ */
 @Service
 public class UserDataService {
 
