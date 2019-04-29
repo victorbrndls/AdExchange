@@ -4,6 +4,7 @@ import {LeftArrow} from "../../utils/Components";
 import {route} from "preact-router";
 import {AdAxiosGet} from "../../../auth";
 import {HOST} from "../../../configs";
+import {ImageAd, TextAd} from "../ads/CreateAdd";
 
 export default class Contracts extends Component {
     constructor(props) {
@@ -65,7 +66,9 @@ class Contract extends Component {
         super(props);
 
         this.state = {
-            websiteName: ""
+            websiteName: "",
+            showAd: false,
+            ad: null
         };
 
         this.requestWebsiteInformation();
@@ -80,12 +83,29 @@ class Contract extends Component {
         });
     }
 
-    static convertDate(date){
-        let dt = new Date(date);
-        return `${dt.getDate()}/${dt.getUTCMonth()}/${dt.getUTCFullYear()}`;
+    requestAdInformation(){
+        if (this.props.adId === undefined)
+            return;
+
+        AdAxiosGet.get(`${HOST}/api/v1/ads/${this.props.adId}`).then((response) => {
+            this.setState({ad: response.data});
+        });
     }
 
-    render({expiration, paymentMethod, paymentValue}, {websiteName}) {
+    handleShowAd(){
+        this.setState({showAd: !this.state.showAd});
+
+        if(this.state.ad === null){
+            this.requestAdInformation();
+        }
+    }
+
+    static convertDate(date) {
+        let dt = new Date(date);
+        return `${dt.getDate()}/${dt.getUTCMonth() + 1}/${dt.getUTCFullYear()}`;
+    }
+
+    render({expiration, paymentMethod, paymentValue}, {websiteName, showAd, ad}) {
         return (
             <div class="contract shadow">
                 <div class="contract__header">
@@ -93,8 +113,22 @@ class Contract extends Component {
                 </div>
                 <div class="contract__body">
                     <div class="contract__body-item">Válido até {Contract.convertDate(expiration)}</div>
-                    <div class="contract__body-item">Pagemento {paymentMethod === 'PAY_PER_CLICK' ? "por Click" : "por Visualizacao"}</div>
+                    <div class="contract__body-item">
+                        Pagemento {paymentMethod === 'PAY_PER_CLICK' ? "por Click" : "por Visualizacao"}</div>
                     <div class="contract__body-item">Valor do pagamento R${paymentValue}</div>
+                    <div class="contract__body-item">
+                        <div class="contract__body-show_ad" onClick={this.handleShowAd.bind(this)}>Ver Anuncio
+                        </div>
+                        {showAd && ad !== null && (
+                            <div style="justify-content: center; display: flex; position: relative;">
+                                {/*<div class="blocking-container"/>*/}
+                                <div class="ads-ad-wrapper mt-4">
+                                    {ad.type === 'TEXT' ? (<TextAd {...ad}/>) : (
+                                        <ImageAd {...ad}/>)}
+                                </div>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         )

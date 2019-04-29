@@ -394,6 +394,7 @@ body.auth #header {
 .contract {
     background-color: white;
     border-radius: 6px;
+    margin-bottom: 30px;
 }
 
 .contract__header {
@@ -409,4 +410,9 @@ body.auth #header {
 
 .contract__body-item{
     padding: 2px 0;
+}
+
+.contract__body-show_ad{
+    color: #0584ff;
+    cursor: pointer;
 }
