@@ -42,9 +42,9 @@ public class ProposalController {
 	 */
 	public ResponseEntity<Object> getProposals(@RequestAttribute("ae.accountId") String accountId) {
 
-		Pair<ServiceResponse, ProposalsHolder> response = proposalService.getProposalsByAccountId(accountId);
+		ServiceResponse<ProposalsHolder> response = proposalService.getProposalsByAccountId(accountId);
 
-		return ResponseEntity.status(HttpStatus.OK).body(response.getSecond());
+		return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
 	}
 
 	@GetMapping("/api/v1/proposals/{id}")
@@ -52,10 +52,10 @@ public class ProposalController {
 	public ResponseEntity<Object> getProposalById(@RequestAttribute("ae.accountId") String accountId,
 			@PathVariable String id) {
 
-		Pair<ServiceResponse, Proposal> response = proposalService.getProposalById(accountId, id);
+		ServiceResponse<Proposal> response = proposalService.getProposalById(accountId, id);
 
-		ObjectNode node = (ObjectNode) new ObjectMapper().valueToTree(response.getSecond());
-		node.put("owner", response.getSecond().getCreatorAccountId().equals(accountId));
+		ObjectNode node = (ObjectNode) new ObjectMapper().valueToTree(response.getReponse());
+		node.put("owner", response.getReponse().getCreatorAccountId().equals(accountId));
 
 		return ResponseEntity.status(HttpStatus.OK).body(node);
 	}
@@ -67,9 +67,9 @@ public class ProposalController {
 	 * @return
 	 */
 	public ResponseEntity<Object> getProposalsById(String ids) {
-		Pair<ServiceResponse, List<Proposal>> response = proposalService.getProposalsById(ids);
+		ServiceResponse<List<Proposal>> response = proposalService.getProposalsById(ids);
 
-		return ResponseEntity.status(HttpStatus.OK).body(response.getSecond());
+		return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
 	}
 
 	@PostMapping("/api/v1/proposals")
@@ -77,10 +77,10 @@ public class ProposalController {
 	public ResponseEntity<Object> createProposal(@RequestAttribute("ae.accountId") String accountId, String websiteId,
 			String adId, String duration, String paymentMethod, String paymentValue) {
 
-		Pair<ServiceResponse, Proposal> response = proposalService.createProposal(accountId, websiteId, adId, duration,
+		ServiceResponse<Proposal> response = proposalService.createProposal(accountId, websiteId, adId, duration,
 				paymentMethod, paymentValue);
 
-		switch (response.getFist()) {
+		switch (response.getErrorType()) {
 		case INVALID_WEBSITE_ID:
 		case INVALID_AD_ID:
 		case INVALID_DURATION:
@@ -88,7 +88,7 @@ public class ProposalController {
 		case INVALID_PAYMENT_VALUE:
 		case FAIL:
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new JsonResponse().pair("error", response.getFist().toString()).build());
+					.body(new JsonResponse().pair("error", response.getMessage()).build());
 		default:
 			return ResponseEntity.status(HttpStatus.CREATED).body(response.getSecond());
 		}
@@ -101,10 +101,10 @@ public class ProposalController {
 
 		Pair<ServiceResponse, Nothing> response = proposalService.deleteProposalById(accountId, id);
 
-		switch (response.getFist()) {
+		switch (response.getFist().getErrorType()) {
 		case FAIL:
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new JsonResponse().pair("error", response.getFist().toString()).build());
+					.body(new JsonResponse().pair("error", response.getFist().getMessage()).build());
 		default:
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}
@@ -118,10 +118,10 @@ public class ProposalController {
 
 		Pair<ServiceResponse, Nothing> response = proposalService.rejectProposalById(accountId, id);
 
-		switch (response.getFist()) {
+		switch (response.getFist().getErrorType()) {
 		case FAIL:
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new JsonResponse().pair("error", response.getFist().toString()).build());
+					.body(new JsonResponse().pair("error", response.getFist().getMessage()).build());
 		default:
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}
@@ -135,13 +135,13 @@ public class ProposalController {
 		Pair<ServiceResponse, Nothing> response = proposalService.reviewProposal(accountId, id, duration, paymentMethod,
 				paymentValue);
 
-		switch (response.getFist()) {
+		switch (response.getFist().getErrorType()) {
 		case INVALID_DURATION:
 		case INVALID_PAYMENT_METHOD:
 		case INVALID_PAYMENT_VALUE:
 		case FAIL:
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new JsonResponse().pair("error", response.getFist().toString()).build());
+					.body(new JsonResponse().pair("error", response.getFist().getMessage()).build());
 		default:
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}
@@ -154,10 +154,10 @@ public class ProposalController {
 
 		Pair<ServiceResponse, Nothing> response = proposalService.acceptProposal(accountId, id);
 
-		switch (response.getFist()) {
+		switch (response.getFist().getErrorType()) {
 		case FAIL:
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new JsonResponse().pair("error", response.getFist().toString()).build());
+					.body(new JsonResponse().pair("error", response.getFist().getMessage()).build());
 		default:
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}

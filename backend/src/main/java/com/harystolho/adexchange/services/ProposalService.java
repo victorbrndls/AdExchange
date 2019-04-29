@@ -8,10 +8,10 @@ import org.springframework.util.StringUtils;
 
 import com.harystolho.adexchange.models.Contract.PaymentMethod;
 import com.harystolho.adexchange.repositories.proposal.ProposalRepository;
+import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
 import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.models.ProposalsHolder;
 import com.harystolho.adexchange.utils.Nothing;
-import com.harystolho.adexchange.utils.Pair;
 
 @Service
 public class ProposalService {
@@ -32,15 +32,15 @@ public class ProposalService {
 		this.contractService = contractService;
 	}
 
-	public Pair<ServiceResponse, ProposalsHolder> getProposalsByAccountId(String accountId) {
-		return Pair.of(ServiceResponse.OK, proposalsHolderService.getProposalHolderByAccountId(accountId));
+	public ServiceResponse<ProposalsHolder> getProposalsByAccountId(String accountId) {
+		return ServiceResponse.ok("", proposalsHolderService.getProposalHolderByAccountId(accountId));
 	}
 
-	public Pair<ServiceResponse, Proposal> getProposalById(String accountId, String id) {
-		return Pair.of(ServiceResponse.OK, proposalRepository.getById(id));
+	public ServiceResponse<Proposal> getProposalById(String accountId, String id) {
+		return ServiceResponse.ok("", proposalRepository.getById(id));
 	}
 
-	public Pair<ServiceResponse, List<Proposal>> getProposalsById(String proposalIds) {
+	public ServiceResponse<List<Proposal>> getProposalsById(String proposalIds) {
 		String[] proposalsIds = proposalIds.split(",");
 
 		List<Proposal> proposals = new ArrayList<>();
@@ -52,15 +52,15 @@ public class ProposalService {
 				proposals.add(prop);
 		}
 
-		return Pair.of(ServiceResponse.OK, proposals);
+		return ServiceResponse.ok("", proposals);
 	}
 
-	public Pair<ServiceResponse, Proposal> createProposal(String accountId, String websiteId, String adId,
-			String duration, String paymentMethod, String paymentValue) {
-		ServiceResponse validation = validateProposalFields(websiteId, adId, duration, paymentMethod, paymentValue);
+	public ServiceResponse<Proposal> createProposal(String accountId, String websiteId, String adId, String duration,
+			String paymentMethod, String paymentValue) {
+		ServiceResponseType validation = validateProposalFields(websiteId, adId, duration, paymentMethod, paymentValue);
 
-		if (validation != ServiceResponse.OK)
-			return Pair.of(validation, null);
+		if (validation != ServiceResponseType.OK)
+			return ServiceResponse.error(validation, "");
 
 		Proposal proposal = new Proposal();
 		proposal.setCreatorAccountId(accountId);
@@ -74,54 +74,54 @@ public class ProposalService {
 
 		proposalsHolderService.addProposal(saved);
 
-		return Pair.of(ServiceResponse.OK, saved);
+		return ServiceResponse.ok("", saved);
 	}
 
-	public Pair<ServiceResponse, Nothing> deleteProposalById(String accountId, String id) {
+	public ServiceResponse<Nothing> deleteProposalById(String accountId, String id) {
 		Proposal proposal = proposalRepository.getById(id);
 
 		if (proposal.isRejected()) {
 			if (!proposalsHolderService.containsProposalInNew(accountId, proposal))
-				return Pair.of(ServiceResponse.FAIL, null);
+				return ServiceResponse.notInNew();
 		} else {
 			if (!proposalsHolderService.containsProposalInSent(accountId, proposal))
-				return Pair.of(ServiceResponse.FAIL, null);
+				return ServiceResponse.notInSent();
 		}
 
 		proposalRepository.deleteById(id);
 		proposalsHolderService.removeProposal(proposal);
 
-		return Pair.of(ServiceResponse.OK, null);
+		return ServiceResponse.ok("", null);
 	}
 
-	public Pair<ServiceResponse, Nothing> rejectProposalById(String accountId, String id) {
+	public ServiceResponse<Nothing> rejectProposalById(String accountId, String id) {
 		Proposal proposal = proposalRepository.getById(id);
 
 		if (!proposalsHolderService.containsProposalInNew(accountId, proposal))
-			return Pair.of(ServiceResponse.FAIL, null);
+			return ServiceResponse.notInNew();
 
 		proposalRepository.setRejected(id);
 		proposalsHolderService.rejectProposal(proposal);
 
-		return Pair.of(ServiceResponse.OK, null);
+		return ServiceResponse.ok("", null);
 	}
 
-	public Pair<ServiceResponse, Nothing> reviewProposal(String accountId, String id, String duration,
-			String paymentMethod, String paymentValue) {
+	public ServiceResponse<Nothing> reviewProposal(String accountId, String id, String duration, String paymentMethod,
+			String paymentValue) {
 		if (!validateDuration(duration))
-			return Pair.of(ServiceResponse.INVALID_DURATION, null);
+			return ServiceResponse.error(ServiceResponseType.INVALID_DURATION, "");
 		if (!validatePaymentMethod(paymentMethod))
-			return Pair.of(ServiceResponse.INVALID_PAYMENT_METHOD, null);
+			return ServiceResponse.error(ServiceResponseType.INVALID_PAYMENT_METHOD, "");
 		if (!validatePaymentValue(paymentValue))
-			return Pair.of(ServiceResponse.INVALID_PAYMENT_VALUE, null);
+			return ServiceResponse.error(ServiceResponseType.INVALID_PAYMENT_VALUE, "");
 
 		Proposal prop = proposalRepository.getById(id);
 
 		if (prop == null)
-			return Pair.of(ServiceResponse.FAIL, null);
+			return ServiceResponse.fail("FAIL/Can't find a Proposal using the given id");
 
 		if (!proposalsHolderService.containsProposalInNew(accountId, prop))
-			return Pair.of(ServiceResponse.FAIL, null);
+			return ServiceResponse.notInNew();
 
 		prop.setDuration(Integer.parseInt(duration));
 		prop.setPaymentMethod(PaymentMethod.valueOf(paymentMethod));
@@ -132,18 +132,17 @@ public class ProposalService {
 
 		proposalsHolderService.reviewProposal(prop);
 
-		return Pair.of(ServiceResponse.OK, null);
+		return ServiceResponse.ok("", null);
 	}
 
-	public Pair<ServiceResponse, Nothing> acceptProposal(String accountId, String id) {
+	public ServiceResponse<Nothing> acceptProposal(String accountId, String id) {
 		Proposal prop = proposalRepository.getById(id);
 
 		if (!proposalsHolderService.containsProposalInNew(accountId, prop))
-			return Pair.of(ServiceResponse.FAIL, null);
+			return ServiceResponse.notInNew();
 
-		// Only the website owner can accept the proposal
 		if (!websiteService.accountOwnsWebsite(accountId, prop.getWebsiteId())) {
-			return Pair.of(ServiceResponse.FAIL, null);
+			return ServiceResponse.unauthorized();
 		}
 
 		String creator = adService.getAccountIdUsingAdId(prop.getAdId());
@@ -155,7 +154,7 @@ public class ProposalService {
 
 		proposalRepository.deleteById(id);
 
-		return Pair.of(ServiceResponse.OK, null);
+		return ServiceResponse.ok("", null);
 	}
 
 	/**
@@ -167,27 +166,27 @@ public class ProposalService {
 	 * @return <code>null</code> if the fields are valid for the proposal creation
 	 *         or the corresponding error
 	 */
-	private ServiceResponse validateProposalFields(String websiteId, String adId, String duration, String paymentMethod,
-			String paymentValue) {
+	private ServiceResponseType validateProposalFields(String websiteId, String adId, String duration,
+			String paymentMethod, String paymentValue) {
 		if (!websiteExists(websiteId))
-			return ServiceResponse.INVALID_WEBSITE_ID;
+			return ServiceResponseType.INVALID_WEBSITE_ID;
 
 		if (!adExists(adId))
-			return ServiceResponse.INVALID_AD_ID;
+			return ServiceResponseType.INVALID_AD_ID;
 
 		// Duration
 		if (!validateDuration(duration))
-			return ServiceResponse.INVALID_DURATION;
+			return ServiceResponseType.INVALID_DURATION;
 
 		// Payment Method
 		if (!validatePaymentMethod(paymentMethod))
-			return ServiceResponse.INVALID_PAYMENT_METHOD;
+			return ServiceResponseType.INVALID_PAYMENT_METHOD;
 
 		// Payment Value
 		if (!validatePaymentValue(paymentValue))
-			return ServiceResponse.INVALID_PAYMENT_VALUE;
+			return ServiceResponseType.INVALID_PAYMENT_VALUE;
 
-		return ServiceResponse.OK;
+		return ServiceResponseType.OK;
 	}
 
 	private boolean validateDuration(String duration) {
