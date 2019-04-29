@@ -31,13 +31,13 @@ public class WebsiteController {
 	@GetMapping("/api/v1/websites")
 	@CrossOrigin
 	public ResponseEntity<Object> getWebsites() {
-		Pair<ServiceResponse, List<Website>> response = websiteService.getWebsites();
+		ServiceResponse<List<Website>> response = websiteService.getWebsites();
 
-		switch (response.getFist()) {
+		switch (response.getErrorType()) {
 		case FAIL:
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getFullMessage());
 		default:
-			return ResponseEntity.status(HttpStatus.CREATED).body(response.getSecond());
+			return ResponseEntity.status(HttpStatus.CREATED).body(response.getReponse());
 		}
 
 	}
@@ -45,13 +45,13 @@ public class WebsiteController {
 	@GetMapping("/api/v1/websites/{id}")
 	@CrossOrigin
 	public ResponseEntity<Object> getWebsiteById(@PathVariable String id) {
-		Pair<ServiceResponse, Website> response = websiteService.getWebsiteById(id);
+		ServiceResponse<Website> response = websiteService.getWebsiteById(id);
 
-		switch (response.getFist()) {
+		switch (response.getErrorType()) {
 		case FAIL:
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getFullMessage());
 		default:
-			return ResponseEntity.status(HttpStatus.CREATED).body(response.getSecond());
+			return ResponseEntity.status(HttpStatus.CREATED).body(response.getReponse());
 		}
 
 	}
@@ -61,15 +61,14 @@ public class WebsiteController {
 	public ResponseEntity<Object> createWebsite(@RequestAttribute("ae.accountId") String accountId, String name,
 			String url, String logoURL, String description, String categories) {
 
-		Pair<ServiceResponse, Website> response = websiteService.createWebsite(accountId, name, url, logoURL, description,
+		ServiceResponse<Website> response = websiteService.createWebsite(accountId, name, url, logoURL, description,
 				categories);
 
-		switch (response.getFist()) {
+		switch (response.getErrorType()) {
 		case FAIL:
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new JsonResponse().pair("error", response.getFist().toString()).build());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getFullMessage());
 		default:
-			return ResponseEntity.status(HttpStatus.CREATED).body(response.getSecond());
+			return ResponseEntity.status(HttpStatus.CREATED).body(response.getReponse());
 		}
 
 	}

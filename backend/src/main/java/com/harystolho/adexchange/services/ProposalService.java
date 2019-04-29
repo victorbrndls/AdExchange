@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.harystolho.adexchange.models.Contract.PaymentMethod;
-import com.harystolho.adexchange.repositories.proposal.ProposalRepository;
-import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
 import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.models.ProposalsHolder;
+import com.harystolho.adexchange.repositories.proposal.ProposalRepository;
+import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
 import com.harystolho.adexchange.utils.Nothing;
 
 @Service

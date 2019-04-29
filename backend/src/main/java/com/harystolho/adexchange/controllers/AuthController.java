@@ -12,7 +12,6 @@ import com.harystolho.adexchange.services.AuthService;
 import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.utils.JsonResponse;
 import com.harystolho.adexchange.utils.Nothing;
-import com.harystolho.adexchange.utils.Pair;
 
 @RestController()
 public class AuthController {
@@ -29,14 +28,13 @@ public class AuthController {
 	public ResponseEntity<Object> createAccount(@RequestParam("email") String email,
 			@RequestParam("password") String password) {
 
-		Pair<ServiceResponse, Nothing> response = authService.createAccount(email, password);
+		ServiceResponse<Nothing> response = authService.createAccount(email, password);
 
-		switch (response.getFist()) {
+		switch (response.getErrorType()) {
 		case INVALID_EMAIL:
 		case EMAIL_ALREADY_EXISTS:
-		case INVALID_PASSWORD:		
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new JsonResponse().pair("error", response.getFist().toString()).build());
+		case INVALID_PASSWORD:
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getErrorType().toString());
 		default:
 			return ResponseEntity.status(HttpStatus.CREATED).body(null);
 		}
@@ -48,16 +46,15 @@ public class AuthController {
 	public ResponseEntity<Object> login(@RequestParam("email") String email,
 			@RequestParam("password") String password) {
 
-		Pair<ServiceResponse, String> response = authService.login(email, password);
+		ServiceResponse<String> response = authService.login(email, password);
 
-		switch (response.getFist()) {
-		case FAIL:		
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new JsonResponse().pair("error", response.getFist().toString()).build());
+		switch (response.getErrorType()) {
+		case FAIL:
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getFullMessage());
 		default:
-			return ResponseEntity.status(HttpStatus.OK).body(new JsonResponse().pair("token", response.getSecond()).build());
+			return ResponseEntity.status(HttpStatus.OK).body(new JsonResponse("token", response.getReponse()).build());
 		}
 
 	}
-	
+
 }

@@ -1,7 +1,5 @@
 package com.harystolho.adexchange.services;
 
-import javax.lang.model.type.ErrorType;
-
 public class ServiceResponse<T> {
 
 	public enum ServiceResponseType {

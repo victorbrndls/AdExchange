@@ -19,7 +19,6 @@ import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.models.ProposalsHolder;
 import com.harystolho.adexchange.services.ProposalService;
 import com.harystolho.adexchange.services.ServiceResponse;
-import com.harystolho.adexchange.utils.JsonResponse;
 import com.harystolho.adexchange.utils.Nothing;
 
 @RestController
@@ -83,9 +82,9 @@ public class ProposalController {
 		case INVALID_DURATION:
 		case INVALID_PAYMENT_METHOD:
 		case INVALID_PAYMENT_VALUE:
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getErrorType().toString());
 		case FAIL:
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new JsonResponse().pair("error", response.getMessage()).build());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getFullMessage());
 		default:
 			return ResponseEntity.status(HttpStatus.CREATED).body(response.getReponse());
 		}

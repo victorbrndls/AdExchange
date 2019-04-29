@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.services.AdService;
 import com.harystolho.adexchange.services.ServiceResponse;
-import com.harystolho.adexchange.utils.JsonResponse;
-import com.harystolho.adexchange.utils.Pair;
 
 @RestController
 public class AdController {
@@ -32,13 +30,13 @@ public class AdController {
 	@GetMapping("/api/v1/ads/me")
 	@CrossOrigin
 	public ResponseEntity<Object> getAccountAds(@RequestAttribute("ae.accountId") String accountId) {
-		Pair<ServiceResponse, List<Ad>> response = adService.getAdsByAccountId(accountId);
+		ServiceResponse<List<Ad>> response = adService.getAdsByAccountId(accountId);
 
-		switch (response.getFist()) {
+		switch (response.getErrorType()) {
 		case FAIL:
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getFullMessage());
 		default:
-			return ResponseEntity.status(HttpStatus.OK).body(response.getSecond());
+			return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
 		}
 
 	}
@@ -46,13 +44,13 @@ public class AdController {
 	@GetMapping("/api/v1/ads/{id}")
 	@CrossOrigin
 	public ResponseEntity<Object> getAdById(@PathVariable String id) {
-		Pair<ServiceResponse, Ad> response = adService.getAdById(id);
+		ServiceResponse<Ad> response = adService.getAdById(id);
 
-		switch (response.getFist()) {
+		switch (response.getErrorType()) {
 		case FAIL:
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getFullMessage());
 		default:
-			return ResponseEntity.status(HttpStatus.OK).body(response.getSecond());
+			return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
 		}
 
 	}
@@ -66,14 +64,14 @@ public class AdController {
 			@RequestParam(value = "textColor", required = false) String textColor,
 			@RequestParam(value = "imageUrl", required = false) String imageUrl) {
 
-		Pair<ServiceResponse, Ad> response = adService.createAd(accountId, name, type, refUrl, text, bgColor, textColor, imageUrl);
+		ServiceResponse<Ad> response = adService.createAd(accountId, name, type, refUrl, text, bgColor, textColor,
+				imageUrl);
 
-		switch (response.getFist()) {
+		switch (response.getErrorType()) {
 		case FAIL:
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new JsonResponse().pair("error", response.getFist().toString()).build());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getFullMessage());
 		default:
-			return ResponseEntity.status(HttpStatus.CREATED).body(response.getSecond());
+			return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
 		}
 
 	}

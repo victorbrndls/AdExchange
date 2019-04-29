@@ -13,6 +13,11 @@ public class JsonResponse {
 		node = new ObjectNode(factory);
 	}
 
+	public JsonResponse(String key, String value) {
+		this();
+		pair(key, value);
+	}
+
 	public JsonResponse pair(String key, String value) {
 		node.put(key, value);
 		return this;

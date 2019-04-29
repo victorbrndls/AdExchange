@@ -3,8 +3,6 @@ package com.harystolho.adexchange.repositories.website;
 import java.util.List;
 
 import com.harystolho.adexchange.models.Website;
-import com.harystolho.adexchange.repositories.RepositoryResponse;
-import com.harystolho.adexchange.utils.Pair;
 
 public interface WebsiteRepository {
 

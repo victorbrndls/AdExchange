@@ -10,7 +10,6 @@ import com.harystolho.adexchange.models.Account;
 import com.harystolho.adexchange.repositories.auth.AuthRepository;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
 import com.harystolho.adexchange.utils.Nothing;
-import com.harystolho.adexchange.utils.Pair;
 import com.harystolho.adexchange.utils.PasswordSecurity;
 
 @Service

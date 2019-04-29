@@ -7,9 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.Contract.PaymentMethod;
-import com.harystolho.adexchange.repositories.contract.ContractRepository;
-import com.harystolho.adexchange.utils.Pair;
 import com.harystolho.adexchange.models.Proposal;
+import com.harystolho.adexchange.repositories.contract.ContractRepository;
 
 @Service
 public class ContractService {

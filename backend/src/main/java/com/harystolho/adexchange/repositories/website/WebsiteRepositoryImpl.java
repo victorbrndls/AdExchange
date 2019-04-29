@@ -9,8 +9,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.harystolho.adexchange.models.Website;
-import com.harystolho.adexchange.repositories.RepositoryResponse;
-import com.harystolho.adexchange.utils.Pair;
 
 @Service
 public class WebsiteRepositoryImpl implements WebsiteRepository {
@@ -28,10 +26,10 @@ public class WebsiteRepositoryImpl implements WebsiteRepository {
 	}
 
 	@Override
-	public Pair<RepositoryResponse, Website> saveWebsite(Website website) {
+	public Website saveWebsite(Website website) {
 		Website saved = mongoOperations.save(website);
 
-		return Pair.of(RepositoryResponse.CREATED, saved);
+		return saved;
 	}
 
 	@Override
