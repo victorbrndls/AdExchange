@@ -42,16 +42,16 @@ public class ContractService {
 				prop.getPaymentValue(), prop.getDuration());
 	}
 
-	public Pair<ServiceResponse, Contract> getContractById(String accountId, String id) {
+	public ServiceResponse<Contract> getContractById(String accountId, String id) {
 		Contract contract = contractRepository.getById(id);
 
-		return Pair.of(ServiceResponse.OK, contract);
+		return ServiceResponse.ok(contract);
 	}
 
-	public Pair<ServiceResponse, List<Contract>> getContractsByAccountId(String accountId) {
+	public ServiceResponse<List<Contract>> getContractsByAccountId(String accountId) {
 		List<Contract> contracts = contractRepository.getByAccountId(accountId);
-		
-		return Pair.of(ServiceResponse.OK, contracts);
+
+		return ServiceResponse.ok(contracts);
 	}
 
 }

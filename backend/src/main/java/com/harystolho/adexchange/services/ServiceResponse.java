@@ -1,5 +1,7 @@
 package com.harystolho.adexchange.services;
 
+import javax.lang.model.type.ErrorType;
+
 public class ServiceResponse<T> {
 
 	public enum ServiceResponseType {
@@ -32,6 +34,14 @@ public class ServiceResponse<T> {
 		return message;
 	}
 
+	/**
+	 * @return the {@link ServiceResponse#errorType} plus the message. <br>
+	 *         (Eg: "FAIL/Invalid password")
+	 */
+	public String getFullMessage() {
+		return errorType.toString() + "/" + message;
+	}
+
 	public T getReponse() {
 		return object;
 	}
@@ -62,15 +72,15 @@ public class ServiceResponse<T> {
 		return new ServiceResponse<T>(ServiceResponseType.FAIL, message);
 	}
 
-	public static <T> ServiceResponse<T> ok(String message, T response) {
-		return new ServiceResponse<T>(ServiceResponseType.OK, message, response);
+	public static <T> ServiceResponse<T> ok(T response) {
+		return new ServiceResponse<T>(ServiceResponseType.OK, "", response);
 	}
 
-	public static <T> ServiceResponse<T> notInSent() {
+	public static <T> ServiceResponse<T> proposalNotInSent() {
 		return new ServiceResponse<T>(ServiceResponseType.PROPOSAL_NOT_IN_SENT, "");
 	}
 
-	public static <T> ServiceResponse<T> notInNew() {
+	public static <T> ServiceResponse<T> proposalNotInNew() {
 		return new ServiceResponse<T>(ServiceResponseType.PROPOSAL_NOT_IN_NEW, "");
 	}
 
@@ -78,7 +88,7 @@ public class ServiceResponse<T> {
 		return new ServiceResponse<T>(ServiceResponseType.UNAUTHORIZED, "");
 	}
 
-	public static <T> ServiceResponse<T> error(ServiceResponseType type, String message) {
-		return new ServiceResponse<T>(type, message);
+	public static <T> ServiceResponse<T> error(ServiceResponseType type) {
+		return new ServiceResponse<T>(type, "");
 	}
 }

@@ -33,11 +33,11 @@ public class ProposalService {
 	}
 
 	public ServiceResponse<ProposalsHolder> getProposalsByAccountId(String accountId) {
-		return ServiceResponse.ok("", proposalsHolderService.getProposalHolderByAccountId(accountId));
+		return ServiceResponse.ok(proposalsHolderService.getProposalHolderByAccountId(accountId));
 	}
 
 	public ServiceResponse<Proposal> getProposalById(String accountId, String id) {
-		return ServiceResponse.ok("", proposalRepository.getById(id));
+		return ServiceResponse.ok(proposalRepository.getById(id));
 	}
 
 	public ServiceResponse<List<Proposal>> getProposalsById(String proposalIds) {
@@ -52,7 +52,7 @@ public class ProposalService {
 				proposals.add(prop);
 		}
 
-		return ServiceResponse.ok("", proposals);
+		return ServiceResponse.ok(proposals);
 	}
 
 	public ServiceResponse<Proposal> createProposal(String accountId, String websiteId, String adId, String duration,
@@ -60,7 +60,7 @@ public class ProposalService {
 		ServiceResponseType validation = validateProposalFields(websiteId, adId, duration, paymentMethod, paymentValue);
 
 		if (validation != ServiceResponseType.OK)
-			return ServiceResponse.error(validation, "");
+			return ServiceResponse.error(validation);
 
 		Proposal proposal = new Proposal();
 		proposal.setCreatorAccountId(accountId);
@@ -74,7 +74,7 @@ public class ProposalService {
 
 		proposalsHolderService.addProposal(saved);
 
-		return ServiceResponse.ok("", saved);
+		return ServiceResponse.ok(saved);
 	}
 
 	public ServiceResponse<Nothing> deleteProposalById(String accountId, String id) {
@@ -82,46 +82,46 @@ public class ProposalService {
 
 		if (proposal.isRejected()) {
 			if (!proposalsHolderService.containsProposalInNew(accountId, proposal))
-				return ServiceResponse.notInNew();
+				return ServiceResponse.proposalNotInNew();
 		} else {
 			if (!proposalsHolderService.containsProposalInSent(accountId, proposal))
-				return ServiceResponse.notInSent();
+				return ServiceResponse.proposalNotInSent();
 		}
 
 		proposalRepository.deleteById(id);
 		proposalsHolderService.removeProposal(proposal);
 
-		return ServiceResponse.ok("", null);
+		return ServiceResponse.ok(null);
 	}
 
 	public ServiceResponse<Nothing> rejectProposalById(String accountId, String id) {
 		Proposal proposal = proposalRepository.getById(id);
 
 		if (!proposalsHolderService.containsProposalInNew(accountId, proposal))
-			return ServiceResponse.notInNew();
+			return ServiceResponse.proposalNotInNew();
 
 		proposalRepository.setRejected(id);
 		proposalsHolderService.rejectProposal(proposal);
 
-		return ServiceResponse.ok("", null);
+		return ServiceResponse.ok(null);
 	}
 
 	public ServiceResponse<Nothing> reviewProposal(String accountId, String id, String duration, String paymentMethod,
 			String paymentValue) {
 		if (!validateDuration(duration))
-			return ServiceResponse.error(ServiceResponseType.INVALID_DURATION, "");
+			return ServiceResponse.error(ServiceResponseType.INVALID_DURATION);
 		if (!validatePaymentMethod(paymentMethod))
-			return ServiceResponse.error(ServiceResponseType.INVALID_PAYMENT_METHOD, "");
+			return ServiceResponse.error(ServiceResponseType.INVALID_PAYMENT_METHOD);
 		if (!validatePaymentValue(paymentValue))
-			return ServiceResponse.error(ServiceResponseType.INVALID_PAYMENT_VALUE, "");
+			return ServiceResponse.error(ServiceResponseType.INVALID_PAYMENT_VALUE);
 
 		Proposal prop = proposalRepository.getById(id);
 
 		if (prop == null)
-			return ServiceResponse.fail("FAIL/Can't find a Proposal using the given id");
+			return ServiceResponse.fail("Can't find a Proposal using the given id");
 
 		if (!proposalsHolderService.containsProposalInNew(accountId, prop))
-			return ServiceResponse.notInNew();
+			return ServiceResponse.proposalNotInNew();
 
 		prop.setDuration(Integer.parseInt(duration));
 		prop.setPaymentMethod(PaymentMethod.valueOf(paymentMethod));
@@ -132,14 +132,14 @@ public class ProposalService {
 
 		proposalsHolderService.reviewProposal(prop);
 
-		return ServiceResponse.ok("", null);
+		return ServiceResponse.ok(null);
 	}
 
 	public ServiceResponse<Nothing> acceptProposal(String accountId, String id) {
 		Proposal prop = proposalRepository.getById(id);
 
 		if (!proposalsHolderService.containsProposalInNew(accountId, prop))
-			return ServiceResponse.notInNew();
+			return ServiceResponse.proposalNotInNew();
 
 		if (!websiteService.accountOwnsWebsite(accountId, prop.getWebsiteId())) {
 			return ServiceResponse.unauthorized();
@@ -154,7 +154,7 @@ public class ProposalService {
 
 		proposalRepository.deleteById(id);
 
-		return ServiceResponse.ok("", null);
+		return ServiceResponse.ok(null);
 	}
 
 	/**
@@ -239,7 +239,7 @@ public class ProposalService {
 	 * @return TRUE if the website matched by the id exists
 	 */
 	private boolean websiteExists(String websiteId) {
-		return websiteId != null && websiteService.getWebsiteById(websiteId).getSecond() != null;
+		return websiteId != null && websiteService.getWebsiteById(websiteId).getReponse() != null;
 	}
 
 	/**
@@ -247,7 +247,7 @@ public class ProposalService {
 	 * @return TRUE if the ad matched by the id exists
 	 */
 	private boolean adExists(String adId) {
-		return adId != null && adService.getAdById(adId).getSecond() != null;
+		return adId != null && adService.getAdById(adId).getReponse() != null;
 	}
 
 }

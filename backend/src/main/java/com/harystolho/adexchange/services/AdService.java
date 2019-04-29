@@ -8,7 +8,6 @@ import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.models.ads.ImageAd;
 import com.harystolho.adexchange.models.ads.TextAd;
 import com.harystolho.adexchange.repositories.ad.AdRepository;
-import com.harystolho.adexchange.utils.Pair;
 
 @Service
 public class AdService {
@@ -19,18 +18,18 @@ public class AdService {
 		this.adRepository = adRepository;
 	}
 
-	public Pair<ServiceResponse, List<Ad>> getAdsByAccountId(String accountId) {
-		return Pair.of(ServiceResponse.OK, adRepository.getAdsByAccountId(accountId));
+	public ServiceResponse<List<Ad>> getAdsByAccountId(String accountId) {
+		return ServiceResponse.ok(adRepository.getAdsByAccountId(accountId));
 	}
 
-	public Pair<ServiceResponse, Ad> getAdById(String id) {
-		return Pair.of(ServiceResponse.OK, adRepository.getAdById(id));
+	public ServiceResponse<Ad> getAdById(String id) {
+		return ServiceResponse.ok(adRepository.getAdById(id));
 	}
 
-	public Pair<ServiceResponse, Ad> createAd(String accountId, String name, String type, String refUrl, String text,
+	public ServiceResponse<Ad> createAd(String accountId, String name, String type, String refUrl, String text,
 			String bgColor, String textColor, String imageUrl) {
 		if (!type.equals("TEXT") && !type.equals("IMAGE")) {
-			return Pair.of(ServiceResponse.FAIL, null);
+			return ServiceResponse.fail("The type must TEXT or IMAGE");
 		}
 
 		Ad ad = null;
@@ -42,12 +41,13 @@ public class AdService {
 		}
 
 		if (ad == null)
-			return Pair.of(ServiceResponse.FAIL, null);
+			return ServiceResponse.fail("Can't create Ad");
 
 		ad.setAccountId(accountId);
-		adRepository.save(ad);
 
-		return Pair.of(ServiceResponse.OK, ad);
+		Ad saved = adRepository.save(ad);
+
+		return ServiceResponse.ok(saved);
 	}
 
 	private Ad createTextAd(String name, String text, String bgColor, String textColor, String refUrl) {

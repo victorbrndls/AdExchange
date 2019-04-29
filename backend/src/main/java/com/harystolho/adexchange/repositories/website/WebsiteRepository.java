@@ -10,7 +10,7 @@ public interface WebsiteRepository {
 
 	public List<Website> getWebsites();
 
-	public Pair<RepositoryResponse, Website> saveWebsite(Website website);
+	public Website saveWebsite(Website website);
 
 	/**
 	 * @param id

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.harystolho.adexchange.auth.TokenService;
 import com.harystolho.adexchange.models.Account;
 import com.harystolho.adexchange.repositories.auth.AuthRepository;
+import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
 import com.harystolho.adexchange.utils.Nothing;
 import com.harystolho.adexchange.utils.Pair;
 import com.harystolho.adexchange.utils.PasswordSecurity;
@@ -26,45 +27,45 @@ public class AuthService {
 		this.tokenService = tokenService;
 	}
 
-	public Pair<ServiceResponse, Nothing> createAccount(String email, String password) {
+	public ServiceResponse<Nothing> createAccount(String email, String password) {
 		email = sanitizeEmail(email);
 
 		if (!verifyEmail(email))
-			return Pair.of(ServiceResponse.INVALID_EMAIL, null);
+			return ServiceResponse.error(ServiceResponseType.INVALID_EMAIL);
 
 		if (!verifyPassword(password))
-			return Pair.of(ServiceResponse.INVALID_PASSWORD, null);
+			return ServiceResponse.error(ServiceResponseType.INVALID_PASSWORD);
 
 		if (emailExists(email))
-			return Pair.of(ServiceResponse.EMAIL_ALREADY_EXISTS, null);
+			return ServiceResponse.error(ServiceResponseType.EMAIL_ALREADY_EXISTS);
 
 		Account account = new Account(email, PasswordSecurity.encryptPassword(password));
 
 		Account response = authRepository.save(account);
 
-		return Pair.of(ServiceResponse.OK, null);
+		return ServiceResponse.ok(null);
 	}
 
-	public Pair<ServiceResponse, String> login(String email, String password) {
+	public ServiceResponse<String> login(String email, String password) {
 		if (email.length() <= 0 || password.length() <= 0)
-			return Pair.of(ServiceResponse.FAIL, "");
+			return ServiceResponse.fail("Email or/and password can't be blank");
 
 		Account possibleAccount = authRepository.getByEmail(sanitizeEmail(email));
 
 		if (possibleAccount == null) {
 			logger.info(String.format("There is no account with the login email[%s]", email));
-			return Pair.of(ServiceResponse.FAIL, "");
+			return ServiceResponse.fail("");
 		}
 
 		if (!PasswordSecurity.comparePasswords(possibleAccount.getPassword(),
 				PasswordSecurity.encryptPassword(password))) {
 			logger.info("Passwords are not equal");
-			return Pair.of(ServiceResponse.FAIL, "");
+			return ServiceResponse.fail("");
 		}
 
 		String token = tokenService.generateTokenForAccount(possibleAccount.getId());
 
-		return Pair.of(ServiceResponse.OK, String.valueOf(token));
+		return ServiceResponse.ok(token);
 	}
 
 	/**

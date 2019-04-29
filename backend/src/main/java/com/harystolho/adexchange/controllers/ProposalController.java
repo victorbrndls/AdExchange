@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.models.ProposalsHolder;
@@ -23,7 +21,6 @@ import com.harystolho.adexchange.services.ProposalService;
 import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.utils.JsonResponse;
 import com.harystolho.adexchange.utils.Nothing;
-import com.harystolho.adexchange.utils.Pair;
 
 @RestController
 public class ProposalController {
@@ -90,7 +87,7 @@ public class ProposalController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 					.body(new JsonResponse().pair("error", response.getMessage()).build());
 		default:
-			return ResponseEntity.status(HttpStatus.CREATED).body(response.getSecond());
+			return ResponseEntity.status(HttpStatus.CREATED).body(response.getReponse());
 		}
 	}
 
@@ -99,12 +96,12 @@ public class ProposalController {
 	public ResponseEntity<Object> deleteProposal(@RequestAttribute("ae.accountId") String accountId,
 			@PathVariable String id) {
 
-		Pair<ServiceResponse, Nothing> response = proposalService.deleteProposalById(accountId, id);
+		ServiceResponse<Nothing> response = proposalService.deleteProposalById(accountId, id);
 
-		switch (response.getFist().getErrorType()) {
-		case FAIL:
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new JsonResponse().pair("error", response.getFist().getMessage()).build());
+		switch (response.getErrorType()) {
+		case PROPOSAL_NOT_IN_NEW:
+		case PROPOSAL_NOT_IN_SENT:
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getErrorType().toString());
 		default:
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}
@@ -116,12 +113,11 @@ public class ProposalController {
 	public ResponseEntity<Object> rejectProposal(@RequestAttribute("ae.accountId") String accountId,
 			@PathVariable String id) {
 
-		Pair<ServiceResponse, Nothing> response = proposalService.rejectProposalById(accountId, id);
+		ServiceResponse<Nothing> response = proposalService.rejectProposalById(accountId, id);
 
-		switch (response.getFist().getErrorType()) {
-		case FAIL:
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new JsonResponse().pair("error", response.getFist().getMessage()).build());
+		switch (response.getErrorType()) {
+		case PROPOSAL_NOT_IN_NEW:
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getErrorType().toString());
 		default:
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}
@@ -132,16 +128,17 @@ public class ProposalController {
 	public ResponseEntity<Object> reviewProposal(@RequestAttribute("ae.accountId") String accountId,
 			@PathVariable String id, String duration, String paymentMethod, String paymentValue) {
 
-		Pair<ServiceResponse, Nothing> response = proposalService.reviewProposal(accountId, id, duration, paymentMethod,
+		ServiceResponse<Nothing> response = proposalService.reviewProposal(accountId, id, duration, paymentMethod,
 				paymentValue);
 
-		switch (response.getFist().getErrorType()) {
+		switch (response.getErrorType()) {
 		case INVALID_DURATION:
 		case INVALID_PAYMENT_METHOD:
 		case INVALID_PAYMENT_VALUE:
+		case PROPOSAL_NOT_IN_NEW:
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getErrorType().toString());
 		case FAIL:
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new JsonResponse().pair("error", response.getFist().getMessage()).build());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getMessage());
 		default:
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}
@@ -152,12 +149,12 @@ public class ProposalController {
 	public ResponseEntity<Object> acceptProposal(@RequestAttribute("ae.accountId") String accountId,
 			@PathVariable String id) {
 
-		Pair<ServiceResponse, Nothing> response = proposalService.acceptProposal(accountId, id);
+		ServiceResponse<Nothing> response = proposalService.acceptProposal(accountId, id);
 
-		switch (response.getFist().getErrorType()) {
-		case FAIL:
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new JsonResponse().pair("error", response.getFist().getMessage()).build());
+		switch (response.getErrorType()) {
+		case PROPOSAL_NOT_IN_NEW:
+		case UNAUTHORIZED:
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getErrorType().toString());
 		default:
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}
