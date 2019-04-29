@@ -1,12 +1,14 @@
 package com.harystolho.adexchange.services;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.Contract.PaymentMethod;
 import com.harystolho.adexchange.repositories.contract.ContractRepository;
+import com.harystolho.adexchange.utils.Pair;
 import com.harystolho.adexchange.models.Proposal;
 
 @Service
@@ -18,10 +20,12 @@ public class ContractService {
 		this.contractRepository = contractRepository;
 	}
 
-	private Contract createContract(String websiteId, String adId, PaymentMethod paymentMethod, String paymentValue,
-			int duration) {
+	private Contract createContract(String creatorId, String acceptorId, String websiteId, String adId,
+			PaymentMethod paymentMethod, String paymentValue, int duration) {
 
 		Contract contract = new Contract();
+		contract.setCreatorId(creatorId);
+		contract.setAcceptorId(acceptorId);
 		contract.setWebsiteId(websiteId);
 		contract.setAdId(adId);
 		contract.setPaymentMethod(paymentMethod);
@@ -33,9 +37,21 @@ public class ContractService {
 		return contract;
 	}
 
-	public void createContractFromProposal(Proposal prop) {
-		createContract(prop.getWebsiteId(), prop.getAdId(), prop.getPaymentMethod(), prop.getPaymentValue(),
-				prop.getDuration());
+	public void createContractFromProposal(Proposal prop, String creatorId, String acceptorId) {
+		createContract(creatorId, acceptorId, prop.getWebsiteId(), prop.getAdId(), prop.getPaymentMethod(),
+				prop.getPaymentValue(), prop.getDuration());
+	}
+
+	public Pair<ServiceResponse, Contract> getContractById(String accountId, String id) {
+		Contract contract = contractRepository.getById(id);
+
+		return Pair.of(ServiceResponse.OK, contract);
+	}
+
+	public Pair<ServiceResponse, List<Contract>> getContractsByAccountId(String accountId) {
+		List<Contract> contracts = contractRepository.getByAccountId(accountId);
+		
+		return Pair.of(ServiceResponse.OK, contracts);
 	}
 
 }

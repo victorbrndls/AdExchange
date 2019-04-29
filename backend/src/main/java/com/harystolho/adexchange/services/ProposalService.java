@@ -146,7 +146,10 @@ public class ProposalService {
 			return Pair.of(ServiceResponse.FAIL, null);
 		}
 
-		contractService.createContractFromProposal(prop);
+		String creator = adService.getAccountIdUsingAdId(prop.getAdId());
+		String acceptor = websiteService.getAccountIdUsingWebsiteId(prop.getWebsiteId());
+
+		contractService.createContractFromProposal(prop, creator, acceptor);
 
 		proposalsHolderService.acceptProposal(prop);
 

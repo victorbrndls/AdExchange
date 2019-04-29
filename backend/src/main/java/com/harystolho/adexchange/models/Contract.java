@@ -12,6 +12,8 @@ public class Contract {
 	}
 
 	private String id;
+	private String creatorId; // The Ad owner id
+	private String acceptorId; // The Website owner id
 	private LocalDateTime expiration;
 	private String websiteId;
 	private String adId;
@@ -64,6 +66,22 @@ public class Contract {
 
 	public void setPaymentMethod(PaymentMethod paymentMethod) {
 		this.paymentMethod = paymentMethod;
+	}
+
+	public String getCreatorId() {
+		return creatorId;
+	}
+
+	public void setCreatorId(String creatorId) {
+		this.creatorId = creatorId;
+	}
+
+	public String getAcceptorId() {
+		return acceptorId;
+	}
+
+	public void setAcceptorId(String acceptorId) {
+		this.acceptorId = acceptorId;
 	}
 
 }

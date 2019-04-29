@@ -43,7 +43,7 @@ public class ProposalServiceTest {
 	@Test
 	public void createProposalWithInvalidDuration() {
 		for (String duration : new String[] { "0", "-10", "366" }) {
-			Pair<ServiceResponse, Proposal> response = proposalService.createProposal("12gfas4fas", "dasd1wa5e",
+			Pair<ServiceResponse, Proposal> response = proposalService.createProposal("ac1", "12gfas4fas", "dasd1wa5e",
 					duration, "PAY_PER_CLICK", "1.0");
 			assertEquals("Duration should be invalid: " + duration, ServiceResponse.INVALID_DURATION,
 					response.getFist());
@@ -53,7 +53,7 @@ public class ProposalServiceTest {
 	@Test
 	public void createProposalWithValidDuration() {
 		for (String duration : new String[] { "1", "100", "365" }) {
-			Pair<ServiceResponse, Proposal> response = proposalService.createProposal("12gfas4fas", "dasd1wa5e",
+			Pair<ServiceResponse, Proposal> response = proposalService.createProposal("ac1", "12gfas4fas", "dasd1wa5e",
 					duration, "PAY_PER_CLICK", "1.0");
 			assertEquals("Duration should be valid: " + duration, ServiceResponse.OK, response.getFist());
 		}
@@ -63,7 +63,7 @@ public class ProposalServiceTest {
 	public void createProposalWithInvalidPaymentValue() {
 		for (String value : new String[] { "-1", "-0", "0", "0.111", "1.157", "784..0", "0.0.0", "0,47", "0000",
 				"1,0.2" }) {
-			Pair<ServiceResponse, Proposal> response = proposalService.createProposal("12gfas4fas", "dasd1wa5e", "1",
+			Pair<ServiceResponse, Proposal> response = proposalService.createProposal("ac1", "12gfas4fas", "dasd1wa5e", "1",
 					"PAY_PER_CLICK", value);
 			assertEquals("Payment value should be invalid: " + value, ServiceResponse.INVALID_PAYMENT_VALUE,
 					response.getFist());
@@ -74,7 +74,7 @@ public class ProposalServiceTest {
 	public void createProposalWithValidPaymentValue() {
 		for (String value : new String[] { "1", "0.1", "0.01", "0.05", "1.0", "750", "0.99", "1.74", "1597",
 				"12.24" }) {
-			Pair<ServiceResponse, Proposal> response = proposalService.createProposal("12gfas4fas", "dasd1wa5e", "1",
+			Pair<ServiceResponse, Proposal> response = proposalService.createProposal("ac1", "12gfas4fas", "dasd1wa5e", "1",
 					"PAY_PER_CLICK", value);
 			assertEquals("Payment value should be valid: " + value, ServiceResponse.OK, response.getFist());
 		}
