@@ -68,4 +68,12 @@ public class ProposalsHolder {
 	public void addSentProposal(String proposalId) {
 		this.sentProposals.add(proposalId);
 	}
+
+	public void removeNewProposal(String proposalId) {
+		this.newProposals.remove(proposalId);
+	}
+	
+	public void removeSentProposal(String proposalId) {
+		this.sentProposals.remove(proposalId);
+	}
 }

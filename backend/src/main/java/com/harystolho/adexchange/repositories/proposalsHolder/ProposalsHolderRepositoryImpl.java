@@ -22,12 +22,13 @@ public class ProposalsHolderRepositoryImpl implements ProposalsHolderRepository 
 
 	@Override
 	public ProposalsHolder save(ProposalsHolder proposalsHolder) {
-		Query query = Query.query(Criteria.where("accountId").is(accountId));
+		Query query = Query.query(Criteria.where("accountId").is(proposalsHolder.getAccountId()));
 		Update update = new Update().set("proposalsHolder", proposalsHolder);
-		
-		mongoOperations.findAndModify(query, update, UserData.class);
-		
-		//return mongoOperations.save(proposalsHolder);
+
+		UserData saved = mongoOperations.findAndModify(query, update, UserData.class);
+
+		return saved.getProposalsHolder();
+		// return mongoOperations.save(proposalsHolder);
 	}
 
 	@Override

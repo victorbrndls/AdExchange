@@ -17,48 +17,32 @@ public class ProposalsHolderService {
 
 	private static final Logger logger = LogManager.getLogger();
 
-	private ProposalsHolderRepository phRepository;
+	private UserDataService userDataService;
 
 	private AdService adService;
 	private WebsiteService websiteService;
 
 	@Autowired
-	public ProposalsHolderService(ProposalsHolderRepository proposalsHolder, AdService adService,
-			WebsiteService websiteService) {
-		this.phRepository = proposalsHolder;
+	public ProposalsHolderService(UserDataService userDataService, AdService adService, WebsiteService websiteService) {
+		this.userDataService = userDataService;
 		this.adService = adService;
 		this.websiteService = websiteService;
 	}
 
 	private void addNewProposalToAccount(String accountId, String proposalId) {
-		if (phRepository.getByAccountId(accountId) == null) {
-			createProposalsHolderForAccount(accountId);
-		}
-
-		phRepository.addProposalToNew(accountId, proposalId);
+		userDataService.addNewProposalToPH(accountId, proposalId);
 	}
 
 	private void addSentProposalToAccount(String accountId, String proposalId) {
-		if (phRepository.getByAccountId(accountId) == null) {
-			createProposalsHolderForAccount(accountId);
-		}
-
-		phRepository.addProposalToSent(accountId, proposalId);
+		userDataService.addSentProposalToPH(accountId, proposalId);
 	}
 
 	private void removeNewProposalFromAccount(String accountId, String proposalId) {
-		phRepository.removeProposalFromNew(accountId, proposalId);
+		userDataService.removeNewProposalFromPH(accountId, proposalId);
 	}
 
 	private void removeSentProposalFromAccount(String accountId, String proposalId) {
-		phRepository.removeProposalFromSent(accountId, proposalId);
-	}
-
-	private ProposalsHolder createProposalsHolderForAccount(String accountId) {
-		ProposalsHolder holder = new ProposalsHolder();
-		holder.setAccountId(accountId);
-
-		return phRepository.save(holder);
+		userDataService.removeSentProposalFromPH(accountId, proposalId);
 	}
 
 	public void addProposal(Proposal proposal) {
@@ -165,20 +149,19 @@ public class ProposalsHolderService {
 	}
 
 	public boolean containsProposalInNew(String accountId, Proposal proposal) {
-		List<String> proposals = phRepository.getNewProposalsByAccountId(accountId);
+		List<String> proposals = userDataService.getNewProposalsByAccountId(accountId);
 
 		return proposals.stream().anyMatch(propId -> propId.equals(proposal.getId()));
 	}
 
 	public boolean containsProposalInSent(String accountId, Proposal proposal) {
-		List<String> proposals = phRepository.getSentProposalsByAccountId(accountId);
+		List<String> proposals = userDataService.getSentProposalsByAccountId(accountId);
 
 		return proposals.stream().anyMatch(propId -> propId.equals(proposal.getId()));
 	}
 
 	public ProposalsHolder getProposalHolderByAccountId(String accountId) {
-		ProposalsHolder ph = phRepository.getByAccountId(accountId);
-		return ph != null ? ph : createProposalsHolderForAccount(accountId);
+		return userDataService.getProposalsHolderByAccoundId(accountId);
 	}
 
 	private String getSenderIdUsingAdId(String adId) {

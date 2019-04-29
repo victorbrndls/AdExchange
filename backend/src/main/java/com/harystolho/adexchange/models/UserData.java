@@ -1,5 +1,6 @@
 package com.harystolho.adexchange.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -12,6 +13,11 @@ public class UserData {
 
 	private ProposalsHolder proposalsHolder;
 	private List<Contract> contracts;
+
+	public UserData() {
+		setProposalsHolder(new ProposalsHolder());
+		contracts = new ArrayList<>();
+	}
 
 	public String getId() {
 		return id;
