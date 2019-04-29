@@ -1,8 +1,10 @@
 package com.harystolho.adexchange.services;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.harystolho.adexchange.models.Contract;
@@ -15,8 +17,12 @@ public class ContractService {
 
 	private ContractRepository contractRepository;
 
-	public ContractService(ContractRepository contractRepository) {
+	private UserDataService userDataService;
+
+	@Autowired
+	public ContractService(ContractRepository contractRepository, UserDataService userDataService) {
 		this.contractRepository = contractRepository;
+		this.userDataService = userDataService;
 	}
 
 	private Contract createContract(String creatorId, String acceptorId, String websiteId, String adId,
@@ -33,6 +39,9 @@ public class ContractService {
 
 		contractRepository.save(contract);
 
+		userDataService.addContract(creatorId, contract.getId());
+		userDataService.addContract(acceptorId, contract.getId());
+
 		return contract;
 	}
 
@@ -48,8 +57,14 @@ public class ContractService {
 	}
 
 	public ServiceResponse<List<Contract>> getContractsByAccountId(String accountId) {
-		List<Contract> contracts = contractRepository.getByAccountId(accountId);
-		
+		List<String> contractsId = userDataService.getContractsByAccountId(accountId);
+
+		List<Contract> contracts = new ArrayList<>();
+
+		contractsId.forEach((c) -> {
+			contracts.add(getContractById(accountId, c).getReponse());
+		});
+
 		return ServiceResponse.ok(contracts);
 	}
 

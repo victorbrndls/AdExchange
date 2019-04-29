@@ -60,18 +60,24 @@ public class UserDataService {
 	}
 
 	public List<String> getNewProposalsByAccountId(String accountId) {
+		createUserDataIfNonExistent(accountId);
+
 		ProposalsHolder ph = getProposalsHolderByAccoundId(accountId);
 
 		return ph.getNewProposals();
 	}
 
 	public List<String> getSentProposalsByAccountId(String accountId) {
+		createUserDataIfNonExistent(accountId);
+
 		ProposalsHolder ph = getProposalsHolderByAccoundId(accountId);
 
 		return ph.getSentProposals();
 	}
 
 	public ProposalsHolder getProposalsHolderByAccoundId(String accountId) {
+		createUserDataIfNonExistent(accountId);
+
 		return userDataRepository.getProposalsHolderByAccountId(accountId);
 	}
 
@@ -80,8 +86,31 @@ public class UserDataService {
 			UserData ud = new UserData();
 
 			ud.setAccountId(accountId);
+			ud.getProposalsHolder().setAccountId(accountId);
+
 			userDataRepository.save(ud);
 		}
 	}
 
+	private List<String> saveContracts(String accountId, List<String> contracts) {
+		createUserDataIfNonExistent(accountId);
+
+		return userDataRepository.saveContractsByAccountId(accountId, contracts);
+	}
+
+	public void addContract(String accountId, String id) {
+		createUserDataIfNonExistent(accountId);
+
+		List<String> contracts = userDataRepository.getContractsByAccountId(accountId);
+
+		contracts.add(id);
+
+		saveContracts(accountId, contracts);
+	}
+
+	public List<String> getContractsByAccountId(String accountId) {
+		createUserDataIfNonExistent(accountId);
+
+		return userDataRepository.getContractsByAccountId(accountId);
+	}
 }

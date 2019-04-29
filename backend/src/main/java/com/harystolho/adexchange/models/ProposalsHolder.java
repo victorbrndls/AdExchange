@@ -12,10 +12,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * @author Harystolho
  *
  */
-@Document("proposalsHolders")
 public class ProposalsHolder {
 
-	private String id;
 	private String accountId;
 
 	// The user can review/edit these ones
@@ -27,14 +25,6 @@ public class ProposalsHolder {
 	public ProposalsHolder() {
 		newProposals = new ArrayList<>();
 		sentProposals = new ArrayList<>();
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getAccountId() {
@@ -72,7 +62,7 @@ public class ProposalsHolder {
 	public void removeNewProposal(String proposalId) {
 		this.newProposals.remove(proposalId);
 	}
-	
+
 	public void removeSentProposal(String proposalId) {
 		this.sentProposals.remove(proposalId);
 	}

@@ -12,7 +12,7 @@ public class UserData {
 	private String accountId;
 
 	private ProposalsHolder proposalsHolder;
-	private List<Contract> contracts;
+	private List<String> contracts;
 
 	public UserData() {
 		setProposalsHolder(new ProposalsHolder());
@@ -43,11 +43,11 @@ public class UserData {
 		this.proposalsHolder = proposalsHolder;
 	}
 
-	public List<Contract> getContracts() {
+	public List<String> getContracts() {
 		return contracts;
 	}
 
-	public void setContracts(List<Contract> contracts) {
+	public void setContracts(List<String> contracts) {
 		this.contracts = contracts;
 	}
 

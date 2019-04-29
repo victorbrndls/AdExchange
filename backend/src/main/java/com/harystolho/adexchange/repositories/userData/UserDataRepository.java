@@ -1,5 +1,8 @@
 package com.harystolho.adexchange.repositories.userData;
 
+import java.util.List;
+
+import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.ProposalsHolder;
 import com.harystolho.adexchange.models.UserData;
 
@@ -10,6 +13,10 @@ public interface UserDataRepository {
 	ProposalsHolder saveProposalsHolder(ProposalsHolder ph);
 
 	ProposalsHolder getProposalsHolderByAccountId(String accountId);
+
+	List<String> saveContractsByAccountId(String accountId, List<String> contracts);
+
+	List<String> getContractsByAccountId(String accountId);
 
 	/**
 	 * @param accountId

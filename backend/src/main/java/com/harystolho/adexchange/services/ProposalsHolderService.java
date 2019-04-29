@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.models.ProposalsHolder;
-import com.harystolho.adexchange.repositories.proposalsHolder.ProposalsHolderRepository;
 import com.harystolho.adexchange.utils.Pair;
 
 @Service
