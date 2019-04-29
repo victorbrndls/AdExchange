@@ -17,6 +17,7 @@ public class Proposal {
 	}
 
 	private String id;
+	private String creatorAccountId;
 	private String websiteId;
 	private String adId;
 	private int duration;
@@ -96,5 +97,13 @@ public class Proposal {
 
 	public void setVersion(int version) {
 		this.version = version;
+	}
+
+	public String getCreatorAccountId() {
+		return creatorAccountId;
+	}
+
+	public void setCreatorAccountId(String creatorAccountId) {
+		this.creatorAccountId = creatorAccountId;
 	}
 }

@@ -55,14 +55,15 @@ public class ProposalService {
 		return Pair.of(ServiceResponse.OK, proposals);
 	}
 
-	public Pair<ServiceResponse, Proposal> createProposal(String websiteId, String adId, String duration,
-			String paymentMethod, String paymentValue) {
+	public Pair<ServiceResponse, Proposal> createProposal(String accountId, String websiteId, String adId,
+			String duration, String paymentMethod, String paymentValue) {
 		ServiceResponse validation = validateProposalFields(websiteId, adId, duration, paymentMethod, paymentValue);
 
 		if (validation != ServiceResponse.OK)
 			return Pair.of(validation, null);
 
 		Proposal proposal = new Proposal();
+		proposal.setCreatorAccountId(accountId);
 		proposal.setWebsiteId(websiteId);
 		proposal.setAdId(adId);
 		proposal.setDuration(Integer.parseInt(duration));
@@ -141,14 +142,16 @@ public class ProposalService {
 			return Pair.of(ServiceResponse.FAIL, null);
 
 		// Only the website owner can accept the proposal
-		if(!websiteService.accountOwnsWebsite(accountId, prop.getWebsiteId())){
+		if (!websiteService.accountOwnsWebsite(accountId, prop.getWebsiteId())) {
 			return Pair.of(ServiceResponse.FAIL, null);
 		}
-		
+
 		contractService.createContractFromProposal(prop);
 
 		proposalsHolderService.acceptProposal(prop);
-		
+
+		proposalRepository.deleteById(id);
+
 		return Pair.of(ServiceResponse.OK, null);
 	}
 

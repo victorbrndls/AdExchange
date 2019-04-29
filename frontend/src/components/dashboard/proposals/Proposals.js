@@ -153,7 +153,7 @@ class Proposal extends Component {
                 <div>
                     <div>
                         <span class="mr-3">Proposta para "{websiteName}"</span>
-                        <span class="badge badge-secondary" style="font-variant: small-caps;">v {version}</span>
+                        <span class="badge badge-secondary mr-3" style="font-variant: small-caps;">v {version}</span>
                         {rejected && (<span class="badge badge-danger">Rejeitada</span>)}
                     </div>
                     <div class="text-muted" style="font-size: 13px; margin-top: 2px;">

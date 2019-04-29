@@ -175,7 +175,7 @@ export default class AddProposal extends Component {
         let sent_t = type === 'SENT';
         let new_t = type === 'NEW';
 
-        let disabledFields = sent_t || proposal.rejected;
+        let disableFields = sent_t || proposal.rejected;
 
         return (
             <div>
@@ -213,7 +213,7 @@ export default class AddProposal extends Component {
                         <div class="form-group websites-add__form">
                             <label>Duracao (dias)</label>
                             <input id="p_duration" class="form-control" placeholder="15"
-                                   value={proposal.duration || ""} disabled={disabledFields}/>
+                                   value={proposal.duration || ""} disabled={disableFields}/>
                             <small class="form-text text-muted">Por quanto tempo o anuncio ficara ativo (de 0 a 365)
                             </small>
                         </div>
@@ -222,7 +222,7 @@ export default class AddProposal extends Component {
                             <label>Pagamento</label>
                             <select id="p_paymentMethod" class="custom-select"
                                     value={proposal.paymentMethod || "PAY_PER_CLICK"}
-                                    disabled={disabledFields}>
+                                    disabled={disableFields}>
                                 <option value="PAY_PER_CLICK">Custo por Click</option>
                                 <option value="PAY_PER_VIEW">Custo por Visualizacao</option>
                             </select>
@@ -233,7 +233,7 @@ export default class AddProposal extends Component {
                                 </div>
                                 <input id="p_paymentValue" class="form-control" pattern={this.moneyPattern}
                                        placeholder="Valores com no maximo 2 casas decimais (1.50, 4.54, 0.10, 18.01, 0.50)"
-                                       value={proposal.paymentValue || ""} disabled={disabledFields}/>
+                                       value={proposal.paymentValue || ""} disabled={disableFields}/>
                             </div>
                         </div>
                     </div>
@@ -250,17 +250,20 @@ export default class AddProposal extends Component {
                             </div>)}
                         {edit_m && new_t && !proposal.rejected && (
                             <div>
-                                <div id="dashboardAcceptButton" class="btn dashboard-add__button"
-                                     onClick={this.acceptProposal.bind(this)}>
-                                    Aceitar Proposta {/*//TODO don't show this if i am the proposal owner*/}
-                                </div>
+                                {proposal.owner && (
+                                    <div id="dashboardAcceptButton" class="btn dashboard-add__button"
+                                         onClick={this.acceptProposal.bind(this)}>
+                                        Aceitar Proposta {/*//TODO don't show this if i am the proposal owner*/}
+                                    </div>
+                                )}
                                 <div class="btn dashboard-add__button" onClick={this.sendProposalRevision.bind(this)}>
                                     Enviar Revisao
                                 </div>
                                 <div id="dashboardDeleteButton" class="btn dashboard-add__button"
                                      onClick={this.rejectProposal.bind(this)}>
                                     Rejeitar Proposta
-                                </div> {/*//TODO add a confirm modal to 'reject proposal'*/}
+                                </div>
+                                {/*//TODO add a confirm modal to 'reject proposal'*/}
                             </div>)}
                     </div>
                 </div>

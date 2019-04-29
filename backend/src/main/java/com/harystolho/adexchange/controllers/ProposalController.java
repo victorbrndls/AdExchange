@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.models.ProposalsHolder;
 import com.harystolho.adexchange.services.ProposalService;
@@ -50,7 +54,10 @@ public class ProposalController {
 
 		Pair<ServiceResponse, Proposal> response = proposalService.getProposalById(accountId, id);
 
-		return ResponseEntity.status(HttpStatus.OK).body(response.getSecond());
+		ObjectNode node = (ObjectNode) new ObjectMapper().valueToTree(response.getSecond());
+		node.put("owner", response.getSecond().getCreatorAccountId().equals(accountId));
+
+		return ResponseEntity.status(HttpStatus.OK).body(node);
 	}
 
 	@GetMapping("/api/v1/proposals/batch")
@@ -67,10 +74,10 @@ public class ProposalController {
 
 	@PostMapping("/api/v1/proposals")
 	@CrossOrigin
-	public ResponseEntity<Object> createProposal(String websiteId, String adId, String duration, String paymentMethod,
-			String paymentValue) {
+	public ResponseEntity<Object> createProposal(@RequestAttribute("ae.accountId") String accountId, String websiteId,
+			String adId, String duration, String paymentMethod, String paymentValue) {
 
-		Pair<ServiceResponse, Proposal> response = proposalService.createProposal(websiteId, adId, duration,
+		Pair<ServiceResponse, Proposal> response = proposalService.createProposal(accountId, websiteId, adId, duration,
 				paymentMethod, paymentValue);
 
 		switch (response.getFist()) {
