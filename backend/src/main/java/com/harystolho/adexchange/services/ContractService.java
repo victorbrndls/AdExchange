@@ -49,7 +49,7 @@ public class ContractService {
 
 	public ServiceResponse<List<Contract>> getContractsByAccountId(String accountId) {
 		List<Contract> contracts = contractRepository.getByAccountId(accountId);
-
+		
 		return ServiceResponse.ok(contracts);
 	}
 

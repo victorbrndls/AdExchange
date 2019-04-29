@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import com.harystolho.adexchange.models.ProposalsHolder;
+import com.harystolho.adexchange.models.UserData;
 
 @Service
 public class ProposalsHolderRepositoryImpl implements ProposalsHolderRepository {
@@ -21,7 +22,12 @@ public class ProposalsHolderRepositoryImpl implements ProposalsHolderRepository 
 
 	@Override
 	public ProposalsHolder save(ProposalsHolder proposalsHolder) {
-		return mongoOperations.save(proposalsHolder);
+		Query query = Query.query(Criteria.where("accountId").is(accountId));
+		Update update = new Update().set("proposalsHolder", proposalsHolder);
+		
+		mongoOperations.findAndModify(query, update, UserData.class);
+		
+		//return mongoOperations.save(proposalsHolder);
 	}
 
 	@Override

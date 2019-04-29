@@ -3,6 +3,8 @@ package com.harystolho.adexchange.repositories.contract;
 import java.util.List;
 
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.harystolho.adexchange.models.Contract;
@@ -23,14 +25,15 @@ public class ContractRepositoryImpl implements ContractRepository {
 
 	@Override
 	public Contract getById(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		Query query = Query.query(Criteria.where("_id").is(id));
+		return mongoOperations.findOne(query, Contract.class);
 	}
 
 	@Override
 	public List<Contract> getByAccountId(String accountId) {
-		// TODO Auto-generated method stub
-		return null;
+		Query query = Query.query(new Criteria().orOperator(Criteria.where("creatorId").is(accountId),
+				Criteria.where("acceptorId").is(accountId)));
+		return mongoOperations.find(query, Contract.class);
 	}
 
 }

@@ -28,7 +28,7 @@ public class ContractController {
 	@GetMapping("/api/v1/contracts/me")
 	@CrossOrigin
 	/**
-	 * @return the proposals that belong to the account that made the request
+	 * @return the contracts that belong to the account that made the request
 	 */
 	public ResponseEntity<Object> getContracts(@RequestAttribute("ae.accountId") String accountId) {
 
@@ -44,9 +44,6 @@ public class ContractController {
 
 		ServiceResponse<Contract> response = contractService.getContractById(accountId, id);
 
-		switch (response.getErrorType()) {
-		default:
-			return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
-		}
+		return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
 	}
 }

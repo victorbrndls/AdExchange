@@ -4,6 +4,7 @@ import Websites from './websites/Websites';
 import Match from '../utils/Match';
 import Proposals from "./proposals/Proposals";
 import Ads from "./ads/Ads";
+import Contracts from "./contracts/Contracts";
 
 export default class Dashboard extends Component {
     constructor(props) {
@@ -74,6 +75,10 @@ export default class Dashboard extends Component {
 
                             <Match path="/dashboard/proposals" include>
                                 <Proposals/>
+                            </Match>
+
+                            <Match path="/dashboard/contracts" include>
+                                <Contracts/>
                             </Match>
 
                             <Match path="/dashboard/ads" include>

@@ -250,10 +250,11 @@ export default class AddProposal extends Component {
                             </div>)}
                         {edit_m && new_t && !proposal.rejected && (
                             <div>
-                                {proposal.owner && (
+                                {!proposal.owner && (
                                     <div id="dashboardAcceptButton" class="btn dashboard-add__button"
                                          onClick={this.acceptProposal.bind(this)}>
                                         Aceitar Proposta {/*//TODO don't show this if i am the proposal owner*/}
+                                        {/*//TODO show terms of use for contract - the owner can break the contract,...*/}
                                     </div>
                                 )}
                                 <div class="btn dashboard-add__button" onClick={this.sendProposalRevision.bind(this)}>
