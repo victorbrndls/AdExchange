@@ -17,12 +17,15 @@ public class ContractService {
 
 	private ContractRepository contractRepository;
 
+	private AdService adService;
 	private UserDataService userDataService;
 
 	@Autowired
-	public ContractService(ContractRepository contractRepository, UserDataService userDataService) {
+	public ContractService(ContractRepository contractRepository, UserDataService userDataService,
+			AdService adService) {
 		this.contractRepository = contractRepository;
 		this.userDataService = userDataService;
+		this.adService = adService;
 	}
 
 	private Contract createContract(String creatorId, String acceptorId, String websiteId, String adId,
@@ -32,10 +35,13 @@ public class ContractService {
 		contract.setCreatorId(creatorId);
 		contract.setAcceptorId(acceptorId);
 		contract.setWebsiteId(websiteId);
-		contract.setAdId(adId);
 		contract.setPaymentMethod(paymentMethod);
 		contract.setPaymentValue(paymentValue);
 		contract.setExpiration(LocalDateTime.now().plusDays(duration));
+
+		// Duplicate the Ad to make sure it doesn't change
+		String finalAd = adService.duplicateAd(adId);
+		contract.setAdId(finalAd);
 
 		contractRepository.save(contract);
 

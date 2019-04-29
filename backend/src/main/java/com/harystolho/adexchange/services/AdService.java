@@ -72,6 +72,20 @@ public class AdService {
 		return ad;
 	}
 
+	public String duplicateAd(String adId) {
+		Ad ad = adRepository.getAdById(adId);
+
+		if (ad != null) {
+			ad.setId(null);
+			ad.setAccountId("ADMIN");
+
+			Ad newAd = adRepository.save(ad);
+			return newAd.getId();
+		}
+
+		return null;
+	}
+
 	public String getAccountIdUsingAdId(String id) {
 		Ad ad = adRepository.getAdById(id);
 		return ad.getAccountId();

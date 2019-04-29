@@ -121,7 +121,6 @@ class Contract extends Component {
                         </div>
                         {showAd && ad !== null && (
                             <div style="justify-content: center; display: flex; position: relative;">
-                                {/*<div class="blocking-container"/>*/}
                                 <div class="ads-ad-wrapper mt-4">
                                     {ad.type === 'TEXT' ? (<TextAd {...ad}/>) : (
                                         <ImageAd {...ad}/>)}
