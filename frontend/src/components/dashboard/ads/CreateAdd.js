@@ -1,7 +1,7 @@
 import {Component} from "preact";
 import "../../../styles/ae.css";
 import {HOST} from "../../../configs";
-import {AdAxiosPost} from "../../../auth";
+import {AdAxiosGet, AdAxiosPost} from "../../../auth";
 import {route} from "preact-router";
 
 const DEFAULT_TEXT = "Anúncio que contem somente texto, voce pode alterar a cor de fundo, cor do texto e outras items abaixo";
@@ -13,6 +13,7 @@ export default class CreateAdd extends Component {
 
         this.state = {
             error: {},
+            mode: "EDIT",
             adType: "TEXT",
             adName: "",
             adRefUrl: "",
@@ -23,6 +24,45 @@ export default class CreateAdd extends Component {
         };
 
         this.ad = () => document.getElementsByClassName('ae-ad text')[0];
+
+        this.updateMode();
+        this.requestAdInformation();
+    }
+
+    updateMode() {
+        if (new URLSearchParams(location.search).get('type') === 'new')
+            this.setState({mode: "NEW"});
+    }
+
+    requestAdInformation() {
+        if (this.state.mode !== 'EDIT')
+            return;
+
+        let id = new URLSearchParams(location.search).get('id');
+
+        if (id !== null) {
+            AdAxiosGet.get(`${HOST}/api/v1/ads/${id}`).then((response) => {
+                let ad = response.data;
+
+                console.log(ad);
+                
+                switch (ad.type) {
+                    case 'TEXT':
+                        this.setState({adType: 'TEXT'});
+                        this.setState({adText: ad.text});
+                        this.setState({adBgColor: ad.bgColor});
+                        this.setState({adTextColor: ad.textColor});
+                        break;
+                    case 'IMAGE':
+                        this.setState({adType: 'IMAGE'});
+                        this.setState({adImageUrl: ad.imageUrl});
+                        break;
+                }
+
+                this.setState({adName: ad.name});
+                this.setState({adRefUrl: ad.refUrl});
+            });
+        }
     }
 
     handleAdCheckbox(type) {
@@ -154,7 +194,8 @@ export default class CreateAdd extends Component {
                                 <div class="ads-ad__checkbox" onClick={this.handleAdCheckbox.bind(this, 'TEXT')}>
                                     <div class="shadow ads-ad-wrapper">
                                         <TextAd
-                                            text={state.adText || DEFAULT_TEXT} bgColor={state.adBgColor} textColor={state.adTextColor}/>
+                                            text={state.adText || DEFAULT_TEXT} bgColor={state.adBgColor}
+                                            textColor={state.adTextColor}/>
                                     </div>
                                     <div
                                         class={`ads-ad__checkbox-box ${this.state.adType === 'TEXT' ? "active" : ""}`}/>

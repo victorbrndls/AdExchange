@@ -50,7 +50,7 @@ export default class Ads extends Component {
                     <Match path="/dashboard/ads" exact>
                         <div>
                             <div class="ads-add dashboard-website__rounded-button" style="margin-bottom: 15px;"
-                                 onClick={() => route('/dashboard/ads/create')}>
+                                 onClick={() => route('/dashboard/ads/edit?type=new')}>
                                 Criar Anúncio
                             </div>
                             <div style="display: flex; flex-direction: column;">
@@ -61,7 +61,8 @@ export default class Ads extends Component {
                                                 <span>{ad.name}</span>
                                             </div>
                                             <div style="margin-left: 7px;">
-                                                <span class="ad__container-option">Editar</span>
+                                                <span class="ad__container-option"
+                                                      onClick={() => route(`/dashboard/ads/edit?id=${ad.id}`)}>Editar</span>
                                                 <span class="ad__container-option"
                                                       onClick={this.deleteAd.bind(this, ad.id)}>Deletar</span>
                                             </div>
@@ -78,7 +79,7 @@ export default class Ads extends Component {
                         </div>
                     </Match>
 
-                    <Match path="/dashboard/ads/create" exact>
+                    <Match path="/dashboard/ads/edit" include>
                         <CreateAdd reload={this.reload.bind(this)}/>
                     </Match>
                 </div>
