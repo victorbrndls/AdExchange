@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.harystolho.adexchange.models.Website;
 import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.services.WebsiteService;
@@ -44,14 +46,17 @@ public class WebsiteController {
 
 	@GetMapping("/api/v1/websites/{id}")
 	@CrossOrigin
-	public ResponseEntity<Object> getWebsiteById(@PathVariable String id) {
+	public ResponseEntity<Object> getWebsiteById(@RequestAttribute("ae.accountId")String accountId, @PathVariable String id) {
 		ServiceResponse<Website> response = websiteService.getWebsiteById(id);
 
 		switch (response.getErrorType()) {
 		case FAIL:
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getFullMessage());
 		default:
-			return ResponseEntity.status(HttpStatus.CREATED).body(response.getReponse());
+			ObjectNode node = (ObjectNode) new ObjectMapper().valueToTree(response.getReponse());
+			node.put("owner", response.getReponse().getAccountId().equals(accountId));
+			
+			return ResponseEntity.status(HttpStatus.CREATED).body(node);
 		}
 
 	}

@@ -17,24 +17,24 @@ class ConfirmationModal extends Component {
         document.getElementById("aeConfirmationModal").remove();
     }
 
-    render({cb}) {
+    render({text, cb}) {
         return (
             <div class="ae-confirmation__modal" id="aeConfirmationModal">
                 <div class="ae-confirmation__modal-content">
-                    <div class="modal-header">Header</div>
-                    <div class="modal-body">body</div>
+                    <div class="modal-header">Confirmação</div>
+                    <div class="modal-body">{text}</div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" onClick={this.close.bind(this)}>Fechar</button>
-                        <button class="btn btn-primary">Confirmar</button>
+                        <button class="btn btn-primary" onClick={() => cb()}>Confirmar</button>
                     </div>
                 </div>
             </div>
         )
     }
 
-    static renderFullScreen() {
+    static renderFullScreen(text, cb) {
         if (document.getElementById("aeConfirmationModal") === null)
-            PreactRender(<ConfirmationModal/>, document.getElementsByTagName("body")[0]);
+            PreactRender(<ConfirmationModal text={text} cb={cb}/>, document.getElementsByTagName("body")[0]);
     }
 
 }

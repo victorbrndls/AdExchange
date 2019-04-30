@@ -67,12 +67,14 @@ export default class ShowWebsite extends Component {
                                 </div>
                             ))}
                         </div>
-                        <div style="margin-top: 15px;">
-                            <div class="dashboard-website__rounded-button dashboard-website__create-proposal"
-                                 onClick={() => route(`/dashboard/proposals/edit/new?websiteId=${this.getIdFromUrl()}`)}>
-                                Fazer Proposta de Anúncio
+                        {!website.owner && (
+                            <div style="margin-top: 15px;">
+                                <div class="dashboard-website__rounded-button dashboard-website__create-proposal"
+                                     onClick={() => route(`/dashboard/proposals/edit/new?websiteId=${this.getIdFromUrl()}`)}>
+                                    Fazer Proposta de Anúncio
+                                </div>
                             </div>
-                        </div>
+                        )}
                     </div>
                 </div>
             </div>

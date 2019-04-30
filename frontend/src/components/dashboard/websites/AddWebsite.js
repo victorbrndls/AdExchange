@@ -150,9 +150,9 @@ export default class AddWebsite extends Component {
                         </div>
 
                         <div class="form-group websites-add__form">
-                            <label>Descricao</label>
+                            <label>Descrição</label>
                             <textarea id="description" class="form-control w-50" maxlength="500"
-                                      placeholder="Descricao" style="height: 150px;"/>
+                                      placeholder="Descrição" style="height: 150px;"/>
                         </div>
 
                         <div class="form-group">

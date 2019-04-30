@@ -150,9 +150,10 @@ body.auth #header {
 }
 
 .website-item__image {
-    height: 60px;
-    width: 60px;
+    height: 62px;
+    width: 62px;
     align-self: center;
+    border: solid 1px #dbdbdb;
 }
 
 .website-item__name {
