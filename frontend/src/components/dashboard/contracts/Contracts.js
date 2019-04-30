@@ -49,6 +49,9 @@ export default class Contracts extends Component {
                                     ))}
                                 </div>
                             )}
+                            {contracts !== null && contracts.length === 0 && (
+                                <div class="proposal__none">Nenhum no momento</div>
+                            )}
                         </div>
                     </Match>
 
@@ -83,7 +86,7 @@ class Contract extends Component {
         });
     }
 
-    requestAdInformation(){
+    requestAdInformation() {
         if (this.props.adId === undefined)
             return;
 
@@ -92,10 +95,10 @@ class Contract extends Component {
         });
     }
 
-    handleShowAd(){
+    handleShowAd() {
         this.setState({showAd: !this.state.showAd});
 
-        if(this.state.ad === null){
+        if (this.state.ad === null) {
             this.requestAdInformation();
         }
     }

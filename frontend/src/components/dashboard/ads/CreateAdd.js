@@ -4,7 +4,7 @@ import {HOST} from "../../../configs";
 import {AdAxiosGet, AdAxiosPost} from "../../../auth";
 import {route} from "preact-router";
 
-const DEFAULT_TEXT = "Anúncio que contem somente texto, voce pode alterar a cor de fundo, cor do texto e outras items abaixo";
+const DEFAULT_TEXT = "Anúncio que contem somente texto, voce pode alterar a cor de fundo, cor do texto e outros items abaixo";
 const DEFAULT_IMAGE_URL = "https://i.imgur.com/k2AxKqQ.png";
 
 export default class CreateAdd extends Component {

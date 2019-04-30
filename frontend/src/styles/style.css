@@ -440,3 +440,13 @@ body.auth #header {
     margin-top: 80px;
     border-radius: .3rem;
 }
+
+.proposal__none{
+    padding-left: 25px;
+    margin-bottom: 11px;
+    color: #848484;
+}
+
+.spots-add{
+    background-color: rgb(255, 171, 64);
+}

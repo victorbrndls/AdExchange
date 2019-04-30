@@ -5,6 +5,7 @@ import Match from '../utils/Match';
 import Proposals from "./proposals/Proposals";
 import Ads from "./ads/Ads";
 import Contracts from "./contracts/Contracts";
+import Spots from "./spots/Spots";
 
 export default class Dashboard extends Component {
     constructor(props) {
@@ -37,6 +38,11 @@ export default class Dashboard extends Component {
                         <div class="dashboard__sidebar--item">
                             <Link href="/dashboard/ads" activeClassName="active">
                                 <div class="dashboard__sidebar--item-container">Anúncios</div>
+                            </Link>
+                        </div>
+                        <div class="dashboard__sidebar--item">
+                            <Link href="/dashboard/spots" activeClassName="active">
+                                <div class="dashboard__sidebar--item-container">Spots</div>
                             </Link>
                         </div>
                         <div class="dashboard__sidebar--item">
@@ -83,6 +89,10 @@ export default class Dashboard extends Component {
 
                             <Match path="/dashboard/ads" include>
                                 <Ads/>
+                            </Match>
+
+                            <Match path="/dashboard/spots" include>
+                                <Spots/>
                             </Match>
                         </div>
                     </div>

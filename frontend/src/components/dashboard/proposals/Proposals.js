@@ -95,6 +95,9 @@ export default class Proposals extends Component {
                                             )}
                                         </div>
                                     ))}
+                                    {newProposals.length === 0 && (
+                                        <div class="proposal__none">Nenhuma no momento</div>
+                                    )}
                                 </div>
                             </div>
                             <div>
@@ -109,6 +112,9 @@ export default class Proposals extends Component {
                                             )}
                                         </div>
                                     ))}
+                                    {sentProposals.length === 0 && (
+                                        <div class="proposal__none">Nenhuma no momento</div>
+                                    )}
                                 </div>
                             </div>
 
