@@ -16,4 +16,6 @@ public interface AdRepository {
 	 */
 	Ad getAdById(String id);
 
+	void deleteById(String id);
+
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.services.AdService;
 import com.harystolho.adexchange.services.ServiceResponse;
+import com.harystolho.adexchange.utils.Nothing;
 
 @RestController
 public class AdController {
@@ -72,6 +74,21 @@ public class AdController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getFullMessage());
 		default:
 			return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
+		}
+
+	}
+
+	@DeleteMapping("/api/v1/ads/{id}")
+	@CrossOrigin
+	public ResponseEntity<Object> deleteAd(@RequestAttribute("ae.accountId") String accountId,
+			@PathVariable String id) {
+		ServiceResponse<Nothing> response = adService.deleteAdById(accountId, id);
+
+		switch (response.getErrorType()) {
+		case FAIL:
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getFullMessage());
+		default:
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response.getReponse());
 		}
 
 	}

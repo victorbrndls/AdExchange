@@ -35,4 +35,10 @@ public class AdRepositoryImpl implements AdRepository {
 		return mongoOperations.findOne(query, Ad.class);
 	}
 
+	@Override
+	public void deleteById(String id) {
+		Query query = Query.query(Criteria.where("_id").is(id));
+		mongoOperations.remove(query, Ad.class);
+	}
+
 }

@@ -8,6 +8,7 @@ import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.models.ads.ImageAd;
 import com.harystolho.adexchange.models.ads.TextAd;
 import com.harystolho.adexchange.repositories.ad.AdRepository;
+import com.harystolho.adexchange.utils.Nothing;
 
 @Service
 public class AdService {
@@ -89,6 +90,18 @@ public class AdService {
 	public String getAccountIdUsingAdId(String id) {
 		Ad ad = adRepository.getAdById(id);
 		return ad.getAccountId();
+	}
+
+	// TODO also delete the proposals that have this ad in them
+	public ServiceResponse<Nothing> deleteAdById(String accountId, String id) {
+		Ad ad = adRepository.getAdById(id);
+
+		if (ad != null && ad.getAccountId().equals(accountId)) {
+			adRepository.deleteById(id);
+			return ServiceResponse.ok(null);
+		}
+
+		return ServiceResponse.fail("The Ad doesn't belong to this account");
 	}
 
 }

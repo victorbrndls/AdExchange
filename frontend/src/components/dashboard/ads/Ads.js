@@ -1,9 +1,9 @@
 import {Component} from "preact";
 import CreateAdd, {ImageAd, TextAd} from "./CreateAdd";
-import {LeftArrow} from "../../utils/Components";
+import {ConfirmationModal, LeftArrow} from "../../utils/Components";
 import Match from "../../utils/Match";
 import {route} from "preact-router";
-import {AdAxiosGet} from "../../../auth";
+import {AdAxiosGet, AdAxiosPost} from "../../../auth";
 import {HOST} from "../../../configs";
 
 export default class Ads extends Component {
@@ -31,6 +31,14 @@ export default class Ads extends Component {
         this.requestAds();
     }
 
+    deleteAd(id){
+        ConfirmationModal.renderFullScreen("", () =>{
+            AdAxiosPost.delete(`${HOST}/api/v1/ads/${id}`).then((response)=>{
+                this.requestAds();
+            });
+        });
+    }
+
     render({}, {ads}) {
         return (
             <div>
@@ -54,7 +62,7 @@ export default class Ads extends Component {
                                             </div>
                                             <div style="margin-left: 7px;">
                                                 <span class="ad__container-option">Editar</span>
-                                                <span class="ad__container-option">Deletar</span>
+                                                <span class="ad__container-option" onClick={this.deleteAd.bind(this, ad.id)}>Deletar</span>
                                             </div>
                                         </div>
                                         <div style="margin: 12px; box-shadow: 0 0 11px -2px #0000004d;" class="ads-ad-wrapper">
