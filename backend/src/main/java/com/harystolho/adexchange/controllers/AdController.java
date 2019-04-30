@@ -2,14 +2,18 @@ package com.harystolho.adexchange.controllers;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -57,19 +61,33 @@ public class AdController {
 
 	}
 
+	@PutMapping("/api/v1/ads/{id}")
 	@PostMapping("/api/v1/ads")
 	@CrossOrigin
-	public ResponseEntity<Object> createAd(@RequestAttribute("ae.accountId") String accountId, String name, String type,
-			String refUrl, //
+	/**
+	 * POST and PUT are in the same method because they share most fields
+	 * 
+	 * @return
+	 */
+	public ResponseEntity<Object> createOrUpdateAd(HttpServletRequest req,
+			@RequestAttribute("ae.accountId") String accountId, String name, String type, String refUrl, //
 			@RequestParam(value = "text", required = false) String text,
 			@RequestParam(value = "bgColor", required = false) String bgColor,
 			@RequestParam(value = "textColor", required = false) String textColor,
-			@RequestParam(value = "imageUrl", required = false) String imageUrl) {
+			@RequestParam(value = "imageUrl", required = false) String imageUrl,
+			@PathVariable(required = false) String id) {
 
-		ServiceResponse<Ad> response = adService.createAd(accountId, name, type, refUrl, text, bgColor, textColor,
-				imageUrl);
+		ServiceResponse<Ad> response = ServiceResponse.fail("Http method must either be PUT or POST");
+
+		if (req.getMethod().equals("POST")) {
+			response = adService.createAd(accountId, name, type, refUrl, text, bgColor, textColor, imageUrl);
+		} else if (req.getMethod().equals("PUT")) {
+			response = adService.updateAd(accountId, id, name, type, refUrl, text, bgColor, textColor, imageUrl);
+		}
 
 		switch (response.getErrorType()) {
+		case UNAUTHORIZED:
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response.getErrorType());
 		case FAIL:
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getFullMessage());
 		default:

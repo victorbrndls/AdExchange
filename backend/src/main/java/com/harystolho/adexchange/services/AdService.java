@@ -29,9 +29,8 @@ public class AdService {
 
 	public ServiceResponse<Ad> createAd(String accountId, String name, String type, String refUrl, String text,
 			String bgColor, String textColor, String imageUrl) {
-		if (!type.equals("TEXT") && !type.equals("IMAGE")) {
+		if (!verifyAdType(type))
 			return ServiceResponse.fail("The type must TEXT or IMAGE");
-		}
 
 		Ad ad = null;
 
@@ -49,6 +48,42 @@ public class AdService {
 		Ad saved = adRepository.save(ad);
 
 		return ServiceResponse.ok(saved);
+	}
+
+	public ServiceResponse<Ad> updateAd(String accountId, String id, String name, String type, String refUrl,
+			String text, String bgColor, String textColor, String imageUrl) {
+		if (!verifyAdType(type))
+			return ServiceResponse.fail("The type must TEXT or IMAGE");
+
+		Ad ad = adRepository.getAdById(id);
+
+		if (ad == null)
+			return ServiceResponse.fail("Ad id is not valid");
+
+		if (!ad.getAccountId().equals(accountId))
+			return ServiceResponse.unauthorized();
+
+		ad.setName(name);
+		ad.setRefUrl(refUrl);
+
+		if (type.equals("TEXT")) {
+			TextAd tAd = (TextAd) ad;
+			tAd.setText(text);
+			tAd.setBgColor(bgColor);
+			tAd.setTextColor(textColor);
+			ad = tAd;
+		} else if (type.equals("IMAGE")) {
+			ImageAd iAd = (ImageAd) ad;
+			iAd.setImageUrl(imageUrl);
+			ad = iAd;
+		}
+
+		Ad saved = adRepository.save(ad);
+		return ServiceResponse.ok(saved);
+	}
+
+	private boolean verifyAdType(String type) {
+		return type.equals("TEXT") || type.equals("IMAGE");
 	}
 
 	private Ad createTextAd(String name, String text, String bgColor, String textColor, String refUrl) {

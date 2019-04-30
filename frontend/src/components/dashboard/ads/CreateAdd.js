@@ -41,11 +41,11 @@ export default class CreateAdd extends Component {
         let id = new URLSearchParams(location.search).get('id');
 
         if (id !== null) {
+            this.adId = id;
+
             AdAxiosGet.get(`${HOST}/api/v1/ads/${id}`).then((response) => {
                 let ad = response.data;
 
-                console.log(ad);
-                
                 switch (ad.type) {
                     case 'TEXT':
                         this.setState({adType: 'TEXT'});
@@ -70,22 +70,15 @@ export default class CreateAdd extends Component {
     }
 
     handleSubmit() {
-        switch (this.state.adType) {
-            case 'TEXT':
-                if (!this.verifyTextAdFields())
-                    return;
-
-                this.submitAd();
+        if (this.state.adType === 'TEXT') {
+            if (!this.verifyTextAdFields())
                 return;
-            case 'IMAGE':
-                if (!this.verifyImageAdFields())
-                    return;
-
-                this.submitAd();
-                return;
-            default:
+        } else if (this.state.adType === 'IMAGE') {
+            if (!this.verifyImageAdFields())
                 return;
         }
+
+        this.submitAd();
     }
 
     verifyTextAdFields() {
@@ -146,6 +139,18 @@ export default class CreateAdd extends Component {
     }
 
     submitAd() {
+        let formData = this.createRequestFormData();
+
+        let reqMode = this.state.mode === 'EDIT' ? 'put' : 'post'; // PUT or POST
+        let endpoint = `${HOST}/api/v1/ads${reqMode === 'put' ? `/${this.adId}` : ''}`;
+
+        AdAxiosPost[reqMode](endpoint, formData).then(() => {
+            route('/dashboard/ads');
+            this.props.reload();
+        });
+    }
+
+    createRequestFormData() {
         let formData = new FormData();
         formData.append('name', this.state.adName);
         formData.append('type', this.state.adType);
@@ -162,11 +167,7 @@ export default class CreateAdd extends Component {
                 break;
         }
 
-        AdAxiosPost.post(`${HOST}/api/v1/ads`, formData
-        ).then(() => {
-            route('/dashboard/ads');
-            this.props.reload();
-        });
+        return formData;
     }
 
     render({}, state) {
@@ -298,7 +299,7 @@ export default class CreateAdd extends Component {
 
                         <div class="btn dashboard-add__button"
                              onClick={this.handleSubmit.bind(this)}>
-                            Criar
+                            {state.mode === 'EDIT' ? 'Salvar' : 'Criar'}
                         </div>
                     </div>
                 </div>

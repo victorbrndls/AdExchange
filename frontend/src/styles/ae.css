@@ -13,6 +13,7 @@
 .ae-ad.text{
     background-color: gold;
     padding: 6px 9px;
+    overflow-y: hidden;
 }
 
 .ae-ad.image{
