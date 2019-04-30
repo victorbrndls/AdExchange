@@ -71,7 +71,8 @@ export default class EditSpot extends Component {
         formData.append('adId', this.state.spot.adId);
 
         AdAxiosPost.post(`${HOST}/api/v1/spots`, formData).then((response) => {
-           
+            route('/dashboard/spots');
+            this.props.reload();
         });
     }
 

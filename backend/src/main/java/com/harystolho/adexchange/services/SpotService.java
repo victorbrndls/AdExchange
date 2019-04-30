@@ -1,5 +1,7 @@
 package com.harystolho.adexchange.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,6 +50,10 @@ public class SpotService {
 			return ServiceResponse.unauthorized();
 
 		return ServiceResponse.ok(spot);
+	}
+
+	public ServiceResponse<List<Spot>> getSpotsByAccountId(String accountId) {
+		return ServiceResponse.ok(spotRepository.getByAccountId(accountId));
 	}
 
 }

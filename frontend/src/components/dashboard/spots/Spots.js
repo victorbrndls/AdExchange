@@ -3,6 +3,8 @@ import {route} from "preact-router";
 import {LeftArrow} from "../../utils/Components";
 import Match from "../../utils/Match";
 import EditSpot from "./EditSpot";
+import {AdAxiosGet} from "../../../auth";
+import {HOST} from "../../../configs";
 
 export default class Spots extends Component {
     constructor(props) {
@@ -19,7 +21,15 @@ export default class Spots extends Component {
         if (!this.hasLoadedSpots) {
             this.hasLoadedSpots = true;
 
+            AdAxiosGet.get(`${HOST}/api/v1/spots/me`).then((response) => {
+                this.setState({spots: response.data});
+            })
         }
+    }
+
+    reload(){
+        this.hasLoadedSpots = false;
+        this.requestSpots();
     }
 
     render({}, {spots}) {
@@ -46,7 +56,7 @@ export default class Spots extends Component {
                     </Match>
 
                     <Match path="/dashboard/spots/edit" include>
-                        <EditSpot/>
+                        <EditSpot reload={this.reload.bind(this)}/>
                     </Match>
                 </div>
             </div>

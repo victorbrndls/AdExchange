@@ -1,5 +1,7 @@
 package com.harystolho.adexchange.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,6 +49,20 @@ public class SpotController {
 		switch (response.getErrorType()) {
 		case UNAUTHORIZED:
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response.getErrorType());
+		case FAIL:
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getFullMessage());
+		default:
+			return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
+		}
+	}
+
+	@GetMapping("/api/v1/spots/me")
+	@CrossOrigin
+	public ResponseEntity<Object> getAccountSpot(@RequestAttribute("ae.accountId") String accountId) {
+
+		ServiceResponse<List<Spot>> response = spotService.getSpotsByAccountId(accountId);
+
+		switch (response.getErrorType()) {
 		case FAIL:
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getFullMessage());
 		default:
