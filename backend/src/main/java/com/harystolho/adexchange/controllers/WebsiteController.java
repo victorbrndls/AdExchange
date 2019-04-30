@@ -55,6 +55,7 @@ public class WebsiteController {
 		default:
 			ObjectNode node = (ObjectNode) new ObjectMapper().valueToTree(response.getReponse());
 			node.put("owner", response.getReponse().getAccountId().equals(accountId));
+			node.remove("accountId");
 			
 			return ResponseEntity.status(HttpStatus.CREATED).body(node);
 		}

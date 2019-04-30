@@ -318,9 +318,8 @@ body.auth #header {
 
 .ads-ad__container {
     background-color: white;
-    margin: 0 11px 11px 0;
-    padding: 5px 6px;
     border-radius: 4px;
+    margin-bottom: 30px;
 }
 
 .ads-ad__container-name {
@@ -328,6 +327,8 @@ body.auth #header {
     justify-content: space-between;
     font-family: Raleway, serif;
     color: #bf2b47;
+    padding: 8px 16px;
+    border-bottom: 1px solid #e2e5e8;
 }
 
 .ad__container-option {
@@ -348,6 +349,8 @@ body.auth #header {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    font-size: 21px;
+    font-family: Raleway, serif;
 }
 
 .dashboard-add__button {

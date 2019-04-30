@@ -58,7 +58,7 @@ export default class Ads extends Component {
                                     <div class="ads-ad__container shadow">
                                         <div class="ads-ad__container-name">
                                             <div class="ad__container-header">
-                                                <h5>{ad.name}</h5>
+                                                <span>{ad.name}</span>
                                             </div>
                                             <div style="margin-left: 7px;">
                                                 <span class="ad__container-option">Editar</span>
