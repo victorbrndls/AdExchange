@@ -4,22 +4,22 @@ import {HOST} from "../../../configs";
 import {AdAxiosPost} from "../../../auth";
 import {route} from "preact-router";
 
+const DEFAULT_TEXT = "Anúncio que contem somente texto, voce pode alterar a cor de fundo, cor do texto e outras items abaixo";
+const DEFAULT_IMAGE_URL = "https://i.imgur.com/k2AxKqQ.png";
+
 export default class CreateAdd extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             error: {},
-            adType: "TEXT"
-        };
-
-        this.fields = {
-            adName: () => document.getElementById("ad-name"),
-            adText: () => document.getElementById('ad-text'),
-            adBgColor: () => document.getElementById('ad-bgColor'),
-            adTextColor: () => document.getElementById('ad-textColor'),
-            adRefUrl: () => document.getElementById('ad-refUrl'),
-            adImageUrl: () => document.getElementById('ad-imageUrl')
+            adType: "TEXT",
+            adName: "",
+            adRefUrl: "",
+            adImageUrl: "",
+            adText: "",
+            adBgColor: "#f2f2f2",
+            adTextColor: "#000",
         };
 
         this.ad = () => document.getElementsByClassName('ae-ad text')[0];
@@ -27,14 +27,6 @@ export default class CreateAdd extends Component {
 
     handleAdCheckbox(type) {
         this.setState({adType: type});
-    }
-
-    updateAdBgColor(e) {
-        this.ad().style.backgroundColor = e.target.value;
-    }
-
-    updateAdTextColor(e) {
-        this.ad().style.color = e.target.value;
     }
 
     handleSubmit() {
@@ -62,7 +54,7 @@ export default class CreateAdd extends Component {
         if (!this.verifyAdName())
             return false;
 
-        if (this.fields.adText().value.trim().length < 5) {
+        if (this.state.adText.trim().length < 5) {
             this.setState({error: {...this.state.error, adText: "O texto deve conter pelo menos 5 caracteres"}});
             return false;
         }
@@ -79,7 +71,7 @@ export default class CreateAdd extends Component {
         if (!this.verifyAdName())
             return false;
 
-        if (this.fields.adImageUrl().value.match(/(https:\/\/)|(http:\/\/)/g) === null) {
+        if (this.state.adImageUrl.match(/(https:\/\/)|(http:\/\/)/g) === null) {
             this.setState({error: {...this.state.error, adImage: "O URL da imagem nao e' valido"}});
             return false;
         }
@@ -91,7 +83,7 @@ export default class CreateAdd extends Component {
     }
 
     verifyAdName() {
-        if (this.fields.adName().value.trim().length < 5) {
+        if (this.state.adName.trim().length < 5) {
             this.setState({
                 error: {
                     ...this.state.error,
@@ -105,7 +97,7 @@ export default class CreateAdd extends Component {
     }
 
     verifyRefUrl() {
-        if (this.fields.adRefUrl().value.match(/(https:\/\/)|(http:\/\/)/g) === null) {
+        if (this.state.adRefUrl.match(/(https:\/\/)|(http:\/\/)/g) === null) {
             this.setState({error: {...this.state.error, adRefUrl: "URL invalido"}});
             return false;
         }
@@ -115,18 +107,18 @@ export default class CreateAdd extends Component {
 
     submitAd() {
         let formData = new FormData();
-        formData.append('name', this.fields.adName().value);
+        formData.append('name', this.state.adName);
         formData.append('type', this.state.adType);
-        formData.append('refUrl', this.fields.adRefUrl().value);
+        formData.append('refUrl', this.state.adRefUrl);
 
         switch (this.state.adType) {
             case 'TEXT':
-                formData.append('text', this.fields.adText().value);
-                formData.append('bgColor', this.fields.adBgColor().value);
-                formData.append('textColor', this.fields.adTextColor().value);
+                formData.append('text', this.state.adText);
+                formData.append('bgColor', this.state.adBgColor);
+                formData.append('textColor', this.state.adTextColor);
                 break;
             case 'IMAGE':
-                formData.append('imageUrl', this.fields.adImageUrl().value);
+                formData.append('imageUrl', this.state.adImageUrl);
                 break;
         }
 
@@ -148,7 +140,8 @@ export default class CreateAdd extends Component {
                     <div style="margin-top: 5px;">
                         <div class="form-group websites-add__form">
                             <label>Nome</label>
-                            <input id="ad-name" class="form-control" maxLength="60"/>
+                            <input id="ad-name" class="form-control" value={state.adName} maxLength="60"
+                                   onChange={(e) => this.setState({adName: e.target.value})}/>
                             {state.error.adName && (
                                 <small class="form-text ad-error">
                                     {state.error.adName}
@@ -161,8 +154,7 @@ export default class CreateAdd extends Component {
                                 <div class="ads-ad__checkbox" onClick={this.handleAdCheckbox.bind(this, 'TEXT')}>
                                     <div class="shadow ads-ad-wrapper">
                                         <TextAd
-                                            text="Anúncio que contem somente texto, voce pode alterar a cor de fundo, cor do texto e outras items abaixo"
-                                            bgColor="" textColor=""/>
+                                            text={state.adText || DEFAULT_TEXT} bgColor={state.adBgColor} textColor={state.adTextColor}/>
                                     </div>
                                     <div
                                         class={`ads-ad__checkbox-box ${this.state.adType === 'TEXT' ? "active" : ""}`}/>
@@ -170,7 +162,7 @@ export default class CreateAdd extends Component {
 
                                 <div class="ads-ad__checkbox" onClick={this.handleAdCheckbox.bind(this, 'IMAGE')}>
                                     <div class="shadow ads-ad-wrapper">
-                                        <ImageAd imageUrl="https://i.imgur.com/k2AxKqQ.png"/>
+                                        <ImageAd imageUrl={state.adImageUrl || DEFAULT_IMAGE_URL}/>
                                     </div>
                                     <div
                                         class={`ads-ad__checkbox-box ${this.state.adType === 'IMAGE' ? "active" : ""}`}/>
@@ -182,7 +174,8 @@ export default class CreateAdd extends Component {
                             <div>
                                 <div class="form-group websites-add__form">
                                     <label>Texto</label>
-                                    <input id="ad-text" class="form-control"/>
+                                    <input id="ad-text" class="form-control" value={state.adText}
+                                           onChange={(e) => this.setState({adText: e.target.value})}/>
                                     {state.error.adText && (
                                         <small class="form-text ad-error">
                                             {state.error.adText}
@@ -192,20 +185,22 @@ export default class CreateAdd extends Component {
                                 <div class="form-group websites-add__form">
                                     <label>Cor de fundo</label>
                                     <input id="ad-bgColor" class="form-control ads-ad__color-picker" type="color"
-                                           value="#000"
-                                           onChange={this.updateAdBgColor.bind(this)}/>
+                                           value={state.adBgColor}
+                                           onChange={(e) => this.setState({adBgColor: e.target.value})}/>
                                 </div>
 
                                 <div class="form-group websites-add__form">
                                     <label>Cor do texto</label>
                                     <input id="ad-textColor" class="form-control ads-ad__color-picker" type="color"
-                                           value="#ffffff"
-                                           onChange={this.updateAdTextColor.bind(this)}/>
+                                           value={state.adTextColor}
+                                           onChange={(e) => this.setState({adTextColor: e.target.value})}/>
                                 </div>
 
                                 <div class="form-group websites-add__form">
                                     <label>URL alvo do Anúncio</label>
-                                    <input id="ad-refUrl" class="form-control" placeholder="https://..."/>
+                                    <input id="ad-refUrl" class="form-control" placeholder="https://..."
+                                           value={state.adRefUrl}
+                                           onChange={(e) => this.setState({adRefUrl: e.target.value})}/>
                                     {state.error.adRefUrl && (
                                         <small class="form-text ad-error">
                                             {state.error.adRefUrl}
@@ -229,7 +224,8 @@ export default class CreateAdd extends Component {
                                     <div class="input-group mb-3">
                                         <input id="ad-imageUrl" type="text" class="form-control"
                                                placeholder="https://..."
-                                               aria-label="URL da imagem"/>
+                                               aria-label="URL da imagem" value={state.adImageUrl}
+                                               onChange={(e) => this.setState({adImageUrl: e.target.value})}/>
                                         <div class="input-group-append">
                                             <button class="btn btn-outline-secondary" type="button"
                                                     id="ad-loadImage">
@@ -245,7 +241,9 @@ export default class CreateAdd extends Component {
 
                                 <div class="form-group websites-add__form">
                                     <label>URL alvo do Anúncio</label>
-                                    <input id="ad-refUrl" class="form-control" placeholder="https://..."/>
+                                    <input id="ad-refUrl" class="form-control" placeholder="https://..."
+                                           value={state.adRefUrl}
+                                           onChange={(e) => this.setState({adRefUrl: e.target.value})}/>
                                     {state.error.adRefUrl && (
                                         <small class="form-text ad-error">
                                             {state.error.adRefUrl}
@@ -270,7 +268,7 @@ export default class CreateAdd extends Component {
 
 export let TextAd = ({refUrl, text, bgColor, textColor}) => (
     <a native href={refUrl} target="_blank" style="text-decoration: none;">
-        <div class="ae-ad text" style={`background-color: ${bgColor || "#000"}; color: ${textColor || "#ffffff"};`}>
+        <div class="ae-ad text" style={`background-color: ${bgColor || "#f2f2f2"}; color: ${textColor || "#000"};`}>
             {text || "Erro ao carregar anuncio"}
         </div>
     </a>
