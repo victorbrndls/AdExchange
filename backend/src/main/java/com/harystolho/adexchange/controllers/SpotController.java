@@ -60,7 +60,7 @@ public class SpotController {
 
 	@GetMapping("/api/v1/spots/me")
 	@CrossOrigin
-	public ResponseEntity<Object> getAccountSpot(@RequestAttribute("ae.accountId") String accountId) {
+	public ResponseEntity<Object> getAccountSpots(@RequestAttribute("ae.accountId") String accountId) {
 
 		ServiceResponse<List<Spot>> response = spotService.getSpotsByAccountId(accountId);
 

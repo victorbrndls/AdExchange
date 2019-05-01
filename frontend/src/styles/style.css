@@ -463,3 +463,9 @@ body.auth #header {
     text-decoration: underline;
     cursor: pointer;
 }
+
+.spot-id:hover{
+    text-decoration: underline;
+    cursor: pointer;
+    color: black;
+}

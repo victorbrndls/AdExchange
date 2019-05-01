@@ -129,12 +129,16 @@ export default class Spots extends Component {
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="contract__body">
+                                    <div class="contract__body text-muted">
+                                        <div class="contract__body-item">
+                                            Id: <span class="spot-id">{spot.id}</span>
+                                        </div>
                                         <div class="contract__body-item">
                                             Contrato: {spot.contractId === '-1' ? 'Nenhum' : contracts[spot.contractId] ? (
                                             <div class="d-inline-block">
-                                                <span class="mx-2">{contracts[spot.contractId].id}</span>
-                                                <span class="mx-2">{PaymentMethod[contracts[spot.contractId].paymentMethod]}</span>
+                                                <span class="mr-2">{contracts[spot.contractId].id}</span>
+                                                <span
+                                                    class="mx-2">{PaymentMethod[contracts[spot.contractId].paymentMethod]}</span>
                                                 <span class="mx-2">R${contracts[spot.contractId].paymentValue}</span>
                                             </div>) : 'Nenhum'}</div>
                                         <div class="contract__body-item">

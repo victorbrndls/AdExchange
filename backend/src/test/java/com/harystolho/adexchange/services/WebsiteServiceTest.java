@@ -67,7 +67,7 @@ public class WebsiteServiceTest {
 
 	@Test
 	public void createWebsiteWithValidCategory() {
-		Mockito.when(websiteRepository.saveWebsite(Mockito.any())).thenReturn(null);
+		Mockito.when(websiteRepository.saveWebsite(Mockito.any())).thenReturn(new Website("", ""));
 
 		ServiceResponse<Website> response = websiteService.createWebsite("", "some name", "https://ad-exchange.com", "",
 				"some description to use", "UPPER");

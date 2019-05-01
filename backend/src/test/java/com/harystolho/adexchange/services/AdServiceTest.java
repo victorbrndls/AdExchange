@@ -1,5 +1,6 @@
 package com.harystolho.adexchange.services;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -16,4 +17,9 @@ public class AdServiceTest {
 	@Mock
 	AdRepository adRepository;
 
+	@Test
+	public void empty() {
+		
+	}
+	
 }

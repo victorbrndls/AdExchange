@@ -90,6 +90,6 @@ public class ProposalServiceTest {
 
 		ServiceResponse<Nothing> response = proposalService.deleteProposalById("acc123", "123");
 
-		assertEquals(ServiceResponseType.FAIL, response.getErrorType());
+		assertEquals(ServiceResponseType.PROPOSAL_NOT_IN_SENT, response.getErrorType());
 	}
 }
