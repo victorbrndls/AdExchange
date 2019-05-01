@@ -5,6 +5,7 @@ import Match from "../../utils/Match";
 import EditSpot from "./EditSpot";
 import {AdAxiosGet, AdAxiosPost} from "../../../auth";
 import {HOST} from "../../../configs";
+import PaymentMethod from "../../utils/PaymentMethod";
 
 export default class Spots extends Component {
     constructor(props) {
@@ -49,7 +50,7 @@ export default class Spots extends Component {
         let ids = this.buildBatchRequestString(this.state.spots, 'contractId');
 
         AdAxiosGet.get(`${HOST}/api/v1/contracts/batch?ids=${ids}`).then((response) => {
-
+            this.setState({contracts: this.mapIdToObject(response.data)});
         });
     }
 
@@ -57,15 +58,18 @@ export default class Spots extends Component {
         let ids = this.buildBatchRequestString(this.state.spots, 'adId');
 
         AdAxiosGet.get(`${HOST}/api/v1/ads/batch?ids=${ids}`).then((response) => {
-            let ads = response.data;
-            let adsState = {};
-
-            ads.forEach((ad) => {
-                adsState[ad.id] = ad;
-            });
-
-            this.setState({ads: adsState});
+            this.setState({ads: this.mapIdToObject(response.data)});
         });
+    }
+
+    mapIdToObject(items) {
+        let states = {};
+
+        items.forEach((item) => {
+            states[item.id] = item;
+        });
+
+        return states;
     }
 
     /**
@@ -127,9 +131,14 @@ export default class Spots extends Component {
                                     </div>
                                     <div class="contract__body">
                                         <div class="contract__body-item">
-                                            Contato: {spot.contractId === '-1' ? 'Nenhum' : spot.contractId}</div>
+                                            Contrato: {spot.contractId === '-1' ? 'Nenhum' : contracts[spot.contractId] ? (
+                                            <div class="d-inline-block">
+                                                <span class="mx-2">{contracts[spot.contractId].id}</span>
+                                                <span class="mx-2">{PaymentMethod[contracts[spot.contractId].paymentMethod]}</span>
+                                                <span class="mx-2">R${contracts[spot.contractId].paymentValue}</span>
+                                            </div>) : 'Nenhum'}</div>
                                         <div class="contract__body-item">
-                                            Anuncio: {spot.adId === '-1' ? 'Nenhum' : ads[spot.adId].name || '-1'}</div>
+                                            Anuncio: {spot.adId === '-1' ? 'Nenhum' : ads[spot.adId] ? ads[spot.adId].name : 'Nenhum'}</div>
                                     </div>
                                 </div>
                             ))}

@@ -2,7 +2,9 @@ package com.harystolho.adexchange.services;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -72,6 +74,14 @@ public class ContractService {
 		});
 
 		return ServiceResponse.ok(contracts);
+	}
+
+	public ServiceResponse<List<Contract>> getContractsById(String accountId, String ids) {
+		List<Contract> contracts = contractRepository.getManyById(Arrays.asList(ids.split(",")));
+
+		return ServiceResponse.ok(contracts.stream().filter((contract) -> {
+			return contract.getAcceptorId().equals(accountId) || contract.getCreatorId().equals(accountId);
+		}).collect(Collectors.toList()));
 	}
 
 }

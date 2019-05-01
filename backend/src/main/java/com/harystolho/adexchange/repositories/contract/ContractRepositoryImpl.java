@@ -36,4 +36,10 @@ public class ContractRepositoryImpl implements ContractRepository {
 		return mongoOperations.find(query, Contract.class);
 	}
 
+	@Override
+	public List<Contract> getManyById(List<String> ids) {
+		Query query = Query.query(Criteria.where("_id").in(ids));
+		return mongoOperations.find(query, Contract.class);
+	}
+
 }

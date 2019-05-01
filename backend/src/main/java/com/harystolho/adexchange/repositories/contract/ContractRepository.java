@@ -10,6 +10,8 @@ public interface ContractRepository {
 
 	Contract getById(String id);
 
+	List<Contract> getManyById(List<String> ids);
+
 	/**
 	 * @param accountId
 	 * @return the contracts or an empty list

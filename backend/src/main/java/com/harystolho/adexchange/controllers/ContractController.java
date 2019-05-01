@@ -37,12 +37,21 @@ public class ContractController {
 		return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
 	}
 
-	@GetMapping("/api/v1/contract/{id}")
+	@GetMapping("/api/v1/contracts/{id}")
 	@CrossOrigin
 	public ResponseEntity<Object> getContractById(@RequestAttribute("ae.accountId") String accountId,
 			@PathVariable String id) {
 
 		ServiceResponse<Contract> response = contractService.getContractById(accountId, id);
+
+		return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
+	}
+
+	@GetMapping("/api/v1/contracts/batch")
+	@CrossOrigin
+	public ResponseEntity<Object> getContractsById(@RequestAttribute("ae.accountId") String accountId, String ids) {
+
+		ServiceResponse<List<Contract>> response = contractService.getContractsById(accountId, ids);
 
 		return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
 	}

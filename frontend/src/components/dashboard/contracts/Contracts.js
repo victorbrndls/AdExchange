@@ -5,6 +5,7 @@ import {route} from "preact-router";
 import {AdAxiosGet} from "../../../auth";
 import {HOST} from "../../../configs";
 import {ImageAd, TextAd} from "../ads/CreateAdd";
+import PaymentMethod from "../../utils/PaymentMethod";
 
 export default class Contracts extends Component {
     constructor(props) {
@@ -117,7 +118,7 @@ class Contract extends Component {
                 <div class="contract__body">
                     <div class="contract__body-item">Válido até {Contract.convertDate(expiration)}</div>
                     <div class="contract__body-item">
-                        Pagemento {paymentMethod === 'PAY_PER_CLICK' ? "por Click" : "por Visualizacao"}</div>
+                        {PaymentMethod[paymentMethod]}</div>
                     <div class="contract__body-item">Valor do pagamento R${paymentValue}</div>
                     <div class="contract__body-item">
                         <div class="contract__body-show_ad" onClick={this.handleShowAd.bind(this)}>Ver Anuncio
