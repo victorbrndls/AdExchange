@@ -18,6 +18,10 @@ public class SpotService {
 		this.spotRepository = spotRepository;
 	}
 
+	/**
+	 * Creates a {@link Spot} if the {id} is null or updates an existing one if the
+	 * {id} is not null
+	 */
 	public ServiceResponse<Spot> createSpot(String accountId, String id, String name, String contractId, String adId) {
 		Spot spot = new Spot();
 

@@ -449,4 +449,17 @@ body.auth #header {
 
 .spots-add{
     background-color: rgb(255, 171, 64);
+    margin-bottom: 30px;
+}
+
+.spot-header__option{
+    display: inline-block;
+    font-size: 12px;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+.spot-header__option:hover{
+    text-decoration: underline;
+    cursor: pointer;
 }

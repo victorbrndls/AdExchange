@@ -27,7 +27,7 @@ export default class Spots extends Component {
         }
     }
 
-    reload(){
+    reload() {
         this.hasLoadedSpots = false;
         this.requestSpots();
     }
@@ -48,8 +48,21 @@ export default class Spots extends Component {
                             </div>
                             {this.requestSpots.bind(this)()}
                             {spots.map((spot) => (
-                                <div>
-                                    {spot.name};
+                                <div class="contract shadow">
+                                    <div class="contract__header"
+                                         style="display: flex; justify-content: space-between;">
+                                        <div>{spot.name}</div>
+                                        <div>
+                                            <div class="spot-header__option"
+                                                 onClick={() => route(`/dashboard/spots/edit?id=${spot.id}`)}>Editar
+                                            </div>
+                                            <div class="spot-header__option">Deletar</div>
+                                        </div>
+                                    </div>
+                                    <div class="contract__body">
+                                        <div class="contract__body-item">Contato: {spot.contractId === '-1' ? 'Nenhum' : spot.contractId}</div>
+                                        <div class="contract__body-item">Anuncio: {spot.adId === '-1' ? 'Nenhum' : spot.adId}</div>
+                                    </div>
                                 </div>
                             ))}
                         </div>

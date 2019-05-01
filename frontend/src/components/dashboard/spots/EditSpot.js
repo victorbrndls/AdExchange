@@ -16,8 +16,8 @@ export default class EditSpot extends Component {
             spot: {
                 id: null,
                 name: `Spot #${parseInt(Math.random() * 1000)}`,
-                contractId: "",
-                adId: ""
+                contractId: "-1",
+                adId: "-1"
             },
             error: {}
         };
@@ -45,7 +45,7 @@ export default class EditSpot extends Component {
 
     requestSpotInformation() {
         if (this.state.mode === 'EDIT') {
-            AdAxiosGet.get(`${HOST}/api/v1/spots/${this.spot.id}`).then((response) => {
+            AdAxiosGet.get(`${HOST}/api/v1/spots/${this.state.spot.id}`).then((response) => {
                 this.setState({spot: response.data});
             });
         }
@@ -96,7 +96,8 @@ export default class EditSpot extends Component {
                     <div class="form-group websites-add__form">
                         <label>Contrato (nao obrigatorio)</label>
                         <select class="custom-select"
-                                onChange={(e) => this.setState({spot: {...spot, contractId: e.target.value}})}>
+                                onChange={(e) => this.setState({spot: {...spot, contractId: e.target.value}})}
+                                value={this.state.spot.contractId}>
                             <option value="-1">Selecione um contrato</option>
                             {contracts && contracts.map((contract) => (
                                 <option value={contract.id}>{contract.id}</option>
@@ -107,13 +108,14 @@ export default class EditSpot extends Component {
                     <div class="form-group websites-add__form">
                         <label>Anuncio reserva (nao obrigatorio)</label>
                         <select class="custom-select"
-                                onChange={(e) => this.setState({spot: {...spot, adId: e.target.value}})}>
+                                onChange={(e) => this.setState({spot: {...spot, adId: e.target.value}})}
+                                value={this.state.spot.adId}>
                             <option value="-1">Selecione um contrato</option>
                             {ads && ads.map((ad) => (
                                 <option value={ad.id}>{ad.name}</option>
                             ))}
                         </select>
-                        <small class="text-muted">Esse anuncio aparecera caso o contrato expire</small>
+                        <small class="text-muted">Esse anúncio aparecerá caso o contrato expire</small>
                     </div>
 
                     <div class="btn dashboard-add__button" onClick={this.submitRequest.bind(this)}>
