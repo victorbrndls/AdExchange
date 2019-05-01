@@ -70,9 +70,10 @@ public class ContractController {
 	/**
 	 * @return Contracts for websites owned by the user
 	 */
-	public ResponseEntity<Object> getContractsForAccountWebsites(@RequestAttribute("ae.accountId") String accountId) {
+	public ResponseEntity<Object> getContractsForAccountWebsites(@RequestAttribute("ae.accountId") String accountId,
+			@RequestParam(defaultValue = "") String embed) {
 
-		ServiceResponse<List<Contract>> response = contractService.getContractsForUserWebisites(accountId);
+		ServiceResponse<List<ObjectNode>> response = contractService.getContractsForUserWebisites(accountId, embed);
 
 		return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
 	}

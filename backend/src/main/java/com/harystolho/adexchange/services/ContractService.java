@@ -111,9 +111,21 @@ public class ContractService {
 		return ServiceResponse.ok(belongsToUser);
 	}
 
-	public ServiceResponse<List<Contract>> getContractsForUserWebisites(String accountId) {
+	public ServiceResponse<List<ObjectNode>> getContractsForUserWebisites(String accountId, String embed) {
 		List<Contract> contracts = contractRepository.getByAcceptorId(accountId);
-		return ServiceResponse.ok(contracts);
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		return ServiceResponse.ok(contracts.stream().map((c) -> {
+			ObjectNode node = (ObjectNode) mapper.valueToTree(c);
+
+			if (embed.contains("website")) {
+				node.remove("website");
+				node.set("website", mapper.valueToTree(websiteService.getWebsiteById(c.getWebsiteId()).getReponse()));
+			}
+
+			return node;
+		}).collect(Collectors.toList()));
 	}
 
 }
