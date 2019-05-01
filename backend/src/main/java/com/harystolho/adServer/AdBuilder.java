@@ -1,5 +1,7 @@
 package com.harystolho.adServer;
 
+import org.springframework.stereotype.Service;
+
 import com.harystolho.adexchange.models.ads.Ad;
 
 /**
@@ -8,11 +10,11 @@ import com.harystolho.adexchange.models.ads.Ad;
  * @author Harystolho
  *
  */
+@Service
 public class AdBuilder {
 
 	public AdModel build(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return new AdModel(id);
 	}
 
 }

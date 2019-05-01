@@ -3,6 +3,7 @@ package com.harystolho.adServer;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -18,8 +19,14 @@ import com.harystolho.adexchange.services.ServiceResponse;
 @Service
 public class AdServerService {
 
-	private AdModelCache adModelCache;
+	private CacheService<AdModel> cacheService;
 	private AdBuilder adBuilder;
+
+	@Autowired
+	private AdServerService(CacheService<AdModel> cacheService, AdBuilder adBuilder) {
+		this.cacheService = cacheService;
+		this.adBuilder = adBuilder;
+	}
 
 	public ServiceResponse<List<AdModel>> getAds(String ids) {
 		List<AdModel> ads = new ArrayList<>();
@@ -30,7 +37,7 @@ public class AdServerService {
 			if (!isAdIdValid(id))
 				continue;
 
-			AdModel ad = adModelCache.get(id);
+			AdModel ad = cacheService.get(id);
 
 			if (ad != null) {
 				ads.add(ad);
@@ -38,7 +45,7 @@ public class AdServerService {
 			}
 
 			ad = adBuilder.build(id);
-			adModelCache.store(id, ad);
+			cacheService.store(id, ad);
 
 			ads.add(ad);
 		}

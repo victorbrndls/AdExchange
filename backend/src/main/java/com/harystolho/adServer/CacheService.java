@@ -1,43 +1,51 @@
 package com.harystolho.adServer;
 
 import java.time.Duration;
-import java.time.Instant;
-import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import org.springframework.stereotype.Service;
 
 @Service
-public class AdModelCache {
+public class CacheService<T> {
 
-	private ConcurrentMap<String, CacheObject<AdModel>> cache;
+	private static final Duration DEFAULT_DURATION = Duration.ofHours(1);
 
-	public AdModelCache() {
+	private ConcurrentMap<String, CacheObject<T>> cache;
+
+	public CacheService() {
 		cache = new ConcurrentHashMap<>();
 	}
 
 	/**
-	 * @param id
-	 * @return returns the {@link AdModel} present in the cache or <code>null</code>
+	 * @param key
+	 * @return returns the entry present in the cache or <code>null</code>
 	 */
-	public AdModel get(String id) {
+	public T get(String key) {
+		if (key == null)
+			return null;
+
+		CacheObject<T> entry = cache.get(key);
+
+		if (entry != null)
+			return entry.getObject();
+
 		return null;
 	}
 
-	public void store(String key, AdModel ad) {
-		store(key, ad, Duration.ofHours(1));
+	public void store(String key, T value) {
+		store(key, value, DEFAULT_DURATION);
 	}
 
-	public void store(String key, AdModel ad, Duration duration) {
-		if (key == null && ad == null)
+	public void store(String key, T value, Duration duration) {
+		if (key == null || value == null || duration.isNegative())
 			return;
 
-		cache.put(key, new CacheObject<AdModel>(ad, System.currentTimeMillis() + duration.toMillis()));
+		cache.put(key, new CacheObject<T>(value, System.currentTimeMillis() + duration.toMillis()));
 	}
 
 	public void evict(Object key) {
-
+		cache.remove(key);
 	}
 
 	public void clear() {

@@ -11,7 +11,7 @@ public class AdModel {
 
 	private String content;
 
-	private AdModel(String content) {
+	public AdModel(String content) {
 		this.content = content;
 	}
 
