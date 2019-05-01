@@ -42,4 +42,10 @@ public class ContractRepositoryImpl implements ContractRepository {
 		return mongoOperations.find(query, Contract.class);
 	}
 
+	@Override
+	public List<Contract> getByAcceptorId(String accountId) {
+		Query query = Query.query(Criteria.where("acceptorId").is(accountId));
+		return mongoOperations.find(query, Contract.class);
+	}
+
 }

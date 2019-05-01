@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.services.ContractService;
 import com.harystolho.adexchange.services.ServiceResponse;
@@ -49,9 +51,28 @@ public class ContractController {
 
 	@GetMapping("/api/v1/contracts/batch")
 	@CrossOrigin
-	public ResponseEntity<Object> getContractsById(@RequestAttribute("ae.accountId") String accountId, String ids) {
+	/**
+	 * @param accountId
+	 * @param ids
+	 * @param embed     [website, ad]
+	 * @return
+	 */
+	public ResponseEntity<Object> getContractsById(@RequestAttribute("ae.accountId") String accountId, String ids,
+			@RequestParam(defaultValue = "") String embed) {
 
-		ServiceResponse<List<Contract>> response = contractService.getContractsById(accountId, ids);
+		ServiceResponse<List<ObjectNode>> response = contractService.getContractsById(accountId, ids, embed);
+
+		return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
+	}
+
+	@GetMapping(path = "/api/v1/contracts", params = { "owner" })
+	@CrossOrigin
+	/**
+	 * @return Contracts for websites owned by the user
+	 */
+	public ResponseEntity<Object> getContractsForAccountWebsites(@RequestAttribute("ae.accountId") String accountId) {
+
+		ServiceResponse<List<Contract>> response = contractService.getContractsForUserWebisites(accountId);
 
 		return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
 	}

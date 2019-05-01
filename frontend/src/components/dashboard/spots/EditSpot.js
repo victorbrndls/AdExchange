@@ -55,7 +55,7 @@ export default class EditSpot extends Component {
     }
 
     requestContracts() {
-        AdAxiosGet.get(`${HOST}/api/v1/contracts/me`).then((response) => {
+        AdAxiosGet.get(`${HOST}/api/v1/contracts?owner=me`).then((response) => {
             this.setState({contracts: response.data});
         })
     }

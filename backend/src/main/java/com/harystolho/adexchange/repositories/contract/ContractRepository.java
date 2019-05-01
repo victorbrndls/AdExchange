@@ -18,4 +18,6 @@ public interface ContractRepository {
 	 */
 	List<Contract> getByAccountId(String accountId);
 
+	List<Contract> getByAcceptorId(String accountId);
+
 }

@@ -49,7 +49,12 @@ export default class Spots extends Component {
     requestContractsInformation() {
         let ids = this.buildBatchRequestString(this.state.spots, 'contractId');
 
-        AdAxiosGet.get(`${HOST}/api/v1/contracts/batch?ids=${ids}`).then((response) => {
+        AdAxiosGet.get(`${HOST}/api/v1/contracts/batch`, {
+            params: {
+                ids: ids,
+                embed: 'website'
+            }
+        }).then((response) => {
             this.setState({contracts: this.mapIdToObject(response.data)});
         });
     }
@@ -134,15 +139,15 @@ export default class Spots extends Component {
                                             Id: <span class="spot-id">{spot.id}</span>
                                         </div>
                                         <div class="contract__body-item">
-                                            Contrato: {spot.contractId === '-1' ? 'Nenhum' : contracts[spot.contractId] ? (
+                                            Contrato para {spot.contractId === '-1' ? 'Nenhum' : contracts[spot.contractId] ? (
                                             <div class="d-inline-block">
-                                                <span class="mr-2">{contracts[spot.contractId].id}</span>
-                                                <span
-                                                    class="mx-2">{PaymentMethod[contracts[spot.contractId].paymentMethod]}</span>
-                                                <span class="mx-2">R${contracts[spot.contractId].paymentValue}</span>
+                                                <span class="mr-3 font-italic">{contracts[spot.contractId].website.name}</span>
+                                                {/*<span
+                                                    class="mx-3">{PaymentMethod[contracts[spot.contractId].paymentMethod]}</span>
+                                                <span class="mx-2">R${contracts[spot.contractId].paymentValue}</span>*/}
                                             </div>) : 'Nenhum'}</div>
                                         <div class="contract__body-item">
-                                            Anuncio: {spot.adId === '-1' ? 'Nenhum' : ads[spot.adId] ? ads[spot.adId].name : 'Nenhum'}</div>
+                                            Anuncio reserva: {spot.adId === '-1' ? 'Nenhum' : ads[spot.adId] ? ads[spot.adId].name : 'Nenhum'}</div>
                                     </div>
                                 </div>
                             ))}
