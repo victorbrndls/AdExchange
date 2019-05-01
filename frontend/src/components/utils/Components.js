@@ -17,6 +17,11 @@ class ConfirmationModal extends Component {
         document.getElementById("aeConfirmationModal").remove();
     }
 
+    closeAndCb(){
+        this.close();
+        this.props.cb();
+    }
+
     render({text, cb}) {
         return (
             <div class="ae-confirmation__modal" id="aeConfirmationModal">
@@ -25,7 +30,7 @@ class ConfirmationModal extends Component {
                     <div class="modal-body">{text}</div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" onClick={this.close.bind(this)}>Fechar</button>
-                        <button class="btn btn-primary" onClick={() => cb()}>Confirmar</button>
+                        <button class="btn btn-primary" onClick={() => this.closeAndCb()}>Confirmar</button>
                     </div>
                 </div>
             </div>

@@ -35,4 +35,10 @@ public class SpotRepositoryImpl implements SpotRepository {
 		return mongoOperations.find(query, Spot.class);
 	}
 
+	@Override
+	public void deleteById(String id) {
+		Query query = Query.query(Criteria.where("_id").is(id));
+		mongoOperations.remove(query, Spot.class);
+	}
+
 }

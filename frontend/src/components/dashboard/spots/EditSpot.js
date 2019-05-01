@@ -31,12 +31,14 @@ export default class EditSpot extends Component {
     }
 
     updateMode() {
-        if (new URLSearchParams(location.search).get('type') === 'new')
+        let urlSearchParams = new URLSearchParams(location.search);
+
+        if (urlSearchParams.get('type') === 'new')
             this.setState({mode: "NEW"});
 
 
         if (this.state.mode === 'EDIT') {
-            let id = new URLSearchParams(location.search).get('id');
+            let id = urlSearchParams.get('id');
 
             if (id !== null)
                 this.setState({spot: {...this.state.spot, id: id}});
@@ -47,6 +49,8 @@ export default class EditSpot extends Component {
         if (this.state.mode === 'EDIT') {
             AdAxiosGet.get(`${HOST}/api/v1/spots/${this.state.spot.id}`).then((response) => {
                 this.setState({spot: response.data});
+            }).catch(() => {
+                this.setState({mode: 'NEW'});
             });
         }
     }

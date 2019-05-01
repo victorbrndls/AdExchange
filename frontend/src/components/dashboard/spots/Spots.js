@@ -1,9 +1,9 @@
 import {Component} from "preact";
 import {route} from "preact-router";
-import {LeftArrow} from "../../utils/Components";
+import {ConfirmationModal, LeftArrow} from "../../utils/Components";
 import Match from "../../utils/Match";
 import EditSpot from "./EditSpot";
-import {AdAxiosGet} from "../../../auth";
+import {AdAxiosGet, AdAxiosPost} from "../../../auth";
 import {HOST} from "../../../configs";
 
 export default class Spots extends Component {
@@ -32,6 +32,14 @@ export default class Spots extends Component {
         this.requestSpots();
     }
 
+    deleteSpot(id) {
+        ConfirmationModal.renderFullScreen("Voce tem certeza que quer deletar esse Spot?", () => {
+            AdAxiosPost.delete(`${HOST}/api/v1/spots/${id}`).then((response) => {
+                this.reload();
+            });
+        });
+    }
+
     render({}, {spots}) {
         return (
             <div>
@@ -56,12 +64,14 @@ export default class Spots extends Component {
                                             <div class="spot-header__option"
                                                  onClick={() => route(`/dashboard/spots/edit?id=${spot.id}`)}>Editar
                                             </div>
-                                            <div class="spot-header__option">Deletar</div>
+                                            <div class="spot-header__option" onClick={this.deleteSpot.bind(this, spot.id)}>Deletar</div>
                                         </div>
                                     </div>
                                     <div class="contract__body">
-                                        <div class="contract__body-item">Contato: {spot.contractId === '-1' ? 'Nenhum' : spot.contractId}</div>
-                                        <div class="contract__body-item">Anuncio: {spot.adId === '-1' ? 'Nenhum' : spot.adId}</div>
+                                        <div class="contract__body-item">
+                                            Contato: {spot.contractId === '-1' ? 'Nenhum' : spot.contractId}</div>
+                                        <div class="contract__body-item">
+                                            Anuncio: {spot.adId === '-1' ? 'Nenhum' : spot.adId}</div>
                                     </div>
                                 </div>
                             ))}

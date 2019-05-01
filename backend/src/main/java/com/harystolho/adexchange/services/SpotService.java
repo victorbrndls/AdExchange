@@ -60,4 +60,17 @@ public class SpotService {
 		return ServiceResponse.ok(spotRepository.getByAccountId(accountId));
 	}
 
+	public ServiceResponse<Spot> deleteSpot(String accountId, String id) {
+		Spot spot = spotRepository.getById(id);
+
+		if(spot == null)
+			return ServiceResponse.fail("There is not Spot with that id");
+			
+		if (!spot.getAccountId().equals(accountId)) 
+			return ServiceResponse.unauthorized();	
+		
+		spotRepository.deleteById(id);
+		return ServiceResponse.ok(null);
+	}
+
 }

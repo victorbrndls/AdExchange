@@ -12,5 +12,7 @@ public interface SpotRepository {
 	Spot getById(String id);
 
 	List<Spot> getByAccountId(String accountId);
+
+	void deleteById(String id);
 	
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -68,6 +69,23 @@ public class SpotController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getFullMessage());
 		default:
 			return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
+		}
+	}
+
+	@DeleteMapping("/api/v1/spots/{id}")
+	@CrossOrigin
+	public ResponseEntity<Object> deleteSpot(@RequestAttribute("ae.accountId") String accountId,
+			@PathVariable String id) {
+
+		ServiceResponse<Spot> response = spotService.deleteSpot(accountId, id);
+
+		switch (response.getErrorType()) {
+		case UNAUTHORIZED:
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response.getErrorType());
+		case FAIL:
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getFullMessage());
+		default:
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response.getReponse());
 		}
 	}
 
