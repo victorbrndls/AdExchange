@@ -1,9 +1,8 @@
 import {Component} from "preact";
 import {route} from "preact-router";
-import {LeftArrow} from "../../utils/Components";
-import Match from "../../utils/Match";
 import {AdAxiosGet, AdAxiosPost} from "../../../auth";
 import {HOST} from "../../../configs";
+import PaymentMethod from "../../utils/PaymentMethod";
 
 export default class EditSpot extends Component {
     constructor(props) {
@@ -104,7 +103,8 @@ export default class EditSpot extends Component {
                                 value={this.state.spot.contractId}>
                             <option value="-1">Selecione um contrato</option>
                             {contracts && contracts.map((contract) => (
-                                <option value={contract.id}>{contract.id}</option>
+                                <option value={contract.id}>{contract.id} - {PaymentMethod[contract.paymentMethod]}
+                                    &nbsp;- R${contract.paymentValue}</option>
                             ))}
                         </select>
                     </div>
