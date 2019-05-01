@@ -61,6 +61,20 @@ public class AdController {
 
 	}
 
+	@GetMapping("/api/v1/ads/batch")
+	@CrossOrigin
+	public ResponseEntity<Object> getAdsById(String ids) {
+		ServiceResponse<List<Ad>> response = adService.getAdsById(ids);
+
+		switch (response.getErrorType()) {
+		case FAIL:
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getFullMessage());
+		default:
+			return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
+		}
+
+	}
+
 	@PutMapping("/api/v1/ads/{id}")
 	@PostMapping("/api/v1/ads")
 	@CrossOrigin

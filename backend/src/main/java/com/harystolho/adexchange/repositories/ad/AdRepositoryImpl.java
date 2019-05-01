@@ -36,6 +36,12 @@ public class AdRepositoryImpl implements AdRepository {
 	}
 
 	@Override
+	public List<Ad> getAdsById(List<String> ids) {
+		Query query = Query.query(Criteria.where("_id").in(ids));
+		return mongoOperations.find(query, Ad.class);
+	}
+
+	@Override
 	public void deleteById(String id) {
 		Query query = Query.query(Criteria.where("_id").is(id));
 		mongoOperations.remove(query, Ad.class);

@@ -1,5 +1,6 @@
 package com.harystolho.adexchange.services;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -25,6 +26,10 @@ public class AdService {
 
 	public ServiceResponse<Ad> getAdById(String id) {
 		return ServiceResponse.ok(adRepository.getAdById(id));
+	}
+
+	public ServiceResponse<List<Ad>> getAdsById(String ids) {
+		return ServiceResponse.ok(adRepository.getAdsById(Arrays.asList(ids.split(","))));
 	}
 
 	public ServiceResponse<Ad> createAd(String accountId, String name, String type, String refUrl, String text,

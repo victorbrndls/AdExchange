@@ -11,7 +11,9 @@ export default class Spots extends Component {
         super(props);
 
         this.state = {
-            spots: []
+            spots: [],
+            contracts: {},
+            ads: {}
         };
 
         this.hasLoadedSpots = false;
@@ -23,6 +25,9 @@ export default class Spots extends Component {
 
             AdAxiosGet.get(`${HOST}/api/v1/spots/me`).then((response) => {
                 this.setState({spots: response.data});
+
+                this.requestContractsInformation();
+                this.requestAdsInformation();
             })
         }
     }
@@ -40,7 +45,58 @@ export default class Spots extends Component {
         });
     }
 
-    render({}, {spots}) {
+    requestContractsInformation() {
+        let ids = this.buildBatchRequestString(this.state.spots, 'contractId');
+
+        AdAxiosGet.get(`${HOST}/api/v1/contracts/batch?ids=${ids}`).then((response) => {
+
+        });
+    }
+
+    requestAdsInformation() {
+        let ids = this.buildBatchRequestString(this.state.spots, 'adId');
+
+        AdAxiosGet.get(`${HOST}/api/v1/ads/batch?ids=${ids}`).then((response) => {
+            let ads = response.data;
+            let adsState = {};
+
+            ads.forEach((ad) => {
+                adsState[ad.id] = ad;
+            });
+
+            this.setState({ads: adsState});
+        });
+    }
+
+    /**
+     * Constructs a String that constrains the {elem} from each array object separated by ','
+     * @param array {Array}
+     * @param elem {String}
+     */
+    buildBatchRequestString(array, elem) {
+        let set = new Set();
+
+        array.forEach((spot) => set.add(spot[elem]));
+
+        let ids = "";
+
+        let setSize = set.size;
+        let idx = 0;
+
+        set.forEach((id) => {
+            ids += id;
+
+            if (idx !== setSize - 1) {
+                ids += ",";
+            }
+
+            idx++;
+        });
+
+        return ids;
+    }
+
+    render({}, {spots, ads, contracts}) {
         return (
             <div>
                 <Match path={"/dashboard/spots"} not>
@@ -64,14 +120,16 @@ export default class Spots extends Component {
                                             <div class="spot-header__option"
                                                  onClick={() => route(`/dashboard/spots/edit?id=${spot.id}`)}>Editar
                                             </div>
-                                            <div class="spot-header__option" onClick={this.deleteSpot.bind(this, spot.id)}>Deletar</div>
+                                            <div class="spot-header__option"
+                                                 onClick={this.deleteSpot.bind(this, spot.id)}>Deletar
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="contract__body">
                                         <div class="contract__body-item">
                                             Contato: {spot.contractId === '-1' ? 'Nenhum' : spot.contractId}</div>
                                         <div class="contract__body-item">
-                                            Anuncio: {spot.adId === '-1' ? 'Nenhum' : spot.adId}</div>
+                                            Anuncio: {spot.adId === '-1' ? 'Nenhum' : ads[spot.adId].name || '-1'}</div>
                                     </div>
                                 </div>
                             ))}

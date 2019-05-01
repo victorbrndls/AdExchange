@@ -10,11 +10,9 @@ public interface AdRepository {
 
 	List<Ad> getAdsByAccountId(String accountId);
 
-	/**
-	 * @param id
-	 * @return the {@link Ad} or <code>null</code>
-	 */
 	Ad getAdById(String id);
+
+	List<Ad> getAdsById(List<String> ids);
 
 	void deleteById(String id);
 
