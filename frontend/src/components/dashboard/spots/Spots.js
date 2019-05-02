@@ -60,7 +60,7 @@ export default class Spots extends Component {
     }
 
     requestAdsInformation() {
-        let ids = this.buildBatchRequestString(this.state.spots, 'adId');
+        let ids = this.buildBatchRequestString(this.state.spots, 'fallbackAdId');
 
         AdAxiosGet.get(`${HOST}/api/v1/ads/batch?ids=${ids}`).then((response) => {
             this.setState({ads: this.mapIdToObject(response.data)});
@@ -139,15 +139,18 @@ export default class Spots extends Component {
                                             Id: <span class="spot-id">{spot.id}</span>
                                         </div>
                                         <div class="contract__body-item">
-                                            Contrato para {spot.contractId === '-1' ? 'Nenhum' : contracts[spot.contractId] ? (
+                                            Contrato
+                                            para {spot.contractId === '-1' ? 'Nenhum' : contracts[spot.contractId] ? (
                                             <div class="d-inline-block">
-                                                <span class="mr-3 font-italic">{contracts[spot.contractId].website.name}</span>
+                                                <span
+                                                    class="mr-3 font-italic">{contracts[spot.contractId].website.name}</span>
                                                 {/*<span
                                                     class="mx-3">{PaymentMethod[contracts[spot.contractId].paymentMethod]}</span>
                                                 <span class="mx-2">R${contracts[spot.contractId].paymentValue}</span>*/}
                                             </div>) : 'Nenhum'}</div>
                                         <div class="contract__body-item">
-                                            Anuncio reserva: {spot.adId === '-1' ? 'Nenhum' : ads[spot.adId] ? ads[spot.adId].name : 'Nenhum'}</div>
+                                            Anuncio
+                                            reserva: {spot.fallbackAdId === '-1' ? 'Nenhum' : ads[spot.fallbackAdId] ? ads[spot.fallbackAdId].name : 'Nenhum'}</div>
                                     </div>
                                 </div>
                             ))}

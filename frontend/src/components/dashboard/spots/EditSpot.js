@@ -16,7 +16,7 @@ export default class EditSpot extends Component {
                 id: null,
                 name: `Spot #${parseInt(Math.random() * 1000)}`,
                 contractId: "-1",
-                adId: "-1"
+                fallbackAdId: "-1"
             },
             error: {}
         };
@@ -71,7 +71,7 @@ export default class EditSpot extends Component {
         formData.append('id', this.state.spot.id);
         formData.append('name', this.state.spot.name);
         formData.append('contractId', this.state.spot.contractId);
-        formData.append('adId', this.state.spot.adId);
+        formData.append('fallbackAdId', this.state.spot.fallbackAdId);
 
         AdAxiosPost.post(`${HOST}/api/v1/spots`, formData).then((response) => {
             route('/dashboard/spots');
@@ -112,8 +112,8 @@ export default class EditSpot extends Component {
                     <div class="form-group websites-add__form">
                         <label>Anuncio reserva (nao obrigatorio)</label>
                         <select class="custom-select"
-                                onChange={(e) => this.setState({spot: {...spot, adId: e.target.value}})}
-                                value={this.state.spot.adId}>
+                                onChange={(e) => this.setState({spot: {...spot, fallbackAdId: e.target.value}})}
+                                value={this.state.spot.fallbackAdId}>
                             <option value="-1">Selecione um contrato</option>
                             {ads && ads.map((ad) => (
                                 <option value={ad.id}>{ad.name}</option>

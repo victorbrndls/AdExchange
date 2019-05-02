@@ -10,22 +10,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.harystolho.adServer.services.SpotServerService;
 import com.harystolho.adexchange.services.ServiceResponse;
 
 @Controller
-public class AdServerController {
+public class SpotServerController {
 
-	private AdServerService adServerService;
+	private SpotServerService spotServerService;
 
 	@Autowired
-	private AdServerController(AdServerService adServerService) {
-		this.adServerService = adServerService;
+	private SpotServerController(SpotServerService spotServerService) {
+		this.spotServerService = spotServerService;
 	}
 
-	@GetMapping("/serve/v1/ads")
-	public ResponseEntity<Object> serveAds(HttpServletRequest req, String ids) {
+	@GetMapping("/serve/v1/spots")
+	public ResponseEntity<Object> serveSpots(HttpServletRequest req, String ids) {
 
-		ServiceResponse<List<AdModel>> response = adServerService.getAds(ids);
+		ServiceResponse<List<AdModel>> response = spotServerService.getSpots(ids);
 
 		return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
 	}

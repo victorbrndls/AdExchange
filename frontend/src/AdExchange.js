@@ -1,5 +1,7 @@
 // Script to add the Ads in the website
 (function () {
+    const HOST = 'https://localhost:8080';
+
     if (document.readyState === 'complete') {
         init();
     } else {
@@ -26,7 +28,7 @@
                 console.log(response);
             }
         };
-        xml.open("GET", `https://localhost:8080/serve/v1/ads?ids=${ids}`, true);
+        xml.open("GET", `${HOST}/serve/v1/spots?ids=${ids}`, true);
         xml.send();
     }
 

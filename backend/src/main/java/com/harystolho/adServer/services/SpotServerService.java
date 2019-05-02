@@ -1,4 +1,4 @@
-package com.harystolho.adServer;
+package com.harystolho.adServer.services;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.harystolho.adServer.AdModelBuilder;
+import com.harystolho.adServer.AdModel;
+import com.harystolho.adServer.CacheService;
 import com.harystolho.adexchange.services.ServiceResponse;
 
 /**
@@ -17,43 +20,42 @@ import com.harystolho.adexchange.services.ServiceResponse;
  *
  */
 @Service
-public class AdServerService {
+public class SpotServerService {
 
 	private CacheService<AdModel> cacheService;
-	private AdBuilder adBuilder;
+	private AdModelBuilder adBuilder;
 
 	@Autowired
-	private AdServerService(CacheService<AdModel> cacheService, AdBuilder adBuilder) {
+	private SpotServerService(CacheService<AdModel> cacheService, AdModelBuilder adBuilder) {
 		this.cacheService = cacheService;
 		this.adBuilder = adBuilder;
 	}
 
-	public ServiceResponse<List<AdModel>> getAds(String ids) {
-		List<AdModel> ads = new ArrayList<>();
+	public ServiceResponse<List<AdModel>> getSpots(String ids) {
+		List<AdModel> spots = new ArrayList<>();
 
 		String[] idsArray = ids.split(",");
 
 		for (String id : idsArray) {
-			if (!isAdIdValid(id))
+			if (!isSpotIdValid(id))
 				continue;
 
-			AdModel ad = cacheService.get(id);
+			AdModel spot = cacheService.get(id);
 
-			if (ad != null) {
-				ads.add(ad);
-				continue;
+			if (spot != null) {
+				spots.add(spot);
+			} else {
+				spot = adBuilder.build(id);
+				cacheService.store(id, spot);
+
+				spots.add(spot);
 			}
-
-			ad = adBuilder.build(id);
-			cacheService.store(id, ad);
-
-			ads.add(ad);
 		}
 
-		return ServiceResponse.ok(ads);
+		return ServiceResponse.ok(spots);
 	}
 
-	private boolean isAdIdValid(String id) {
+	private boolean isSpotIdValid(String id) {
 		return StringUtils.hasText(id);
 	}
 
