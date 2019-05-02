@@ -8,7 +8,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
-import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.ProposalsHolder;
 import com.harystolho.adexchange.models.UserData;
 

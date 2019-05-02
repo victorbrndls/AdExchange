@@ -1,6 +1,5 @@
 package com.harystolho.adServer;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 import org.apache.logging.log4j.LogManager;
@@ -11,10 +10,13 @@ import org.springframework.stereotype.Service;
 import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.models.ads.Ad;
+import com.harystolho.adexchange.models.ads.Ad.AdType;
+import com.harystolho.adexchange.models.ads.ImageAd;
+import com.harystolho.adexchange.models.ads.TextAd;
 import com.harystolho.adexchange.services.AdService;
 import com.harystolho.adexchange.services.ServiceResponse;
-import com.harystolho.adexchange.services.SpotService;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
+import com.harystolho.adexchange.services.SpotService;
 import com.harystolho.adexchange.utils.AEUtils;
 
 /**
@@ -73,13 +75,40 @@ public class AdModelBuilder {
 			return errorAdModel();
 		}
 
-		
-		
-		return null;
+		Ad ad = response.getReponse();
+
+		return buildUsingAd(ad);
+	}
+
+	private AdModel buildUsingAd(Ad ad) {
+		if (ad.getType() == AdType.TEXT) {
+			return buildUsingTextAd((TextAd) ad);
+		} else if (ad.getType() == AdType.IMAGE) {
+			return buildUsingImageAd((ImageAd) ad);
+		}
+
+		logger.error("The Ad type is not valid [adId: {}]", ad.getId());
+		return errorAdModel("INVALID_AD_TYPE");
+	}
+
+	private AdModel buildUsingTextAd(TextAd ad) {
+		String content = AdTemplate.assembleUsingTextAd(ad);
+		return new AdModel(content);
+	}
+
+	private AdModel buildUsingImageAd(ImageAd ad) {
+		String content = AdTemplate.assembleUsingImageAd(ad);
+		return new AdModel(content);
 	}
 
 	private AdModel errorAdModel() {
-		return null;
+		return errorAdModel("error");
 	}
 
+	private AdModel errorAdModel(String error) {
+		AdModel model = new AdModel("");
+		model.setError(error);
+
+		return model;
+	}
 }

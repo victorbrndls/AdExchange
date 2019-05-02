@@ -10,6 +10,7 @@ package com.harystolho.adServer;
 public class AdModel {
 
 	private String content;
+	private String error;
 
 	public AdModel(String content) {
 		this.content = content;
@@ -17,6 +18,14 @@ public class AdModel {
 
 	public String getContent() {
 		return content;
+	}
+
+	public String getError() {
+		return error;
+	}
+
+	public void setError(String error) {
+		this.error = error;
 	}
 
 }

@@ -1,4 +1,4 @@
-package com.harystolho.adServer.services;
+package com.harystolho.adServer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.harystolho.adServer.AdModelBuilder;
-import com.harystolho.adServer.AdModel;
-import com.harystolho.adServer.CacheService;
 import com.harystolho.adexchange.services.ServiceResponse;
 
 /**

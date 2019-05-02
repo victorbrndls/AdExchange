@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.harystolho.adServer.services.SpotServerService;
 import com.harystolho.adexchange.services.ServiceResponse;
 
 @Controller

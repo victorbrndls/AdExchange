@@ -2,7 +2,6 @@ package com.harystolho.adexchange.repositories.userData;
 
 import java.util.List;
 
-import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.ProposalsHolder;
 import com.harystolho.adexchange.models.UserData;
 

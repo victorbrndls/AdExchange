@@ -17,8 +17,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.harystolho.adexchange.models.Website;
 import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.services.WebsiteService;
-import com.harystolho.adexchange.utils.JsonResponse;
-import com.harystolho.adexchange.utils.Pair;
 
 @RestController
 public class WebsiteController {
