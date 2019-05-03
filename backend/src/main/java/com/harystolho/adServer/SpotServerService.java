@@ -34,22 +34,27 @@ public class SpotServerService {
 		String[] spotsId = ids.split(",");
 
 		for (String id : spotsId) {
-			if (!isSpotIdValid(id))
-				continue;
-
-			AdModel model = cacheService.get(id);
-
-			if (model != null) {
-				spots.add(model);
-			} else {
-				model = adBuilder.buildUsingSpotId(id);
-				cacheService.store(id, model);
-
-				spots.add(model);
-			}
+			addAdModelToList(id, spots);
 		}
 
 		return ServiceResponse.ok(spots);
+	}
+
+	private void addAdModelToList(String spotId, List<AdModel> list) {
+		if (!isSpotIdValid(spotId))
+			return;
+
+		AdModel model = cacheService.get(spotId);
+
+		if (model != null) {
+			list.add(model);
+			return;
+		}
+
+		model = adBuilder.buildUsingSpotId(spotId);
+		cacheService.store(spotId, model);
+		
+		list.add(model);
 	}
 
 	private boolean isSpotIdValid(String id) {

@@ -48,26 +48,26 @@ public class AdModelBuilder {
 		}
 
 		Spot spot = response.getReponse();
-		Contract contract = spot.getContract();
 
-		if (contract == null) {
-			logger.error("Contract is null, returning fallback Ad [SpotId: {}, ContractId: {}]", spotId,
-					spot.getContractId());
-			AdModel model = buildUsingAdId(spot.getFallbackAdId());
-			model.setSpotId(spotId);
-			return model;
-		}
-
-		return build(spot, contract);
+		return buildUsingSpot(spot);
 	}
 
-	private AdModel build(Spot spot, Contract contract) {
+	private AdModel buildUsingSpot(Spot spot) {
+		Contract contract = spot.getContract();
+
 		AdModel model = null;
-		// Contract has expired, build an AdModel using the fallback Ad
-		if (contract.getExpiration().isBefore(LocalDateTime.now())) {
+
+		if (contract == null) {
+			logger.info("Contract is null, returning fallback Ad [SpotId: {}, ContractId: {}]", spot.getId(),
+					spot.getContractId());
 			model = buildUsingAdId(spot.getFallbackAdId());
-		} else { // Contract has not expired, build an AdModel using the contract Ad
-			model = buildUsingAdId(contract.getAdId());
+		} else {
+			// Contract has expired, build an AdModel using the fallback Ad
+			if (contract.getExpiration().isBefore(LocalDateTime.now())) {
+				model = buildUsingAdId(spot.getFallbackAdId());
+			} else { // Contract has not expired, build an AdModel using the contract Ad
+				model = buildUsingAdId(contract.getAdId());
+			}			
 		}
 
 		model.setSpotId(spot.getId());
@@ -78,7 +78,7 @@ public class AdModelBuilder {
 		ServiceResponse<Ad> response = adService.getAdById(adId);
 
 		if (response.getErrorType() != ServiceResponseType.OK) {
-			logger.error("Ad is null [AdId: {}]", adId);
+			logger.error("Ad is null [id: {}]", adId);
 			return errorAdModel();
 		}
 
@@ -92,7 +92,7 @@ public class AdModelBuilder {
 			return new AdModel(AdTemplate.assembleUsingImageAd((ImageAd) ad));
 		}
 
-		logger.error("The Ad type is not valid [adId: {}, AdType: {}]", ad.getId(), ad.getType());
+		logger.error("The Ad type is not valid [id: {}, type: {}]", ad.getId(), ad.getType());
 		return errorAdModel("INVALID_AD_TYPE");
 	}
 

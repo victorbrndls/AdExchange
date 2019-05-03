@@ -16,17 +16,8 @@
 
         adPlaceHolders.forEach((ad) => ids += ad.getAttribute('data-ae-id') + ',');
 
-        requestAds(ids, (ads) => {
-            ads.forEach((adModel) => {
-                if (adModel.error !== null) {
-                    // TODO handle error response
-                }
+        requestAds(ids, createAdsInPage);
 
-                let container = document.querySelector(`[data-ae-id="${adModel.spotId}"]`);
-                container.innerHTML = adModel.content;
-            });
-
-        });
     }
 
     function requestAds(ids, cb) {
@@ -45,6 +36,22 @@
         xml.open("GET", `${HOST}/serve/v1/spots?ids=${ids}`, true);
         xml.send();
     }
+
+    function createAdsInPage(adModels) {
+        adModels.forEach((adModel) => {
+            if (adModel.error !== null) {
+                // TODO handle error response
+            }
+
+            let container = document.querySelector(`[data-ae-id="${adModel.spotId}"]`);
+
+            let template = document.createElement('template');
+            template.innerHTML = adModel.content;
+
+            container.parentNode.insertBefore(template.content.firstChild, container);
+        });
+    }
+
 
 })();
 
