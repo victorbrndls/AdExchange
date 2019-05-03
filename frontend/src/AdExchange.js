@@ -16,16 +16,30 @@
 
         adPlaceHolders.forEach((ad) => ids += ad.getAttribute('data-ae-id') + ',');
 
-        requestAds(ids);
+        requestAds(ids, (ads) => {
+            ads.forEach((adModel) => {
+                if (adModel.error !== null) {
+                    // TODO handle error response
+                }
+
+                let container = document.querySelector(`[data-ae-id="${adModel.spotId}"]`);
+                container.innerHTML = adModel.content;
+            });
+
+        });
     }
 
-    function requestAds(ids) {
+    function requestAds(ids, cb) {
         let xml = new XMLHttpRequest();
 
-        xml.onreadystatechange = function() {
+        xml.onreadystatechange = function () {
             if (this.readyState === 4 && this.status === 200) {
                 let response = JSON.parse(this.responseText);
-                console.log(response);
+
+                if (response === undefined)
+                    return;
+
+                cb(response);
             }
         };
         xml.open("GET", `${HOST}/serve/v1/spots?ids=${ids}`, true);

@@ -31,21 +31,21 @@ public class SpotServerService {
 	public ServiceResponse<List<AdModel>> getSpots(String ids) {
 		List<AdModel> spots = new ArrayList<>();
 
-		String[] idsArray = ids.split(",");
+		String[] spotsId = ids.split(",");
 
-		for (String id : idsArray) {
+		for (String id : spotsId) {
 			if (!isSpotIdValid(id))
 				continue;
 
-			AdModel spot = cacheService.get(id);
+			AdModel model = cacheService.get(id);
 
-			if (spot != null) {
-				spots.add(spot);
+			if (model != null) {
+				spots.add(model);
 			} else {
-				spot = adBuilder.build(id);
-				cacheService.store(id, spot);
+				model = adBuilder.buildUsingSpotId(id);
+				cacheService.store(id, model);
 
-				spots.add(spot);
+				spots.add(model);
 			}
 		}
 

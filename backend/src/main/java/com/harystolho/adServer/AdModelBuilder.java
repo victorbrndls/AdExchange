@@ -39,32 +39,39 @@ public class AdModelBuilder {
 		this.adService = adService;
 	}
 
-	public AdModel build(String spotId) {
+	public AdModel buildUsingSpotId(String spotId) {
 		ServiceResponse<Spot> response = spotService.getSpot(AEUtils.ADMIN_ACESS_ID, spotId, "contract");
 
 		if (response.getErrorType() != ServiceResponseType.OK) {
 			logger.error("getSpot() returned an error [SpotId: {}]", spotId);
-			return errorAdModel();
+			return errorAdModel("INVALID_SPOT_ID");
 		}
 
 		Spot spot = response.getReponse();
 		Contract contract = spot.getContract();
 
 		if (contract == null) {
-			logger.error("Contract is null [SpotId: {}]", spotId);
-			return errorAdModel();
+			logger.error("Contract is null, returning fallback Ad [SpotId: {}, ContractId: {}]", spotId,
+					spot.getContractId());
+			AdModel model = buildUsingAdId(spot.getFallbackAdId());
+			model.setSpotId(spotId);
+			return model;
 		}
 
 		return build(spot, contract);
 	}
 
 	private AdModel build(Spot spot, Contract contract) {
+		AdModel model = null;
 		// Contract has expired, build an AdModel using the fallback Ad
 		if (contract.getExpiration().isBefore(LocalDateTime.now())) {
-			return buildUsingAdId(spot.getFallbackAdId());
+			model = buildUsingAdId(spot.getFallbackAdId());
 		} else { // Contract has not expired, build an AdModel using the contract Ad
-			return buildUsingAdId(contract.getAdId());
+			model = buildUsingAdId(contract.getAdId());
 		}
+
+		model.setSpotId(spot.getId());
+		return model;
 	}
 
 	private AdModel buildUsingAdId(String adId) {
@@ -75,30 +82,18 @@ public class AdModelBuilder {
 			return errorAdModel();
 		}
 
-		Ad ad = response.getReponse();
-
-		return buildUsingAd(ad);
+		return buildUsingAd(response.getReponse());
 	}
 
 	private AdModel buildUsingAd(Ad ad) {
 		if (ad.getType() == AdType.TEXT) {
-			return buildUsingTextAd((TextAd) ad);
+			return new AdModel(AdTemplate.assembleUsingTextAd((TextAd) ad));
 		} else if (ad.getType() == AdType.IMAGE) {
-			return buildUsingImageAd((ImageAd) ad);
+			return new AdModel(AdTemplate.assembleUsingImageAd((ImageAd) ad));
 		}
 
-		logger.error("The Ad type is not valid [adId: {}]", ad.getId());
+		logger.error("The Ad type is not valid [adId: {}, AdType: {}]", ad.getId(), ad.getType());
 		return errorAdModel("INVALID_AD_TYPE");
-	}
-
-	private AdModel buildUsingTextAd(TextAd ad) {
-		String content = AdTemplate.assembleUsingTextAd(ad);
-		return new AdModel(content);
-	}
-
-	private AdModel buildUsingImageAd(ImageAd ad) {
-		String content = AdTemplate.assembleUsingImageAd(ad);
-		return new AdModel(content);
 	}
 
 	private AdModel errorAdModel() {

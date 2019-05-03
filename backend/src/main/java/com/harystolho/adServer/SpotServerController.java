@@ -8,11 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.harystolho.adexchange.services.ServiceResponse;
 
 @Controller
+@CrossOrigin
 public class SpotServerController {
 
 	private SpotServerService spotServerService;
@@ -23,7 +25,7 @@ public class SpotServerController {
 	}
 
 	@GetMapping("/serve/v1/spots")
-	public ResponseEntity<Object> serveSpots(HttpServletRequest req, String ids) {
+	public ResponseEntity<Object> serveSpots(String ids) {
 
 		ServiceResponse<List<AdModel>> response = spotServerService.getSpots(ids);
 

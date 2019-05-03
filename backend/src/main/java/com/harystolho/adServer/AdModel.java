@@ -9,6 +9,7 @@ package com.harystolho.adServer;
  */
 public class AdModel {
 
+	private String spotId;
 	private String content;
 	private String error;
 
@@ -26,6 +27,14 @@ public class AdModel {
 
 	public void setError(String error) {
 		this.error = error;
+	}
+
+	public String getSpotId() {
+		return spotId;
+	}
+
+	public void setSpotId(String spotId) {
+		this.spotId = spotId;
 	}
 
 }
