@@ -22,7 +22,7 @@ export default class Contracts extends Component {
         if (!this.hasMadeContractRequest) {
             this.hasMadeContractRequest = true;
 
-            AdAxiosGet.get(`${HOST}/api/v1/contracts/me`).then((response) => {
+            AdAxiosGet.get(`${HOST}/api/v1/contracts/me?embed=website`).then((response) => {
                 this.setState(
                     {contracts: response.data}
                 );
@@ -109,7 +109,7 @@ class Contract extends Component {
         return `${dt.getDate()}/${dt.getUTCMonth() + 1}/${dt.getUTCFullYear()}`;
     }
 
-    render({expiration, paymentMethod, paymentValue, extra = {}, acceptorContractName, creatorContractName}, {showAd, ad}) {
+    render({expiration, paymentMethod, paymentValue, extra = {}, acceptorContractName, creatorContractName, website}, {showAd, ad}) {
         let contractName = acceptorContractName || creatorContractName;
 
         return (
@@ -119,7 +119,9 @@ class Contract extends Component {
                         this.updateContractName(newName)
                     }}/>
                 </div>
-                <div class="contract__body">
+                <div class="contract__body text-muted">
+                    <div class="contract__body-item">Website: <span
+                        class="font-italic">{website ? website.name : "Erro"}</span></div>
                     <div class="contract__body-item">Válido até {Contract.convertDate(expiration)}</div>
                     <div class="contract__body-item">
                         {PaymentMethod[paymentMethod]}</div>

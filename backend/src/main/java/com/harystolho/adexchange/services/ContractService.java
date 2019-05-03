@@ -68,10 +68,17 @@ public class ContractService {
 		return ServiceResponse.ok(contract);
 	}
 
-	public ServiceResponse<List<Contract>> getContractsByAccountId(String accountId) {
+	public ServiceResponse<List<Contract>> getContractsByAccountId(String accountId, String embed) {
 		List<String> contractsId = userDataService.getContractsByAccountId(accountId);
 
-		return ServiceResponse.ok(contractRepository.getManyById(contractsId));
+		List<Contract> contracts = contractRepository.getManyById(contractsId);
+
+		if (embed.contains("website"))
+			contracts.stream().forEach((contract) -> {
+				contract.setWebsite(websiteService.getWebsiteById(contract.getWebsiteId()).getReponse());
+			});
+
+		return ServiceResponse.ok(contracts);
 	}
 
 	/**

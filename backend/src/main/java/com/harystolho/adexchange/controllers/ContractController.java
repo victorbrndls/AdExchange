@@ -37,14 +37,14 @@ public class ContractController {
 	 *              user
 	 */
 	public ResponseEntity<Object> getContracts(@RequestAttribute("ae.accountId") String accountId,
-			@RequestParam(defaultValue = "false") String owner) {
+			@RequestParam(defaultValue = "false") String owner, @RequestParam(defaultValue = "") String embed) {
 
 		ServiceResponse<List<Contract>> response = null;
 
 		if (owner.equals("true")) {
 			response = contractService.getContractsForUserWebisites(accountId);
 		} else {
-			response = contractService.getContractsByAccountId(accountId);
+			response = contractService.getContractsByAccountId(accountId, embed);
 		}
 
 		response.getReponse().stream().forEach((contract) -> {

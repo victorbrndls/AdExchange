@@ -51,8 +51,7 @@ export default class Spots extends Component {
 
         AdAxiosGet.get(`${HOST}/api/v1/contracts/batch`, {
             params: {
-                ids: ids,
-                embed: 'website'
+                ids: ids
             }
         }).then((response) => {
             this.setState({contracts: this.mapIdToObject(response.data)});
@@ -139,15 +138,10 @@ export default class Spots extends Component {
                                             Id: <span class="spot-id">{spot.id}</span>
                                         </div>
                                         <div class="contract__body-item">
-                                            Contrato
-                                            para {spot.contractId === '-1' ? 'Nenhum' : contracts[spot.contractId] ? (
-                                            <div class="d-inline-block">
-                                                <span
-                                                    class="mr-3 font-italic">{contracts[spot.contractId].website.name}</span>
-                                                {/*<span
-                                                    class="mx-3">{PaymentMethod[contracts[spot.contractId].paymentMethod]}</span>
-                                                <span class="mx-2">R${contracts[spot.contractId].paymentValue}</span>*/}
-                                            </div>) : 'Nenhum'}</div>
+                                            Contrato:&nbsp;
+                                            <span
+                                                class="mr-3 font-italic">{contracts[spot.contractId].acceptorContractName}</span>
+                                        </div>
                                         <div class="contract__body-item">
                                             Anuncio
                                             reserva: {spot.fallbackAdId === '-1' ? 'Nenhum' : ads[spot.fallbackAdId] ? ads[spot.fallbackAdId].name : 'Nenhum'}</div>
