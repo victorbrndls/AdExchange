@@ -44,7 +44,7 @@ public class ContractService {
 		contract.setPaymentMethod(paymentMethod);
 		contract.setPaymentValue(paymentValue);
 		contract.setExpiration(LocalDateTime.now().plusDays(duration));
-		
+
 		// Duplicate the Ad to make sure it doesn't change
 		String finalAd = adService.duplicateAd(adId);
 		contract.setAdId(finalAd);
@@ -97,21 +97,14 @@ public class ContractService {
 		}).collect(Collectors.toList()));
 	}
 
-	public ServiceResponse<List<ObjectNode>> getContractsForUserWebisites(String accountId, String embed) {
+	/**
+	 * @param accountId
+	 * @return The contracts that were accepted by the user for his/her websites
+	 */
+	public ServiceResponse<List<Contract>> getContractsForUserWebisites(String accountId) {
 		List<Contract> contracts = contractRepository.getByAcceptorId(accountId);
 
-		ObjectMapper mapper = new ObjectMapper();
-
-		return ServiceResponse.ok(contracts.stream().map((c) -> {
-			ObjectNode node = (ObjectNode) mapper.valueToTree(c);
-
-			if (embed.contains("website")) {
-				node.remove("website");
-				node.set("website", mapper.valueToTree(websiteService.getWebsiteById(c.getWebsiteId()).getReponse()));
-			}
-
-			return node;
-		}).collect(Collectors.toList()));
+		return ServiceResponse.ok(contracts);
 	}
 
 	public ServiceResponse<Contract> updateContract(String accountId, String id, String name) {

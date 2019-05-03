@@ -33,11 +33,19 @@ public class ContractController {
 
 	@GetMapping("/api/v1/contracts/me")
 	/**
-	 * @return the contracts that belong to the account that made the request
+	 * @param owner if TRUE only returns the contracts that were accepted by the
+	 *              user
 	 */
-	public ResponseEntity<Object> getContracts(@RequestAttribute("ae.accountId") String accountId) {
+	public ResponseEntity<Object> getContracts(@RequestAttribute("ae.accountId") String accountId,
+			@RequestParam(defaultValue = "false") String owner) {
 
-		ServiceResponse<List<Contract>> response = contractService.getContractsByAccountId(accountId);
+		ServiceResponse<List<Contract>> response = null;
+
+		if (owner.equals("true")) {
+			response = contractService.getContractsForUserWebisites(accountId);
+		} else {
+			response = contractService.getContractsByAccountId(accountId);
+		}
 
 		response.getReponse().stream().forEach((contract) -> {
 			if (contract.getAcceptorId().equals(accountId)) { // If the user is the acceptor
@@ -70,18 +78,6 @@ public class ContractController {
 			@RequestParam(defaultValue = "") String embed) {
 
 		ServiceResponse<List<Contract>> response = contractService.getContractsById(accountId, ids, embed);
-
-		return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
-	}
-
-	@GetMapping(path = "/api/v1/contracts", params = { "owner" })
-	/**
-	 * @return Contracts for websites owned by the user
-	 */
-	public ResponseEntity<Object> getContractsForAccountWebsites(@RequestAttribute("ae.accountId") String accountId,
-			@RequestParam(defaultValue = "") String embed) {
-
-		ServiceResponse<List<ObjectNode>> response = contractService.getContractsForUserWebisites(accountId, embed);
 
 		return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
 	}

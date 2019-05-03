@@ -55,7 +55,7 @@ export default class EditSpot extends Component {
     }
 
     requestContracts() {
-        AdAxiosGet.get(`${HOST}/api/v1/contracts?owner=me`).then((response) => {
+        AdAxiosGet.get(`${HOST}/api/v1/contracts/me?owner=true`).then((response) => {
             this.setState({contracts: response.data});
         })
     }
@@ -103,8 +103,7 @@ export default class EditSpot extends Component {
                                 value={this.state.spot.contractId}>
                             <option value="-1">Selecione um contrato</option>
                             {contracts && contracts.map((contract) => (
-                                <option value={contract.id}>{contract.id} - {PaymentMethod[contract.paymentMethod]}
-                                    &nbsp;- R${contract.paymentValue}</option>
+                                <option value={contract.id}>{contract.acceptorContractName}</option>
                             ))}
                         </select>
                     </div>
