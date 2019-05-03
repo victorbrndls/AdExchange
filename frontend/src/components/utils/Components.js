@@ -17,7 +17,7 @@ class ConfirmationModal extends Component {
         document.getElementById("aeConfirmationModal").remove();
     }
 
-    closeAndCb(){
+    closeAndCb() {
         this.close();
         this.props.cb();
     }
@@ -44,7 +44,48 @@ class ConfirmationModal extends Component {
 
 }
 
+class TextChangerInput extends Component {
+    constructor(props) {
+        super(props);
+
+        this.cb = props.cb;
+
+        this.state = {
+            edit: false,
+            value: props.value || "Clique aqui para editar"
+        }
+    }
+
+    handleTextClick() {
+        this.setState({edit: true});
+    }
+
+    handleInputKeyDown(e) {
+        if (e.key === "Enter") {
+            this.setState({edit: false});
+            this.setState({value: e.target.value});
+
+            if (this.cb !== undefined)
+                this.cb(e.target.value);
+        }
+    }
+
+    render({}, {edit, value}) {
+        return (
+            <div class="text-changer__container">
+                {edit && (
+                    <input class="text-changer__input" value={value} onKeyDown={this.handleInputKeyDown.bind(this)}/>
+                )}
+                {!edit && (
+                    <span class="text-changer__text" onClick={this.handleTextClick.bind(this)}>{value}</span>
+                )}
+            </div>
+        )
+    }
+}
+
 export {
     LeftArrow,
-    ConfirmationModal
+    ConfirmationModal,
+    TextChangerInput
 }

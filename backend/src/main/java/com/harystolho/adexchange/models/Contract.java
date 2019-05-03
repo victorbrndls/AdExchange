@@ -17,7 +17,9 @@ public class Contract {
 
 	private String id;
 	private String creatorId; // The Ad owner id
+	private String creatorContractName;
 	private String acceptorId; // The Website owner id
+	private String acceptorContractName;
 	private LocalDateTime expiration;
 	private String websiteId;
 	private String adId;
@@ -113,6 +115,22 @@ public class Contract {
 
 	public void setAd(Ad ad) {
 		this.ad = ad;
+	}
+
+	public String getCreatorContractName() {
+		return creatorContractName;
+	}
+
+	public void setCreatorContractName(String creatorContractName) {
+		this.creatorContractName = creatorContractName;
+	}
+
+	public String getAcceptorContractName() {
+		return acceptorContractName;
+	}
+
+	public void setAcceptorContractName(String acceptorContractName) {
+		this.acceptorContractName = acceptorContractName;
 	}
 
 }

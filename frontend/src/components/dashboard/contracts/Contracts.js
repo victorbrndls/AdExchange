@@ -1,8 +1,8 @@
 import {Component} from "preact";
 import Match from "../../utils/Match";
-import {LeftArrow} from "../../utils/Components";
+import {LeftArrow, TextChangerInput} from "../../utils/Components";
 import {route} from "preact-router";
-import {AdAxiosGet} from "../../../auth";
+import {AdAxiosGet, AdAxiosPost} from "../../../auth";
 import {HOST} from "../../../configs";
 import {ImageAd, TextAd} from "../ads/CreateAdd";
 import PaymentMethod from "../../utils/PaymentMethod";
@@ -70,6 +70,7 @@ class Contract extends Component {
         super(props);
 
         this.state = {
+            id: props.id,
             websiteName: "",
             showAd: false,
             ad: null
@@ -104,16 +105,29 @@ class Contract extends Component {
         }
     }
 
+    updateContractName(name) {
+        if (this.state.id !== undefined && name !== undefined) {
+            let formData = new FormData();
+            formData.append("name", name);
+
+            AdAxiosPost.patch(`${HOST}/api/v1/contracts/${this.state.id}`, formData).then((response) => {
+                console.log("c");
+            });
+        }
+    }
+
     static convertDate(date) {
         let dt = new Date(date);
         return `${dt.getDate()}/${dt.getUTCMonth() + 1}/${dt.getUTCFullYear()}`;
     }
 
-    render({expiration, paymentMethod, paymentValue}, {websiteName, showAd, ad}) {
+    render({expiration, paymentMethod, paymentValue}, {contractName, websiteName, showAd, ad}) {
         return (
             <div class="contract shadow">
                 <div class="contract__header">
-                    Contrato para "{websiteName}"
+                    <TextChangerInput value={contractName} cb={(newName) => {
+                        this.updateContractName(newName)
+                    }}/>
                 </div>
                 <div class="contract__body">
                     <div class="contract__body-item">Válido até {Contract.convertDate(expiration)}</div>

@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -113,4 +114,29 @@ public class ContractService {
 		}).collect(Collectors.toList()));
 	}
 
+	public ServiceResponse<Contract> updateContract(String accountId, String id, String name) {
+		Contract contract = contractRepository.getById(id);
+
+		if (contract == null)
+			return ServiceResponse.fail("INVALID_CONTRACT_ID");
+
+		if (!contract.isAuthorized(accountId))
+			return ServiceResponse.unauthorized();
+
+		if (StringUtils.hasText(name)) {
+			if (contract.getCreatorId().equals(accountId)) {
+				contract.setCreatorContractName(sanitizeContractName(name));
+			} else if (contract.getAcceptorId().equals(accountId)) {
+				contract.setAcceptorContractName(sanitizeContractName(name));
+			}
+		}
+
+		contractRepository.save(contract);
+
+		return ServiceResponse.ok(contract);
+	}
+
+	private String sanitizeContractName(String name) {
+		return name;
+	}
 }
