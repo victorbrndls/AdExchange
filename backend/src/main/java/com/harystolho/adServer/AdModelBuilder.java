@@ -42,7 +42,7 @@ public class AdModelBuilder {
 	public AdModel buildUsingSpotId(String spotId) {
 		ServiceResponse<Spot> response = spotService.getSpot(AEUtils.ADMIN_ACESS_ID, spotId, "contract");
 
-		if (response.getErrorType() != ServiceResponseType.OK) {
+		if (response.getReponse() == null) {
 			logger.error("getSpot() returned an error [SpotId: {}]", spotId);
 			return errorAdModel("INVALID_SPOT_ID");
 		}
@@ -67,7 +67,7 @@ public class AdModelBuilder {
 				model = buildUsingAdId(spot.getFallbackAdId());
 			} else { // Contract has not expired, build an AdModel using the contract Ad
 				model = buildUsingAdId(contract.getAdId());
-			}			
+			}
 		}
 
 		model.setSpotId(spot.getId());
@@ -77,7 +77,7 @@ public class AdModelBuilder {
 	private AdModel buildUsingAdId(String adId) {
 		ServiceResponse<Ad> response = adService.getAdById(adId);
 
-		if (response.getErrorType() != ServiceResponseType.OK) {
+		if (response.getReponse() == null) {
 			logger.error("Ad is null [id: {}]", adId);
 			return errorAdModel();
 		}
