@@ -45,10 +45,10 @@ public class SpotServerService {
 			return;
 
 		AdModel model = cacheService.get(spotId);
-
+		
 		if (model != null) {
-			list.add(model);
-			return;
+			//list.add(model);
+			//return;
 		}
 
 		model = adBuilder.buildUsingSpotId(spotId);

@@ -16,13 +16,11 @@ public class SpotService {
 
 	private SpotRepository spotRepository;
 
-	private ObjectMapper objectMapper;
 	private ContractService contractService;
 
 	@Autowired
-	private SpotService(SpotRepository spotRepository, ObjectMapper objectMapper, ContractService contractService) {
+	private SpotService(SpotRepository spotRepository, ContractService contractService) {
 		this.spotRepository = spotRepository;
-		this.objectMapper = objectMapper;
 		this.contractService = contractService;
 	}
 

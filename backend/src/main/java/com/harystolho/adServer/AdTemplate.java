@@ -18,6 +18,8 @@ public class AdTemplate {
 
 	public static String assembleUsingImageAd(ImageAd ad) {
 		return String.format(IMAGE_AD_TEMPLATE, ad.getRefUrl(), ad.getImageUrl());
+
+		
 	}
 
 }
