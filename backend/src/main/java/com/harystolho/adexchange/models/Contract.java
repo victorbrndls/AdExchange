@@ -9,7 +9,7 @@ import org.springframework.lang.Nullable;
 import com.harystolho.adexchange.models.ads.Ad;
 
 @Document("contracts")
-public class Contract {
+public class Contract{
 
 	public enum PaymentMethod {
 		PAY_PER_CLICK, PAY_PER_VIEW
@@ -31,6 +31,10 @@ public class Contract {
 	@Transient
 	private Ad ad;
 
+	public Contract() {
+		super();
+	}
+	
 	public String getId() {
 		return id;
 	}
@@ -133,4 +137,6 @@ public class Contract {
 		this.acceptorContractName = acceptorContractName;
 	}
 
+	
+	
 }

@@ -44,7 +44,7 @@ public class ContractService {
 		contract.setPaymentMethod(paymentMethod);
 		contract.setPaymentValue(paymentValue);
 		contract.setExpiration(LocalDateTime.now().plusDays(duration));
-
+		
 		// Duplicate the Ad to make sure it doesn't change
 		String finalAd = adService.duplicateAd(adId);
 		contract.setAdId(finalAd);

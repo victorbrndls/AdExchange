@@ -22,6 +22,11 @@ public class JsonResponse {
 		node.put(key, value);
 		return this;
 	}
+	
+	public JsonResponse pair(String key, Object value) {
+		node.putPOJO(key, value);
+		return this;
+	}
 
 	public ObjectNode build() {
 		return node;

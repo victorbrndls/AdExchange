@@ -71,21 +71,9 @@ class Contract extends Component {
 
         this.state = {
             id: props.id,
-            websiteName: "",
             showAd: false,
             ad: null
         };
-
-        this.requestWebsiteInformation();
-    }
-
-    requestWebsiteInformation() {
-        if (this.props.websiteId === undefined)
-            return;
-
-        AdAxiosGet.get(`${HOST}/api/v1/websites/${this.props.websiteId}`).then((response) => {
-            this.setState({websiteName: response.data.name});
-        });
     }
 
     requestAdInformation() {
@@ -111,7 +99,7 @@ class Contract extends Component {
             formData.append("name", name);
 
             AdAxiosPost.patch(`${HOST}/api/v1/contracts/${this.state.id}`, formData).then((response) => {
-                console.log("c");
+
             });
         }
     }
@@ -121,7 +109,9 @@ class Contract extends Component {
         return `${dt.getDate()}/${dt.getUTCMonth() + 1}/${dt.getUTCFullYear()}`;
     }
 
-    render({expiration, paymentMethod, paymentValue}, {contractName, websiteName, showAd, ad}) {
+    render({expiration, paymentMethod, paymentValue, extra = {}, acceptorContractName, creatorContractName}, {showAd, ad}) {
+        let contractName = acceptorContractName || creatorContractName;
+
         return (
             <div class="contract shadow">
                 <div class="contract__header">
