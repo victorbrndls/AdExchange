@@ -60,7 +60,7 @@ public class ContractController {
 	public ResponseEntity<Object> getContractsById(@RequestAttribute("ae.accountId") String accountId, String ids,
 			@RequestParam(defaultValue = "") String embed) {
 
-		ServiceResponse<List<ObjectNode>> response = contractService.getContractsById(accountId, ids, embed);
+		ServiceResponse<List<Contract>> response = contractService.getContractsById(accountId, ids, embed);
 
 		return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
 	}

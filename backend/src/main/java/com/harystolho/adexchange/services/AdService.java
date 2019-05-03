@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.harystolho.adexchange.models.ads.Ad;
+import com.harystolho.adexchange.models.ads.Ad.AdType;
 import com.harystolho.adexchange.models.ads.ImageAd;
 import com.harystolho.adexchange.models.ads.TextAd;
 import com.harystolho.adexchange.repositories.ad.AdRepository;
@@ -70,6 +71,7 @@ public class AdService {
 
 		ad.setName(name);
 		ad.setRefUrl(refUrl);
+		ad.setType(AdType.valueOf(type));
 
 		if (type.equals("TEXT")) {
 			TextAd tAd = (TextAd) ad;

@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,6 +25,7 @@ import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.utils.Nothing;
 
 @RestController
+@CrossOrigin
 public class AdController {
 
 	private AdService adService;
@@ -33,7 +36,6 @@ public class AdController {
 	}
 
 	@GetMapping("/api/v1/ads/me")
-	@CrossOrigin
 	public ResponseEntity<Object> getAccountAds(@RequestAttribute("ae.accountId") String accountId) {
 		ServiceResponse<List<Ad>> response = adService.getAdsByAccountId(accountId);
 
@@ -47,7 +49,6 @@ public class AdController {
 	}
 
 	@GetMapping("/api/v1/ads/{id}")
-	@CrossOrigin
 	public ResponseEntity<Object> getAdById(@PathVariable String id) {
 		ServiceResponse<Ad> response = adService.getAdById(id);
 
@@ -61,7 +62,6 @@ public class AdController {
 	}
 
 	@GetMapping("/api/v1/ads/batch")
-	@CrossOrigin
 	public ResponseEntity<Object> getAdsById(String ids) {
 		ServiceResponse<List<Ad>> response = adService.getAdsById(ids);
 
@@ -74,20 +74,16 @@ public class AdController {
 
 	}
 
-	@PutMapping("/api/v1/ads/{id}")
-	@PostMapping("/api/v1/ads")
-	@CrossOrigin
 	/**
 	 * POST and PUT are in the same method because they share most fields
 	 * 
 	 * @return
 	 */
+	@RequestMapping(method = { RequestMethod.POST, RequestMethod.PUT }, path = { "/api/v1/ads", "/api/v1/ads/{id}" })
 	public ResponseEntity<Object> createOrUpdateAd(HttpServletRequest req,
 			@RequestAttribute("ae.accountId") String accountId, String name, String type, String refUrl, //
-			@RequestParam(value = "text", required = false) String text,
-			@RequestParam(value = "bgColor", required = false) String bgColor,
-			@RequestParam(value = "textColor", required = false) String textColor,
-			@RequestParam(value = "imageUrl", required = false) String imageUrl,
+			@RequestParam(required = false) String text, @RequestParam(required = false) String bgColor,
+			@RequestParam(required = false) String textColor, @RequestParam(required = false) String imageUrl,
 			@PathVariable(required = false) String id) {
 
 		ServiceResponse<Ad> response = ServiceResponse.fail("Http method must either be PUT or POST");
@@ -110,7 +106,6 @@ public class AdController {
 	}
 
 	@DeleteMapping("/api/v1/ads/{id}")
-	@CrossOrigin
 	public ResponseEntity<Object> deleteAd(@RequestAttribute("ae.accountId") String accountId,
 			@PathVariable String id) {
 		ServiceResponse<Nothing> response = adService.deleteAdById(accountId, id);

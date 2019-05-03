@@ -45,6 +45,9 @@
 
             let container = document.querySelector(`[data-ae-id="${adModel.spotId}"]`);
 
+            if (container === null)
+                return; // TODO handle null container
+
             let template = document.createElement('template');
             template.innerHTML = adModel.content;
 

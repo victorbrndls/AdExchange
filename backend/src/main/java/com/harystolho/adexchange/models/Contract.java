@@ -2,7 +2,11 @@ package com.harystolho.adexchange.models;
 
 import java.time.LocalDateTime;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.lang.Nullable;
+
+import com.harystolho.adexchange.models.ads.Ad;
 
 @Document("contracts")
 public class Contract {
@@ -19,6 +23,11 @@ public class Contract {
 	private String adId;
 	private PaymentMethod paymentMethod;
 	private String paymentValue;
+
+	@Transient
+	private Website website;
+	@Transient
+	private Ad ad;
 
 	public String getId() {
 		return id;
@@ -82,6 +91,28 @@ public class Contract {
 
 	public void setAcceptorId(String acceptorId) {
 		this.acceptorId = acceptorId;
+	}
+
+	public boolean isAuthorized(String accessId) {
+		return accessId.equals(acceptorId) || accessId.equals(creatorId);
+	}
+
+	@Nullable
+	public Website getWebsite() {
+		return website;
+	}
+
+	public void setWebsite(Website website) {
+		this.website = website;
+	}
+
+	@Nullable
+	public Ad getAd() {
+		return ad;
+	}
+
+	public void setAd(Ad ad) {
+		this.ad = ad;
 	}
 
 }

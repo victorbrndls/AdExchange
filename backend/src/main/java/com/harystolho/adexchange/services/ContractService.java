@@ -80,34 +80,20 @@ public class ContractService {
 	 * @param embed
 	 * @return a list of {@link Contract contracts} and the embeded fields
 	 */
-	public ServiceResponse<List<ObjectNode>> getContractsById(String accountId, String ids, String embed) {
+	public ServiceResponse<List<Contract>> getContractsById(String accountId, String ids, String embed) {
 		List<Contract> contracts = contractRepository.getManyById(Arrays.asList(ids.split(",")));
 
-		ObjectMapper mapper = new ObjectMapper();
-
-		List<ObjectNode> belongsToUser = contracts.stream().filter((contract) -> {
-			return contract.getAcceptorId().equals(accountId) || contract.getCreatorId().equals(accountId);
-		}).map((c) -> {
-			ObjectNode node = (ObjectNode) mapper.valueToTree(c);
-
-			// The mapper maps the LocalDateTime object to json and that is not needed,
-			// replace that with the normal value
-			node.put("expiration", c.getExpiration().toString());
-
+		return ServiceResponse.ok(contracts.stream().filter(contract -> contract.isAuthorized(accountId)).map((c) -> {
 			if (embed.contains("website")) {
-				node.remove("websiteId");
-				node.set("website", mapper.valueToTree(websiteService.getWebsiteById(c.getWebsiteId()).getReponse()));
+				c.setWebsite(websiteService.getWebsiteById(c.getWebsiteId()).getReponse());
 			}
 
 			if (embed.contains("ad")) {
-				node.remove("adId");
-				node.set("ad", mapper.valueToTree(adService.getAdById(c.getAdId()).getReponse()));
+				c.setAd(adService.getAdById(c.getAdId()).getReponse());
 			}
 
-			return node;
-		}).collect(Collectors.toList());
-
-		return ServiceResponse.ok(belongsToUser);
+			return c;
+		}).collect(Collectors.toList()));
 	}
 
 	public ServiceResponse<List<ObjectNode>> getContractsForUserWebisites(String accountId, String embed) {
