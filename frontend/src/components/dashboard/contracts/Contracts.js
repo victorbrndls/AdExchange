@@ -109,7 +109,7 @@ class Contract extends Component {
         return `${dt.getDate()}/${dt.getUTCMonth() + 1}/${dt.getUTCFullYear()}`;
     }
 
-    render({expiration, paymentMethod, paymentValue, extra = {}, acceptorContractName, creatorContractName, website}, {showAd, ad}) {
+    render({expiration, paymentMethod, paymentValue, acceptorContractName, creatorContractName, website}, {showAd, ad}) {
         let contractName = acceptorContractName || creatorContractName;
 
         return (

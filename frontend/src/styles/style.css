@@ -472,4 +472,7 @@ body.auth #header {
 
 .contract__header .text-changer__input{
     width: 100%;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 0 7px;
 }

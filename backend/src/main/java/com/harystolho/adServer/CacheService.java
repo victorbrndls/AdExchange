@@ -4,9 +4,13 @@ import java.time.Duration;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.boot.context.properties.ConfigurationBeanFactoryMetadata;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 @Service
+@Scope(scopeName = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class CacheService<T> {
 
 	private static final Duration DEFAULT_DURATION = Duration.ofHours(1);
@@ -42,6 +46,10 @@ public class CacheService<T> {
 			return;
 
 		cache.put(key, new CacheObject<T>(value, System.currentTimeMillis() + duration.toMillis()));
+	}
+
+	public boolean contains(String key) {
+		return get(key) != null;
 	}
 
 	public void evict(Object key) {

@@ -12,6 +12,7 @@ public class AdModel {
 	private String spotId;
 	private String content;
 	private String error;
+	private String refUrl;
 
 	public AdModel(String content) {
 		this.content = content;
@@ -35,6 +36,14 @@ public class AdModel {
 
 	public void setSpotId(String spotId) {
 		this.spotId = spotId;
+	}
+
+	public String getRedirectUrl() {
+		return refUrl;
+	}
+
+	public void setRedirectUrl(String url) {
+		this.refUrl = url;
 	}
 
 }

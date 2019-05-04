@@ -52,7 +52,7 @@ class TextChangerInput extends Component {
 
         this.state = {
             edit: false,
-            value: props.value || "Clique aqui para editar"
+            value: props.value || "** Clique aqui para editar **"
         }
     }
 

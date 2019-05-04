@@ -51,10 +51,18 @@
             let template = document.createElement('template');
             template.innerHTML = adModel.content;
 
+            addRefUrlToATag(template.content.firstChild, adModel.redirectUrl);
+
+            
             container.parentNode.insertBefore(template.content.firstChild, container);
         });
     }
 
+    function addRefUrlToATag(tag, url) {
+        if(tag.nodeName === 'A'){
+            tag.setAttribute('href', url);
+        }
+    }
 
 })();
 

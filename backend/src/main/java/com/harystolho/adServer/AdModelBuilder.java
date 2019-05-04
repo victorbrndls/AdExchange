@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.harystolho.adServer.url.UrlRedirecterService;
 import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.models.ads.Ad;
@@ -32,11 +33,13 @@ public class AdModelBuilder {
 
 	private SpotService spotService;
 	private AdService adService;
+	private UrlRedirecterService urlRedirecterService;
 
 	@Autowired
-	private AdModelBuilder(SpotService spotService, AdService adService) {
+	private AdModelBuilder(SpotService spotService, AdService adService, UrlRedirecterService urlRedirecterService) {
 		this.spotService = spotService;
 		this.adService = adService;
+		this.urlRedirecterService = urlRedirecterService;
 	}
 
 	public AdModel buildUsingSpotId(String spotId) {
@@ -56,21 +59,26 @@ public class AdModelBuilder {
 		Contract contract = spot.getContract();
 
 		AdModel model = null;
+		Ad ad = null;
 
 		if (contract == null) {
 			logger.info("Contract is null, returning fallback Ad [SpotId: {}, ContractId: {}]", spot.getId(),
 					spot.getContractId());
 			model = buildUsingAdId(spot.getFallbackAdId());
+			ad = adService.getAdById(spot.getFallbackAdId()).getReponse();
 		} else {
 			// Contract has expired, build an AdModel using the fallback Ad
 			if (contract.getExpiration().isBefore(LocalDateTime.now())) {
 				model = buildUsingAdId(spot.getFallbackAdId());
+				ad = adService.getAdById(spot.getFallbackAdId()).getReponse();
 			} else { // Contract has not expired, build an AdModel using the contract Ad
 				model = buildUsingAdId(contract.getAdId());
+				ad = adService.getAdById(contract.getAdId()).getReponse();
 			}
 		}
 
 		model.setSpotId(spot.getId());
+		model.setRedirectUrl(urlRedirecterService.createUrlForSpot(spot, ad));
 		return model;
 	}
 
