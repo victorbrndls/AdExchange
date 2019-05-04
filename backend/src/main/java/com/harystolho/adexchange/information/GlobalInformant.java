@@ -9,6 +9,13 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+/**
+ * Class used to collect information from other classes, the information is used
+ * for monitoring purposes
+ * 
+ * @author Harystolho
+ *
+ */
 @Service
 public class GlobalInformant {
 

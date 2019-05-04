@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.harystolho.adServer.controllers.UrlRedirectorController;
+import com.harystolho.adexchange.information.GlobalInformant;
 import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.services.ServiceResponse;
@@ -24,8 +25,10 @@ public class UrlRedirecterService {
 	private CacheService<String> cacheService;
 
 	@Autowired
-	private UrlRedirecterService(CacheService<String> cacheService) {
+	private UrlRedirecterService(CacheService<String> cacheService, GlobalInformant globalInformant) {
 		this.cacheService = cacheService;
+		
+		globalInformant.add(cacheService);
 	}
 
 	/**

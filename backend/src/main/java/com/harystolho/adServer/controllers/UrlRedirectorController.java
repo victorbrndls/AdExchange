@@ -15,14 +15,16 @@ import com.harystolho.adexchange.services.ServiceResponse;
 @CrossOrigin
 public class UrlRedirectorController {
 
-	UrlRedirecterService urlRedirectirService;
+	public static final String REDIRECT_ENDPOINT = "/redirect";
+
+	private UrlRedirecterService urlRedirectirService;
 
 	@Autowired
 	private UrlRedirectorController(UrlRedirecterService urlRedirectorService) {
 		this.urlRedirectirService = urlRedirectorService;
 	}
 
-	@GetMapping("/serve/v1/redirect/{id}")
+	@GetMapping(path = REDIRECT_ENDPOINT + "/{id}")
 	public void redirect(HttpServletRequest req, HttpServletResponse res) {
 		ServiceResponse<String> response = urlRedirectirService.getUrlUsingRequestPath(req.getRequestURI());
 

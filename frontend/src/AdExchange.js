@@ -1,4 +1,4 @@
-// Script to add the Ads in the website
+// Script to load the Ads in the website
 (function () {
     const HOST = 'https://localhost:8080';
 
@@ -41,6 +41,7 @@
         adModels.forEach((adModel) => {
             if (adModel.error !== null) {
                 // TODO handle error response
+                return;
             }
 
             let container = document.querySelector(`[data-ae-id="${adModel.spotId}"]`);
@@ -53,7 +54,6 @@
 
             addRefUrlToATag(template.content.firstChild, adModel.redirectUrl);
 
-            
             container.parentNode.insertBefore(template.content.firstChild, container);
         });
     }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.harystolho.adServer.AdModel;
 import com.harystolho.adServer.AdTemplate;
+import com.harystolho.adServer.controllers.UrlRedirectorController;
 import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.models.ads.Ad;
@@ -31,7 +32,6 @@ import com.harystolho.adexchange.utils.AEUtils;
 public class AdModelService {
 
 	private static final Logger logger = LogManager.getLogger();
-	public static final String REDIRECT_ENDPOINT = "https://localhost:8080/serve/v1/redirect";
 
 	private SpotService spotService;
 	private AdService adService;
@@ -68,7 +68,8 @@ public class AdModelService {
 		AdModel model = buildUsingAd(ad);
 
 		model.setSpotId(spot.getId());
-		model.setRedirectUrl(REDIRECT_ENDPOINT + "/" + urlRedirecterService.mapRefUrl(ad.getRefUrl()));
+		model.setRedirectUrl(buildRedirectUrl("https://localhost:8080", UrlRedirectorController.REDIRECT_ENDPOINT,
+				urlRedirecterService.mapRefUrl(ad.getRefUrl())));
 		return model;
 	}
 
@@ -109,5 +110,9 @@ public class AdModelService {
 		model.setError(error);
 
 		return model;
+	}
+
+	private String buildRedirectUrl(String path, String redirectEndpoint, String id) {
+		return path + redirectEndpoint + "/" + id;
 	}
 }
