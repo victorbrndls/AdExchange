@@ -50,7 +50,7 @@ public class AuthController {
 
 		switch (response.getErrorType()) {
 		case FAIL:
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getFullMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getErrorType().toString());
 		default:
 			return ResponseEntity.status(HttpStatus.OK).body(new JsonResponse("token", response.getReponse()).build());
 		}

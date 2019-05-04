@@ -497,3 +497,17 @@ body.auth #header {
     background-color: #d97000;
     border: none;
 }
+
+.auth-input-container{
+    display: flex;
+    align-self: stretch;
+    width: 100%;
+}
+
+.auth-input-container span{
+    border-radius: 4px 0 0 4px;
+}
+
+.auth-input-container input{
+    border-radius: 0 4px 4px 0;
+}

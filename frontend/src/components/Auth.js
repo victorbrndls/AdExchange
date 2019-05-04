@@ -6,105 +6,75 @@ export default class Auth extends Component {
     constructor(props) {
         super(props);
 
-        this.props.email = () => document.getElementById("authEmailField");
-        this.props.password = () => document.getElementById("authPasswordField");
+        this.state = {
+            mode: 'REGISTER',
+            email: "",
+            password: "",
+            error: {}
+        };
 
-        this.updateAuthMode(props.url);
-    }
-
-    componentDidMount() {
-        this.props.email().value = "";
-        this.props.password().value = "";
+        this.updateMode();
     }
 
     createAccount() {
         if (!this.validateFields())
             return;
 
-        createAccount(this.props.email().value, this.props.password().value).then(() => {
+        createAccount(this.state.email, this.state.password).then(() => {
             route('/');
         }).catch((response) => {
-            switch (response.error) {
+            switch (response) {
                 case "EMAIL_ALREADY_EXISTS":
-                    this.setState({emailError: "Esse email ja' existe"});
+                    this.setState({error: {...this.state.error, email: "Esse email ja' existe"}});
                     return;
                 case "INVALID_EMAIL":
-                    this.setState({emailError: "Esse email na~o eh valido"});
+                    this.setState({error: {...this.state.error, email: "Esse email n~ao e' valido"}});
                     return;
                 case "INVALID_PASSWORD":
-                    this.setState({passwordError: "Essa senha na~o eh valida"});
+                    this.setState({error: {...this.state.error, email: "Esse senha e' invalida"}});
                     return;
             }
         });
     }
 
     login() {
-        this.clearFieldsError();
+        this.setState({error: {}});
 
-        login(this.props.email().value, this.props.password().value).then(() => {
+        login(this.state.email, this.state.password).then(() => {
             route('/dashboard');
             location.reload();
         }).catch((response) => {
-            switch (response.error) {
+            switch (response) {
                 case "FAIL":
-                    this.setState({passwordError: "Email ou senha incorretos"});
+                    this.setState({error: {...this.state.error, password: "Email ou senha incorreto"}});
                     return;
             }
         });
-    }
-
-    getFields() {
-        return {
-            email: this.props.email().value,
-            password: this.props.password().value
-        }
-    }
-
-    getFieldsFormData() {
-        let fields = this.getFields();
-
-        let formData = new FormData();
-        formData.append('email', fields.email);
-        formData.append('password', fields.password);
-
-        return formData;
-    }
-
-    clearFieldsError() {
-        this.setState({passwordError: undefined});
-        this.setState({emailError: undefined});
     }
 
     /**
      * @return {Boolean} TRUE if the fields required to create an account are valid
      */
     validateFields() {
-        let field = this.getFields();
+        this.setState({error: {}});
 
-        this.clearFieldsError();
-
-        if (field.password.length < 5) {
-            this.setState({passwordError: "A senha deve ter pelo menos 5 caracteres"});
+        if (this.state.password.length < 5) {
+            this.setState({error: {...this.state.error, password: "A senha deve ter pelo menos 5 caracteres"}});
             return false;
         }
 
         return true;
     }
 
-    /**
-     * The authentication mode changes the dispaly in the sign-in/sign-up form
-     * @param url
-     */
-    updateAuthMode = (url) => {
-        // TODO update url when the state changes
-        if (url.includes('register')) {
-            this.setState({mode: 'sign-up'});
+    updateMode = () => {
+        if (location.search.includes('register')) {
+            this.setState({mode: 'REGISTER'});
         } else {
-            this.setState({mode: 'sign-in'});
+            this.setState({mode: 'LOGIN'});
         }
     };
 
-    render({url}, {mode}) {
+    render({url}, {mode, email, password, error}) {
         if (auth.isUserAuthenticated()) {
             if (url.includes("/logout"))
                 logout();
@@ -118,43 +88,47 @@ export default class Auth extends Component {
                 <div>
                     <div id="auth">
                         <div class="auth-sign-container">
-                            <div class={`auth-sign ${mode === 'sign-in' ? 'active' : ''}`}
+                            <div class={`auth-sign ${mode === 'LOGIN' ? 'active' : ''}`}
                                  style="border-radius: .25rem 0 0 0" onClick={() => {
-                                this.setState({mode: 'sign-in'});
+                                this.setState({mode: 'LOGIN'});
                             }}>Entrar
                             </div>
-                            <div class={`auth-sign ${mode === 'sign-up' ? 'active' : ''}`}
+                            <div class={`auth-sign ${mode === 'REGISTER' ? 'active' : ''}`}
                                  style="border-radius: 0 .25rem 0 0" onClick={() => {
-                                this.setState({mode: 'sign-up'});
+                                this.setState({mode: 'REGISTER'});
                             }}>Criar
                             </div>
                         </div>
                         <div>
                             <div style="margin: 22px;">
                                 <div class="input-group mb-4">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon1">Email</span>
+                                    <div class="auth-input-container">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Email</span>
+                                        </div>
+                                        <input type="text" class="form-control" value={email}
+                                               onChange={(e) => this.setState({email: e.target.value})}/>
                                     </div>
-                                    <input type="text" class="form-control" aria-label="Username"
-                                           aria-describedby="basic-addon1"/>
-                                    {this.state.emailError && (
-                                        <small>{this.state.emailError}</small>
+                                    {error.email && (
+                                        <small>{error.email}</small>
                                     )}
                                 </div>
                                 <div class="input-group mb-4">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon1">Senha</span>
+                                    <div class="auth-input-container">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Senha</span>
+                                        </div>
+                                        <input type="password" class="form-control" value={password}
+                                               onChange={(e) => this.setState({password: e.target.value})}/>
                                     </div>
-                                    <input type="password" class="form-control" aria-label="Username"
-                                           aria-describedby="basic-addon1"/>
-                                    {this.state.passwordError && (
-                                        <small>{this.state.passwordError}</small>
+                                    {error.password && (
+                                        <small>{error.password}</small>
                                     )}
                                 </div>
                             </div>
 
                             <button id="authSubmit" class="btn btn-primary"
-                                    onClick={this.state.mode === 'sign-in' ? this.login.bind(this) : this.createAccount.bind(this)}>
+                                    onClick={mode === 'LOGIN' ? this.login.bind(this) : this.createAccount.bind(this)}>
                                 Enviar
                             </button>
                         </div>

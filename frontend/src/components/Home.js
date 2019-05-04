@@ -17,8 +17,8 @@ export default class Header extends Component {
 
                 {!auth.isUserAuthenticated() && (
                     <div>
-                        <Link href="/auth/register">Register</Link>
-                        <Link href="/auth/login">Login</Link>
+                        <Link href="/auth?register">Register</Link>
+                        <Link href="/auth?login">Login</Link>
                     </div>
                 )}
 
