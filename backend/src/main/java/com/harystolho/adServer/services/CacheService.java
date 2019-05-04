@@ -9,9 +9,14 @@ import org.springframework.boot.context.properties.ConfigurationBeanFactoryMetad
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.harystolho.adexchange.information.GlobalInformant;
+import com.harystolho.adexchange.information.Visitor;
+
 @Service
 @Scope(scopeName = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class CacheService<T> {
+public class CacheService<T> implements Visitor {
 
 	private static final Duration DEFAULT_DURATION = Duration.ofHours(1);
 
@@ -89,5 +94,15 @@ public class CacheService<T> {
 			return System.currentTimeMillis() > expiration;
 		}
 
+	}
+
+	@Override
+	public ObjectNode visit(GlobalInformant informant) {
+		ObjectNode node = informant.defaultObjectNode();
+		node.put("id", this.getClass().getName());
+
+		node.putPOJO("entries", cache);
+		
+		return node;
 	}
 }

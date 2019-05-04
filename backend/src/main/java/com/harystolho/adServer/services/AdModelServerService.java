@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.harystolho.adServer.AdModel;
+import com.harystolho.adexchange.information.GlobalInformant;
 import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.services.ServiceResponse;
 
@@ -20,16 +21,19 @@ import com.harystolho.adexchange.services.ServiceResponse;
  *
  */
 @Service
-public class SpotServerService {
+public class AdModelServerService {
 
 	// Cache the AdModels because they don't change
 	private CacheService<AdModel> cacheService;
 	private AdModelService adModelService;
 
 	@Autowired
-	private SpotServerService(CacheService<AdModel> cacheService, AdModelService adModelService) {
+	private AdModelServerService(CacheService<AdModel> cacheService, AdModelService adModelService,
+			GlobalInformant globalInformant) {
 		this.cacheService = cacheService;
 		this.adModelService = adModelService;
+
+		globalInformant.add(cacheService);
 	}
 
 	public ServiceResponse<List<AdModel>> getSpots(String ids) {
@@ -53,8 +57,8 @@ public class SpotServerService {
 
 		AdModel model = cacheService.get(spotId);
 
-		// if (model != null)
-		// return model;
+		if (model != null)
+			return model;
 
 		model = adModelService.buildUsingSpotId(spotId);
 		cacheService.store(spotId, model);

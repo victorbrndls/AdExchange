@@ -140,7 +140,7 @@ export default class Spots extends Component {
                                         <div class="contract__body-item">
                                             Contrato:&nbsp;
                                             <span
-                                                class="mr-3 font-italic">{contracts[spot.contractId].acceptorContractName}</span>
+                                                class="mr-3 font-italic">{contracts[spot.contractId] ? contracts[spot.contractId].acceptorContractName : "Nenhum"}</span>
                                         </div>
                                         <div class="contract__body-item">
                                             Anuncio
