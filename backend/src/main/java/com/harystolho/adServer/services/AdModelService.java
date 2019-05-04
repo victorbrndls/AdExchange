@@ -1,4 +1,4 @@
-package com.harystolho.adServer;
+package com.harystolho.adServer.services;
 
 import java.time.LocalDateTime;
 
@@ -7,7 +7,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.harystolho.adServer.url.UrlRedirecterService;
+import com.harystolho.adServer.AdModel;
+import com.harystolho.adServer.AdTemplate;
 import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.models.ads.Ad;
@@ -21,22 +22,23 @@ import com.harystolho.adexchange.services.SpotService;
 import com.harystolho.adexchange.utils.AEUtils;
 
 /**
- * Builds an {@link AdModel} from a {@link Spot} and a template
+ * Builds an {@link AdModel}
  * 
  * @author Harystolho
  *
  */
 @Service
-public class AdModelBuilder {
+public class AdModelService {
 
 	private static final Logger logger = LogManager.getLogger();
+	public static final String REDIRECT_ENDPOINT = "https://localhost:8080/serve/v1/redirect";
 
 	private SpotService spotService;
 	private AdService adService;
 	private UrlRedirecterService urlRedirecterService;
 
 	@Autowired
-	private AdModelBuilder(SpotService spotService, AdService adService, UrlRedirecterService urlRedirecterService) {
+	private AdModelService(SpotService spotService, AdService adService, UrlRedirecterService urlRedirecterService) {
 		this.spotService = spotService;
 		this.adService = adService;
 		this.urlRedirecterService = urlRedirecterService;
@@ -44,53 +46,51 @@ public class AdModelBuilder {
 
 	public AdModel buildUsingSpotId(String spotId) {
 		ServiceResponse<Spot> response = spotService.getSpot(AEUtils.ADMIN_ACESS_ID, spotId, "contract");
+		Spot spot = response.getReponse();
 
-		if (response.getReponse() == null) {
-			logger.error("getSpot() returned an error [SpotId: {}]", spotId);
+		if (spot == null) {
+			logger.error("Can't find a spot using the given id [SpotId: {}]", spotId);
 			return errorAdModel("INVALID_SPOT_ID");
 		}
-
-		Spot spot = response.getReponse();
 
 		return buildUsingSpot(spot);
 	}
 
 	private AdModel buildUsingSpot(Spot spot) {
-		Contract contract = spot.getContract();
+		String adId = getAdId(spot, spot.getContract());
 
-		AdModel model = null;
-		Ad ad = null;
-
-		if (contract == null) {
-			logger.info("Contract is null, returning fallback Ad [SpotId: {}, ContractId: {}]", spot.getId(),
-					spot.getContractId());
-			model = buildUsingAdId(spot.getFallbackAdId());
-			ad = adService.getAdById(spot.getFallbackAdId()).getReponse();
-		} else {
-			// Contract has expired, build an AdModel using the fallback Ad
-			if (contract.getExpiration().isBefore(LocalDateTime.now())) {
-				model = buildUsingAdId(spot.getFallbackAdId());
-				ad = adService.getAdById(spot.getFallbackAdId()).getReponse();
-			} else { // Contract has not expired, build an AdModel using the contract Ad
-				model = buildUsingAdId(contract.getAdId());
-				ad = adService.getAdById(contract.getAdId()).getReponse();
-			}
+		Ad ad = adService.getAdById(adId).getReponse();
+		if (ad == null) {
+			logger.error("Can't find an Ad using the given id", adId);
+			return errorAdModel("INVALID_AD_ID");
 		}
 
+		AdModel model = buildUsingAd(ad);
+
 		model.setSpotId(spot.getId());
-		model.setRedirectUrl(urlRedirecterService.createUrlForSpot(spot, ad));
+		model.setRedirectUrl(REDIRECT_ENDPOINT + "/" + urlRedirecterService.mapRefUrl(ad.getRefUrl()));
 		return model;
 	}
 
-	private AdModel buildUsingAdId(String adId) {
-		ServiceResponse<Ad> response = adService.getAdById(adId);
+	/**
+	 * @param spot
+	 * @param contract
+	 * @return the id of the Ad that will be used to create the {@link AdModel}
+	 */
+	private String getAdId(Spot spot, Contract contract) {
+		if (contract == null || contract.getExpiration().isBefore(LocalDateTime.now())) {
+			if (contract == null) { // Spot has no contract or contractId is invalid
+				logger.info("Contract is null, returning fallback Ad [SpotId: {}, ContractId: {}]", spot.getId(),
+						spot.getContractId());
+			} else { // Contract has expired
+				logger.info("Contract has expired, returning fallback Ad [SpotId: {}, ContractId: {}]", spot.getId(),
+						spot.getContractId());
+			}
 
-		if (response.getReponse() == null) {
-			logger.error("Ad is null [id: {}]", adId);
-			return errorAdModel();
+			return spot.getFallbackAdId();
+		} else {
+			return contract.getAdId();
 		}
-
-		return buildUsingAd(response.getReponse());
 	}
 
 	private AdModel buildUsingAd(Ad ad) {
@@ -102,10 +102,6 @@ public class AdModelBuilder {
 
 		logger.error("The Ad type is not valid [id: {}, type: {}]", ad.getId(), ad.getType());
 		return errorAdModel("INVALID_AD_TYPE");
-	}
-
-	private AdModel errorAdModel() {
-		return errorAdModel("error");
 	}
 
 	private AdModel errorAdModel(String error) {

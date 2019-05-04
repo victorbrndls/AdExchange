@@ -11,6 +11,8 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import com.harystolho.adServer.services.CacheService;
+
 @RunWith(MockitoJUnitRunner.class)
 public class AdModelCacheTest {
 

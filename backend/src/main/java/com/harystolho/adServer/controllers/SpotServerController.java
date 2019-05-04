@@ -1,8 +1,6 @@
-package com.harystolho.adServer;
+package com.harystolho.adServer.controllers;
 
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.harystolho.adServer.AdModel;
+import com.harystolho.adServer.services.SpotServerService;
 import com.harystolho.adexchange.services.ServiceResponse;
 
 @Controller

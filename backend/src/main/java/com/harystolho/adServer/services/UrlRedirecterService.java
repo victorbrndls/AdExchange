@@ -1,14 +1,13 @@
-package com.harystolho.adServer.url;
+package com.harystolho.adServer.services;
 
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.harystolho.adServer.CacheService;
+import com.harystolho.adServer.controllers.UrlRedirectorController;
 import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.models.ads.Ad;
-import com.harystolho.adexchange.services.AdService;
 import com.harystolho.adexchange.services.ServiceResponse;
 
 /**
@@ -22,7 +21,6 @@ import com.harystolho.adexchange.services.ServiceResponse;
 @Service
 public class UrlRedirecterService {
 
-	private static final String REDIRECT_ENDPOINT = "https://localhost:8080/serve/v1/redirect";
 	private CacheService<String> cacheService;
 
 	@Autowired
@@ -30,14 +28,18 @@ public class UrlRedirecterService {
 		this.cacheService = cacheService;
 	}
 
-	public String createUrlForSpot(Spot spot, Ad ad) {
+	/**
+	 * @param refUrl
+	 * @return an id that is mapped to the refUrl, to get the refUrl use
+	 *         {@link #getUrlUsingRequestPath(String)}
+	 */
+	public String mapRefUrl(String refUrl) {
 		String urlId = genereteUrlId();
 
-		if (spot.getContract() != null && ad != null) {
-			cacheService.store(urlId, ad.getRefUrl());
-		}
+		if (refUrl != null)
+			cacheService.store(urlId, refUrl);
 
-		return REDIRECT_ENDPOINT + "/" + urlId;
+		return urlId;
 	}
 
 	public ServiceResponse<String> getUrlUsingRequestPath(String path) {

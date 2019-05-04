@@ -1,4 +1,4 @@
-package com.harystolho.adServer.url;
+package com.harystolho.adServer.controllers;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.harystolho.adServer.services.UrlRedirecterService;
 import com.harystolho.adexchange.services.ServiceResponse;
 
 @RestController
