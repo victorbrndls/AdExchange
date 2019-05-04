@@ -2,7 +2,7 @@ import {Component} from "preact";
 import {route} from 'preact-router';
 import {login, logout, createAccount, auth} from "../auth";
 
-export default class Header extends Component {
+export default class Auth extends Component {
     constructor(props) {
         super(props);
 
@@ -114,35 +114,43 @@ export default class Header extends Component {
         }
 
         return (
-            <div style="display: flex; justify-content: center;">
-                <div id="auth" class="shadow mt-5">
-                    <div class="auth-sign-container">
-                        <div class={`auth-sign ${mode === 'sign-in' ? 'active' : ''}`}
-                             style="border-radius: .25rem 0 0 0" onClick={() => {
-                            this.setState({mode: 'sign-in'});
-                        }}>Entrar
-                        </div>
-                        <div class={`auth-sign ${mode === 'sign-up' ? 'active' : ''}`}
-                             style="border-radius: 0 .25rem 0 0" onClick={() => {
-                            this.setState({mode: 'sign-up'});
-                        }}>Criar
-                        </div>
-                    </div>
-                    <div style="margin: 22px 12px;">
-                        <div class="text-center">
-                            <div class="form-group">
-                                <input type="email" class="form-control" id="authEmailField"
-                                       aria-describedby="emailHelp" placeholder="Email"/>
-                                {this.state.emailError && (
-                                    <small>{this.state.emailError}</small>
-                                )}
+            <div class="auth-background">
+                <div>
+                    <div id="auth">
+                        <div class="auth-sign-container">
+                            <div class={`auth-sign ${mode === 'sign-in' ? 'active' : ''}`}
+                                 style="border-radius: .25rem 0 0 0" onClick={() => {
+                                this.setState({mode: 'sign-in'});
+                            }}>Entrar
                             </div>
-                            <div class="form-group">
-                                <input type="password" class="form-control" id="authPasswordField"
-                                       placeholder="Senha"/>
-                                {this.state.passwordError && (
-                                    <small>{this.state.passwordError}</small>
-                                )}
+                            <div class={`auth-sign ${mode === 'sign-up' ? 'active' : ''}`}
+                                 style="border-radius: 0 .25rem 0 0" onClick={() => {
+                                this.setState({mode: 'sign-up'});
+                            }}>Criar
+                            </div>
+                        </div>
+                        <div>
+                            <div style="margin: 22px;">
+                                <div class="input-group mb-4">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon1">Email</span>
+                                    </div>
+                                    <input type="text" class="form-control" aria-label="Username"
+                                           aria-describedby="basic-addon1"/>
+                                    {this.state.emailError && (
+                                        <small>{this.state.emailError}</small>
+                                    )}
+                                </div>
+                                <div class="input-group mb-4">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon1">Senha</span>
+                                    </div>
+                                    <input type="password" class="form-control" aria-label="Username"
+                                           aria-describedby="basic-addon1"/>
+                                    {this.state.passwordError && (
+                                        <small>{this.state.passwordError}</small>
+                                    )}
+                                </div>
                             </div>
 
                             <button id="authSubmit" class="btn btn-primary"

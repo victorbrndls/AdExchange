@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway');
 
 :root {
-    --ad-primary: #009dff;
+    --ad-primary: #007bff;
     --header-height: 50px;
     --dashboard-sidebar-width: 250px;
 }
@@ -48,24 +48,24 @@ body.auth #header {
     color: white;
 }
 
-#auth {
-    width: 300px;
-}
-
 .auth-sign {
     width: 50%;
     font-size: 24px;
-    padding: 7px 0px;
+    padding: 7px 0;
+    cursor: pointer;
 }
 
 .auth-sign.active {
     background-color: var(--ad-primary);
+    color: white;
 }
 
 .auth-sign-container {
     display: flex;
     justify-content: space-around;
     text-align: center;
+    border-bottom: solid 1px #56565621;
+    font-family: Raleway, serif;
 }
 
 #header-nav {
@@ -408,20 +408,20 @@ body.auth #header {
     font-size: 24px;
 }
 
-.contract__body{
+.contract__body {
     padding: 11px 19px;
 }
 
-.contract__body-item{
+.contract__body-item {
     padding: 2px 0;
 }
 
-.contract__body-show_ad{
+.contract__body-show_ad {
     color: #0584ff;
     cursor: pointer;
 }
 
-.ae-confirmation__modal{
+.ae-confirmation__modal {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -430,7 +430,7 @@ body.auth #header {
     background-color: #00000075;
 }
 
-.ae-confirmation__modal-content{
+.ae-confirmation__modal-content {
     background-color: white;
     max-width: 450px;
     margin-left: auto;
@@ -441,38 +441,59 @@ body.auth #header {
     border-radius: .3rem;
 }
 
-.proposal__none{
+.proposal__none {
     padding-left: 25px;
     margin-bottom: 11px;
     color: #848484;
 }
 
-.spots-add{
+.spots-add {
     background-color: rgb(255, 171, 64);
     margin-bottom: 30px;
 }
 
-.spot-header__option{
+.spot-header__option {
     display: inline-block;
     font-size: 12px;
     margin-left: 8px;
     vertical-align: middle;
 }
 
-.spot-header__option:hover{
+.spot-header__option:hover {
     text-decoration: underline;
     cursor: pointer;
 }
 
-.spot-id:hover{
+.spot-id:hover {
     text-decoration: underline;
     cursor: pointer;
     color: black;
 }
 
-.contract__header .text-changer__input{
+.contract__header .text-changer__input {
     width: 100%;
     border: 1px solid #ced4da;
     border-radius: 4px;
     padding: 0 7px;
+}
+
+.auth-background {
+    display: flex;
+    justify-content: center;
+    background-color: #eff3f6;
+    height: 100%;
+}
+
+#auth{
+    background-color: #fff;
+    box-shadow: 0 0 0 1px #e2e5e8;
+    width: 400px;
+    margin-top: 170px;
+}
+
+#authSubmit{
+    width: 100%;
+    border-radius: 0 0 4px 4px;
+    background-color: #d97000;
+    border: none;
 }
