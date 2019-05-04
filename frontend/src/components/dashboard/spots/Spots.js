@@ -6,6 +6,7 @@ import EditSpot from "./EditSpot";
 import {AdAxiosGet, AdAxiosPost} from "../../../auth";
 import {HOST} from "../../../configs";
 import PaymentMethod from "../../utils/PaymentMethod";
+import {ImageAd, TextAd} from "../ads/CreateAdd";
 
 export default class Spots extends Component {
     constructor(props) {
@@ -38,13 +39,6 @@ export default class Spots extends Component {
         this.requestSpots();
     }
 
-    deleteSpot(id) {
-        ConfirmationModal.renderFullScreen("Voce tem certeza que quer deletar esse Spot?", () => {
-            AdAxiosPost.delete(`${HOST}/api/v1/spots/${id}`).then((response) => {
-                this.reload();
-            });
-        });
-    }
 
     requestContractsInformation() {
         let ids = this.buildBatchRequestString(this.state.spots, 'contractId');
@@ -120,33 +114,7 @@ export default class Spots extends Component {
                             </div>
                             {this.requestSpots.bind(this)()}
                             {spots.map((spot) => (
-                                <div class="contract shadow">
-                                    <div class="contract__header"
-                                         style="display: flex; justify-content: space-between;">
-                                        <div>{spot.name}</div>
-                                        <div>
-                                            <div class="spot-header__option"
-                                                 onClick={() => route(`/dashboard/spots/edit?id=${spot.id}`)}>Editar
-                                            </div>
-                                            <div class="spot-header__option"
-                                                 onClick={this.deleteSpot.bind(this, spot.id)}>Deletar
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="contract__body text-muted">
-                                        <div class="contract__body-item">
-                                            Id: <span class="spot-id">{spot.id}</span>
-                                        </div>
-                                        <div class="contract__body-item">
-                                            Contrato:&nbsp;
-                                            <span
-                                                class="mr-3 font-italic">{contracts[spot.contractId] ? contracts[spot.contractId].acceptorContractName : "Nenhum"}</span>
-                                        </div>
-                                        <div class="contract__body-item">
-                                            Anuncio
-                                            reserva: {spot.fallbackAdId === '-1' ? 'Nenhum' : ads[spot.fallbackAdId] ? ads[spot.fallbackAdId].name : 'Nenhum'}</div>
-                                    </div>
-                                </div>
+                                <Spot spot={spot} contract={contracts[spot.contractId]} ad={ads[spot.fallbackAdId]}/>
                             ))}
                         </div>
                     </Match>
@@ -160,3 +128,89 @@ export default class Spots extends Component {
 
     }
 }
+
+class Spot extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            extended: false,
+            contractAd: null,
+            fallbackAd: null
+        };
+    }
+
+    handleExtend(){
+        this.setState({extended: !this.state.extended});
+
+        if(this.state.contractAd === null){
+            console.log(this.props);
+        }
+
+        if(this.state.fallbackAd === null){
+
+        }
+    }
+
+    deleteSpot(id) {
+        ConfirmationModal.renderFullScreen("Voce tem certeza que quer deletar esse Spot?", () => {
+            AdAxiosPost.delete(`${HOST}/api/v1/spots/${id}`).then((response) => {
+                this.reload();
+            });
+        });
+    }
+
+    render({spot, contract, ad}, {extended, contractAd, fallbackAd}) {
+        let adName = ad ? ad.name : 'Nenhum';
+        let contractName = contract ? contract.acceptorContractName : "Nenhum";
+
+        return (
+            <div class="contract shadow">
+                <div class="contract__header"
+                     style="display: flex; justify-content: space-between;">
+                    <div>{spot.name}</div>
+                    <div>
+                        <div class="spot-header__option"
+                             onClick={() => route(`/dashboard/spots/edit?id=${spot.id}`)}>Editar
+                        </div>
+                        <div class="spot-header__option"
+                             onClick={this.deleteSpot.bind(this, spot.id)}>Deletar
+                        </div>
+                    </div>
+                </div>
+                <div class="contract__body text-muted">
+                    <div class="contract__body-item">
+                        Id: <span class="spot-id">{spot.id}</span>
+                    </div>
+                    <div class="contract__body-item">
+                        <div>
+                            Contrato:&nbsp;
+                            <span
+                                class="mr-2 font-italic">{contractName}
+                        </span>
+                        </div>
+                        {extended && contractAd && (
+                            <AdWrapper ad={contractAd}/>
+                        )}
+                    </div>
+                    <div class="contract__body-item">
+                        Anuncio
+                        reserva: {adName}</div>
+                </div>
+                <div style="padding: 0 19px 7px 19px; text-align: center;">
+                    <img class={`contract__body-plus ${extended ? "active" : ""}`}
+                         src="/assets/expand-arrow.png" onClick={this.handleExtend.bind(this)}/>
+                </div>
+            </div>
+        )
+    }
+}
+
+const AdWrapper = ({ad}) => (
+    <div class="ad-container">
+        <div class="ads-ad-wrapper mt-4">
+            {ad.type === 'TEXT' ? (<TextAd {...ad}/>) : (
+                <ImageAd {...ad}/>)}
+        </div>
+    </div>
+);

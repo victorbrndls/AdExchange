@@ -409,7 +409,7 @@ body.auth #header {
 }
 
 .contract__body {
-    padding: 11px 19px;
+    padding: 11px 19px 4px 19px;
 }
 
 .contract__body-item {
@@ -484,30 +484,51 @@ body.auth #header {
     height: 100%;
 }
 
-#auth{
+#auth {
     background-color: #fff;
     box-shadow: 0 0 0 1px #e2e5e8;
     width: 400px;
     margin-top: 170px;
 }
 
-#authSubmit{
+#authSubmit {
     width: 100%;
     border-radius: 0 0 4px 4px;
     background-color: #d97000;
     border: none;
 }
 
-.auth-input-container{
+.auth-input-container {
     display: flex;
     align-self: stretch;
     width: 100%;
 }
 
-.auth-input-container span{
+.auth-input-container span {
     border-radius: 4px 0 0 4px;
 }
 
-.auth-input-container input{
+.auth-input-container input {
     border-radius: 0 4px 4px 0;
+}
+
+.contract__body-plus {
+    width: 20px;
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.contract__body-plus:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.contract__body-plus.active {
+    transform: rotateX(180deg);
+}
+
+.ad-container {
+    justify-content: center;
+    display: flex;
+    position: relative;
 }

@@ -199,7 +199,7 @@ export default class AddProposal extends Component {
                                     <option value={ad.id}>{ad.name}</option>
                                 ))}
                             </select>
-                            <div style="justify-content: center; display: flex; position: relative;">
+                            <div class="ad-container">
                                 <div class="blocking-container"/>
                                 {selectedAd && (
                                     <div class="ads-ad-wrapper mt-4">

@@ -130,7 +130,7 @@ class Contract extends Component {
                         <div class="contract__body-show_ad" onClick={this.handleShowAd.bind(this)}>Ver Anuncio
                         </div>
                         {showAd && ad !== null && (
-                            <div style="justify-content: center; display: flex; position: relative;">
+                            <div class="ad-container">
                                 <div class="ads-ad-wrapper mt-4">
                                     {ad.type === 'TEXT' ? (<TextAd {...ad}/>) : (
                                         <ImageAd {...ad}/>)}
