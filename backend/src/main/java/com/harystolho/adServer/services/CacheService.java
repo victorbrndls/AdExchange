@@ -57,7 +57,7 @@ public class CacheService<T> implements Visitor {
 		return get(key) != null;
 	}
 
-	public void evict(Object key) {
+	public void evict(String key) {
 		cache.remove(key);
 	}
 
@@ -102,6 +102,7 @@ public class CacheService<T> implements Visitor {
 		node.put("id", this.getClass().getName());
 
 		node.putPOJO("entries", cache);
+		node.put("size", cache.size());
 		
 		return node;
 	}

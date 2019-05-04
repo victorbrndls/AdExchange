@@ -80,4 +80,8 @@ public class UrlRedirecterService {
 
 		return finalID;
 	}
+
+	public void removeFromCache(String id) {
+		cacheService.evict(id);
+	}
 }

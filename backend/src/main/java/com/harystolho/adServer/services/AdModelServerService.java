@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.harystolho.adServer.AdModel;
+import com.harystolho.adServer.controllers.UrlRedirectorController;
 import com.harystolho.adexchange.information.GlobalInformant;
 import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.services.ServiceResponse;
@@ -26,12 +27,14 @@ public class AdModelServerService {
 	// Cache the AdModels because they don't change
 	private CacheService<AdModel> cacheService;
 	private AdModelService adModelService;
+	private UrlRedirecterService urlRedirectorService;
 
 	@Autowired
 	private AdModelServerService(CacheService<AdModel> cacheService, AdModelService adModelService,
-			GlobalInformant globalInformant) {
+			UrlRedirecterService urlRedirecterService, GlobalInformant globalInformant) {
 		this.cacheService = cacheService;
 		this.adModelService = adModelService;
+		this.urlRedirectorService = urlRedirecterService;
 
 		globalInformant.add(cacheService);
 	}
@@ -64,6 +67,22 @@ public class AdModelServerService {
 		cacheService.store(spotId, model);
 
 		return model;
+	}
+
+	/**
+	 * This method should be called when a field in a {@link Spot} is changed
+	 * 
+	 * @param spot
+	 */
+	public void updateSpot(Spot spot) {
+		AdModel model = cacheService.get(spot.getId());
+
+		if (model == null)
+			return;
+
+		cacheService.evict(spot.getId());
+		urlRedirectorService
+				.removeFromCache(model.getRedirectUrl().split(UrlRedirectorController.REDIRECT_ENDPOINT + "/")[1]);
 	}
 
 	private boolean isSpotIdValid(String id) {

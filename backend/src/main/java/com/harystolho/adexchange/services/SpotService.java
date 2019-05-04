@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.harystolho.adServer.services.AdModelServerService;
 import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.repositories.spot.SpotRepository;
@@ -17,6 +17,7 @@ public class SpotService {
 	private SpotRepository spotRepository;
 
 	private ContractService contractService;
+	private AdModelServerService adModelServerService;
 
 	@Autowired
 	private SpotService(SpotRepository spotRepository, ContractService contractService) {
@@ -47,7 +48,13 @@ public class SpotService {
 		spot.setContractId(contractId);
 		spot.setFallbackAdId(adId);
 
-		return ServiceResponse.ok(spotRepository.save(spot));
+		Spot saved = spotRepository.save(spot);
+
+		// If the Spot has changed, the adModel cache has the remove the old one
+		if (id != null)
+			adModelServerService.updateSpot(saved);
+
+		return ServiceResponse.ok(saved);
 	}
 
 	public ServiceResponse<Spot> getSpot(String accountId, String id, String embed) {
@@ -87,6 +94,12 @@ public class SpotService {
 
 		spotRepository.deleteById(id);
 		return ServiceResponse.ok(null);
+	}
+
+	// Inject using setter to break depedency cycle
+	@Autowired
+	public void setAdModelServerService(AdModelServerService adModelServerService) {
+		this.adModelServerService = adModelServerService;
 	}
 
 }
