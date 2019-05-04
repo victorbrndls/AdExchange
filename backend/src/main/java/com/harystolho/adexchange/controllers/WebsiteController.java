@@ -17,8 +17,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.harystolho.adexchange.models.Website;
 import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.services.WebsiteService;
+import com.harystolho.adexchange.utils.AEUtils;
 
 @RestController
+@CrossOrigin(origins = AEUtils.corsOrigin)
 public class WebsiteController {
 
 	private WebsiteService websiteService;
@@ -29,7 +31,6 @@ public class WebsiteController {
 	}
 
 	@GetMapping("/api/v1/websites")
-	@CrossOrigin
 	public ResponseEntity<Object> getWebsites() {
 		ServiceResponse<List<Website>> response = websiteService.getWebsites();
 
@@ -43,8 +44,8 @@ public class WebsiteController {
 	}
 
 	@GetMapping("/api/v1/websites/{id}")
-	@CrossOrigin
-	public ResponseEntity<Object> getWebsiteById(@RequestAttribute("ae.accountId")String accountId, @PathVariable String id) {
+	public ResponseEntity<Object> getWebsiteById(@RequestAttribute("ae.accountId") String accountId,
+			@PathVariable String id) {
 		ServiceResponse<Website> response = websiteService.getWebsiteById(id);
 
 		switch (response.getErrorType()) {
@@ -54,14 +55,13 @@ public class WebsiteController {
 			ObjectNode node = (ObjectNode) new ObjectMapper().valueToTree(response.getReponse());
 			node.put("owner", response.getReponse().getAccountId().equals(accountId));
 			node.remove("accountId");
-			
+
 			return ResponseEntity.status(HttpStatus.CREATED).body(node);
 		}
 
 	}
 
 	@PostMapping("/api/v1/websites")
-	@CrossOrigin // TODO only allow crossorigin from 8081
 	public ResponseEntity<Object> createWebsite(@RequestAttribute("ae.accountId") String accountId, String name,
 			String url, String logoURL, String description, String categories) {
 

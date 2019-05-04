@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,10 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.services.AdService;
 import com.harystolho.adexchange.services.ServiceResponse;
+import com.harystolho.adexchange.utils.AEUtils;
 import com.harystolho.adexchange.utils.Nothing;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = AEUtils.corsOrigin)
 public class AdController {
 
 	private AdService adService;

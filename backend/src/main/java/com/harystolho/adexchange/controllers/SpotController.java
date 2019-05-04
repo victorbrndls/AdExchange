@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.services.SpotService;
+import com.harystolho.adexchange.utils.AEUtils;
 
 @RestController
+@CrossOrigin(origins = AEUtils.corsOrigin)
 public class SpotController {
 
 	private SpotService spotService;
@@ -29,7 +31,6 @@ public class SpotController {
 	}
 
 	@PostMapping("/api/v1/spots")
-	@CrossOrigin
 	public ResponseEntity<Object> createOrUpdateSpot(@RequestAttribute("ae.accountId") String accountId, String id,
 			String name, String contractId, String fallbackAdId) {
 
@@ -44,7 +45,6 @@ public class SpotController {
 	}
 
 	@GetMapping("/api/v1/spots/{id}")
-	@CrossOrigin
 	public ResponseEntity<Object> getSpot(@RequestAttribute("ae.accountId") String accountId, @PathVariable String id,
 			@RequestParam(defaultValue = "") String embed) {
 
@@ -61,7 +61,6 @@ public class SpotController {
 	}
 
 	@GetMapping("/api/v1/spots/me")
-	@CrossOrigin
 	public ResponseEntity<Object> getAccountSpots(@RequestAttribute("ae.accountId") String accountId) {
 
 		ServiceResponse<List<Spot>> response = spotService.getSpotsByAccountId(accountId);
@@ -75,7 +74,6 @@ public class SpotController {
 	}
 
 	@DeleteMapping("/api/v1/spots/{id}")
-	@CrossOrigin
 	public ResponseEntity<Object> deleteSpot(@RequestAttribute("ae.accountId") String accountId,
 			@PathVariable String id) {
 

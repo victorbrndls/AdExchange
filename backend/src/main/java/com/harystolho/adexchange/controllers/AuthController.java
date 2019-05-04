@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.harystolho.adexchange.services.AuthService;
 import com.harystolho.adexchange.services.ServiceResponse;
+import com.harystolho.adexchange.utils.AEUtils;
 import com.harystolho.adexchange.utils.JsonResponse;
 import com.harystolho.adexchange.utils.Nothing;
 
 @RestController()
+@CrossOrigin(origins = AEUtils.corsOrigin)
 public class AuthController {
 
 	private AuthService authService;
@@ -24,7 +26,6 @@ public class AuthController {
 	}
 
 	@PostMapping("/auth/account")
-	@CrossOrigin
 	public ResponseEntity<Object> createAccount(@RequestParam("email") String email,
 			@RequestParam("password") String password) {
 
@@ -42,7 +43,6 @@ public class AuthController {
 	}
 
 	@PostMapping("/auth/login")
-	@CrossOrigin
 	public ResponseEntity<Object> login(@RequestParam("email") String email,
 			@RequestParam("password") String password) {
 

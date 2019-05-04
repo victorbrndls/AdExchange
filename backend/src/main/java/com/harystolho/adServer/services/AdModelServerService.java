@@ -81,8 +81,13 @@ public class AdModelServerService {
 			return;
 
 		cacheService.evict(spot.getId());
-		urlRedirectorService
-				.removeFromCache(model.getRedirectUrl().split(UrlRedirectorController.REDIRECT_ENDPOINT + "/")[1]);
+
+		try {
+			urlRedirectorService
+					.removeFromCache(model.getRedirectUrl().split(UrlRedirectorController.REDIRECT_ENDPOINT + "/")[1]);
+		} catch (Exception e) {
+			// Do nothing
+		}
 	}
 
 	private boolean isSpotIdValid(String id) {

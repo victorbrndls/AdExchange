@@ -19,9 +19,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.services.ContractService;
 import com.harystolho.adexchange.services.ServiceResponse;
+import com.harystolho.adexchange.utils.AEUtils;
 
-@CrossOrigin
 @RestController
+@CrossOrigin(origins = AEUtils.corsOrigin)
 public class ContractController {
 
 	private ContractService contractService;

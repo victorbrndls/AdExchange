@@ -19,9 +19,11 @@ import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.models.ProposalsHolder;
 import com.harystolho.adexchange.services.ProposalService;
 import com.harystolho.adexchange.services.ServiceResponse;
+import com.harystolho.adexchange.utils.AEUtils;
 import com.harystolho.adexchange.utils.Nothing;
 
 @RestController
+@CrossOrigin(origins = AEUtils.corsOrigin)
 public class ProposalController {
 
 	private ProposalService proposalService;
@@ -32,7 +34,6 @@ public class ProposalController {
 	}
 
 	@GetMapping("/api/v1/proposals/me")
-	@CrossOrigin
 	/**
 	 * @return the proposals that belong to the account that made the request
 	 */
@@ -44,7 +45,6 @@ public class ProposalController {
 	}
 
 	@GetMapping("/api/v1/proposals/{id}")
-	@CrossOrigin
 	public ResponseEntity<Object> getProposalById(@RequestAttribute("ae.accountId") String accountId,
 			@PathVariable String id) {
 
@@ -57,7 +57,6 @@ public class ProposalController {
 	}
 
 	@GetMapping("/api/v1/proposals/batch")
-	@CrossOrigin
 	/**
 	 * @param ids list of proposals ids separated by comma
 	 * @return
@@ -69,7 +68,6 @@ public class ProposalController {
 	}
 
 	@PostMapping("/api/v1/proposals")
-	@CrossOrigin
 	public ResponseEntity<Object> createProposal(@RequestAttribute("ae.accountId") String accountId, String websiteId,
 			String adId, String duration, String paymentMethod, String paymentValue) {
 
@@ -91,7 +89,6 @@ public class ProposalController {
 	}
 
 	@DeleteMapping("/api/v1/proposals/{id}")
-	@CrossOrigin
 	public ResponseEntity<Object> deleteProposal(@RequestAttribute("ae.accountId") String accountId,
 			@PathVariable String id) {
 
@@ -108,7 +105,6 @@ public class ProposalController {
 	}
 
 	@PostMapping("/api/v1/proposals/reject/{id}")
-	@CrossOrigin
 	public ResponseEntity<Object> rejectProposal(@RequestAttribute("ae.accountId") String accountId,
 			@PathVariable String id) {
 
@@ -123,7 +119,6 @@ public class ProposalController {
 	}
 
 	@PostMapping("/api/v1/proposals/revision/{id}")
-	@CrossOrigin
 	public ResponseEntity<Object> reviewProposal(@RequestAttribute("ae.accountId") String accountId,
 			@PathVariable String id, String duration, String paymentMethod, String paymentValue) {
 
@@ -144,7 +139,6 @@ public class ProposalController {
 	}
 
 	@PostMapping("/api/v1/proposals/accept/{id}")
-	@CrossOrigin
 	public ResponseEntity<Object> acceptProposal(@RequestAttribute("ae.accountId") String accountId,
 			@PathVariable String id) {
 
