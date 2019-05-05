@@ -140,15 +140,27 @@ class Spot extends Component {
         };
     }
 
-    handleExtend(){
+    handleExtend() {
         this.setState({extended: !this.state.extended});
 
-        if(this.state.contractAd === null){
-            console.log(this.props);
-        }
+        this.afterStateChange();
+    }
 
-        if(this.state.fallbackAd === null){
+    afterStateChange() {
+        if (this.state.extended) {
+            if (this.state.contractAd === null) {
+                if (this.props.contract !== undefined) {
+                    AdAxiosGet.get(`${HOST}/api/v1/ads/${this.props.contract.adId}`).then((response) => {
+                        this.setState({contractAd: response.data});
+                    });
+                }
+            }
 
+            if (this.state.fallbackAd === null) {
+                if (this.props.ad !== undefined) {
+                    this.setState({fallbackAd: this.props.ad});
+                }
+            }
         }
     }
 
@@ -194,8 +206,14 @@ class Spot extends Component {
                         )}
                     </div>
                     <div class="contract__body-item">
-                        Anuncio
-                        reserva: {adName}</div>
+                        <div>
+                            Anuncio
+                            reserva: {adName}
+                        </div>
+                        {extended && fallbackAd && (
+                            <AdWrapper ad={fallbackAd}/>
+                        )}
+                    </div>
                 </div>
                 <div style="padding: 0 19px 7px 19px; text-align: center;">
                     <img class={`contract__body-plus ${extended ? "active" : ""}`}
