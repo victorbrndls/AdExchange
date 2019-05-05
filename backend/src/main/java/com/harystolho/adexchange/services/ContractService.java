@@ -51,9 +51,6 @@ public class ContractService {
 
 		contractRepository.save(contract);
 
-		userDataService.addContract(creatorId, contract.getId());
-		userDataService.addContract(acceptorId, contract.getId());
-
 		return contract;
 	}
 
@@ -69,9 +66,7 @@ public class ContractService {
 	}
 
 	public ServiceResponse<List<Contract>> getContractsByAccountId(String accountId, String embed) {
-		List<String> contractsId = userDataService.getContractsByAccountId(accountId);
-
-		List<Contract> contracts = contractRepository.getManyById(contractsId);
+		List<Contract> contracts = contractRepository.getByAccountId(accountId);
 
 		if (embed.contains("website"))
 			contracts.stream().forEach((contract) -> {

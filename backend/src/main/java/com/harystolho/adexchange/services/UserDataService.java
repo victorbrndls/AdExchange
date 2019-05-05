@@ -99,25 +99,4 @@ public class UserDataService {
 		}
 	}
 
-	private List<String> saveContracts(String accountId, List<String> contracts) {
-		createUserDataIfNonExistent(accountId);
-
-		return userDataRepository.saveContractsByAccountId(accountId, contracts);
-	}
-
-	public void addContract(String accountId, String id) {
-		createUserDataIfNonExistent(accountId);
-
-		List<String> contracts = userDataRepository.getContractsByAccountId(accountId);
-
-		contracts.add(id);
-
-		saveContracts(accountId, contracts);
-	}
-
-	public List<String> getContractsByAccountId(String accountId) {
-		createUserDataIfNonExistent(accountId);
-
-		return userDataRepository.getContractsByAccountId(accountId);
-	}
 }
