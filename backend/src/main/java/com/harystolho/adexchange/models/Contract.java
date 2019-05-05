@@ -20,6 +20,7 @@ public class Contract{
 	private String creatorContractName;
 	private String acceptorId; // The Website owner id
 	private String acceptorContractName;
+
 	private LocalDateTime expiration;
 	private String websiteId;
 	private String adId;

@@ -114,7 +114,8 @@ export default class Spots extends Component {
                             </div>
                             {this.requestSpots.bind(this)()}
                             {spots.map((spot) => (
-                                <Spot spot={spot} contract={contracts[spot.contractId]} ad={ads[spot.fallbackAdId]}/>
+                                <Spot spot={spot} contract={contracts[spot.contractId]}
+                                      ad={ads[spot.fallbackAdId]} reload={this.reload.bind(this)}/>
                             ))}
                         </div>
                     </Match>
@@ -132,6 +133,9 @@ export default class Spots extends Component {
 class Spot extends Component {
     constructor(props) {
         super(props);
+
+        this.reload = props.reload;
+        this.id = props.spot.id;
 
         this.state = {
             extended: false,
@@ -164,9 +168,9 @@ class Spot extends Component {
         }
     }
 
-    deleteSpot(id) {
+    deleteSpot() {
         ConfirmationModal.renderFullScreen("Voce tem certeza que quer deletar esse Spot?", () => {
-            AdAxiosPost.delete(`${HOST}/api/v1/spots/${id}`).then((response) => {
+            AdAxiosPost.delete(`${HOST}/api/v1/spots/${this.id}`).then(() => {
                 this.reload();
             });
         });
@@ -186,7 +190,7 @@ class Spot extends Component {
                              onClick={() => route(`/dashboard/spots/edit?id=${spot.id}`)}>Editar
                         </div>
                         <div class="spot-header__option"
-                             onClick={this.deleteSpot.bind(this, spot.id)}>Deletar
+                             onClick={this.deleteSpot.bind(this)}>Deletar
                         </div>
                     </div>
                 </div>
