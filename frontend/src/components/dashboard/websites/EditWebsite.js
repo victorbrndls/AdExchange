@@ -49,6 +49,7 @@ export default class EditWebsite extends Component {
 
         AdAxiosGet.get(`${HOST}/api/v1/websites/${id}`).then((response) => {
             this.setState({website: response.data});
+            this.selectedCheckBox = this.state.website.categories.length || 0;
         });
     }
 

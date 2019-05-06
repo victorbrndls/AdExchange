@@ -4,8 +4,6 @@ import java.time.Duration;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import javax.annotation.PreDestroy;
-
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -18,7 +16,7 @@ import com.harystolho.adexchange.information.Visitor;
 @Scope(scopeName = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class CacheService<T> implements Visitor {
 
-	private static final Duration DEFAULT_DURATION = Duration.ofHours(1);
+	private static final Duration DEFAULT_DURATION = Duration.ofMinutes(10);
 
 	private ConcurrentMap<String, CacheObject<T>> cache;
 
@@ -37,7 +35,11 @@ public class CacheService<T> implements Visitor {
 		CacheObject<T> entry = cache.get(key);
 
 		if (entry != null)
-			return entry.getObject();
+			if (entry.hasExpired()) {
+				evict(key);
+			} else {
+				return entry.getObject();
+			}
 
 		return null;
 	}
@@ -103,7 +105,7 @@ public class CacheService<T> implements Visitor {
 
 		node.putPOJO("entries", cache);
 		node.put("size", cache.size());
-		
+
 		return node;
 	}
 }

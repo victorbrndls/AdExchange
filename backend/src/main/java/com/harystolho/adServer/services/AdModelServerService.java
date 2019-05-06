@@ -93,5 +93,4 @@ public class AdModelServerService {
 	private boolean isSpotIdValid(String id) {
 		return StringUtils.hasText(id);
 	}
-
 }

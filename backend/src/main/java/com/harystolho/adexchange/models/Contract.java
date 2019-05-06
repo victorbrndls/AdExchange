@@ -9,7 +9,7 @@ import org.springframework.lang.Nullable;
 import com.harystolho.adexchange.models.ads.Ad;
 
 @Document("contracts")
-public class Contract{
+public class Contract {
 
 	public enum PaymentMethod {
 		PAY_PER_CLICK, PAY_PER_VIEW
@@ -35,7 +35,7 @@ public class Contract{
 	public Contract() {
 		super();
 	}
-	
+
 	public String getId() {
 		return id;
 	}
@@ -50,6 +50,10 @@ public class Contract{
 
 	public void setExpiration(LocalDateTime expiration) {
 		this.expiration = expiration;
+	}
+
+	public boolean hasExpired() {
+		return expiration.isBefore(LocalDateTime.now());
 	}
 
 	public String getWebsiteId() {
@@ -138,6 +142,4 @@ public class Contract{
 		this.acceptorContractName = acceptorContractName;
 	}
 
-	
-	
 }

@@ -46,7 +46,7 @@ export default class Auth extends Component {
         }).catch((response) => {
             switch (response) {
                 case "FAIL":
-                    this.setState({error: {...this.state.error, password: "Email ou senha incorreto"}});
+                    this.setState({error: {...this.state.error, password: "Email ou senha incorretos"}});
                     return;
             }
         });
@@ -110,7 +110,7 @@ export default class Auth extends Component {
                                                onChange={(e) => this.setState({email: e.target.value})}/>
                                     </div>
                                     {error.email && (
-                                        <small>{error.email}</small>
+                                        <small class="mt-1">{error.email}</small>
                                     )}
                                 </div>
                                 <div class="input-group mb-4">
@@ -122,7 +122,7 @@ export default class Auth extends Component {
                                                onChange={(e) => this.setState({password: e.target.value})}/>
                                     </div>
                                     {error.password && (
-                                        <small>{error.password}</small>
+                                        <small class="mt-1">{error.password}</small>
                                     )}
                                 </div>
                             </div>

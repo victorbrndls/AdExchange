@@ -224,7 +224,7 @@ export default class AddProposal extends Component {
                                     value={proposal.paymentMethod || "PAY_PER_CLICK"}
                                     disabled={disableFields}>
                                 <option value="PAY_PER_CLICK">Custo por Click</option>
-                                <option value="PAY_PER_VIEW">Custo por Visualizacao</option>
+                                <option value="PAY_PER_VIEW">Custo por Visualização</option>
                             </select>
                             <div class="mb-2"/>
                             <div class="input-group mb-3">

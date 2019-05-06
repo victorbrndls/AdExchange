@@ -126,6 +126,8 @@ public class ContractService {
 		return ServiceResponse.ok(contract);
 	}
 
+	
+	
 	private String sanitizeContractName(String name) {
 		return name;
 	}

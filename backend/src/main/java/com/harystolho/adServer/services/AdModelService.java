@@ -1,7 +1,5 @@
 package com.harystolho.adServer.services;
 
-import java.time.LocalDateTime;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,14 +76,14 @@ public class AdModelService {
 	 * @return the id of the Ad that will be used to create the {@link AdModel}
 	 */
 	private String getAdId(Spot spot, Contract contract) {
-		if (contract == null || contract.getExpiration().isBefore(LocalDateTime.now())) {
-			if (contract == null) { // Spot has no contract or contractId is invalid
-				logger.info("Contract is null, returning fallback Ad [SpotId: {}, ContractId: {}]", spot.getId(),
-						spot.getContractId());
-			} else { // Contract has expired
-				logger.info("Contract has expired, returning fallback Ad [SpotId: {}, ContractId: {}]", spot.getId(),
-						spot.getContractId());
-			}
+		if (contract == null) { // Spot has no contract or contractId is invalid
+			logger.info("Contract is null, returning fallback Ad [SpotId: {}, ContractId: {}]", spot.getId(),
+					spot.getContractId());
+
+			return spot.getFallbackAdId();
+		} else if (contract.hasExpired()) { // Contract has expired
+			logger.info("Contract has expired, returning fallback Ad [SpotId: {}, ContractId: {}]", spot.getId(),
+					spot.getContractId());
 
 			return spot.getFallbackAdId();
 		} else {
