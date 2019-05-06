@@ -5,7 +5,6 @@ import {route} from "preact-router";
 import AddProposal from "./EditProposal";
 import {AdAxiosGet} from "../../../auth";
 import {HOST} from "../../../configs";
-import UrlUtls from "../../utils/UrlUtils";
 
 export default class Proposals extends Component {
     constructor(props) {

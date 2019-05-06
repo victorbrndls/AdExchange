@@ -6,6 +6,7 @@ import Proposals from "./proposals/Proposals";
 import Ads from "./ads/Ads";
 import Contracts from "./contracts/Contracts";
 import Spots from "./spots/Spots";
+import ControlPanel from "./controlPanel/ControlPanel";
 
 export default class Dashboard extends Component {
     constructor(props) {
@@ -20,6 +21,11 @@ export default class Dashboard extends Component {
                         <span>AdExchange</span>
                     </div>
                     <div class="dashboard__sidebar-bar">
+                        <div class="dashboard__sidebar--item">
+                            <Link href="/dashboard/panel" activeClassName="active">
+                                <div class="dashboard__sidebar--item-container">Dashboard</div>
+                            </Link>
+                        </div>
                         <div class="dashboard__sidebar--item">
                             <Link href="/dashboard/websites" activeClassName="active">
                                 <div class="dashboard__sidebar--item-container">Websites</div>
@@ -62,17 +68,8 @@ export default class Dashboard extends Component {
                     </div>
                     <div class="dashboard__main-content">
                         <div style="height: 100%; padding: 16px;">
-
-                            {/*Remove this in the future*/}
-                            <Match path="/dashboard" exact>
-                                <div>
-                                    <div>How can I develop this feature better or in a different way?<br/></div>
-                                    <div>Design Pattern? / Different Architecture?<br/></div>
-                                    <div>What is the simplest thing that could possibly work?<br/></div>
-									<br/>
-									
-									Imagens, gráficos, vídeos, listas, links, gifs, infográficos
-                                </div>
+                            <Match path="/dashboard/panel" include>
+                                <ControlPanel/>
                             </Match>
 
                             <Match path="/dashboard/websites" include>
