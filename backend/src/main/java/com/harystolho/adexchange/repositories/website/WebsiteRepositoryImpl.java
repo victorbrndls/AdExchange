@@ -33,10 +33,17 @@ public class WebsiteRepositoryImpl implements WebsiteRepository {
 	}
 
 	@Override
-	public Website getWebsiteById(String id) {
+	public Website getById(String id) {
 		Query query = Query.query(Criteria.where("_id").is(id));
 
 		return mongoOperations.findOne(query, Website.class);
+	}
+
+	@Override
+	public void deleteById(String id) {
+		Query query = Query.query(Criteria.where("_id").is(id));
+
+		mongoOperations.remove(query, Website.class);
 	}
 
 }

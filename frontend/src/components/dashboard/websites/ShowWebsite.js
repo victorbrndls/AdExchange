@@ -1,10 +1,11 @@
 import {Component} from "preact";
 import Axios from 'axios';
 import {HOST} from "../../../configs";
-import {AdAxiosGet, auth} from "../../../auth";
+import {AdAxiosGet, AdAxiosPost, auth} from "../../../auth";
 import {CATEGORIES_PT} from "../../utils/WebsiteCategory";
 import {route} from "preact-router";
 import UrlUtils from "../../utils/UrlUtils";
+import {ConfirmationModal} from "../../utils/Components";
 
 export default class ShowWebsite extends Component {
     constructor(props) {
@@ -35,6 +36,20 @@ export default class ShowWebsite extends Component {
             this.setState({website: response.data});
         });
 
+    }
+
+    deleteWebsite() {
+        let id = this.getIdFromUrl();
+
+        if (id === null || id === undefined)
+            return;
+
+        ConfirmationModal.renderFullScreen("Voce tem certeza que quer deletar esse Website?", () => {
+            AdAxiosPost.delete(`${HOST}/api/v1/websites/${id}`).then(() => {
+                route('/dashboard/websites');
+                this.props.reload();
+            });
+        })
     }
 
     getIdFromUrl() {
@@ -72,6 +87,18 @@ export default class ShowWebsite extends Component {
                                 <div class="dashboard-website__rounded-button dashboard-website__create-proposal"
                                      onClick={() => route(`/dashboard/proposals/edit/new?websiteId=${this.getIdFromUrl()}`)}>
                                     Fazer Proposta de Anúncio
+                                </div>
+                            </div>
+                        )}
+                        {website.owner && (
+                            <div style="margin-top: 15px; text-align: right;">
+                                <div class="dashboard-website__rounded-button dashboard-website__edit"
+                                     onClick={() => route(`/dashboard/websites/edit?id=${this.getIdFromUrl()}`)}>
+                                    Editar
+                                </div>
+                                <div class="dashboard-website__rounded-button dashboard-website__delete"
+                                     onClick={this.deleteWebsite.bind(this)}>
+                                    Deletar
                                 </div>
                             </div>
                         )}

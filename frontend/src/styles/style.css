@@ -275,6 +275,15 @@ body.auth #header {
     background-color: rgb(29, 188, 64);
 }
 
+.dashboard-website__edit {
+    background-color: rgb(134, 188, 29);
+    margin-right: 15px;
+}
+
+.dashboard-website__delete {
+    background-color: rgb(188, 29, 29);
+}
+
 .blocking-container {
     position: absolute;
     width: 100%;

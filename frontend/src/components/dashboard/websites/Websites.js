@@ -1,8 +1,7 @@
 import {Component} from "preact";
 import {route} from "preact-router";
-import Axios from 'axios';
 import {HOST} from "../../../configs";
-import AddWebsite from "./EditWebsite";
+import EditWebsite from "./EditWebsite";
 import {AdAxiosGet, auth} from "../../../auth";
 import Match from "../../utils/Match";
 import ShowWebsite from "./ShowWebsite";
@@ -61,11 +60,11 @@ export default class Websites extends Component {
                     </Match>
 
                     <Match path="/dashboard/websites/edit" include>
-                        <AddWebsite reload={this.reload.bind(this)}/>
+                        <EditWebsite reload={this.reload.bind(this)}/>
                     </Match>
 
                     <Match path="/dashboard/websites/show/" include>
-                        <ShowWebsite/>
+                        <ShowWebsite reload={this.reload.bind(this)}/>
                     </Match>
                 </div>
             </div>

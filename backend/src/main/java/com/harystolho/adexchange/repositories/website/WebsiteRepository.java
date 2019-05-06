@@ -14,6 +14,8 @@ public interface WebsiteRepository {
 	 * @param id
 	 * @return the {@link Website} or <code>null</code>
 	 */
-	public Website getWebsiteById(String id);
+	public Website getById(String id);
+
+	public void deleteById(String id);
 
 }
