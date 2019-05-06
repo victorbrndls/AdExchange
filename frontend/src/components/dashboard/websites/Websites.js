@@ -2,7 +2,7 @@ import {Component} from "preact";
 import {route} from "preact-router";
 import Axios from 'axios';
 import {HOST} from "../../../configs";
-import AddWebsite from "./AddWebsite";
+import AddWebsite from "./EditWebsite";
 import {AdAxiosGet, auth} from "../../../auth";
 import Match from "../../utils/Match";
 import ShowWebsite from "./ShowWebsite";
@@ -48,7 +48,7 @@ export default class Websites extends Component {
                     <Match path="/dashboard/websites" exact>
                         <div>
                             <div>
-                                <div class="websites-add dashboard-website__rounded-button" onClick={() => route('/dashboard/websites/add')}>
+                                <div class="websites-add dashboard-website__rounded-button" onClick={() => route('/dashboard/websites/edit?type=new')}>
                                     Adicionar seu Website
                                 </div>
                             </div>
@@ -60,7 +60,7 @@ export default class Websites extends Component {
                         </div>
                     </Match>
 
-                    <Match path="/dashboard/websites/add" exact>
+                    <Match path="/dashboard/websites/edit" include>
                         <AddWebsite reload={this.reload.bind(this)}/>
                     </Match>
 
