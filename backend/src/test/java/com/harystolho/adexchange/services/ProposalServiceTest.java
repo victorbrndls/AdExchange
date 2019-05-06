@@ -117,6 +117,88 @@ public class ProposalServiceTest {
 		assertEquals(ServiceResponseType.PROPOSAL_NOT_IN_SENT,
 				proposalService.deleteProposalById("ac99", "p_dp").getErrorType());
 	}
+
+	@Test
+	public void deleteProposal_NotRejected_NotInNew() {
+		Proposal p = new Proposal();
+		p.setRejected(false);
+		p.setProposerId("1234");
+		p.setProposeeId("abcd");
+		p.setInProposerSent(true);
+		Mockito.when(proposalRepository.getById("pnrnin")).thenReturn(p);
+
+		assertEquals(ServiceResponseType.OK, proposalService.deleteProposalById("1234", "pnrnin").getErrorType());
+		assertEquals(ServiceResponseType.PROPOSAL_NOT_IN_SENT,
+				proposalService.deleteProposalById("abcd", "pnrnin").getErrorType());
+	}
+
+	@Test
+	public void deleteProposal_NotRejected_NotInSent() {
+		Proposal p = new Proposal();
+		p.setRejected(false);
+		p.setProposerId("1234");
+		p.setProposeeId("abcd");
+		p.setInProposerSent(false);
+		Mockito.when(proposalRepository.getById("pnrnis")).thenReturn(p);
+
+		assertEquals(ServiceResponseType.PROPOSAL_NOT_IN_SENT,
+				proposalService.deleteProposalById("1234", "pnrnis").getErrorType());
+		assertEquals(ServiceResponseType.OK, proposalService.deleteProposalById("abcd", "pnrnis").getErrorType());
+	}
+
+	@Test
+	public void rejectProposal_Proposer_NotInNew() {
+		Proposal p = new Proposal();
+		p.setProposerId("1234");
+		p.setProposeeId("abcd");
+		p.setInProposerSent(true);
+		Mockito.when(proposalRepository.getById("pr")).thenReturn(p);
+
+		assertEquals(ServiceResponseType.PROPOSAL_NOT_IN_NEW,
+				proposalService.rejectProposalById("1234", "pr").getErrorType());
+	}
+
+	@Test
+	public void rejectProposal_Proposee_NotInNew() {
+		Proposal p = new Proposal();
+		p.setProposerId("1234");
+		p.setProposeeId("abcd");
+		p.setInProposerSent(false);
+		Mockito.when(proposalRepository.getById("pr2")).thenReturn(p);
+
+		assertEquals(ServiceResponseType.PROPOSAL_NOT_IN_NEW,
+				proposalService.rejectProposalById("abcd", "pr2").getErrorType());
+	}
+
+	@Test
+	public void rejectProposal_Proposer_InNew() {
+		Proposal p = new Proposal();
+		p.setProposerId("1234");
+		p.setProposeeId("abcd");
+		p.setInProposerSent(false);
+		Mockito.when(proposalRepository.getById("pr3")).thenReturn(p);
+
+		assertEquals(ServiceResponseType.OK, proposalService.rejectProposalById("1234", "pr3").getErrorType());
+
+		assertEquals(true, p.isRejected());
+		assertEquals(true, p.isInProposerSent());
+		assertEquals(p.getProposerId(), "");
+	}
+
+	@Test
+	public void rejectProposal_Proposee_InNew() {
+		Proposal p = new Proposal();
+		p.setProposerId("1234");
+		p.setProposeeId("abcd");
+		p.setInProposerSent(true);
+		Mockito.when(proposalRepository.getById("pr4")).thenReturn(p);
+
+		assertEquals(ServiceResponseType.OK, proposalService.rejectProposalById("abcd", "pr4").getErrorType());
+
+		assertEquals(true, p.isRejected());
+		assertEquals(false, p.isInProposerSent());
+		assertEquals(p.getProposeeId(), "");
+	}
 	
 	
 }

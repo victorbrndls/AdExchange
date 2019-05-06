@@ -18,7 +18,7 @@ public class GlobelInformantController {
 		this.globalInformant = globalInformant;
 	}
 
-	@GetMapping("/info")
+	@GetMapping("/info") // TODO authenticate the /info endpoint
 	public ResponseEntity<Object> getInformation() {
 		return ResponseEntity.status(HttpStatus.OK).body(globalInformant.visitAll());
 	}
