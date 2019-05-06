@@ -5,11 +5,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.boot.context.properties.ConfigurationBeanFactoryMetadata;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.harystolho.adexchange.information.GlobalInformant;
 import com.harystolho.adexchange.information.Visitor;

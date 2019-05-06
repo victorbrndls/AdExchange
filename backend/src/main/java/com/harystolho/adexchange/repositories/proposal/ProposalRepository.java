@@ -14,6 +14,4 @@ public interface ProposalRepository {
 
 	void deleteById(String id);
 
-	void setRejected(String id);
-
 }

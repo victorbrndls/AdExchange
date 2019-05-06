@@ -18,7 +18,6 @@ import com.harystolho.adexchange.models.ads.ImageAd;
 import com.harystolho.adexchange.models.ads.TextAd;
 import com.harystolho.adexchange.services.AdService;
 import com.harystolho.adexchange.services.ServiceResponse;
-import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
 import com.harystolho.adexchange.services.SpotService;
 import com.harystolho.adexchange.utils.AEUtils;
 

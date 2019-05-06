@@ -3,7 +3,10 @@ package com.harystolho.adexchange.models;
 import java.time.Instant;
 import java.util.Date;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.lang.Nullable;
 
 import com.harystolho.adexchange.models.Contract.PaymentMethod;
 
@@ -14,10 +17,16 @@ public class Proposal {
 		creationDate = Date.from(Instant.now());
 		version = 1;
 		rejected = false;
+		inProposerSent = true;
 	}
 
 	private String id;
-	private String creatorAccountId;
+
+	@Field("accountId.proposer")
+	private String proposerId;
+	@Field("accountId.proposee")
+	private String proposeeId;
+
 	private String websiteId;
 	private String adId;
 	private int duration;
@@ -25,8 +34,14 @@ public class Proposal {
 	private String paymentValue;
 	private Date creationDate;
 	private int version;
+
+	// True if the proposal is in the 'Sent' container for the proposer
+	private boolean inProposerSent;
 	private boolean rejected;
 
+	@Transient
+	private Website website;
+	
 	public String getId() {
 		return id;
 	}
@@ -99,11 +114,37 @@ public class Proposal {
 		this.version = version;
 	}
 
-	public String getCreatorAccountId() {
-		return creatorAccountId;
+	public String getProposerId() {
+		return proposerId;
 	}
 
-	public void setCreatorAccountId(String creatorAccountId) {
-		this.creatorAccountId = creatorAccountId;
+	public void setProposerId(String proposerId) {
+		this.proposerId = proposerId;
 	}
+
+	public String getProposeeId() {
+		return proposeeId;
+	}
+
+	public void setProposeeId(String proposeeId) {
+		this.proposeeId = proposeeId;
+	}
+
+	public boolean isInProposerSent() {
+		return inProposerSent;
+	}
+
+	public void setInProposerSent(boolean inProposerSent) {
+		this.inProposerSent = inProposerSent;
+	}
+
+	@Nullable
+	public Website getWebsite() {
+		return website;
+	}
+
+	public void setWebsite(Website website) {
+		this.website = website;
+	}
+
 }

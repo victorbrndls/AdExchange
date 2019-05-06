@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import com.harystolho.adexchange.models.Proposal;
@@ -32,7 +31,8 @@ public class ProposalRepositoryImpl implements ProposalRepository {
 
 	@Override
 	public List<Proposal> getByAccountId(String accountId) {
-		Query query = Query.query(Criteria.where("accountId").is(accountId));
+		Query query = Query.query(new Criteria().orOperator(Criteria.where("accountId.proposer").is(accountId),
+				Criteria.where("accountId.proposee").is(accountId)));
 		return mongoOperations.find(query, Proposal.class);
 	}
 
@@ -40,14 +40,6 @@ public class ProposalRepositoryImpl implements ProposalRepository {
 	public void deleteById(String id) {
 		Query query = Query.query(Criteria.where("_id").is(id));
 		mongoOperations.remove(query, Proposal.class);
-	}
-
-	@Override
-	public void setRejected(String id) {
-		Query query = Query.query(Criteria.where("_id").is(id));
-		Update update = new Update().set("rejected", true);
-
-		mongoOperations.findAndModify(query, update, Proposal.class);
 	}
 
 }

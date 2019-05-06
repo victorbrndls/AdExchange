@@ -13,19 +13,18 @@ public class JsonResponse {
 		node = new ObjectNode(factory);
 	}
 
-	public JsonResponse(String key, String value) {
+	public JsonResponse(String key, Object value) {
 		this();
 		pair(key, value);
 	}
 
-	public JsonResponse pair(String key, String value) {
-		node.put(key, value);
-		return this;
-	}
-	
 	public JsonResponse pair(String key, Object value) {
 		node.putPOJO(key, value);
 		return this;
+	}
+
+	public static JsonResponse of(String key, Object value) {
+		return new JsonResponse(key, value);
 	}
 
 	public ObjectNode build() {

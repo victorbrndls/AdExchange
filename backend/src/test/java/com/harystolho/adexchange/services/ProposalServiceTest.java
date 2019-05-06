@@ -27,8 +27,6 @@ public class ProposalServiceTest {
 	@Mock
 	ProposalRepository proposalRepository;
 	@Mock
-	ProposalsHolderService proposalsHolderService;
-	@Mock
 	WebsiteService websiteService;
 	@Mock
 	AdService adService;
@@ -82,7 +80,8 @@ public class ProposalServiceTest {
 	@Test
 	public void deleteProposalThatDoesntBelongToUser() {
 		Proposal p = new Proposal();
-		p.setAdId("ad123");
+		p.setProposerId("acc1234");
+		p.setProposeeId("nulls");
 		Mockito.when(proposalRepository.getById("123")).thenReturn(p);
 
 		Ad ad = new Ad(AdType.TEXT);
@@ -92,4 +91,32 @@ public class ProposalServiceTest {
 
 		assertEquals(ServiceResponseType.PROPOSAL_NOT_IN_SENT, response.getErrorType());
 	}
+
+	@Test
+	public void deleteProposal_Rejected_NotInNew() {
+		Proposal p = new Proposal();
+		p.setRejected(true);
+		p.setProposerId("acc99");
+		p.setProposeeId("");
+		p.setInProposerSent(true);
+		Mockito.when(proposalRepository.getById("p_dp")).thenReturn(p);
+
+		assertEquals(ServiceResponseType.PROPOSAL_NOT_IN_NEW,
+				proposalService.deleteProposalById("ac99", "p_dp").getErrorType());
+	}
+
+	@Test
+	public void deleteProposal_Rejected_NotInSent() {
+		Proposal p = new Proposal();
+		p.setRejected(false);
+		p.setProposerId("acc99");
+		p.setProposeeId("");
+		p.setInProposerSent(false);
+		Mockito.when(proposalRepository.getById("p_dp")).thenReturn(p);
+
+		assertEquals(ServiceResponseType.PROPOSAL_NOT_IN_SENT,
+				proposalService.deleteProposalById("ac99", "p_dp").getErrorType());
+	}
+	
+	
 }

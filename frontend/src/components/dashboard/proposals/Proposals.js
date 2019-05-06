@@ -13,64 +13,32 @@ export default class Proposals extends Component {
 
         this.state = {
             newProposals: [],
-            sentProposals: [],
-            proposals: []
+            sentProposals: []
         };
 
-        UrlUtls.exact('/dashboard/proposals') && this.requestProposalsHolder();
-    }
+        this.hasRequestedProposals = false;
 
-    requestProposalsHolder() {
-        AdAxiosGet.get(`${HOST}/api/v1/proposals/me`).then((response) => {
-            this.setState(
-                {
-                    newProposals: response.data.newProposals,
-                    sentProposals: response.data.sentProposals
-                }
-            );
-
-            this.requestProposals();
-        });
+        this.requestProposals();
     }
 
     requestProposals() {
-        let proposals = new Set();
+        if (!this.hasRequestedProposals) {
+            this.hasRequestedProposals = true;
 
-        [this.state.newProposals, this.state.sentProposals].forEach(list =>
-            list.forEach(prop => proposals.add(prop))
-        );
-
-        if (proposals.size === 0)
-            return;
-
-        let idx = 0;
-        let proposalsIdList = "";
-        let setSize = proposals.size;
-
-        proposals.forEach((prop) => {
-            if (prop !== undefined) {
-                proposalsIdList += prop;
-
-                if (idx !== setSize - 1)
-                    proposalsIdList += ",";
-            }
-
-            idx++;
-        });
-
-        AdAxiosGet.get(`${HOST}/api/v1/proposals/batch`, {
-            params: {
-                ids: proposalsIdList
-            }
-        }).then((response) => {
-            let proposals = {};
-
-            response.data.forEach((prop) => {
-                proposals[prop.id] = prop;
+            AdAxiosGet.get(`${HOST}/api/v1/proposals/me?embed=website`).then((response) => {
+                this.setState(
+                    {
+                        newProposals: response.data.new,
+                        sentProposals: response.data.sent
+                    }
+                );
             });
+        }
+    }
 
-            this.setState({proposals: proposals});
-        });
+    reload(){
+        this.hasRequestedProposals = false;
+        this.requestProposals();
     }
 
     render({}, {newProposals, sentProposals}) {
@@ -90,9 +58,7 @@ export default class Proposals extends Component {
                                 <div>
                                     {newProposals.map((proposal) => (
                                         <div>
-                                            {this.state.proposals[proposal] !== undefined && (
-                                                <Proposal {...this.state.proposals[proposal]} type="NEW"/>
-                                            )}
+                                            <Proposal {...proposal} type="NEW"/>
                                         </div>
                                     ))}
                                     {newProposals.length === 0 && (
@@ -107,9 +73,7 @@ export default class Proposals extends Component {
                                 <div>
                                     {sentProposals.map((proposal) => (
                                         <div>
-                                            {this.state.proposals[proposal] !== undefined && (
-                                                <Proposal {...this.state.proposals[proposal]} type="SENT"/>
-                                            )}
+                                            <Proposal {...proposal} type="SENT"/>
                                         </div>
                                     ))}
                                     {sentProposals.length === 0 && (
@@ -122,7 +86,7 @@ export default class Proposals extends Component {
                     </Match>
 
                     <Match path="/dashboard/proposals/edit" include>
-                        <AddProposal reload={this.requestProposalsHolder.bind(this)}/>
+                        <AddProposal reload={this.reload.bind(this)}/>
                     </Match>
                 </div>
             </div>
@@ -135,30 +99,16 @@ class Proposal extends Component {
     constructor(props, state) {
         super(props);
 
-        this.state = {
-            websiteName: ""
-        };
-
-        this.requestWebsiteInformation();
+        this.website = props.website;
     }
 
-    requestWebsiteInformation() {
-        if (this.props.websiteId === undefined)
-            return;
-
-        //TODO cache the website in the Proposals component
-        AdAxiosGet.get(`${HOST}/api/v1/websites/${this.props.websiteId}`).then((response) => {
-            this.setState({websiteName: response.data.name});
-        });
-    }
-
-    render({id, creationDate, type, version, rejected}, {websiteName}) {
+    render({id, creationDate, type, version, rejected}) {
         // TODO display the creator name
         return (
             <div class="proposal shadow">
                 <div>
                     <div>
-                        <span class="mr-3">Proposta para "{websiteName}"</span>
+                        <span class="mr-3">Proposta para "{this.website.name}"</span>
                         <span class="badge badge-secondary mr-3" style="font-variant: small-caps;">v {version}</span>
                         {rejected && (<span class="badge badge-danger">Rejeitada</span>)}
                     </div>

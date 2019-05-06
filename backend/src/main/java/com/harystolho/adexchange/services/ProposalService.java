@@ -8,7 +8,6 @@ import org.springframework.util.StringUtils;
 
 import com.harystolho.adexchange.models.Contract.PaymentMethod;
 import com.harystolho.adexchange.models.Proposal;
-import com.harystolho.adexchange.models.ProposalsHolder;
 import com.harystolho.adexchange.repositories.proposal.ProposalRepository;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
 import com.harystolho.adexchange.utils.Nothing;
@@ -17,23 +16,28 @@ import com.harystolho.adexchange.utils.Nothing;
 public class ProposalService {
 
 	private ProposalRepository proposalRepository;
-	private ProposalsHolderService proposalsHolderService;
 
 	private WebsiteService websiteService;
 	private AdService adService;
 	private ContractService contractService;
 
-	public ProposalService(ProposalRepository proposalRepository, ProposalsHolderService proposalsHolderService,
-			WebsiteService websiteService, AdService adService, ContractService contractService) {
+	public ProposalService(ProposalRepository proposalRepository, WebsiteService websiteService, AdService adService,
+			ContractService contractService) {
 		this.proposalRepository = proposalRepository;
-		this.proposalsHolderService = proposalsHolderService;
 		this.websiteService = websiteService;
 		this.adService = adService;
 		this.contractService = contractService;
 	}
 
-	public ServiceResponse<ProposalsHolder> getProposalsByAccountId(String accountId) {
-		return ServiceResponse.ok(proposalsHolderService.getProposalHolderByAccountId(accountId));
+	public ServiceResponse<List<Proposal>> getProposalsByAccountId(String accountId, String embed) {
+		List<Proposal> props = proposalRepository.getByAccountId(accountId);
+
+		for (Proposal p : props) {
+			if (embed.contains("website"))
+				p.setWebsite(websiteService.getWebsiteById(p.getWebsiteId()).getReponse());
+		}
+
+		return ServiceResponse.ok(props);
 	}
 
 	public ServiceResponse<Proposal> getProposalById(String accountId, String id) {
@@ -63,33 +67,31 @@ public class ProposalService {
 			return ServiceResponse.error(validation);
 
 		Proposal proposal = new Proposal();
-		proposal.setCreatorAccountId(accountId);
+
+		proposal.setProposerId(accountId);
+		proposal.setProposeeId(websiteService.getAccountIdUsingWebsiteId(websiteId));
+
 		proposal.setWebsiteId(websiteId);
 		proposal.setAdId(adId);
 		proposal.setDuration(Integer.parseInt(duration));
 		proposal.setPaymentMethod(PaymentMethod.valueOf(paymentMethod));
 		proposal.setPaymentValue(paymentValue);
 
-		Proposal saved = proposalRepository.save(proposal);
-
-		proposalsHolderService.addProposal(saved);
-
-		return ServiceResponse.ok(saved);
+		return ServiceResponse.ok(proposalRepository.save(proposal));
 	}
 
 	public ServiceResponse<Nothing> deleteProposalById(String accountId, String id) {
 		Proposal proposal = proposalRepository.getById(id);
 
 		if (proposal.isRejected()) {
-			if (!proposalsHolderService.containsProposalInNew(accountId, proposal))
+			if (!containsProposalInNew(accountId, proposal))
 				return ServiceResponse.proposalNotInNew();
 		} else {
-			if (!proposalsHolderService.containsProposalInSent(accountId, proposal))
+			if (!containsProposalInSent(accountId, proposal))
 				return ServiceResponse.proposalNotInSent();
 		}
 
 		proposalRepository.deleteById(id);
-		proposalsHolderService.removeProposal(proposal);
 
 		return ServiceResponse.ok(null);
 	}
@@ -97,11 +99,19 @@ public class ProposalService {
 	public ServiceResponse<Nothing> rejectProposalById(String accountId, String id) {
 		Proposal proposal = proposalRepository.getById(id);
 
-		if (!proposalsHolderService.containsProposalInNew(accountId, proposal))
+		if (!containsProposalInNew(accountId, proposal))
 			return ServiceResponse.proposalNotInNew();
 
-		proposalRepository.setRejected(id);
-		proposalsHolderService.rejectProposal(proposal);
+		proposal.setRejected(true);
+		proposal.setInProposerSent(!proposal.isInProposerSent());
+
+		if (proposal.getProposerId().equals(accountId)) {
+			proposal.setProposerId("");
+		} else {
+			proposal.setProposeeId("");
+		}
+
+		proposalRepository.save(proposal);
 
 		return ServiceResponse.ok(null);
 	}
@@ -120,17 +130,16 @@ public class ProposalService {
 		if (prop == null)
 			return ServiceResponse.fail("Can't find a Proposal using the given id");
 
-		if (!proposalsHolderService.containsProposalInNew(accountId, prop))
+		if (!containsProposalInNew(accountId, prop))
 			return ServiceResponse.proposalNotInNew();
 
 		prop.setDuration(Integer.parseInt(duration));
 		prop.setPaymentMethod(PaymentMethod.valueOf(paymentMethod));
 		prop.setPaymentValue(paymentValue);
 		prop.setVersion(prop.getVersion() + 1);
+		prop.setInProposerSent(!prop.isInProposerSent());
 
 		proposalRepository.save(prop);
-
-		proposalsHolderService.reviewProposal(prop);
 
 		return ServiceResponse.ok(null);
 	}
@@ -138,19 +147,13 @@ public class ProposalService {
 	public ServiceResponse<Nothing> acceptProposal(String accountId, String id) {
 		Proposal prop = proposalRepository.getById(id);
 
-		if (!proposalsHolderService.containsProposalInNew(accountId, prop))
+		if (!containsProposalInNew(accountId, prop))
 			return ServiceResponse.proposalNotInNew();
 
-		if (!websiteService.accountOwnsWebsite(accountId, prop.getWebsiteId())) {
+		if (!prop.getProposeeId().equals(accountId))
 			return ServiceResponse.unauthorized();
-		}
 
-		String creator = adService.getAccountIdUsingAdId(prop.getAdId());
-		String acceptor = websiteService.getAccountIdUsingWebsiteId(prop.getWebsiteId());
-
-		contractService.createContractFromProposal(prop, creator, acceptor);
-
-		proposalsHolderService.acceptProposal(prop);
+		contractService.createContractFromProposal(prop, prop.getProposerId(), prop.getProposeeId());
 
 		proposalRepository.deleteById(id);
 
@@ -248,6 +251,16 @@ public class ProposalService {
 	 */
 	private boolean adExists(String adId) {
 		return adId != null && adService.getAdById(adId).getReponse() != null;
+	}
+
+	private boolean containsProposalInSent(String accountId, Proposal proposal) {
+		return proposal.isInProposerSent() && proposal.getProposerId().equals(accountId)
+				|| !proposal.isInProposerSent() && proposal.getProposeeId().equals(accountId);
+	}
+
+	private boolean containsProposalInNew(String accountId, Proposal proposal) {
+		return !proposal.isInProposerSent() && proposal.getProposerId().equals(accountId)
+				|| proposal.isInProposerSent() && proposal.getProposeeId().equals(accountId);
 	}
 
 }

@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.Contract.PaymentMethod;
 import com.harystolho.adexchange.models.Proposal;
@@ -23,13 +21,10 @@ public class ContractService {
 
 	private AdService adService;
 	private WebsiteService websiteService;
-	private UserDataService userDataService;
 
 	@Autowired
-	public ContractService(ContractRepository contractRepository, UserDataService userDataService, AdService adService,
-			WebsiteService websiteService) {
+	public ContractService(ContractRepository contractRepository, AdService adService, WebsiteService websiteService) {
 		this.contractRepository = contractRepository;
-		this.userDataService = userDataService;
 		this.adService = adService;
 		this.websiteService = websiteService;
 	}
