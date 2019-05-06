@@ -59,6 +59,7 @@ export default class EditWebsite extends Component {
         let wb = this.state.website;
 
         let formData = new FormData();
+        formData.append('id', wb.id);
         formData.append('name', wb.name);
         formData.append('url', wb.url);
         formData.append('logoURL', wb.logoUrl);

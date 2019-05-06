@@ -62,10 +62,10 @@ public class WebsiteController {
 	}
 
 	@PostMapping("/api/v1/websites")
-	public ResponseEntity<Object> createWebsite(@RequestAttribute("ae.accountId") String accountId, String name,
-			String url, String logoURL, String description, String categories) {
+	public ResponseEntity<Object> createorUpdateWebsite(@RequestAttribute("ae.accountId") String accountId, String id,
+			String name, String url, String logoURL, String description, String categories) {
 
-		ServiceResponse<Website> response = websiteService.createWebsite(accountId, name, url, logoURL, description,
+		ServiceResponse<Website> response = websiteService.createWebsite(accountId, id, name, url, logoURL, description,
 				categories);
 
 		switch (response.getErrorType()) {

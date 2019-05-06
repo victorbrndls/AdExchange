@@ -24,7 +24,7 @@ public class WebsiteService {
 		return ServiceResponse.ok(websiteRepository.getWebsiteById(id));
 	}
 
-	public ServiceResponse<Website> createWebsite(String accountId, String name, String url, String logoURL,
+	public ServiceResponse<Website> createWebsite(String accountId, String id, String name, String url, String logoURL,
 			String description, String cats) {
 		String[] categories = cats.split(",");
 
@@ -32,17 +32,16 @@ public class WebsiteService {
 			return ServiceResponse.fail("Invalid fields");
 
 		Website website = new Website(accountId, url);
+
+		if (id != null) // If the id is not null this means the user is editing an existing website
+			website = websiteRepository.getWebsiteById(id);
+
 		website.setName(name);
 		website.setLogoUrl(logoURL);
 		website.setDescription(description);
 		website.setCategories(categories);
 
-		Website response = websiteRepository.saveWebsite(website);
-
-		if (response == null)
-			return ServiceResponse.fail("Can't create website");
-
-		return ServiceResponse.ok(response);
+		return ServiceResponse.ok(websiteRepository.saveWebsite(website));
 	}
 
 	/**
