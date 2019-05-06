@@ -3,7 +3,7 @@ import Axios from 'axios';
 import {HOST} from "../../../configs";
 import {CATEGORIES_PT} from "../../utils/WebsiteCategory";
 import {route} from "preact-router";
-import {AdAxiosPost} from "../../../auth";
+import {AdAxiosGet, AdAxiosPost} from "../../../auth";
 
 export default class EditWebsite extends Component {
     constructor(props) {
@@ -33,26 +33,37 @@ export default class EditWebsite extends Component {
             this.setState({mode: 'EDIT'});
         }
 
-
         if (this.state.mode === 'EDIT') {
+            let id = new URLSearchParams(location.search).get('id');
+            this.setState({website: {...this.state.website, id: id}});
+
             this.requestWebsiteInformation();
         }
     }
 
     requestWebsiteInformation() {
+        let id = this.state.website.id;
 
+        if (id === "" || id === null || id === undefined)
+            return;
+
+        AdAxiosGet.get(`${HOST}/api/v1/websites/${id}`).then((response) => {
+            this.setState({website: response.data});
+        });
     }
 
     addWebsite() {
         if (!this.verifyFields())
             return;
 
+        let wb = this.state.website;
+
         let formData = new FormData();
-        formData.append('name', this.fields.name().value);
-        formData.append('url', this.fields.url().value);
-        formData.append('logoURL', this.fields.logoUrl().value);
-        formData.append('description', this.fields.description().value);
-        formData.append('categories', this.getCheckedCategories());
+        formData.append('name', wb.name);
+        formData.append('url', wb.url);
+        formData.append('logoURL', wb.logoUrl);
+        formData.append('description', wb.description);
+        formData.append('categories', wb.categories);
 
         AdAxiosPost.post(`${HOST}/api/v1/websites`, formData).then(() => {
             route('/dashboard/websites');
@@ -156,8 +167,8 @@ export default class EditWebsite extends Component {
 
                         <div class="form-group websites-add__form">
                             <label>Descrição</label>
-                            <textarea id="description" class="form-control w-50" maxlength="1500"
-                                      placeholder="Descrição" style="height: 150px;" value={website.description}
+                            <textarea id="description" class="form-control" maxLength="1500"
+                                      placeholder="Descrição" style="height: 250px;" value={website.description}
                                       onChange={(e) => {
                                           this.setState({website: {...website, description: e.target.value}})
                                       }}/>
