@@ -104,13 +104,23 @@ class Contract extends Component {
         }
     }
 
+    /**
+     * @param date {String} the date returned by the server is in UTC format
+     * @return {string}
+     */
     static convertDate(date) {
-        let dt = new Date(date);
-        return `${dt.getDate()}/${dt.getUTCMonth() + 1}/${dt.getUTCFullYear()}`;
+        let dt = new Date(date + 'Z'); // 'Z' means UTC (http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.1.15)
+
+        return {
+            expired: dt.getTime() < Date.now(),
+            date: `${dt.getDate()}/${dt.getUTCMonth() + 1}/${dt.getUTCFullYear()}`
+        };
     }
 
     render({expiration, paymentMethod, paymentValue, acceptorContractName, creatorContractName, website}, {showAd, ad}) {
         let contractName = acceptorContractName || creatorContractName;
+
+        let contractExpiration = Contract.convertDate(expiration);
 
         return (
             <div class="contract shadow">
@@ -120,9 +130,9 @@ class Contract extends Component {
                     }}/>
                 </div>
                 <div class="contract__body text-muted">
-                    <div class="contract__body-item">Website: <span
-                        class="font-italic">{website ? website.name : "Erro"}</span></div>
-                    <div class="contract__body-item">Válido até {Contract.convertDate(expiration)}</div>
+                    <div class="contract__body-item">Website:
+                        <span class="font-italic">{website ? website.name : "Erro"}</span></div>
+                    <div class={`contract__body-item ${contractExpiration.expired ? "contract__expired" : ""}`}>Válido até {contractExpiration.date}</div>
                     <div class="contract__body-item">
                         {PaymentMethod[paymentMethod]}</div>
                     <div class="contract__body-item">Valor do pagamento R${paymentValue}</div>

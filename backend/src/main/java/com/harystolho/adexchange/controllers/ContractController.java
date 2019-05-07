@@ -45,7 +45,7 @@ public class ContractController {
 			response = contractService.getContractsByAccountId(accountId, embed);
 		}
 
-		response.getReponse().stream().forEach((contract) -> {
+		response.getReponse().forEach((contract) -> {
 			if (contract.getAcceptorId().equals(accountId)) { // If the user is the acceptor
 				contract.setCreatorContractName(null);
 			} else {

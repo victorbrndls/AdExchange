@@ -541,3 +541,7 @@ body.auth #header {
     display: flex;
     position: relative;
 }
+
+.contract__expired{
+    color: red;
+}
