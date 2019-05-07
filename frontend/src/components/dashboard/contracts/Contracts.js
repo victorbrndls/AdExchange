@@ -122,7 +122,7 @@ class Contract extends Component {
 
         return (
             <div class="contract shadow">
-                <div class="contract__header">
+                <div class={`contract__header ${contractExpiration.expired ? 'contract__header--expired' : ''}`}>
                     <TextChangerInput value={contractName} cb={(newName) => {
                         this.updateContractName(newName)
                     }}/>
@@ -130,7 +130,8 @@ class Contract extends Component {
                 <div class="contract__body text-muted">
                     <div class="contract__body-item">Website:&nbsp;
                         <span class="font-italic">{website ? website.name : "Erro"}</span></div>
-                    <div class={`contract__body-item ${contractExpiration.expired ? "contract__expired" : ""}`}>Válido até {contractExpiration.date}</div>
+                    <div class={`contract__body-item ${contractExpiration.expired ? "contract__expired" : ""}`}>Válido
+                        até {contractExpiration.date} {contractExpiration.expired ? ' (Expirado)' : ''}</div>
                     <div class="contract__body-item">
                         {PaymentMethod[paymentMethod]}</div>
                     <div class="contract__body-item">Valor do pagamento R${paymentValue}</div>

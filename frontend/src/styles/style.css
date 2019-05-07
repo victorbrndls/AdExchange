@@ -415,6 +415,7 @@ body.auth #header {
     padding: 10px 19px;
     font-family: Raleway, serif;
     font-size: 24px;
+    border-radius: 4px 4px 0 0;
 }
 
 .contract__body {
@@ -542,6 +543,11 @@ body.auth #header {
     position: relative;
 }
 
-.contract__expired{
+.contract__expired {
     color: red;
+}
+
+.contract__header--expired {
+    background-color: #ff4d4d;
+    color: white;
 }
