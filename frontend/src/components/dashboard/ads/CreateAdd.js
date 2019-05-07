@@ -256,25 +256,18 @@ export default class CreateAdd extends Component {
 
                         {this.state.adType === 'IMAGE' && (
                             <div>
-                                <span class="form-text text-muted mb-3">Formato da imagem dever ser 1.61 : 1. Por
+                                <span class="form-text text-muted mb-3">O formato padrão da imagem é de 1.61 : 1. Por
                                     exemplo se a imagem tiver 284px de largura, a altura deve ser 176px (176 * 1.61
-                                    = 284)
+                                    = 284). Caso você use outro formato de imagem, ela ficará distorcida na plataforma
+                                    mas correta no website que usá-la.
                                 </span>
 
                                 <div class="form-group websites-add__form">
                                     <label>URL da Imagem</label>
-                                    <div class="input-group mb-3">
-                                        <input id="ad-imageUrl" type="text" class="form-control"
-                                               placeholder="https://..."
-                                               aria-label="URL da imagem" value={state.adImageUrl}
-                                               onChange={(e) => this.setState({adImageUrl: e.target.value})}/>
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary" type="button"
-                                                    id="ad-loadImage">
-                                                Carregar Imagem
-                                            </button>
-                                        </div>
-                                    </div>
+                                    <input id="ad-imageUrl" type="text" class="form-control"
+                                           placeholder="https://..."
+                                           aria-label="URL da imagem" value={state.adImageUrl}
+                                           onChange={(e) => this.setState({adImageUrl: e.target.value})}/>
                                     {state.error.adImage && (
                                         <small class="form-text ad-error">
                                             {state.error.adImage}

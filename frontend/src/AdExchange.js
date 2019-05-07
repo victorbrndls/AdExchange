@@ -53,7 +53,7 @@
             template.innerHTML = adModel.content;
 
             addRefUrlToATag(template.content.firstChild, adModel.redirectUrl);
-            
+
             container.parentNode.insertBefore(template.content.firstChild, container);
         });
     }
