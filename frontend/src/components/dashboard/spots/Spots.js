@@ -7,6 +7,7 @@ import {AdAxiosGet, AdAxiosPost} from "../../../auth";
 import {HOST} from "../../../configs";
 import PaymentMethod from "../../utils/PaymentMethod";
 import {ImageAd, TextAd} from "../ads/CreateAdd";
+import {hasContractExpired} from "../contracts/Contracts";
 
 export default class Spots extends Component {
     constructor(props) {
@@ -180,6 +181,8 @@ class Spot extends Component {
         let adName = ad ? ad.name : 'Nenhum';
         let contractName = contract ? contract.acceptorContractName : "Nenhum";
 
+        let contractExpired = contract ? hasContractExpired(contract.expiration) : false;
+
         return (
             <div class="contract shadow">
                 <div class="contract__header"
@@ -201,9 +204,8 @@ class Spot extends Component {
                     <div class="contract__body-item">
                         <div>
                             Contrato:&nbsp;
-                            <span
-                                class="mr-2 font-italic">{contractName}
-                        </span>
+                            <span class={`font-italic ${contractExpired ? 'text-danger' : ''}`}>{contractName}</span>
+                            <span class="ml-1 text-danger">{contractExpired ? '- Expirado' : ''}</span>
                         </div>
                         {extended && contractAd && (
                             <AdWrapper ad={contractAd}/>

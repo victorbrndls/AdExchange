@@ -98,9 +98,7 @@ class Contract extends Component {
             let formData = new FormData();
             formData.append("name", name);
 
-            AdAxiosPost.patch(`${HOST}/api/v1/contracts/${this.state.id}`, formData).then((response) => {
-
-            });
+            AdAxiosPost.patch(`${HOST}/api/v1/contracts/${this.state.id}`, formData);
         }
     }
 
@@ -109,12 +107,10 @@ class Contract extends Component {
      * @return {string}
      */
     static convertDate(date) {
-        let dt = new Date(date + 'Z'); // 'Z' means UTC (http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.1.15)
+        let dt = convertContractExpirationToUTC(date);
 
-        console.log(dt);
-        
         return {
-            expired: dt.getTime() < Date.now(),
+            expired: hasContractExpired(date),
             date: `${dt.getDate()}/${dt.getMonth() + 1}/${dt.getFullYear()}`
         };
     }
@@ -154,4 +150,12 @@ class Contract extends Component {
             </div>
         )
     }
+}
+
+function convertContractExpirationToUTC(expiration) {
+    return new Date(expiration + 'Z'); // 'Z' means UTC (http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.1.15)
+}
+
+export function hasContractExpired(expirationDate) {
+    return convertContractExpirationToUTC(expirationDate).getTime() < Date.now();
 }
