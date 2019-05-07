@@ -4,8 +4,13 @@ import java.time.Duration;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import javax.annotation.PreDestroy;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -15,6 +20,9 @@ import com.harystolho.adexchange.information.Visitor;
 @Service
 @Scope(scopeName = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class CacheService<T> implements Visitor {
+
+	private static final int CLEAN_UP_DELAY = 1000 * 60; // 1 Minute
+	private static final Logger logger = LogManager.getLogger();
 
 	private static final Duration DEFAULT_DURATION = Duration.ofMinutes(10);
 
@@ -70,6 +78,7 @@ public class CacheService<T> implements Visitor {
 	/**
 	 * Removes entries that have expired
 	 */
+	@Scheduled(fixedDelay = CLEAN_UP_DELAY)
 	public void cleanUp() {
 		cache.entrySet().removeIf((entry) -> entry.getValue().hasExpired());
 	}
@@ -108,4 +117,5 @@ public class CacheService<T> implements Visitor {
 
 		return node;
 	}
+
 }

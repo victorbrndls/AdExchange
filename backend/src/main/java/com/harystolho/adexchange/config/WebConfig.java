@@ -15,10 +15,12 @@ import org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper;
 import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
 import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import com.harystolho.adexchange.converters.AdReaderConverter;
 
 @Configuration
+@EnableScheduling
 public class WebConfig {
 
 	private MongoDbFactory mongoDbFactory;
