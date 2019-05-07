@@ -128,7 +128,7 @@ class Contract extends Component {
                     }}/>
                 </div>
                 <div class="contract__body text-muted">
-                    <div class="contract__body-item">Website:
+                    <div class="contract__body-item">Website:&nbsp;
                         <span class="font-italic">{website ? website.name : "Erro"}</span></div>
                     <div class={`contract__body-item ${contractExpiration.expired ? "contract__expired" : ""}`}>Válido até {contractExpiration.date}</div>
                     <div class="contract__body-item">

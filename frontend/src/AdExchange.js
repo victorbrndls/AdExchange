@@ -54,14 +54,39 @@
 
             addRefUrlToATag(template.content.firstChild, adModel.redirectUrl);
 
+            // Escape text content but not image
+
             container.parentNode.insertBefore(template.content.firstChild, container);
         });
     }
 
+    /**
+     * Sets the 'href' attribute in the <a>
+     * @param tag
+     * @param url
+     */
     function addRefUrlToATag(tag, url) {
-        if(tag.nodeName === 'A'){
+        if (tag.nodeName === 'A') {
             tag.setAttribute('href', url);
         }
+    }
+
+    // https://github.com/janl/mustache.js/blob/master/mustache.js#L73
+    let entityMap = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+        '/': '&#x2F;',
+        '`': '&#x60;',
+        '=': '&#x3D;'
+    };
+
+    function escapeHtml(string) {
+        return String(string).replace(/[&<>"'`=\/]/g, function fromEntityMap(s) {
+            return entityMap[s];
+        });
     }
 
 })();

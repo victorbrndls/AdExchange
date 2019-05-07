@@ -29,7 +29,7 @@ public class WebsiteService {
 	public ServiceResponse<Website> createWebsite(String accountId, String id, String name, String url, String logoURL,
 			String description, String cats) {
 		String[] categories = cats.split(",");
-
+		
 		if (!verifyWebsiteCreationFields(name, url, logoURL, description, categories))
 			return ServiceResponse.fail("Invalid fields");
 

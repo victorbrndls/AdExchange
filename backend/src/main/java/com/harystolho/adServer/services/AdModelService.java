@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.harystolho.adServer.AdModel;
-import com.harystolho.adServer.AdTemplate;
 import com.harystolho.adServer.controllers.UrlRedirectorController;
+import com.harystolho.adServer.templates.AdTemplateService;
 import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.models.ads.Ad;
@@ -33,12 +33,15 @@ public class AdModelService {
 	private SpotService spotService;
 	private AdService adService;
 	private UrlRedirecterService urlRedirecterService;
+	private AdTemplateService adTemplateService;
 
 	@Autowired
-	private AdModelService(SpotService spotService, AdService adService, UrlRedirecterService urlRedirecterService) {
+	private AdModelService(SpotService spotService, AdService adService, UrlRedirecterService urlRedirecterService,
+			AdTemplateService adTemplateService) {
 		this.spotService = spotService;
 		this.adService = adService;
 		this.urlRedirecterService = urlRedirecterService;
+		this.adTemplateService = adTemplateService;
 	}
 
 	public AdModel buildUsingSpotId(String spotId) {
@@ -93,9 +96,9 @@ public class AdModelService {
 
 	private AdModel buildUsingAd(Ad ad) {
 		if (ad.getType() == AdType.TEXT) {
-			return new AdModel(AdTemplate.assembleUsingTextAd((TextAd) ad));
+			return new AdModel(adTemplateService.assembleUsingTextAd((TextAd) ad));
 		} else if (ad.getType() == AdType.IMAGE) {
-			return new AdModel(AdTemplate.assembleUsingImageAd((ImageAd) ad));
+			return new AdModel(adTemplateService.assembleUsingImageAd((ImageAd) ad));
 		}
 
 		logger.error("The Ad type is not valid [id: {}, type: {}]", ad.getId(), ad.getType());
