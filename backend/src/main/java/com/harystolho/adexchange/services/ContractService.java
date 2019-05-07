@@ -3,6 +3,7 @@ package com.harystolho.adexchange.services;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,10 +97,17 @@ public class ContractService {
 
 	/**
 	 * @param accountId
-	 * @return The contracts that were accepted by the user for his/her websites
+	 * @return The contracts that haven't expired and were accepted by the user for
+	 *         his/her websites
 	 */
 	public ServiceResponse<List<Contract>> getContractsForUserWebisites(String accountId) {
 		List<Contract> contracts = contractRepository.getByAcceptorId(accountId);
+
+		ListIterator<Contract> it = contracts.listIterator();
+		while (it.hasNext()) { // Remove contracts that have expired
+			if (it.next().hasExpired())
+				it.remove();
+		}
 
 		return ServiceResponse.ok(contracts);
 	}
@@ -126,8 +134,6 @@ public class ContractService {
 		return ServiceResponse.ok(contract);
 	}
 
-	
-	
 	private String sanitizeContractName(String name) {
 		return name;
 	}
