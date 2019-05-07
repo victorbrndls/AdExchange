@@ -111,9 +111,11 @@ class Contract extends Component {
     static convertDate(date) {
         let dt = new Date(date + 'Z'); // 'Z' means UTC (http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.1.15)
 
+        console.log(dt);
+        
         return {
             expired: dt.getTime() < Date.now(),
-            date: `${dt.getDate()}/${dt.getUTCMonth() + 1}/${dt.getUTCFullYear()}`
+            date: `${dt.getDate()}/${dt.getMonth() + 1}/${dt.getFullYear()}`
         };
     }
 

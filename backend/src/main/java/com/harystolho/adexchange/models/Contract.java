@@ -21,7 +21,7 @@ public class Contract {
 	private String acceptorId; // The Website owner id
 	private String acceptorContractName;
 
-	private LocalDateTime expiration;
+	private LocalDateTime expiration; // UTC
 	private String websiteId;
 	private String adId;
 	private PaymentMethod paymentMethod;
