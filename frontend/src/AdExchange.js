@@ -53,9 +53,7 @@
             template.innerHTML = adModel.content;
 
             addRefUrlToATag(template.content.firstChild, adModel.redirectUrl);
-
-            // Escape text content but not image
-
+            
             container.parentNode.insertBefore(template.content.firstChild, container);
         });
     }

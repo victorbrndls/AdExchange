@@ -7,7 +7,6 @@ import org.springframework.util.StringUtils;
 
 import com.harystolho.adexchange.models.Website;
 import com.harystolho.adexchange.repositories.website.WebsiteRepository;
-import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
 
 @Service
 public class WebsiteService {
