@@ -59,4 +59,8 @@ public class Ad {
 		this.accountId = accountId;
 	}
 
+	public boolean isAuthorized(String accessId) {
+		return accessId.equals(accountId);
+	}
+	
 }

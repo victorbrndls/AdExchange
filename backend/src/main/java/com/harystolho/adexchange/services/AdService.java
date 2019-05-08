@@ -2,18 +2,24 @@ package com.harystolho.adexchange.services;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.models.ads.Ad.AdType;
 import com.harystolho.adexchange.models.ads.ImageAd;
 import com.harystolho.adexchange.models.ads.TextAd;
 import com.harystolho.adexchange.repositories.ad.AdRepository;
+import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
 import com.harystolho.adexchange.utils.Nothing;
 
 @Service
 public class AdService {
+
+	private static final String HEX_COLOR_REGEX = "^(#[0-9a-z]{1,6})";
+	private static final String URL_REGEX = "^(https{0,1}:\\/\\/)\\S+";
 
 	private AdRepository adRepository;
 
@@ -33,100 +39,49 @@ public class AdService {
 		return ServiceResponse.ok(adRepository.getAdsById(Arrays.asList(ids.split(","))));
 	}
 
-	public ServiceResponse<Ad> createAd(String accountId, String name, String type, String refUrl, String text,
-			String bgColor, String textColor, String imageUrl) {
-		if (!verifyAdType(type))
-			return ServiceResponse.fail("The type must TEXT or IMAGE");
+	public ServiceResponse<Ad> createOrUpdateAd(String accountId, String id, String name, String type, String refUrl,
+			String text, String bgColor, String textColor, String imageUrl) {
+
+		ServiceResponseType error = verifyAdFields(name, type, refUrl, text, bgColor, textColor, imageUrl);
+		if (error != ServiceResponseType.OK)
+			return ServiceResponse.error(error);
+
+		boolean updateExistingAd = false;
+
+		if (id != null) { // Update existing ad
+			Ad adToUpdate = adRepository.getAdById(id);
+			if (adToUpdate != null) {
+				if (!adToUpdate.isAuthorized(accountId)) // Check if user has authorization to update the ad
+					return ServiceResponse.unauthorized();
+
+				updateExistingAd = true;
+			} else {
+				return ServiceResponse.error(ServiceResponseType.INVALID_AD_ID);
+			}
+		}
 
 		Ad ad = null;
 
 		if (type.equals("TEXT")) {
-			ad = createTextAd(name, text, bgColor, textColor, refUrl);
-		} else if (type.equals("IMAGE")) {
-			ad = createImageAd(name, imageUrl, refUrl);
-		}
-
-		if (ad == null)
-			return ServiceResponse.fail("Can't create Ad");
-
-		ad.setAccountId(accountId);
-
-		Ad saved = adRepository.save(ad);
-
-		return ServiceResponse.ok(saved);
-	}
-
-	public ServiceResponse<Ad> updateAd(String accountId, String id, String name, String type, String refUrl,
-			String text, String bgColor, String textColor, String imageUrl) {
-		if (!verifyAdType(type))
-			return ServiceResponse.fail("The type must TEXT or IMAGE");
-
-		Ad ad = adRepository.getAdById(id);
-
-		if (ad == null)
-			return ServiceResponse.fail("Ad id is not valid");
-
-		if (!ad.getAccountId().equals(accountId))
-			return ServiceResponse.unauthorized();
-
-		ad.setName(name);
-		ad.setRefUrl(refUrl);
-		ad.setType(AdType.valueOf(type));
-
-		if (type.equals("TEXT")) {
-			TextAd tAd = (TextAd) ad;
+			TextAd tAd = new TextAd();
 			tAd.setText(text);
 			tAd.setBgColor(bgColor);
 			tAd.setTextColor(textColor);
 			ad = tAd;
 		} else if (type.equals("IMAGE")) {
-			ImageAd iAd = (ImageAd) ad;
+			ImageAd iAd = new ImageAd();
 			iAd.setImageUrl(imageUrl);
 			ad = iAd;
 		}
 
-		Ad saved = adRepository.save(ad);
-		return ServiceResponse.ok(saved);
-	}
-
-	private boolean verifyAdType(String type) {
-		return type.equals("TEXT") || type.equals("IMAGE");
-	}
-
-	private Ad createTextAd(String name, String text, String bgColor, String textColor, String refUrl) {
-		TextAd ad = new TextAd();
-
 		ad.setName(name);
-		ad.setText(text);
-		ad.setBgColor(bgColor);
-		ad.setTextColor(textColor);
 		ad.setRefUrl(refUrl);
+		ad.setAccountId(accountId);
 
-		return ad;
-	}
+		if (updateExistingAd)
+			ad.setId(id);
 
-	private Ad createImageAd(String name, String imageUrl, String refUrl) {
-		ImageAd ad = new ImageAd();
-
-		ad.setName(name);
-		ad.setImageUrl(imageUrl);
-		ad.setRefUrl(refUrl);
-
-		return ad;
-	}
-
-	public String duplicateAd(String adId) {
-		Ad ad = adRepository.getAdById(adId);
-
-		if (ad != null) {
-			ad.setId(null);
-			ad.setAccountId("ADMIN");
-
-			Ad newAd = adRepository.save(ad);
-			return newAd.getId();
-		}
-
-		return null;
+		return ServiceResponse.ok(adRepository.save(ad));
 	}
 
 	public String getAccountIdUsingAdId(String id) {
@@ -144,6 +99,50 @@ public class AdService {
 		}
 
 		return ServiceResponse.fail("The Ad doesn't belong to this account");
+	}
+
+	public String duplicateAd(String adId) {
+		Ad ad = adRepository.getAdById(adId);
+
+		if (ad != null) {
+			ad.setId(null);
+			ad.setAccountId("ADMIN");
+
+			Ad newAd = adRepository.save(ad);
+			return newAd.getId();
+		}
+
+		return null;
+	}
+
+	private ServiceResponseType verifyAdFields(String name, String type, String refUrl, String text, String bgColor,
+			String textColor, String imageUrl) {
+
+		if (StringUtils.isEmpty(name))
+			return ServiceResponseType.INVALID_AD_NAME;
+
+		if (!refUrl.matches(URL_REGEX))
+			return ServiceResponseType.INVALID_AD_REF_URL;
+
+		if (type.equals("TEXT")) {
+			if (StringUtils.isEmpty(text))
+				return ServiceResponseType.INVALID_AD_TEXT;
+
+			if (!bgColor.matches(HEX_COLOR_REGEX))
+				return ServiceResponseType.INVALID_AD_BG_COLOR;
+
+			if (!textColor.matches(HEX_COLOR_REGEX))
+				return ServiceResponseType.INVALID_AD_TEXT_COLOR;
+
+			return ServiceResponseType.OK;
+		} else if (type.equals("IMAGE")) {
+			if (!imageUrl.matches(URL_REGEX))
+				return ServiceResponseType.INVALID_AD_IMAGE_URL;
+
+			return ServiceResponseType.OK;
+		} else {
+			return ServiceResponseType.INVALID_AD_TYPE;
+		}
 	}
 
 }

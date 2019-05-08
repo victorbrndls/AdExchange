@@ -27,8 +27,8 @@ public class WebsiteService {
 
 	public ServiceResponse<Website> createWebsite(String accountId, String id, String name, String url, String logoURL,
 			String description, String cats) {
-		String[] categories = cats.split(",");
-		
+		String[] categories = StringUtils.commaDelimitedListToStringArray(cats);
+
 		if (!verifyWebsiteCreationFields(name, url, logoURL, description, categories))
 			return ServiceResponse.fail("Invalid fields");
 
@@ -37,6 +37,8 @@ public class WebsiteService {
 		if (id != null) // If the id is not null this means the user is editing an existing website
 			website = websiteRepository.getById(id);
 
+		// TODO Check if person updating is owner
+		
 		website.setName(name);
 		website.setLogoUrl(logoURL);
 		website.setDescription(description);

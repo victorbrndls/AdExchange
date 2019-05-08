@@ -85,21 +85,16 @@ public class AdController {
 			@RequestParam(required = false) String textColor, @RequestParam(required = false) String imageUrl,
 			@PathVariable(required = false) String id) {
 
-		ServiceResponse<Ad> response = ServiceResponse.fail("Http method must either be PUT or POST");
-
-		if (req.getMethod().equals("POST")) {
-			response = adService.createAd(accountId, name, type, refUrl, text, bgColor, textColor, imageUrl);
-		} else if (req.getMethod().equals("PUT")) {
-			response = adService.updateAd(accountId, id, name, type, refUrl, text, bgColor, textColor, imageUrl);
-		}
+		ServiceResponse<Ad> response = adService.createOrUpdateAd(accountId, id, name, type, refUrl, text, bgColor,
+				textColor, imageUrl);
 
 		switch (response.getErrorType()) {
-		case UNAUTHORIZED:
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response.getErrorType());
+		case OK:
+			return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
 		case FAIL:
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getFullMessage());
 		default:
-			return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getErrorType());
 		}
 
 	}

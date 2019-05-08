@@ -35,7 +35,6 @@ public class TemplateReader {
 	 * Loads templates from file. This method can be called to reload the templates
 	 */
 	private void loadTemplates() {
-		logger.info("Loading templates");
 		templates.clear();
 
 		buildTemplates(readFileLines());
