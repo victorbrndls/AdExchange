@@ -12,7 +12,7 @@ export default class Contracts extends Component {
         super(props);
 
         this.state = {
-            contracts: null
+            contracts: []
         };
 
         this.hasMadeContractRequest = false;
@@ -41,24 +41,16 @@ export default class Contracts extends Component {
                     <Match path="/dashboard/contracts" exact>
                         <div>
                             {this.requestContracts.bind(this)()}
-                            {contracts !== null && (
+                            {contracts.map((contract) => (
                                 <div>
-                                    {contracts.map((contract) => (
-                                        <div>
-                                            <Contract {...contract}/>
-                                        </div>
-                                    ))}
+                                    <Contract {...contract}/>
                                 </div>
-                            )}
-                            {contracts !== null && contracts.length === 0 && (
+                            ))}
+                            {contracts.length === 0 && (
                                 <div class="proposal__none">Nenhum no momento</div>
                             )}
                         </div>
                     </Match>
-
-                    {/*<Match path="/dashboard/contracts/edit" include>*/}
-                    {/**/}
-                    {/*</Match>*/}
                 </div>
             </div>
         )

@@ -1,6 +1,5 @@
 package com.harystolho.adexchange.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -41,28 +40,18 @@ public class ProposalService {
 	}
 
 	public ServiceResponse<Proposal> getProposalById(String accountId, String id) {
-		return ServiceResponse.ok(proposalRepository.getById(id));
-	}
+		Proposal proposal = proposalRepository.getById(id);
 
-	public ServiceResponse<List<Proposal>> getProposalsById(String proposalIds) {
-		String[] proposalsIds = proposalIds.split(",");
+		if (!proposal.isAuthorized(accountId))
+			return ServiceResponse.unauthorized();
 
-		List<Proposal> proposals = new ArrayList<>();
-
-		for (String id : proposalsIds) {
-			Proposal prop = proposalRepository.getById(id);
-
-			if (prop != null)
-				proposals.add(prop);
-		}
-
-		return ServiceResponse.ok(proposals);
+		return ServiceResponse.ok(proposal);
 	}
 
 	public ServiceResponse<Proposal> createProposal(String accountId, String websiteId, String adId, String duration,
 			String paymentMethod, String paymentValue) {
-		ServiceResponseType validation = validateProposalFields(websiteId, adId, duration, paymentMethod, paymentValue);
 
+		ServiceResponseType validation = validateProposalFields(websiteId, adId, duration, paymentMethod, paymentValue);
 		if (validation != ServiceResponseType.OK)
 			return ServiceResponse.error(validation);
 
@@ -177,15 +166,12 @@ public class ProposalService {
 		if (!adExists(adId))
 			return ServiceResponseType.INVALID_AD_ID;
 
-		// Duration
 		if (!validateDuration(duration))
 			return ServiceResponseType.INVALID_DURATION;
 
-		// Payment Method
 		if (!validatePaymentMethod(paymentMethod))
 			return ServiceResponseType.INVALID_PAYMENT_METHOD;
 
-		// Payment Value
 		if (!validatePaymentValue(paymentValue))
 			return ServiceResponseType.INVALID_PAYMENT_VALUE;
 

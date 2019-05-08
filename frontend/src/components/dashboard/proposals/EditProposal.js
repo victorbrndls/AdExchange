@@ -12,7 +12,7 @@ export default class AddProposal extends Component {
         super(props);
 
         this.state = {
-            error: null,
+            error: {},
             mode: "EDIT", // EDIT or NEW
             type: null, // NEW or SENT
             proposal: null,
@@ -120,9 +120,38 @@ export default class AddProposal extends Component {
         AdAxiosPost.post(`${HOST}/api/v1/proposals`, formData).then((response) => {
             route('/dashboard/proposals');
             this.props.reload();
-        }).catch((error) => {
-            // TODO handle proposal errors
-            console.log(error.response.data.error);
+        }).catch((errorResponse) => {
+            this.setState({error: {}});
+
+            let error = this.state.error;
+
+            switch (errorResponse.response.data) {
+                case 'INVALID_WEBSITE_ID':
+                    this.setState({error: {...error, website: "ID do website inválido"}});
+                    return;
+                case 'INVALID_AD_ID':
+                    this.setState({error: {...error, ad: "ID to anúncio inválido, tente outro"}});
+                    return;
+                case 'INVALID_DURATION':
+                    this.setState({
+                        error: {
+                            ...error,
+                            duration: "Duração inválida. A duração deve ser um número entre 1 e 365"
+                        }
+                    });
+                    return;
+                case 'INVALID_PAYMENT_VALUE':
+                    this.setState({
+                        error: {
+                            ...error,
+                            paymentValue: "Valor do pagamento inválido. O valor deve ser maior que 0.00 e conter no máximo 2 casas decimais"
+                        }
+                    });
+                    return;
+                case 'INVALID_PAYMENT_METHOD':
+                    this.setState({error: {...error, paymentMethod: "Método de pagamento inválido"}});
+                    return;
+            }
         });
     }
 
@@ -187,6 +216,7 @@ export default class AddProposal extends Component {
                     <div style="position: relative;">
                         <div class="blocking-container"/>
                         <Website {...website}/>
+                        <small class="form-text ad-error">{error.website}</small>
                     </div>
 
                     <div>
@@ -199,6 +229,7 @@ export default class AddProposal extends Component {
                                     <option value={ad.id}>{ad.name}</option>
                                 ))}
                             </select>
+                            <small class="form-text ad-error">{error.ad}</small>
                             <div class="ad-container">
                                 <div class="blocking-container"/>
                                 {selectedAd && (
@@ -213,8 +244,15 @@ export default class AddProposal extends Component {
                         <div class="form-group websites-add__form">
                             <label>Duracao (dias)</label>
                             <input id="p_duration" class="form-control" placeholder="15"
-                                   value={proposal.duration || ""} disabled={disableFields}/>
-                            <small class="form-text text-muted">Por quanto tempo o anuncio ficara ativo (de 0 a 365)
+                                   value={proposal.duration || ""} disabled={disableFields}
+                                   onChange={(e) => this.setState({
+                                       proposal: {
+                                           ...proposal,
+                                           duration: e.target.value
+                                       }
+                                   })}/>
+                            <small class="form-text ad-error">{error.duration}</small>
+                            <small class="form-text text-muted">Por quanto tempo o anuncio ficara ativo (de 1 a 365)
                             </small>
                         </div>
 
@@ -222,19 +260,33 @@ export default class AddProposal extends Component {
                             <label>Pagamento</label>
                             <select id="p_paymentMethod" class="custom-select"
                                     value={proposal.paymentMethod || "PAY_PER_CLICK"}
-                                    disabled={disableFields}>
+                                    disabled={disableFields}
+                                    onChange={(e) => this.setState({
+                                        proposal: {
+                                            ...proposal,
+                                            paymentMethod: e.target.value
+                                        }
+                                    })}>
                                 <option value="PAY_PER_CLICK">Custo por Click</option>
                                 <option value="PAY_PER_VIEW">Custo por Visualização</option>
                             </select>
+                            <small class="form-text ad-error">{error.paymentMethod}</small>
                             <div class="mb-2"/>
-                            <div class="input-group mb-3">
+                            <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">R$</span>
                                 </div>
                                 <input id="p_paymentValue" class="form-control" pattern={this.moneyPattern}
                                        placeholder="Valores com no maximo 2 casas decimais (1.50, 4.54, 0.10, 18.01, 0.50)"
-                                       value={proposal.paymentValue || ""} disabled={disableFields}/>
+                                       value={proposal.paymentValue || ""} disabled={disableFields}
+                                       onChange={(e) => this.setState({
+                                           proposal: {
+                                               ...proposal,
+                                               paymentValue: e.target.value
+                                           }
+                                       })}/>
                             </div>
+                            <small class="form-text ad-error">{error.paymentValue}</small>
                         </div>
                     </div>
 
@@ -268,7 +320,8 @@ export default class AddProposal extends Component {
                             </div>)}
                     </div>
                 </div>
-            </div>
-        )
-    }
-}
+                <
+                /div>
+                )
+                }
+                }

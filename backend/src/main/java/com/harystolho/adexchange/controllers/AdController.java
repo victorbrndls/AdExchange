@@ -51,13 +51,7 @@ public class AdController {
 	public ResponseEntity<Object> getAdById(@PathVariable String id) {
 		ServiceResponse<Ad> response = adService.getAdById(id);
 
-		switch (response.getErrorType()) {
-		case FAIL:
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getFullMessage());
-		default:
-			return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
-		}
-
+		return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
 	}
 
 	@GetMapping("/api/v1/ads/batch")

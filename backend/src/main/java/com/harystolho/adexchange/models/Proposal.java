@@ -41,7 +41,7 @@ public class Proposal {
 
 	@Transient
 	private Website website;
-	
+
 	public String getId() {
 		return id;
 	}
@@ -136,6 +136,10 @@ public class Proposal {
 
 	public void setInProposerSent(boolean inProposerSent) {
 		this.inProposerSent = inProposerSent;
+	}
+
+	public boolean isAuthorized(String accessId) {
+		return accessId.equals(proposerId) || accessId.equals(proposeeId);
 	}
 
 	@Nullable

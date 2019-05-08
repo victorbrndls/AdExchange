@@ -78,17 +78,6 @@ public class ProposalController {
 		return ResponseEntity.status(HttpStatus.OK).body(node);
 	}
 
-	@GetMapping("/api/v1/proposals/batch")
-	/**
-	 * @param ids list of proposals ids separated by comma
-	 * @return
-	 */
-	public ResponseEntity<Object> getProposalsById(String ids) {
-		ServiceResponse<List<Proposal>> response = proposalService.getProposalsById(ids);
-
-		return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
-	}
-
 	@PostMapping("/api/v1/proposals")
 	public ResponseEntity<Object> createProposal(@RequestAttribute("ae.accountId") String accountId, String websiteId,
 			String adId, String duration, String paymentMethod, String paymentValue) {
@@ -97,16 +86,12 @@ public class ProposalController {
 				paymentMethod, paymentValue);
 
 		switch (response.getErrorType()) {
-		case INVALID_WEBSITE_ID:
-		case INVALID_AD_ID:
-		case INVALID_DURATION:
-		case INVALID_PAYMENT_METHOD:
-		case INVALID_PAYMENT_VALUE:
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getErrorType().toString());
+		case OK:
+			return ResponseEntity.status(HttpStatus.CREATED).body(response.getReponse());
 		case FAIL:
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getFullMessage());
 		default:
-			return ResponseEntity.status(HttpStatus.CREATED).body(response.getReponse());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getErrorType());
 		}
 	}
 
