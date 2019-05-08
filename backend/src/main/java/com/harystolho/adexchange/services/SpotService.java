@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.harystolho.adServer.services.AdModelServerService;
 import com.harystolho.adexchange.models.Contract;
@@ -29,19 +30,17 @@ public class SpotService {
 	 * Creates a {@link Spot} if the {id} is null or updates an existing one if the
 	 * {id} is not null
 	 */
-	public ServiceResponse<Spot> createSpot(String accountId, String id, String name, String contractId, String adId) {
-		Spot spot = new Spot();
+	public ServiceResponse<Spot> createOrUpdateSpot(String accountId, String id, String name, String contractId,
+			String adId) {
+		ServiceResponseType response = verifyFields(name);
+		if (response != ServiceResponseType.OK)
+			return ServiceResponse.error(response);
 
-		if (id != null) {
-			Spot spt = spotRepository.getById(id);
+		ServiceResponse<Spot> spotResponse = createOrGetSpotToUpdate(id, accountId);
+		if (spotResponse.getErrorType() != ServiceResponseType.OK)
+			return ServiceResponse.error(spotResponse.getErrorType());
 
-			if (spt != null) {
-				if (!spt.getAccountId().equals(accountId))
-					return ServiceResponse.fail("The user doesn't own this spot");
-
-				spot.setId(spt.getId());
-			}
-		}
+		Spot spot = spotResponse.getReponse();
 
 		spot.setAccountId(accountId);
 		spot.setName(name);
@@ -55,6 +54,23 @@ public class SpotService {
 			adModelServerService.updateSpot(saved);
 
 		return ServiceResponse.ok(saved);
+	}
+
+	private ServiceResponse<Spot> createOrGetSpotToUpdate(String spotId, String accountId) {
+		Spot spot = new Spot();
+
+		if (spotId != null) {
+			Spot spt = spotRepository.getById(spotId);
+
+			if (spt != null) {
+				if (!spt.isAuthorized(accountId))
+					return ServiceResponse.unauthorized();
+
+				spot.setId(spotId);
+			}
+		}
+
+		return ServiceResponse.ok(spot);
 	}
 
 	public ServiceResponse<Spot> getSpot(String accountId, String id, String embed) {
@@ -89,14 +105,21 @@ public class SpotService {
 		if (spot == null)
 			return ServiceResponse.fail("There is not Spot with that id");
 
-		if (!spot.getAccountId().equals(accountId))
+		if (!spot.isAuthorized(accountId))
 			return ServiceResponse.unauthorized();
 
 		spotRepository.deleteById(id);
 		return ServiceResponse.ok(null);
 	}
 
-	// Inject using setter to break depedency cycle
+	private ServiceResponseType verifyFields(String name) {
+		if (StringUtils.isEmpty(name))
+			return ServiceResponseType.INVALID_SPOT_NAME;
+
+		return ServiceResponseType.OK;
+	}
+
+	// Inject using setter to break dependency cycle
 	@Autowired
 	public void setAdModelServerService(AdModelServerService adModelServerService) {
 		this.adModelServerService = adModelServerService;

@@ -34,13 +34,15 @@ public class SpotController {
 	public ResponseEntity<Object> createOrUpdateSpot(@RequestAttribute("ae.accountId") String accountId, String id,
 			String name, String contractId, String fallbackAdId) {
 
-		ServiceResponse<Spot> response = spotService.createSpot(accountId, id, name, contractId, fallbackAdId);
+		ServiceResponse<Spot> response = spotService.createOrUpdateSpot(accountId, id, name, contractId, fallbackAdId);
 
 		switch (response.getErrorType()) {
+		case OK:
+			return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
 		case FAIL:
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getFullMessage());
 		default:
-			return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getErrorType());
 		}
 	}
 
