@@ -157,6 +157,10 @@ function convertContractExpirationToUTC(expiration) {
     return new Date(expiration + 'Z'); // 'Z' means UTC (http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.1.15)
 }
 
+/**
+ * @param expirationDate {String}
+ * @return {boolean}
+ */
 export function hasContractExpired(expirationDate) {
     return convertContractExpirationToUTC(expirationDate).getTime() < Date.now();
 }
