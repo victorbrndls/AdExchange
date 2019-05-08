@@ -32,13 +32,16 @@ public class WebsiteService {
 		if (!verifyWebsiteCreationFields(name, url, logoURL, description, categories))
 			return ServiceResponse.fail("Invalid fields");
 
-		Website website = new Website(accountId, url);
+		Website website = null;
 
 		if (id != null) // If the id is not null this means the user is editing an existing website
 			website = websiteRepository.getById(id);
 
+		if (website == null)
+			website = new Website(accountId, url);
+
 		// TODO Check if person updating is owner
-		
+
 		website.setName(name);
 		website.setLogoUrl(logoURL);
 		website.setDescription(description);

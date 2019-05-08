@@ -88,11 +88,11 @@ public class ProposalService {
 	public ServiceResponse<Nothing> rejectProposalById(String accountId, String id) {
 		Proposal proposal = proposalRepository.getById(id);
 
-		if (!containsProposalInNew(accountId, proposal))
+		if (!containsProposalInNew(accountId, proposal)) // Only proposals in new can be rejected
 			return ServiceResponse.proposalNotInNew();
 
 		proposal.setRejected(true);
-		proposal.setInProposerSent(!proposal.isInProposerSent());
+		swapProposalLocation(proposal);
 
 		if (proposal.getProposerId().equals(accountId)) {
 			proposal.setProposerId("");
@@ -120,13 +120,13 @@ public class ProposalService {
 			return ServiceResponse.fail("Can't find a Proposal using the given id");
 
 		if (!containsProposalInNew(accountId, prop))
-			return ServiceResponse.proposalNotInNew();
+			return ServiceResponse.proposalNotInNew(); // User can only reject proposals in new
 
 		prop.setDuration(Integer.parseInt(duration));
 		prop.setPaymentMethod(PaymentMethod.valueOf(paymentMethod));
 		prop.setPaymentValue(paymentValue);
 		prop.setVersion(prop.getVersion() + 1);
-		prop.setInProposerSent(!prop.isInProposerSent());
+		swapProposalLocation(prop);
 
 		proposalRepository.save(prop);
 
@@ -147,6 +147,17 @@ public class ProposalService {
 		proposalRepository.deleteById(id);
 
 		return ServiceResponse.ok(null);
+	}
+
+	/**
+	 * Swaps the proposal location for the proposer and proposee. If the proposal is
+	 * in 'new' for the proposer it will go to 'sent', if it's on 'sent' it will go
+	 * to 'new' and the same thing for the proposee.
+	 * 
+	 * @param proposal
+	 */
+	private void swapProposalLocation(Proposal proposal) {
+		proposal.setInProposerSent(!proposal.isInProposerSent());
 	}
 
 	/**

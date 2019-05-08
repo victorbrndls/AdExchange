@@ -133,15 +133,12 @@ public class ProposalController {
 				paymentValue);
 
 		switch (response.getErrorType()) {
-		case INVALID_DURATION:
-		case INVALID_PAYMENT_METHOD:
-		case INVALID_PAYMENT_VALUE:
-		case PROPOSAL_NOT_IN_NEW:
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getErrorType().toString());
+		case OK:
+			return ResponseEntity.status(HttpStatus.CREATED).body(response.getReponse());
 		case FAIL:
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getFullMessage());
 		default:
-			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getErrorType());
 		}
 	}
 

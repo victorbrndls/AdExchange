@@ -30,7 +30,6 @@ export default class AddProposal extends Component {
         this.moneyPattern = "^(\\d+(\\.\\d{1,2}){0,1})$";
 
         this.updateMode();
-        this.updateType();
 
         this.requestProposalInformation().then(() => {
             this.requestWebsiteInformation();
@@ -41,9 +40,7 @@ export default class AddProposal extends Component {
     updateMode() {
         if (UrlUtils.include("/edit/new"))
             this.setState({mode: "NEW"});
-    }
 
-    updateType() {
         if (this.state.mode === 'EDIT') {
             this.setState({type: new URLSearchParams(location.search).get('type')});
         }
@@ -120,46 +117,14 @@ export default class AddProposal extends Component {
         AdAxiosPost.post(`${HOST}/api/v1/proposals`, formData).then((response) => {
             route('/dashboard/proposals');
             this.props.reload();
-        }).catch((errorResponse) => {
-            this.setState({error: {}});
-
-            let error = this.state.error;
-
-            switch (errorResponse.response.data) {
-                case 'INVALID_WEBSITE_ID':
-                    this.setState({error: {...error, website: "ID do website inválido"}});
-                    return;
-                case 'INVALID_AD_ID':
-                    this.setState({error: {...error, ad: "ID to anúncio inválido, tente outro"}});
-                    return;
-                case 'INVALID_DURATION':
-                    this.setState({
-                        error: {
-                            ...error,
-                            duration: "Duração inválida. A duração deve ser um número entre 1 e 365"
-                        }
-                    });
-                    return;
-                case 'INVALID_PAYMENT_VALUE':
-                    this.setState({
-                        error: {
-                            ...error,
-                            paymentValue: "Valor do pagamento inválido. O valor deve ser maior que 0.00 e conter no máximo 2 casas decimais"
-                        }
-                    });
-                    return;
-                case 'INVALID_PAYMENT_METHOD':
-                    this.setState({error: {...error, paymentMethod: "Método de pagamento inválido"}});
-                    return;
-            }
+        }).catch((error) => {
+            this.handleErrorResponse(error);
         });
     }
 
     acceptProposal() {
         AdAxiosPost.post(`${HOST}/api/v1/proposals/accept/${this.state.proposal.id}`).then((response) => {
             route('/dashboard/contracts');
-        }).catch((error) => {
-            console.log(error.response);
         });
     }
 
@@ -173,7 +138,7 @@ export default class AddProposal extends Component {
             route('/dashboard/proposals');
             this.props.reload();
         }).catch((error) => {
-            console.log(error.response);
+            this.handleErrorResponse(error);
         });
     }
 
@@ -181,8 +146,6 @@ export default class AddProposal extends Component {
         AdAxiosPost.post(`${HOST}/api/v1/proposals/reject/${this.state.proposal.id}`).then((response) => {
             route('/dashboard/proposals');
             this.props.reload();
-        }).catch((error) => {
-            console.log(error.response);
         });
     }
 
@@ -193,6 +156,40 @@ export default class AddProposal extends Component {
         }).catch((error) => {
             console.log(error.response);
         });
+    }
+
+    handleErrorResponse(errorResponse){
+        this.setState({error: {}});
+
+        let error = this.state.error;
+
+        switch (errorResponse.response.data) {
+            case 'INVALID_WEBSITE_ID':
+                this.setState({error: {...error, website: "ID do website inválido"}});
+                return;
+            case 'INVALID_AD_ID':
+                this.setState({error: {...error, ad: "ID to anúncio inválido, tente outro"}});
+                return;
+            case 'INVALID_DURATION':
+                this.setState({
+                    error: {
+                        ...error,
+                        duration: "Duração inválida. A duração deve ser um número entre 1 e 365"
+                    }
+                });
+                return;
+            case 'INVALID_PAYMENT_VALUE':
+                this.setState({
+                    error: {
+                        ...error,
+                        paymentValue: "Valor do pagamento inválido. O valor deve ser maior que 0.00 e conter no máximo 2 casas decimais"
+                    }
+                });
+                return;
+            case 'INVALID_PAYMENT_METHOD':
+                this.setState({error: {...error, paymentMethod: "Método de pagamento inválido"}});
+                return;
+        }
     }
 
     render({}, {proposal, website, error, ads, selectedAd, mode, type}) {
@@ -320,8 +317,7 @@ export default class AddProposal extends Component {
                             </div>)}
                     </div>
                 </div>
-                <
-                /div>
-                )
-                }
-                }
+            </div>
+        )
+    }
+}
