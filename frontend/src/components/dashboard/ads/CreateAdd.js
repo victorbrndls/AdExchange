@@ -3,6 +3,7 @@ import "../../../styles/ae.css";
 import {HOST} from "../../../configs";
 import {AdAxiosGet, AdAxiosPost} from "../../../auth";
 import {route} from "preact-router";
+import AdTextParser from "../../utils/AdTextParser";
 
 const DEFAULT_TEXT = "Anúncio que contem somente texto, voce pode alterar a cor de fundo, cor do texto e outros items abaixo";
 const DEFAULT_IMAGE_URL = "https://i.imgur.com/k2AxKqQ.png";
@@ -67,6 +68,15 @@ export default class CreateAdd extends Component {
 
     handleAdCheckbox(type) {
         this.setState({adType: type});
+    }
+
+    handleTextChange(e) {
+        //this.setState({adText: e.target.value});
+
+        let parser = new AdTextParser();
+        parser.setText(e.target.value);
+
+        document.getElementsByClassName('ae-ad text')[0].innerHTML = parser.convertToHTML();
     }
 
     handleSubmit() {
@@ -217,11 +227,19 @@ export default class CreateAdd extends Component {
                                 <div class="form-group websites-add__form">
                                     <label>Texto</label>
                                     <input id="ad-text" class="form-control" value={state.adText}
-                                           onChange={(e) => this.setState({adText: e.target.value})}/>
-                                    {state.error.adText && (
-                                        <small class="form-text ad-error">
-                                            {state.error.adText}
-                                        </small>)}
+                                           onChange={this.handleTextChange.bind(this)}/>
+                                    <div>
+                                        <small>Opções para mudar o texto</small>
+                                        <br/>
+                                        <small class="ml-3">__palavras em itálico__ => <i>palavras em itálico</i>
+                                        </small>
+                                        <br/>
+                                        <small class="ml-3">**frase em negrito** => <b>frase em negrito</b></small>
+                                    </div>
+
+                                    <small class="form-text ad-error">
+                                        {state.error.adText}
+                                    </small>
                                 </div>
 
                                 <div class="form-group websites-add__form">

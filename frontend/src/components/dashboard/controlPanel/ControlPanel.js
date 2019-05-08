@@ -8,6 +8,8 @@ export default class ControlPanel extends Component {
     render(){
         return (
             <div>
+				<h2>Develop only the MVP and just that</h2>
+			
                 <div>How can I develop this feature better or in a different way?<br/></div>
                 <div>Design Pattern? / Different Architecture?<br/></div>
                 <div>What is the simplest thing that could possibly work?<br/></div>
