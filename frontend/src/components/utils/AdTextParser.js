@@ -1,4 +1,13 @@
 export default class AdTextParser {
+    charsToEscape = {
+        '<': '&lt;',
+        '>': '&gt;',
+        '\'': '&#39;',
+        '&': '&amp;',
+        '"': '&quot;',
+        '/': '&#47;'
+    };
+
     constructor() {
         this._result = '';
         this._pos = 0;
@@ -17,6 +26,12 @@ export default class AdTextParser {
 
     initializeConverterMap() {
         this._converterMap = {
+            '<': this.handleEscapeChar,
+            '>': this.handleEscapeChar,
+            '\'': this.handleEscapeChar,
+            '&': this.handleEscapeChar,
+            '"': this.handleEscapeChar,
+            '/': this.handleEscapeChar,
             '*': this.handleBold,
             '_': this.handleItalic,
             'default': this.handleDefault
@@ -47,16 +62,16 @@ export default class AdTextParser {
         this.appendToResult(char);
     }
 
-    handleBold(char) {
-        this.handleSimpleTag(char, '*', 'b', 'bold');
+    handleBold() {
+        this.handleSimpleTag('*', 'b', 'bold');
     }
 
-    handleItalic(char) {
-        this.handleSimpleTag(char, '_', 'i', 'italic');
+    handleItalic() {
+        this.handleSimpleTag('_', 'i', 'italic');
     }
 
-    handleSimpleTag(currentChar, targetedChar, tag, name) {
-        if (currentChar === targetedChar && this.getCharAt(this._pos + 1) === targetedChar) {
+    handleSimpleTag(targetedChar, tag, name) {
+        if (this.getCharAt(this._pos) === targetedChar && this.getCharAt(this._pos + 1) === targetedChar) {
             this._options[name] ? this.appendToResult(`</${tag}>`) : this.appendToResult(`<${tag}>`);
             this._options[name] = !this._options[name];
 
@@ -64,6 +79,10 @@ export default class AdTextParser {
         } else {
             this.appendToResult(targetedChar);
         }
+    }
+
+    handleEscapeChar(char) {
+        this.appendToResult(this.charsToEscape[char]);
     }
 
     getCharAt(pos) {
