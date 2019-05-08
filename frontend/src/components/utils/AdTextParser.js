@@ -1,8 +1,12 @@
 export default class AdTextParser {
     constructor() {
         this._result = '';
+        this._pos = 0;
 
-        this.options = {};
+        this._options = {
+            bold: false,
+            italic: false
+        };
 
         this.initializeConverterMap();
     }
@@ -23,15 +27,14 @@ export default class AdTextParser {
         this.appendToResult('<span>');
 
         let textLength = this._text.length;
-        let idx = 0;
 
-        while (idx < textLength) {
-            let char = this._text[idx];
+        while (this._pos < textLength) {
+            let char = this._text[this._pos];
 
             let converter = this._converterMap[char] || this._converterMap['default'];
-            converter.bind(this, char, idx)();
+            converter.bind(this, char)();
 
-            idx++;
+            this._pos++;
         }
 
         this.appendToResult('</span>');
@@ -40,16 +43,31 @@ export default class AdTextParser {
         return this._result;
     }
 
-    handleDefault(char, pos) {
+    handleDefault(char) {
         this.appendToResult(char);
     }
 
-    handleBold(char, pos) {
-
+    handleBold(char) {
+        this.handleSimpleTag(char, '*', 'b', 'bold');
     }
 
-    handleItalic(char, pos) {
+    handleItalic(char) {
+        this.handleSimpleTag(char, '_', 'i', 'italic');
+    }
 
+    handleSimpleTag(currentChar, targetedChar, tag, name) {
+        if (currentChar === targetedChar && this.getCharAt(this._pos + 1) === targetedChar) {
+            this._options[name] ? this.appendToResult(`</${tag}>`) : this.appendToResult(`<${tag}>`);
+            this._options[name] = !this._options[name];
+
+            this._pos++;
+        } else {
+            this.appendToResult(targetedChar);
+        }
+    }
+
+    getCharAt(pos) {
+        return this._text[pos];
     }
 
     appendToResult(append) {
