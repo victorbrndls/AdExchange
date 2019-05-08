@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,9 @@ public class ContractService {
 	public ServiceResponse<Contract> getContractById(String accountId, String id) {
 		Contract contract = contractRepository.getById(id);
 
+		if (!contract.isAuthorized(accountId))
+			return ServiceResponse.unauthorized();
+
 		return ServiceResponse.ok(contract);
 	}
 
@@ -65,7 +69,7 @@ public class ContractService {
 		List<Contract> contracts = contractRepository.getByAccountId(accountId);
 
 		if (embed.contains("website"))
-			contracts.stream().forEach((contract) -> {
+			contracts.forEach((contract) -> {
 				contract.setWebsite(websiteService.getWebsiteById(contract.getWebsiteId()).getReponse());
 			});
 
@@ -79,20 +83,11 @@ public class ContractService {
 	 * @param embed
 	 * @return a list of {@link Contract contracts} and the embeded fields
 	 */
-	public ServiceResponse<List<Contract>> getContractsById(String accountId, String ids, String embed) {
-		List<Contract> contracts = contractRepository.getManyById(Arrays.asList(ids.split(",")));
+	public ServiceResponse<List<Contract>> getContractsById(String accountId, String ids) {
+		List<Contract> contracts = contractRepository.getManyById(StringUtils.commaDelimitedListToSet(ids));
 
-		return ServiceResponse.ok(contracts.stream().filter(contract -> contract.isAuthorized(accountId)).map((c) -> {
-			if (embed.contains("website")) {
-				c.setWebsite(websiteService.getWebsiteById(c.getWebsiteId()).getReponse());
-			}
-
-			if (embed.contains("ad")) {
-				c.setAd(adService.getAdById(c.getAdId()).getReponse());
-			}
-
-			return c;
-		}).collect(Collectors.toList()));
+		return ServiceResponse.ok(
+				contracts.stream().filter(contract -> contract.isAuthorized(accountId)).collect(Collectors.toList()));
 	}
 
 	/**
@@ -103,13 +98,7 @@ public class ContractService {
 	public ServiceResponse<List<Contract>> getContractsForUserWebisites(String accountId) {
 		List<Contract> contracts = contractRepository.getByAcceptorId(accountId);
 
-		ListIterator<Contract> it = contracts.listIterator();
-		while (it.hasNext()) { // Remove contracts that have expired
-			if (it.next().hasExpired())
-				it.remove();
-		}
-
-		return ServiceResponse.ok(contracts);
+		return ServiceResponse.ok(contracts.stream().filter(c -> !c.hasExpired()).collect(Collectors.toList()));
 	}
 
 	public ServiceResponse<Contract> updateContract(String accountId, String id, String name) {
@@ -123,18 +112,14 @@ public class ContractService {
 
 		if (StringUtils.hasText(name)) {
 			if (contract.getCreatorId().equals(accountId)) {
-				contract.setCreatorContractName(sanitizeContractName(name));
+				contract.setCreatorContractName(name);
 			} else if (contract.getAcceptorId().equals(accountId)) {
-				contract.setAcceptorContractName(sanitizeContractName(name));
+				contract.setAcceptorContractName(name);
 			}
 		}
 
 		contractRepository.save(contract);
 
 		return ServiceResponse.ok(contract);
-	}
-
-	private String sanitizeContractName(String name) {
-		return name;
 	}
 }

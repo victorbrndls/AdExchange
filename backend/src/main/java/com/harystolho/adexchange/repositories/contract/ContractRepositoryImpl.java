@@ -1,5 +1,6 @@
 package com.harystolho.adexchange.repositories.contract;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -37,7 +38,7 @@ public class ContractRepositoryImpl implements ContractRepository {
 	}
 
 	@Override
-	public List<Contract> getManyById(List<String> ids) {
+	public List<Contract> getManyById(Collection<String> ids) {
 		Query query = Query.query(Criteria.where("_id").in(ids));
 		return mongoOperations.find(query, Contract.class);
 	}

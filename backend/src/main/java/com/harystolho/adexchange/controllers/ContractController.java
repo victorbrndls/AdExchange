@@ -62,20 +62,24 @@ public class ContractController {
 
 		ServiceResponse<Contract> response = contractService.getContractById(accountId, id);
 
-		return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
+		switch (response.getErrorType()) {
+		case UNAUTHORIZED:
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+		default:
+			return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
+		}
+
 	}
 
 	@GetMapping("/api/v1/contracts/batch")
 	/**
 	 * @param accountId
 	 * @param ids
-	 * @param embed     [website, ad]
 	 * @return
 	 */
-	public ResponseEntity<Object> getContractsById(@RequestAttribute("ae.accountId") String accountId, String ids,
-			@RequestParam(defaultValue = "") String embed) {
+	public ResponseEntity<Object> getContractsById(@RequestAttribute("ae.accountId") String accountId, String ids) {
 
-		ServiceResponse<List<Contract>> response = contractService.getContractsById(accountId, ids, embed);
+		ServiceResponse<List<Contract>> response = contractService.getContractsById(accountId, ids);
 
 		return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
 	}

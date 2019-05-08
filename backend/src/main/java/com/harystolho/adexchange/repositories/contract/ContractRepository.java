@@ -1,5 +1,6 @@
 package com.harystolho.adexchange.repositories.contract;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.harystolho.adexchange.models.Contract;
@@ -10,7 +11,7 @@ public interface ContractRepository {
 
 	Contract getById(String id);
 
-	List<Contract> getManyById(List<String> ids);
+	List<Contract> getManyById(Collection<String> ids);
 
 	/**
 	 * @param accountId

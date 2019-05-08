@@ -44,11 +44,7 @@ export default class Spots extends Component {
     requestContractsInformation() {
         let ids = this.buildBatchRequestString(this.state.spots, 'contractId');
 
-        AdAxiosGet.get(`${HOST}/api/v1/contracts/batch`, {
-            params: {
-                ids: ids
-            }
-        }).then((response) => {
+        AdAxiosGet.get(`${HOST}/api/v1/contracts/batch?ids=${ids}`).then((response) => {
             this.setState({contracts: this.mapIdToObject(response.data)});
         });
     }

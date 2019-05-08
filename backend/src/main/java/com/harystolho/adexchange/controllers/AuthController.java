@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.harystolho.adexchange.services.AuthService;
 import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.utils.AEUtils;
-import com.harystolho.adexchange.utils.JsonResponse;
 import com.harystolho.adexchange.utils.Nothing;
 
 @RestController()

@@ -2,13 +2,11 @@ package com.harystolho.adexchange.services;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.harystolho.adexchange.models.ads.Ad;
-import com.harystolho.adexchange.models.ads.Ad.AdType;
 import com.harystolho.adexchange.models.ads.ImageAd;
 import com.harystolho.adexchange.models.ads.TextAd;
 import com.harystolho.adexchange.repositories.ad.AdRepository;
