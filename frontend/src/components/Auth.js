@@ -1,6 +1,7 @@
 import {Component} from "preact";
 import {route} from 'preact-router';
 import {login, logout, createAccount, auth} from "../auth";
+import UrlUtils from "./utils/UrlUtils";
 
 export default class Auth extends Component {
     constructor(props) {
@@ -17,53 +18,39 @@ export default class Auth extends Component {
     }
 
     createAccount() {
-        if (!this.validateFields())
-            return;
-
         createAccount(this.state.email, this.state.password).then(() => {
-            route('/');
+            route('/auth?login');
+            location.reload();
         }).catch((response) => {
+            this.setState({error: {}});
+
             switch (response) {
                 case "EMAIL_ALREADY_EXISTS":
-                    this.setState({error: {...this.state.error, email: "Esse email ja' existe"}});
+                    this.setState({error: {...this.state.error, email: "Esse email já existe"}});
                     return;
                 case "INVALID_EMAIL":
-                    this.setState({error: {...this.state.error, email: "Esse email n~ao e' valido"}});
+                    this.setState({error: {...this.state.error, email: "Esse email não é válido"}});
                     return;
                 case "INVALID_PASSWORD":
-                    this.setState({error: {...this.state.error, email: "Esse senha e' invalida"}});
+                    this.setState({error: {...this.state.error, password: "Esse senha não é válida"}});
                     return;
             }
         });
     }
 
     login() {
-        this.setState({error: {}});
-
         login(this.state.email, this.state.password).then(() => {
             route('/dashboard');
-            location.reload();
+//            location.reload();
         }).catch((response) => {
+            this.setState({error: {}});
+
             switch (response) {
                 case "FAIL":
                     this.setState({error: {...this.state.error, password: "Email ou senha incorretos"}});
                     return;
             }
         });
-    }
-
-    /**
-     * @return {Boolean} TRUE if the fields required to create an account are valid
-     */
-    validateFields() {
-        this.setState({error: {}});
-
-        if (this.state.password.length < 5) {
-            this.setState({error: {...this.state.error, password: "A senha deve ter pelo menos 5 caracteres"}});
-            return false;
-        }
-
-        return true;
     }
 
     updateMode = () => {
@@ -76,11 +63,11 @@ export default class Auth extends Component {
 
     render({url}, {mode, email, password, error}) {
         if (auth.isUserAuthenticated()) {
-            if (url.includes("/logout"))
+            if (UrlUtils.include('/logout'))
                 logout();
 
             route('/');
-            location.reload();
+            return;
         }
 
         return (

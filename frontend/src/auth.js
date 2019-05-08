@@ -1,5 +1,6 @@
 import {HOST} from "./configs";
 import Axios from 'axios';
+import Logger from './components/utils/Logger';
 
 const storage = window.localStorage;
 
@@ -7,7 +8,6 @@ let auth = {
     getToken: () => getToken(),
     isUserAuthenticated: () => getToken() !== null
 };
-
 
 function login(email, password) {
     let formData = new FormData();
@@ -20,7 +20,9 @@ function login(email, password) {
                 'Content-Type': 'multipart/form-data',
             }
         }).then((response) => {
-            saveToken(response.data.token);
+            saveToken(response.data);
+            reloadAxiosInstances();
+
             resolve();
         }).catch((error) => {
             reject(error.response.data);
@@ -49,10 +51,11 @@ function createAccount(email, password) {
 
 function logout() {
     storage.removeItem('adExchange.authToken');
+    reloadAxiosInstances();
 }
 
 function saveToken(token) {
-    if(token !== undefined)
+    if (token !== undefined)
         storage.setItem('adExchange.authToken', token);
 }
 
@@ -60,18 +63,35 @@ function getToken() {
     return storage.getItem('adExchange.authToken');
 }
 
-const AdAxiosPost = Axios.create({
-    headers: {
-        'Content-Type': 'multipart/form-data',
-        Authorization: `Token ${getToken()}`
-    }
-});
+/**
+ * When the instances are created they have the token value, if the user signs in or signs out the instances don't
+ * update the token value by themselves. This method recreated the instances with the new token value
+ */
+function reloadAxiosInstances() {
+    Logger.log("Reload Axios Instances");
+    AdAxiosPost = createAxiosPostInstance();
+    AdAxiosGet = createAxiosGetInstance();
+}
 
-const AdAxiosGet = Axios.create({
-    headers: {
-        Authorization: `Token ${getToken()}`
-    }
-});
+let AdAxiosPost = createAxiosPostInstance();
+let AdAxiosGet = createAxiosGetInstance();
+
+function createAxiosPostInstance() {
+    return Axios.create({
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Token ${getToken()}`
+        }
+    });
+}
+
+function createAxiosGetInstance() {
+    return Axios.create({
+        headers: {
+            Authorization: `Token ${getToken()}`
+        }
+    });
+}
 
 export {
     auth,

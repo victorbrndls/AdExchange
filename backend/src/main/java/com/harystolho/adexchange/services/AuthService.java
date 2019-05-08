@@ -1,9 +1,8 @@
 package com.harystolho.adexchange.services;
 
-import java.util.logging.Logger;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.harystolho.adexchange.auth.TokenService;
 import com.harystolho.adexchange.models.Account;
@@ -14,8 +13,6 @@ import com.harystolho.adexchange.utils.PasswordSecurity;
 
 @Service
 public class AuthService {
-
-	private static final Logger logger = Logger.getLogger(AuthService.class.getName());
 
 	private AuthRepository authRepository;
 	private TokenService tokenService;
@@ -40,26 +37,24 @@ public class AuthService {
 
 		Account account = new Account(email, PasswordSecurity.encryptPassword(password));
 
-		Account response = authRepository.save(account);
+		authRepository.save(account);
 
 		return ServiceResponse.ok(null);
 	}
 
 	public ServiceResponse<String> login(String email, String password) {
-		if (email.length() <= 0 || password.length() <= 0)
+		if (StringUtils.isEmpty(email) || StringUtils.isEmpty(password))
 			return ServiceResponse.fail("Email or/and password can't be blank");
 
 		Account possibleAccount = authRepository.getByEmail(sanitizeEmail(email));
 
 		if (possibleAccount == null) {
-			logger.info(String.format("There is no account with the login email[%s]", email));
-			return ServiceResponse.fail("");
+			return ServiceResponse.fail(null);
 		}
 
 		if (!PasswordSecurity.comparePasswords(possibleAccount.getPassword(),
 				PasswordSecurity.encryptPassword(password))) {
-			logger.info("Passwords are not equal");
-			return ServiceResponse.fail("");
+			return ServiceResponse.fail(null);
 		}
 
 		String token = tokenService.generateTokenForAccount(possibleAccount.getId());
@@ -83,7 +78,7 @@ public class AuthService {
 	 * @return true if the email is valid
 	 */
 	private boolean verifyEmail(String email) {
-		return email.contains("@"); // TODO fix email verification
+		return email.matches("([\\w.]+@[\\w.]+)");
 	}
 
 	/**

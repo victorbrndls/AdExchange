@@ -32,7 +32,7 @@ export default class Ads extends Component {
     }
 
     deleteAd(id) {
-        ConfirmationModal.renderFullScreen("", () => {
+        ConfirmationModal.renderFullScreen("Voce tem certeza que quer deletar esse Anúncio?", () => {
             AdAxiosPost.delete(`${HOST}/api/v1/ads/${id}`).then((response) => {
                 this.requestAds();
             });
