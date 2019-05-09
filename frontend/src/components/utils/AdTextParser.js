@@ -1,4 +1,6 @@
 export default class AdTextParser {
+
+    // These chars need to be replaced to avoid js injection
     charsToEscape = {
         '<': '&lt;',
         '>': '&gt;',
@@ -32,6 +34,7 @@ export default class AdTextParser {
             '&': this.handleEscapeChar,
             '"': this.handleEscapeChar,
             '/': this.handleEscapeChar,
+
             '*': this.handleBold,
             '_': this.handleItalic,
             'default': this.handleDefault
@@ -41,7 +44,7 @@ export default class AdTextParser {
     convertToHTML() {
         this.appendToResult('<span>');
 
-        let textLength = this._text.length;
+        const textLength = this._text.length;
 
         while (this._pos < textLength) {
             let char = this._text[this._pos];
