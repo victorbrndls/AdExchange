@@ -57,7 +57,6 @@ export default class AdTextParser {
 
         this.appendToResult('</span>');
 
-        console.log(this._result);
         return this._result;
     }
 

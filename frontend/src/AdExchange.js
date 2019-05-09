@@ -54,6 +54,8 @@
 
             addRefUrlToATag(template.content.firstChild, adModel.redirectUrl);
 
+            // TODO get all templates tags and check if they are b, i, span ...
+
             container.parentNode.insertBefore(template.content.firstChild, container);
         });
     }
