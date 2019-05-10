@@ -247,7 +247,7 @@ public class ProposalService {
 	 * @return TRUE if the ad matched by the id exists
 	 */
 	private boolean adExists(String adId) {
-		return adId != null && adService.getAdById(adId).getReponse() != null;
+		return adId != null && adService.getAdById(adId, "").getReponse() != null;
 	}
 
 	private boolean containsProposalInSent(String accountId, Proposal proposal) {

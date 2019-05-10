@@ -50,8 +50,8 @@ public class AdController {
 	}
 
 	@GetMapping("/api/v1/ads/{id}")
-	public ResponseEntity<Object> getAdById(@PathVariable String id) {
-		ServiceResponse<Ad> response = adService.getAdById(id);
+	public ResponseEntity<Object> getAdById(@PathVariable String id, @RequestParam(defaultValue = "") String embed) {
+		ServiceResponse<Ad> response = adService.getAdById(id, embed);
 
 		return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
 	}

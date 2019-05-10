@@ -44,13 +44,14 @@ export default class CreateAdd extends Component {
         if (id !== null) {
             this.adId = id;
 
-            AdAxiosGet.get(`${HOST}/api/v1/ads/${id}`).then((response) => {
+            AdAxiosGet.get(`${HOST}/api/v1/ads/${id}?embed=parsedOutput`).then((response) => {
                 let ad = response.data;
 
                 switch (ad.type) {
                     case 'TEXT':
                         this.setState({adType: 'TEXT'});
                         this.setState({adText: ad.text});
+                        this.setState({adParsedCode: ad.parsedOutput});
                         this.setState({adBgColor: ad.bgColor});
                         this.setState({adTextColor: ad.textColor});
                         break;
@@ -73,8 +74,12 @@ export default class CreateAdd extends Component {
     handleTextChange(e) {
         this.setState({adText: e.target.value});
 
+        this.parseTextInput(this.state.adText);
+    }
+
+    parseTextInput(input) {
         let formData = new FormData();
-        formData.append("input", this.state.adText);
+        formData.append("input", input);
 
         AdAxiosPost.post(`${HOST}/api/v1/ads/parser`, formData).then((response) => {
             this.setState({adParsedCode: response.data});

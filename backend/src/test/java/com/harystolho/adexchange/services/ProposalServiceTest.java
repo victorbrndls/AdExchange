@@ -34,7 +34,7 @@ public class ProposalServiceTest {
 	@Before
 	public void beforeTests() {
 		Mockito.when(websiteService.getWebsiteById(Mockito.any())).thenReturn(ServiceResponse.ok(new Website("", "")));
-		Mockito.when(adService.getAdById(Mockito.any())).thenReturn(ServiceResponse.ok(new Ad(AdType.TEXT)));
+		Mockito.when(adService.getAdById(Mockito.any(), "")).thenReturn(ServiceResponse.ok(new Ad(AdType.TEXT)));
 	}
 
 	@Test
@@ -199,6 +199,5 @@ public class ProposalServiceTest {
 		assertEquals(false, p.isInProposerSent());
 		assertEquals(p.getProposeeId(), "");
 	}
-	
-	
+
 }

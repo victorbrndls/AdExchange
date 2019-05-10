@@ -12,6 +12,7 @@ import com.harystolho.adexchange.models.ads.TextAd;
 import com.harystolho.adexchange.parser.ad.AdContentParser;
 import com.harystolho.adexchange.parser.ad.TagNode;
 import com.harystolho.adexchange.repositories.ad.AdRepository;
+import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
 import com.harystolho.adexchange.utils.Nothing;
 
 @Service
@@ -30,8 +31,30 @@ public class AdService {
 		return ServiceResponse.ok(adRepository.getAdsByAccountId(accountId));
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @param embed ["parsedOutput"]
+	 * @return
+	 */
+	public ServiceResponse<Ad> getAdById(String id, String embed) {
+		Ad ad = adRepository.getAdById(id);
+
+		if (embed.contains("parsedOutput")) {
+			if (ad instanceof TextAd) {
+				TextAd tAd = (TextAd) ad;
+				AdContentParser parser = new AdContentParser();
+				parser.setInput(tAd.getText());
+				tAd.setParsedOutput(parser.parse());
+				ad = tAd;
+			}
+		}
+
+		return ServiceResponse.ok(ad);
+	}
+
 	public ServiceResponse<Ad> getAdById(String id) {
-		return ServiceResponse.ok(adRepository.getAdById(id));
+		return getAdById(id, "");
 	}
 
 	public ServiceResponse<List<Ad>> getAdsById(String ids) {
