@@ -9,6 +9,7 @@ import com.harystolho.adexchange.models.Contract.PaymentMethod;
 import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.repositories.proposal.ProposalRepository;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
+import com.harystolho.adexchange.services.ad.AdService;
 import com.harystolho.adexchange.utils.Nothing;
 
 @Service

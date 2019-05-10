@@ -1,4 +1,4 @@
-package com.harystolho.adexchange.services;
+package com.harystolho.adexchange.services.ad;
 
 import java.util.Arrays;
 import java.util.List;
@@ -10,6 +10,7 @@ import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.models.ads.ImageAd;
 import com.harystolho.adexchange.models.ads.TextAd;
 import com.harystolho.adexchange.repositories.ad.AdRepository;
+import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
 import com.harystolho.adexchange.utils.Nothing;
 
@@ -141,6 +142,13 @@ public class AdService {
 		} else {
 			return ServiceResponseType.INVALID_AD_TYPE;
 		}
+	}
+
+	public ServiceResponse<List<TagNode>> parseInput(String input) {
+		AdContentParser parser = new AdContentParser();
+		parser.setInput(input);
+
+		return ServiceResponse.ok(parser.parse());
 	}
 
 }

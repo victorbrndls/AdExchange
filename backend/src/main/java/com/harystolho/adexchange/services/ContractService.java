@@ -1,10 +1,7 @@
 package com.harystolho.adexchange.services;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +12,7 @@ import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.Contract.PaymentMethod;
 import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.repositories.contract.ContractRepository;
+import com.harystolho.adexchange.services.ad.AdService;
 
 @Service
 public class ContractService {

@@ -14,9 +14,9 @@ import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.models.ads.Ad.AdType;
 import com.harystolho.adexchange.models.ads.ImageAd;
 import com.harystolho.adexchange.models.ads.TextAd;
-import com.harystolho.adexchange.services.AdService;
 import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.services.SpotService;
+import com.harystolho.adexchange.services.ad.AdService;
 import com.harystolho.adexchange.utils.AEUtils;
 
 /**

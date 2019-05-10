@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,7 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.harystolho.adexchange.models.ads.Ad;
-import com.harystolho.adexchange.services.AdService;
+import com.harystolho.adexchange.services.ad.AdService;
+import com.harystolho.adexchange.services.ad.TagNode;
 import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.utils.AEUtils;
 import com.harystolho.adexchange.utils.Nothing;
@@ -107,4 +109,11 @@ public class AdController {
 
 	}
 
+	@PostMapping("/api/v1/ads/parser")
+	public ResponseEntity<Object> parseInput(@RequestAttribute("ae.accountId") String accountId, String input) {
+
+		ServiceResponse<List<TagNode>> response = adService.parseInput(input);
+
+		return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
+	}
 }

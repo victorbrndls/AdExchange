@@ -20,7 +20,6 @@ export default class CreateAdd extends Component {
             adRefUrl: "",
             adImageUrl: "",
             adText: "",
-            adTextHtml: null,
             adBgColor: "#f2f2f2",
             adTextColor: "#000",
         };
@@ -63,9 +62,6 @@ export default class CreateAdd extends Component {
 
                 this.setState({adName: ad.name});
                 this.setState({adRefUrl: ad.refUrl});
-
-                // Call the parser to update the content in the text ad
-                this.parseValue(ad.text);
             });
         }
     }
@@ -77,18 +73,12 @@ export default class CreateAdd extends Component {
     handleTextChange(e) {
         this.setState({adText: e.target.value});
 
-        this.parseValue(this.state.adText);
-    }
+        let formData = new FormData();
+        formData.append("input", this.state.adText);
 
-    /**
-     * Converts the ad text to html
-     * @param text
-     */
-    parseValue(text){
-        let parser = new AdTextParser();
-        parser.setText(text);
-
-        this.setState({adTextHtml: parser.convertToHTML()});
+        AdAxiosPost.post(`${HOST}/api/v1/ads/parser`, formData).then((response)=>{
+            console.log(response.data);
+        });
     }
 
     handleSubmit() {
@@ -217,7 +207,7 @@ export default class CreateAdd extends Component {
                                 <div class="ads-ad__checkbox" onClick={this.handleAdCheckbox.bind(this, 'TEXT')}>
                                     <div class="shadow ads-ad-wrapper">
                                         <TextAd
-                                            text={state.adTextHtml || DEFAULT_TEXT} bgColor={state.adBgColor}
+                                            text={state.adText || DEFAULT_TEXT} bgColor={state.adBgColor}
                                             textColor={state.adTextColor}/>
                                     </div>
                                     <div
@@ -331,50 +321,13 @@ export default class CreateAdd extends Component {
     }
 }
 
-export class TextAd extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            content: null
-        };
-
-        // Generate a random id to query the content div later
-        this._id = parseInt(Math.random() * Number.MAX_SAFE_INTEGER);
-    }
-
-    componentDidMount() {
-        this.setState({content: document.getElementById(this._id)});
-    }
-
-    componentDidUpdate() {
-        this.setInnerHTML();
-    }
-
-    setInnerHTML() {
-        if (this.state.content !== null) {
-            this.state.content.innerHTML = this.props.text;
-        }
-    }
-
-    render({refUrl, text, bgColor, textColor}, {content}) {
-        return (
-            <a native href={refUrl} target="_blank" style="text-decoration: none;">
-                <div class="ae-ad text" id={this._id}
-                     style={`background-color: ${bgColor || "#f2f2f2"}; color: ${textColor || "#000"};`}>
-                </div>
-            </a>
-        )
-    }
-}
-
-/*export let TextAd = ({refUrl, text, bgColor, textColor}) => (
+export let TextAd = ({refUrl, text, bgColor, textColor}) => (
     <a native href={refUrl} target="_blank" style="text-decoration: none;">
         <div class="ae-ad text" style={`background-color: ${bgColor || "#f2f2f2"}; color: ${textColor || "#000"};`}>
             {text || "Erro ao carregar anuncio"}
         </div>
     </a>
-);*/
+);
 
 export let ImageAd = ({refUrl, imageUrl}) => (
     <a native href={refUrl} target="_blank">
