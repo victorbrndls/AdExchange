@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.harystolho.adexchange.models.ads.Ad;
-import com.harystolho.adexchange.services.ad.AdService;
-import com.harystolho.adexchange.services.ad.TagNode;
+import com.harystolho.adexchange.parser.ad.TagNode;
+import com.harystolho.adexchange.services.AdService;
 import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.utils.AEUtils;
 import com.harystolho.adexchange.utils.Nothing;

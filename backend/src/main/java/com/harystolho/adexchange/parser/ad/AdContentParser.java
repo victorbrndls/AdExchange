@@ -1,4 +1,4 @@
-package com.harystolho.adexchange.services.ad;
+package com.harystolho.adexchange.parser.ad;
 
 import java.util.ArrayList;
 import java.util.HashMap;

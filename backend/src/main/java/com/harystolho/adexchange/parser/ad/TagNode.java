@@ -1,4 +1,4 @@
-package com.harystolho.adexchange.services.ad;
+package com.harystolho.adexchange.parser.ad;
 
 /**
  * Represents HTML using objects.

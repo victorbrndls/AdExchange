@@ -15,7 +15,6 @@ import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.models.ads.TextAd;
 import com.harystolho.adexchange.repositories.ad.AdRepository;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
-import com.harystolho.adexchange.services.ad.AdService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AdServiceTest {

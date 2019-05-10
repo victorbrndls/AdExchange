@@ -1,4 +1,4 @@
-package com.harystolho.adexchange.services.ad;
+package com.harystolho.adexchange.services;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,9 +9,9 @@ import org.springframework.util.StringUtils;
 import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.models.ads.ImageAd;
 import com.harystolho.adexchange.models.ads.TextAd;
+import com.harystolho.adexchange.parser.ad.AdContentParser;
+import com.harystolho.adexchange.parser.ad.TagNode;
 import com.harystolho.adexchange.repositories.ad.AdRepository;
-import com.harystolho.adexchange.services.ServiceResponse;
-import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
 import com.harystolho.adexchange.utils.Nothing;
 
 @Service

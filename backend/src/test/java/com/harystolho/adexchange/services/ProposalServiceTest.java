@@ -16,7 +16,6 @@ import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.models.ads.Ad.AdType;
 import com.harystolho.adexchange.repositories.proposal.ProposalRepository;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
-import com.harystolho.adexchange.services.ad.AdService;
 import com.harystolho.adexchange.utils.Nothing;
 
 @RunWith(MockitoJUnitRunner.class)
