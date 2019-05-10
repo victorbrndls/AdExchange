@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 import com.harystolho.adServer.services.AdModelServerService;
 import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.Spot;
+import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.repositories.spot.SpotRepository;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
 
@@ -18,12 +19,14 @@ public class SpotService {
 	private SpotRepository spotRepository;
 
 	private ContractService contractService;
+	private AdService adService;
 	private AdModelServerService adModelServerService;
 
 	@Autowired
-	private SpotService(SpotRepository spotRepository, ContractService contractService) {
+	private SpotService(SpotRepository spotRepository, ContractService contractService, AdService adService) {
 		this.spotRepository = spotRepository;
 		this.contractService = contractService;
+		this.adService = adService;
 	}
 
 	/**
@@ -83,20 +86,29 @@ public class SpotService {
 			return ServiceResponse.unauthorized();
 
 		if (embed.contains("contract")) {
-			ServiceResponse<Contract> contractResponse = contractService.getContractById(accountId,
-					spot.getContractId());
-
-			if (contractResponse.getErrorType() != ServiceResponseType.OK)
-				return ServiceResponse.fail("Can't get contract using Spot contractId");
-
-			spot.setContract(contractResponse.getReponse());
+			embedContract(spot);
 		}
 
 		return ServiceResponse.ok(spot);
 	}
 
-	public ServiceResponse<List<Spot>> getSpotsByAccountId(String accountId) {
-		return ServiceResponse.ok(spotRepository.getByAccountId(accountId));
+	/**
+	 * @param accountId
+	 * @param embed     ["contract", "ad"]
+	 * @return
+	 */
+	public ServiceResponse<List<Spot>> getSpotsByAccountId(String accountId, String embed) {
+		List<Spot> spots = spotRepository.getByAccountId(accountId);
+
+		spots.forEach((spot) -> {
+			if (embed.contains("contract"))
+				embedContract(spot);
+
+			if (embed.contains("ad"))
+				embedFallbackAd(spot);
+		});
+
+		return ServiceResponse.ok(spots);
 	}
 
 	public ServiceResponse<Spot> deleteSpot(String accountId, String id) {
@@ -117,6 +129,19 @@ public class SpotService {
 			return ServiceResponseType.INVALID_SPOT_NAME;
 
 		return ServiceResponseType.OK;
+	}
+
+	private void embedFallbackAd(Spot spot) {
+		ServiceResponse<Ad> response = adService.getAdById(spot.getFallbackAdId());
+
+		spot.setFallbackAd(response.getReponse());
+	}
+
+	private void embedContract(Spot spot) {
+		ServiceResponse<Contract> response = contractService.getContractById(spot.getAccountId(),
+				spot.getContractId());
+
+		spot.setContract(response.getReponse());
 	}
 
 	// Inject using setter to break dependency cycle

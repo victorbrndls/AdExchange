@@ -26,11 +26,8 @@ export default class Spots extends Component {
         if (!this.hasLoadedSpots) {
             this.hasLoadedSpots = true;
 
-            AdAxiosGet.get(`${HOST}/api/v1/spots/me`).then((response) => {
+            AdAxiosGet.get(`${HOST}/api/v1/spots/me?embed=contract,ad`).then((response) => {
                 this.setState({spots: response.data});
-
-                this.requestContractsInformation();
-                this.requestAdsInformation();
             })
         }
     }
@@ -40,62 +37,7 @@ export default class Spots extends Component {
         this.requestSpots();
     }
 
-
-    requestContractsInformation() {
-        let ids = this.buildBatchRequestString(this.state.spots, 'contractId');
-
-        AdAxiosGet.get(`${HOST}/api/v1/contracts/batch?ids=${ids}`).then((response) => {
-            this.setState({contracts: this.mapIdToObject(response.data)});
-        });
-    }
-
-    requestAdsInformation() {
-        let ids = this.buildBatchRequestString(this.state.spots, 'fallbackAdId');
-
-        AdAxiosGet.get(`${HOST}/api/v1/ads/batch?ids=${ids}`).then((response) => {
-            this.setState({ads: this.mapIdToObject(response.data)});
-        });
-    }
-
-    mapIdToObject(items) {
-        let states = {};
-
-        items.forEach((item) => {
-            states[item.id] = item;
-        });
-
-        return states;
-    }
-
-    /**
-     * Constructs a String that constrains the {elem} from each array object separated by ','
-     * @param array {Array}
-     * @param elem {String}
-     */
-    buildBatchRequestString(array, elem) {
-        let set = new Set();
-
-        array.forEach((spot) => set.add(spot[elem]));
-
-        let ids = "";
-
-        let setSize = set.size;
-        let idx = 0;
-
-        set.forEach((id) => {
-            ids += id;
-
-            if (idx !== setSize - 1) {
-                ids += ",";
-            }
-
-            idx++;
-        });
-
-        return ids;
-    }
-
-    render({}, {spots, ads, contracts}) {
+    render({}, {spots}) {
         return (
             <div>
                 <Match path={"/dashboard/spots"} not>
@@ -111,8 +53,8 @@ export default class Spots extends Component {
                             </div>
                             {this.requestSpots.bind(this)()}
                             {spots.map((spot) => (
-                                <Spot spot={spot} contract={contracts[spot.contractId]}
-                                      ad={ads[spot.fallbackAdId]} reload={this.reload.bind(this)}/>
+                                <Spot spot={spot} contract={spot.contract}
+                                      ad={spot.fallbackAd} reload={this.reload.bind(this)}/>
                             ))}
                         </div>
                     </Match>

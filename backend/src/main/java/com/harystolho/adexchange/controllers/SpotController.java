@@ -63,9 +63,10 @@ public class SpotController {
 	}
 
 	@GetMapping("/api/v1/spots/me")
-	public ResponseEntity<Object> getAccountSpots(@RequestAttribute("ae.accountId") String accountId) {
+	public ResponseEntity<Object> getAccountSpots(@RequestAttribute("ae.accountId") String accountId,
+			@RequestParam(defaultValue = "") String embed) {
 
-		ServiceResponse<List<Spot>> response = spotService.getSpotsByAccountId(accountId);
+		ServiceResponse<List<Spot>> response = spotService.getSpotsByAccountId(accountId, embed);
 
 		switch (response.getErrorType()) {
 		case FAIL:

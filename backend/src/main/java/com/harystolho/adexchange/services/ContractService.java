@@ -56,6 +56,9 @@ public class ContractService {
 	public ServiceResponse<Contract> getContractById(String accountId, String id) {
 		Contract contract = contractRepository.getById(id);
 
+		if (contract == null)
+			return ServiceResponse.fail("INVALID_CONTRACT_ID");
+
 		if (!contract.isAuthorized(accountId))
 			return ServiceResponse.unauthorized();
 
