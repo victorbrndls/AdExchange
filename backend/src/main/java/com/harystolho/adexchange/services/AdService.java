@@ -28,7 +28,27 @@ public class AdService {
 	}
 
 	public ServiceResponse<List<Ad>> getAdsByAccountId(String accountId) {
-		return ServiceResponse.ok(adRepository.getAdsByAccountId(accountId));
+		return getAdsByAccountId(accountId, "");
+	}
+
+	/**
+	 * 
+	 * @param accountId
+	 * @param embed     ["parsedOutput"]
+	 * @return
+	 */
+	public ServiceResponse<List<Ad>> getAdsByAccountId(String accountId, String embed) {
+		List<Ad> ads = adRepository.getAdsByAccountId(accountId);
+
+		if (embed.contains("parsedOutput")) {
+			ads.forEach((ad) -> {
+				if (ad instanceof TextAd) {
+					embedParsedOutput((TextAd) ad);
+				}
+			});
+		}
+
+		return ServiceResponse.ok(ads);
 	}
 
 	/**
@@ -42,11 +62,7 @@ public class AdService {
 
 		if (embed.contains("parsedOutput")) {
 			if (ad instanceof TextAd) {
-				TextAd tAd = (TextAd) ad;
-				AdContentParser parser = new AdContentParser();
-				parser.setInput(tAd.getText());
-				tAd.setParsedOutput(parser.parse());
-				ad = tAd;
+				ad = embedParsedOutput((TextAd) ad);
 			}
 		}
 
@@ -172,6 +188,14 @@ public class AdService {
 		parser.setInput(input);
 
 		return ServiceResponse.ok(parser.parse());
+	}
+
+	private TextAd embedParsedOutput(TextAd ad) {
+		AdContentParser parser = new AdContentParser();
+		parser.setInput(ad.getText());
+		ad.setParsedOutput(parser.parse());
+
+		return ad;
 	}
 
 }

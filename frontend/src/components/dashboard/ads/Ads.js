@@ -20,7 +20,7 @@ export default class Ads extends Component {
     }
 
     requestAds() {
-        AdAxiosGet.get(`${HOST}/api/v1/ads/me`).then((response) => {
+        AdAxiosGet.get(`${HOST}/api/v1/ads/me?embed=parsedOutput`).then((response) => {
             this.setState(
                 {ads: response.data}
             );

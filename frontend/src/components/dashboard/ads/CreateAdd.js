@@ -215,7 +215,7 @@ export default class CreateAdd extends Component {
                                 <div class="ads-ad__checkbox" onClick={this.handleAdCheckbox.bind(this, 'TEXT')}>
                                     <div class="shadow ads-ad-wrapper">
                                         <TextAd
-                                            text={state.adParsedCode || DEFAULT_TEXT} bgColor={state.adBgColor}
+                                            parsedOutput={state.adParsedCode} bgColor={state.adBgColor}
                                             textColor={state.adTextColor}/>
                                     </div>
                                     <div
@@ -329,11 +329,11 @@ export default class CreateAdd extends Component {
     }
 }
 
-export let TextAd = ({refUrl, text, bgColor, textColor}) => (
+export let TextAd = ({refUrl, parsedOutput, bgColor, textColor}) => (
     <a native href={refUrl} target="_blank" style="text-decoration: none;">
         <div class="ae-ad text"
              style={`background-color: ${bgColor || "#f2f2f2"}; color: ${textColor || "#000"};`}>
-            {Array.isArray(text) ? text.map((node) => <CodeMapper {...node}/>) : ""}
+            {Array.isArray(parsedOutput) ? parsedOutput.map((node) => <CodeMapper {...node}/>) : ""}
         </div>
     </a>
 );

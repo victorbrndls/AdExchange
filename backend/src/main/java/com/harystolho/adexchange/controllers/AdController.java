@@ -37,8 +37,10 @@ public class AdController {
 	}
 
 	@GetMapping("/api/v1/ads/me")
-	public ResponseEntity<Object> getAccountAds(@RequestAttribute("ae.accountId") String accountId) {
-		ServiceResponse<List<Ad>> response = adService.getAdsByAccountId(accountId);
+	public ResponseEntity<Object> getAccountAds(@RequestAttribute("ae.accountId") String accountId,
+			@RequestParam(defaultValue = "") String embed) {
+
+		ServiceResponse<List<Ad>> response = adService.getAdsByAccountId(accountId, embed);
 
 		switch (response.getErrorType()) {
 		case FAIL:
