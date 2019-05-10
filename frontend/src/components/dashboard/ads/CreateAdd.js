@@ -3,7 +3,6 @@ import "../../../styles/ae.css";
 import {HOST} from "../../../configs";
 import {AdAxiosGet, AdAxiosPost} from "../../../auth";
 import {route} from "preact-router";
-import AdTextParser from "../../utils/AdTextParser";
 
 const DEFAULT_TEXT = "Anúncio que contem somente texto, voce pode alterar a cor de fundo, cor do texto e outros items abaixo";
 const DEFAULT_IMAGE_URL = "https://i.imgur.com/k2AxKqQ.png";
@@ -20,6 +19,7 @@ export default class CreateAdd extends Component {
             adRefUrl: "",
             adImageUrl: "",
             adText: "",
+            adParsedCode: [],
             adBgColor: "#f2f2f2",
             adTextColor: "#000",
         };
@@ -76,8 +76,8 @@ export default class CreateAdd extends Component {
         let formData = new FormData();
         formData.append("input", this.state.adText);
 
-        AdAxiosPost.post(`${HOST}/api/v1/ads/parser`, formData).then((response)=>{
-            console.log(response.data);
+        AdAxiosPost.post(`${HOST}/api/v1/ads/parser`, formData).then((response) => {
+            this.setState({adParsedCode: response.data});
         });
     }
 
@@ -207,7 +207,7 @@ export default class CreateAdd extends Component {
                                 <div class="ads-ad__checkbox" onClick={this.handleAdCheckbox.bind(this, 'TEXT')}>
                                     <div class="shadow ads-ad-wrapper">
                                         <TextAd
-                                            text={state.adText || DEFAULT_TEXT} bgColor={state.adBgColor}
+                                            text={state.adParsedCode || DEFAULT_TEXT} bgColor={state.adBgColor}
                                             textColor={state.adTextColor}/>
                                     </div>
                                     <div
@@ -323,11 +323,17 @@ export default class CreateAdd extends Component {
 
 export let TextAd = ({refUrl, text, bgColor, textColor}) => (
     <a native href={refUrl} target="_blank" style="text-decoration: none;">
-        <div class="ae-ad text" style={`background-color: ${bgColor || "#f2f2f2"}; color: ${textColor || "#000"};`}>
-            {text || "Erro ao carregar anuncio"}
+        <div class="ae-ad text"
+             style={`background-color: ${bgColor || "#f2f2f2"}; color: ${textColor || "#000"};`}>
+            {Array.isArray(text) ? text.map((node) => <CodeMapper {...node}/>) : ""}
         </div>
     </a>
 );
+
+let CodeMapper = ({tag, content}) => (
+    tag === 'b' ? (<b>{content}</b>) : tag === 'i' ? (<i>{content}</i>) : (<span>{content}</span>)
+);
+
 
 export let ImageAd = ({refUrl, imageUrl}) => (
     <a native href={refUrl} target="_blank">
