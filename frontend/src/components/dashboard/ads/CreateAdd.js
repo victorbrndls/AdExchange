@@ -11,7 +11,7 @@ export default class CreateAdd extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
+        this.state = { // Default state
             error: {},
             mode: "EDIT",
             adType: "TEXT",
@@ -19,7 +19,10 @@ export default class CreateAdd extends Component {
             adRefUrl: "",
             adImageUrl: "",
             adText: "",
-            adParsedCode: [],
+            adParsedCode: [{
+                tag: 'span',
+                content: DEFAULT_TEXT
+            }],
             adBgColor: "#f2f2f2",
             adTextColor: "#000",
         };
