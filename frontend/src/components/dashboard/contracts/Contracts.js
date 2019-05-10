@@ -72,7 +72,7 @@ class Contract extends Component {
         if (this.props.adId === undefined)
             return;
 
-        AdAxiosGet.get(`${HOST}/api/v1/ads/${this.props.adId}`).then((response) => {
+        AdAxiosGet.get(`${HOST}/api/v1/ads/${this.props.adId}?embed=parsedOutput`).then((response) => {
             this.setState({ad: response.data});
         });
     }

@@ -93,7 +93,7 @@ class Spot extends Component {
         if (this.state.extended) {
             if (this.state.contractAd === null) {
                 if (this.props.contract !== undefined) {
-                    AdAxiosGet.get(`${HOST}/api/v1/ads/${this.props.contract.adId}`).then((response) => {
+                    AdAxiosGet.get(`${HOST}/api/v1/ads/${this.props.contract.adId}?embed=parsedOutput`).then((response) => {
                         this.setState({contractAd: response.data});
                     });
                 }
@@ -101,7 +101,9 @@ class Spot extends Component {
 
             if (this.state.fallbackAd === null) {
                 if (this.props.ad !== undefined) {
-                    this.setState({fallbackAd: this.props.ad});
+                    AdAxiosGet.get(`${HOST}/api/v1/ads/${this.props.ad.id}?embed=parsedOutput`).then((response) => {
+                        this.setState({fallbackAd: response.data});
+                    });
                 }
             }
         }

@@ -85,9 +85,8 @@ public class SpotService {
 		if (!spot.isAuthorized(accountId))
 			return ServiceResponse.unauthorized();
 
-		if (embed.contains("contract")) {
+		if (embed.contains("contract"))
 			embedContract(spot);
-		}
 
 		return ServiceResponse.ok(spot);
 	}
@@ -138,8 +137,7 @@ public class SpotService {
 	}
 
 	private void embedContract(Spot spot) {
-		ServiceResponse<Contract> response = contractService.getContractById(spot.getAccountId(),
-				spot.getContractId());
+		ServiceResponse<Contract> response = contractService.getContractById(spot.getAccountId(), spot.getContractId());
 
 		spot.setContract(response.getReponse());
 	}
