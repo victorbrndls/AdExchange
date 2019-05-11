@@ -35,7 +35,7 @@ export default class Proposals extends Component {
         }
     }
 
-    reload(){
+    reload() {
         this.hasRequestedProposals = false;
         this.requestProposals();
     }

@@ -13,18 +13,20 @@ export default class AddProposal extends Component {
 
         this.state = {
             error: {},
-            mode: "EDIT", // EDIT or NEW
+            mode: "NEW", // EDIT or NEW
             type: null, // NEW or SENT
-            proposal: null,
-            website: {},
-            ads: [],
-            selectedAd: null
-        };
-
-        this.fields = {
-            duration: () => document.getElementById("p_duration"),
-            paymentMethod: () => document.getElementById("p_paymentMethod"),
-            paymentValue: () => document.getElementById("p_paymentValue")
+            proposal: {
+                id: null,
+                websiteId: null,
+                website: null,
+                adId: null,
+                ad: null,
+                duration: null,
+                paymentMethod: 'PAY_PER_CLICK',
+                paymentValue: null,
+                rejected: false
+            },
+            ads: []
         };
 
         this.moneyPattern = "^(\\d+(\\.\\d{1,2}){0,1})$";
@@ -37,83 +39,81 @@ export default class AddProposal extends Component {
         });
     }
 
+    /**
+     * The proposal page can be in one of two modes.
+     *     'NEW': The user is creating a new proposal.
+     *     'EDIT': The user is editing an existing proposal. The 'EDIT' mode has two types.
+     *          'SENT': The  user sent the proposal to somebody else and is viewing the proposal but can't edit it.
+     *          'NEW': The user is viewing the proposal that was sent to him/her, he/she can edit it.
+     */
     updateMode() {
-        if (UrlUtils.include("/edit/new"))
-            this.setState({mode: "NEW"});
+        let search = new URLSearchParams(location.search);
+
+        if (search.get('mode') !== 'NEW')
+            this.setState({mode: 'EDIT'});
+
 
         if (this.state.mode === 'EDIT') {
-            this.setState({type: new URLSearchParams(location.search).get('type')});
+            this.setState({type: search.get('type')});
+            this.setState({proposal: {...this.state.proposal, id: location.pathname.split("edit/")[1]}})
+        } else if (this.state.mode === 'NEW') {
+            this.setState({proposal: {...this.state.proposal, websiteId: search.get('websiteId')}})
         }
     }
 
     async requestProposalInformation() {
-        let proposalId = this.state.mode === 'EDIT' ? location.pathname.split("edit/")[1] : -1;
-
-        if (proposalId === -1) {
-            this.setState({
-                proposal: {
-                    id: "-1",
-                    websiteId: new URLSearchParams(location.search).get('websiteId') || "-1"
-                }
-            });
-            return;
+        if (this.state.proposal.id) {
+            let res = await AdAxiosGet.get(`${HOST}/api/v1/proposals/${this.state.proposal.id}`);
+            this.setState({proposal: res.data});
         }
-
-        let res = await AdAxiosGet.get(`${HOST}/api/v1/proposals/${proposalId}`);
-        this.setState({proposal: res.data});
     }
 
-    /**
-     * Requests information of the website that is this proposal is for
-     */
     requestWebsiteInformation() {
-        let id = this.state.proposal.websiteId;
+        let wId = this.state.proposal.websiteId;
 
-        if (id === "-1") {
-            this.setState({error: "websiteId invalido"});
-            return;
+        if (!wId) {
+            this.setState({error: {...error, website: "ID do website inválido"}});
+        } else {
+            AdAxiosGet.get(`${HOST}/api/v1/websites/${wId}`).then((response) => {
+                this.setState({proposal: {...this.state.proposal, website: response.data}});
+            });
         }
-
-        AdAxiosGet.get(`${HOST}/api/v1/websites/${id}`).then((response) => {
-            this.setState({website: response.data});
-        });
     }
 
-    /**
-     * Requests all ads that belong to the user
-     */
     requestAdsInformation() {
-        if (this.state.proposal.adId !== undefined) {
-            AdAxiosGet.get(`${HOST}/api/v1/ads/${this.state.proposal.adId}`).then((response) => {
-                this.setState({selectedAd: response.data});
-            });
-        } else {
+        if (this.state.mode === 'NEW') {
             AdAxiosGet.get(`${HOST}/api/v1/ads/me?embed=parsedOutput`).then((response) => {
                 this.setState({ads: response.data});
             });
+        } else if (this.state.mode === 'EDIT') {
+            if (this.state.proposal.adId) {
+                AdAxiosGet.get(`${HOST}/api/v1/ads/${this.state.proposal.adId}?embed=parsedOutput`).then((response) => {
+                    this.setState({proposal: {...this.state.proposal, ad: response.data}});
+                });
+            }
         }
     }
 
     handleAdChange(e) {
-        let id = e.target.value;
+        let adId = e.target.value;
 
-        if (id === "-1")
-            return;
-
-        this.adId = id;
-
-        let selectedAd = this.state.ads.filter(ad => ad.id === id)[0];
-
-        selectedAd ? this.setState({selectedAd: selectedAd}) : undefined;
+        if (adId === "none") {
+            this.setState({proposal: {...this.state.proposal, adId: null, ad: null}});
+        } else {
+            let selectedAd = this.state.ads.filter(ad => ad.id === adId)[0];
+            selectedAd ? this.setState({proposal: {...this.state.proposal, ad: selectedAd, adId: adId}}) : undefined;
+        }
     }
 
     submitProposal() {
+        let proposal = this.state.proposal;
+
         let formData = new FormData();
-        formData.append("websiteId", this.state.proposal.websiteId);
-        formData.append("adId", this.adId);
-        formData.append("duration", this.fields.duration().value);
-        formData.append("paymentMethod", this.fields.paymentMethod().value);
-        formData.append("paymentValue", this.fields.paymentValue().value);
+        formData.append("websiteId", proposal.websiteId);
+        formData.append("adId", proposal.adId);
+        formData.append("duration", proposal.duration);
+        formData.append("paymentMethod", proposal.paymentMethod);
+        formData.append("paymentValue", proposal.paymentValue);
 
         AdAxiosPost.post(`${HOST}/api/v1/proposals`, formData).then((response) => {
             route('/dashboard/proposals');
@@ -130,10 +130,12 @@ export default class AddProposal extends Component {
     }
 
     sendProposalRevision() {
+        let proposal = this.state.proposal;
+
         let formData = new FormData();
-        formData.append("duration", this.fields.duration().value);
-        formData.append("paymentMethod", this.fields.paymentMethod().value);
-        formData.append("paymentValue", this.fields.paymentValue().value);
+        formData.append("duration", proposal.duration);
+        formData.append("paymentMethod", proposal.paymentMethod);
+        formData.append("paymentValue", proposal.paymentValue);
 
         AdAxiosPost.post(`${HOST}/api/v1/proposals/revision/${this.state.proposal.id}`, formData).then((response) => {
             route('/dashboard/proposals');
@@ -155,7 +157,7 @@ export default class AddProposal extends Component {
             route('/dashboard/proposals');
             this.props.reload();
         }).catch((error) => {
-            console.log(error.response);
+            this.handleErrorResponse(error);
         });
     }
 
@@ -193,10 +195,7 @@ export default class AddProposal extends Component {
         }
     }
 
-    render({}, {proposal, website, error, ads, selectedAd, mode, type}) {
-        if (proposal === null)
-            return;
-
+    render({}, {proposal, error, ads, mode, type}) {
         let edit_m = mode === 'EDIT';
         let new_m = mode === 'NEW';
         let sent_t = type === 'SENT';
@@ -207,13 +206,13 @@ export default class AddProposal extends Component {
         return (
             <div>
                 <div style="font-family: Raleway; font-size: 30px;">
-                    Proposta para "{website.name}"
+                    Proposta para "{proposal.website ? proposal.website.name : ""}"
                     {proposal.rejected && (<span class="badge badge-danger ml-3">Rejeitada</span>)}
                 </div>
                 <div>
                     <div style="position: relative;">
                         <div class="blocking-container"/>
-                        <Website {...website}/>
+                        <Website {...proposal.website}/>
                         <small class="form-text ad-error">{error.website}</small>
                     </div>
 
@@ -222,7 +221,7 @@ export default class AddProposal extends Component {
                             <label>Anúncio</label>
                             <select class="custom-select" onChange={this.handleAdChange.bind(this)}
                                     disabled={edit_m}>
-                                <option value="-1">Selecione um anuncio</option>
+                                <option value="none">Selecione um anuncio</option>
                                 {ads && ads.map((ad) => (
                                     <option value={ad.id}>{ad.name}</option>
                                 ))}
@@ -230,10 +229,10 @@ export default class AddProposal extends Component {
                             <small class="form-text ad-error">{error.ad}</small>
                             <div class="ad-container">
                                 <div class="blocking-container"/>
-                                {selectedAd && (
+                                {proposal.ad && (
                                     <div class="ads-ad-wrapper mt-4">
-                                        {selectedAd.type === 'TEXT' ? (<TextAd {...selectedAd}/>) : (
-                                            <ImageAd {...selectedAd}/>)}
+                                        {proposal.ad.type === 'TEXT' ? (<TextAd {...proposal.ad}/>) : (
+                                            <ImageAd {...proposal.ad}/>)}
                                     </div>
                                 )}
                             </div>
@@ -257,7 +256,7 @@ export default class AddProposal extends Component {
                         <div class="form-group websites-add__form">
                             <label>Pagamento</label>
                             <select id="p_paymentMethod" class="custom-select"
-                                    value={proposal.paymentMethod || "PAY_PER_CLICK"}
+                                    value={proposal.paymentMethod}
                                     disabled={disableFields}
                                     onChange={(e) => this.setState({
                                         proposal: {
@@ -307,7 +306,8 @@ export default class AddProposal extends Component {
                                         {/*//TODO show terms of use for contract - the owner can break the contract,...*/}
                                     </div>
                                 )}
-                                <div class="btn dashboard-add__button" onClick={this.sendProposalRevision.bind(this)}>
+                                <div class="btn dashboard-add__button"
+                                     onClick={this.sendProposalRevision.bind(this)}>
                                     Enviar Revisao
                                 </div>
                                 <div id="dashboardDeleteButton" class="btn dashboard-add__button"
