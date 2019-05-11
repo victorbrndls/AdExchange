@@ -5,7 +5,6 @@ import Match from "../../utils/Match";
 import EditSpot from "./EditSpot";
 import {AdAxiosGet, AdAxiosPost} from "../../../auth";
 import {HOST} from "../../../configs";
-import PaymentMethod from "../../utils/PaymentMethod";
 import {ImageAd, TextAd} from "../ads/CreateAdd";
 import {hasContractExpired} from "../contracts/Contracts";
 
@@ -78,8 +77,8 @@ class Spot extends Component {
 
         this.state = {
             extended: false,
-            contractAd: null,
-            fallbackAd: null
+            contractAd: null, // If this is null the contract has not been loaded yet
+            fallbackAd: null// If this is null the ad has not been loaded yet
         };
     }
 
@@ -91,20 +90,16 @@ class Spot extends Component {
 
     afterStateChange() {
         if (this.state.extended) {
-            if (this.state.contractAd === null) {
-                if (this.props.contract !== undefined) {
-                    AdAxiosGet.get(`${HOST}/api/v1/ads/${this.props.contract.adId}?embed=parsedOutput`).then((response) => {
-                        this.setState({contractAd: response.data});
-                    });
-                }
+            if (this.state.contractAd === null && this.props.contract !== undefined) {
+                AdAxiosGet.get(`${HOST}/api/v1/ads/${this.props.contract.adId}?embed=parsedOutput`).then((response) => {
+                    this.setState({contractAd: response.data});
+                });
             }
 
-            if (this.state.fallbackAd === null) {
-                if (this.props.ad !== undefined) {
-                    AdAxiosGet.get(`${HOST}/api/v1/ads/${this.props.ad.id}?embed=parsedOutput`).then((response) => {
-                        this.setState({fallbackAd: response.data});
-                    });
-                }
+            if (this.state.fallbackAd === null && this.props.ad !== undefined) {
+                AdAxiosGet.get(`${HOST}/api/v1/ads/${this.props.ad.id}?embed=parsedOutput`).then((response) => {
+                    this.setState({fallbackAd: response.data});
+                });
             }
         }
     }
@@ -153,8 +148,7 @@ class Spot extends Component {
                     </div>
                     <div class="contract__body-item">
                         <div>
-                            Anuncio
-                            reserva: {adName}
+                            Anuncio reserva: {adName}
                         </div>
                         {extended && fallbackAd && (
                             <AdWrapper ad={fallbackAd}/>
