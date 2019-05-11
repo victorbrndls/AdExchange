@@ -70,9 +70,8 @@ public class AdContentParser {
 
 	/**
 	 * Most of the time 2 chars are used to format some text, for example the '**'
-	 * code is used to make the text bold, the '__' to make the text italic. Because
-	 * their logic is basically equal this method is used to reduce the need to
-	 * duplicate code.
+	 * code is used to make the text bold, the '__' to make the text italic. This
+	 * method abstracts the common functionalities in them
 	 * 
 	 * @param code
 	 * @param htmlTag
