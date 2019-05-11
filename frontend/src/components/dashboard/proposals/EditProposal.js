@@ -88,7 +88,7 @@ export default class AddProposal extends Component {
                 this.setState({selectedAd: response.data});
             });
         } else {
-            AdAxiosGet.get(`${HOST}/api/v1/ads/me`).then((response) => {
+            AdAxiosGet.get(`${HOST}/api/v1/ads/me?embed=parsedOutput`).then((response) => {
                 this.setState({ads: response.data});
             });
         }
@@ -101,9 +101,10 @@ export default class AddProposal extends Component {
             return;
 
         this.adId = id;
-        AdAxiosGet.get(`${HOST}/api/v1/ads/${id}`).then((response) => {
-            this.setState({selectedAd: response.data});
-        });
+
+        let selectedAd = this.state.ads.filter(ad => ad.id === id)[0];
+
+        selectedAd ? this.setState({selectedAd: selectedAd}) : undefined;
     }
 
     submitProposal() {
@@ -158,7 +159,7 @@ export default class AddProposal extends Component {
         });
     }
 
-    handleErrorResponse(errorResponse){
+    handleErrorResponse(errorResponse) {
         this.setState({error: {}});
 
         let error = this.state.error;

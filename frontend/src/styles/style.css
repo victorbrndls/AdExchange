@@ -551,3 +551,8 @@ body.auth #header {
     background-color: #ff4d4d;
     color: white;
 }
+
+#createAdTextArea{
+    height: 75px;
+    line-height: 1.7em;
+}

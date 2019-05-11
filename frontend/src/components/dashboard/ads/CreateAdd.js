@@ -4,13 +4,29 @@ import {HOST} from "../../../configs";
 import {AdAxiosGet, AdAxiosPost} from "../../../auth";
 import {route} from "preact-router";
 
-const DEFAULT_TEXT = "Anúncio que contem somente texto, voce pode alterar a cor de fundo, cor do texto e outros items abaixo";
+const DEFAULT_TEXT = "Anúncio de texto, voce pode alterar **o estilo** do texto nos __campos abaixo__.";
+const DEFAULT_PARSED_OUTPUT = [{
+    tag: 'span',
+    content: 'Anúncio de texto, voce pode alterar '
+}, {
+    tag: 'b',
+    content: 'o estilo '
+}, {
+    tag: 'span',
+    content: 'do texto nos '
+}, {
+    tag: 'i',
+    content: 'campos abaixo.'
+}];
+
 const DEFAULT_IMAGE_URL = "https://i.imgur.com/k2AxKqQ.png";
 
 export default class CreateAdd extends Component {
     constructor(props) {
         super(props);
 
+        console.log(DEFAULT_PARSED_OUTPUT);
+        
         this.state = { // Default state
             error: {},
             mode: "EDIT",
@@ -18,11 +34,8 @@ export default class CreateAdd extends Component {
             adName: "",
             adRefUrl: "",
             adImageUrl: "",
-            adText: "",
-            adParsedCode: [{
-                tag: 'span',
-                content: DEFAULT_TEXT
-            }],
+            adText: DEFAULT_TEXT,
+            adParsedCode: DEFAULT_PARSED_OUTPUT,
             adBgColor: "#f2f2f2",
             adTextColor: "#000",
         };
@@ -236,8 +249,8 @@ export default class CreateAdd extends Component {
                             <div>
                                 <div class="form-group websites-add__form">
                                     <label>Texto</label>
-                                    <input id="ad-text" class="form-control" value={state.adText}
-                                           onChange={this.handleTextChange.bind(this)}/>
+                                    <textarea id="createAdTextArea" class="form-control" value={state.adText}
+                                              onChange={this.handleTextChange.bind(this)}/>
                                     <div>
                                         <small>Opções para mudar o texto</small>
                                         <br/>
@@ -254,7 +267,7 @@ export default class CreateAdd extends Component {
 
                                 <div class="form-group websites-add__form">
                                     <label>Cor de fundo</label>
-                                    <input id="ad-bgColor" class="form-control ads-ad__color-picker" type="color"
+                                    <input class="form-control ads-ad__color-picker" type="color"
                                            value={state.adBgColor}
                                            onChange={(e) => this.setState({adBgColor: e.target.value})}/>
                                 </div>
