@@ -109,11 +109,11 @@ export default class EditSpot extends Component {
                     </div>
 
                     <div class="form-group websites-add__form">
-                        <label>Anuncio reserva (nao obrigatorio)</label>
+                        <label>Anúncio reserva (nao obrigatorio)</label>
                         <select class="custom-select"
                                 onChange={(e) => this.setState({spot: {...spot, fallbackAdId: e.target.value}})}
                                 value={this.state.spot.fallbackAdId}>
-                            <option value="-1">Selecione um contrato</option>
+                            <option value="-1">Selecione um anúncio</option>
                             {ads && ads.map((ad) => (
                                 <option value={ad.id}>{ad.name}</option>
                             ))}

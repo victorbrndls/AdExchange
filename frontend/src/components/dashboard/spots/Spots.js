@@ -90,13 +90,13 @@ class Spot extends Component {
 
     afterStateChange() {
         if (this.state.extended) {
-            if (this.state.contractAd === null && this.props.contract !== undefined) {
+            if (!this.state.contractAd && this.props.contract) {
                 AdAxiosGet.get(`${HOST}/api/v1/ads/${this.props.contract.adId}?embed=parsedOutput`).then((response) => {
                     this.setState({contractAd: response.data});
                 });
             }
 
-            if (this.state.fallbackAd === null && this.props.ad !== undefined) {
+            if (!this.state.fallbackAd && this.props.ad) {
                 AdAxiosGet.get(`${HOST}/api/v1/ads/${this.props.ad.id}?embed=parsedOutput`).then((response) => {
                     this.setState({fallbackAd: response.data});
                 });
@@ -105,7 +105,7 @@ class Spot extends Component {
     }
 
     deleteSpot() {
-        ConfirmationModal.renderFullScreen("Voce tem certeza que quer deletar esse Spot?", () => {
+            ConfirmationModal.renderFullScreen("Você tem certeza que quer deletar esse Spot?", () => {
             AdAxiosPost.delete(`${HOST}/api/v1/spots/${this.id}`).then(() => {
                 this.reload();
             });
