@@ -129,7 +129,7 @@ body.auth #header {
     background-color: #ededed;
 }
 
-.dashboard__sidebar--item a {
+.dashboard__sidebar--item a, .dashboard__main-topbar--item a {
     font-family: Raleway, serif;
     font-size: 19px;
     color: black;
@@ -567,4 +567,15 @@ body.auth #header {
 .contract-header__option:hover {
     text-decoration: underline;
     cursor: pointer;
+}
+
+.dashboard__main-topbar{
+    display:  flex;
+    justify-content: flex-end;
+    padding-right: 20px;
+}
+
+.dashboard__main-topbar--item{
+    display: inline-block;
+    align-self: center;
 }

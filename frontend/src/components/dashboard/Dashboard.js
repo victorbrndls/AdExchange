@@ -56,15 +56,16 @@ export default class Dashboard extends Component {
                                 <div class="dashboard__sidebar--item-container">Home</div>
                             </Link>
                         </div>
-                        <div class="dashboard__sidebar--item">
-                            <Link href="/auth/logout" activeClassName="active">
-                                <div class="dashboard__sidebar--item-container">Logout</div>
-                            </Link>
-                        </div>
+
                     </div>
                 </div>
                 <div class="dashboard__main">
                     <div class="dashboard__main-topbar">
+                        <div class="dashboard__main-topbar--item">
+                            <Link href="/auth/logout" activeClassName="active">
+                                <div class="">Logout</div>
+                            </Link>
+                        </div>
                     </div>
                     <div class="dashboard__main-content">
                         <div style="height: 100%; padding: 16px;">
