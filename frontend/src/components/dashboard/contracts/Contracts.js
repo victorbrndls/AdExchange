@@ -1,6 +1,6 @@
 import {Component} from "preact";
 import Match from "../../utils/Match";
-import {LeftArrow, TextChangerInput} from "../../utils/Components";
+import {ConfirmationModal, LeftArrow, TextChangerInput} from "../../utils/Components";
 import {route} from "preact-router";
 import {AdAxiosGet, AdAxiosPost} from "../../../auth";
 import {HOST} from "../../../configs";
@@ -30,6 +30,12 @@ export default class Contracts extends Component {
         }
     }
 
+    reload() {
+        this.setState({contracts: []});
+        this.hasMadeContractRequest = false;
+        this.requestContracts();
+    }
+
     render({}, {contracts}) {
         return (
             <div>
@@ -43,7 +49,7 @@ export default class Contracts extends Component {
                             {this.requestContracts.bind(this)()}
                             {contracts.map((contract) => (
                                 <div>
-                                    <Contract {...contract}/>
+                                    <Contract {...contract} reload={this.reload.bind(this)}/>
                                 </div>
                             ))}
                             {contracts.length === 0 && (
@@ -94,6 +100,16 @@ class Contract extends Component {
         }
     }
 
+    deleteContract() {
+        ConfirmationModal.renderFullScreen("Voce tem certeza que quer deletar esse Contrato?", () => {
+            if (this.state.id) {
+                AdAxiosPost.delete(`${HOST}/api/v1/contracts/${this.state.id}`).then((response) => {
+                    this.props.reload();
+                });
+            }
+        });
+    }
+
     /**
      * @param date {String} the date returned by the server is in UTC format
      * @return {string}
@@ -118,6 +134,8 @@ class Contract extends Component {
                     <TextChangerInput value={contractName} cb={(newName) => {
                         this.updateContractName(newName)
                     }}/>
+                    {contractExpiration.expired && (
+                        <div class="contract-header__option" onClick={this.deleteContract.bind(this)}>Deletar</div>)}
                 </div>
                 <div class="contract__body text-muted">
                     <div class="contract__body-item">Website:&nbsp;

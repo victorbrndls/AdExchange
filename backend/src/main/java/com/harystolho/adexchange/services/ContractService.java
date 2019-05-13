@@ -122,4 +122,27 @@ public class ContractService {
 
 		return ServiceResponse.ok(contract);
 	}
+
+	public ServiceResponse<Contract> deleteContract(String accountId, String id) {
+		Contract contract = contractRepository.getById(id);
+
+		if (contract == null)
+			return ServiceResponse.fail("INVALID_CONTRACT_ID");
+
+		if (!contract.isAuthorized(accountId))
+			return ServiceResponse.unauthorized();
+
+		if (!contract.hasExpired())
+			return ServiceResponse.fail("Contract has not expired yet");
+
+		if (contract.getCreatorId().equals(accountId)) {
+			contract.setCreatorId("");
+		} else if (contract.getAcceptorId().equals(accountId)) {
+			contract.setAcceptorId("");
+		}
+
+		contractRepository.save(contract);
+
+		return ServiceResponse.ok(null);
+	}
 }

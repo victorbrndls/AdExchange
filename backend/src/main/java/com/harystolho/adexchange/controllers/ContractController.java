@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -71,18 +72,16 @@ public class ContractController {
 
 	}
 
-	@GetMapping("/api/v1/contracts/batch")
-	/**
-	 * @param accountId
-	 * @param ids
-	 * @return
+	/*
+	 * @GetMapping("/api/v1/contracts/batch") public ResponseEntity<Object>
+	 * getContractsById(@RequestAttribute("ae.accountId") String accountId, String
+	 * ids) {
+	 * 
+	 * ServiceResponse<List<Contract>> response =
+	 * contractService.getContractsById(accountId, ids);
+	 * 
+	 * return ResponseEntity.status(HttpStatus.OK).body(response.getReponse()); }
 	 */
-	public ResponseEntity<Object> getContractsById(@RequestAttribute("ae.accountId") String accountId, String ids) {
-
-		ServiceResponse<List<Contract>> response = contractService.getContractsById(accountId, ids);
-
-		return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
-	}
 
 	@PatchMapping("/api/v1/contracts/{id}")
 	public ResponseEntity<Object> updateContract(@RequestAttribute("ae.accountId") String accountId,
@@ -97,6 +96,22 @@ public class ContractController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getFullMessage());
 		default:
 			return ResponseEntity.status(HttpStatus.OK).body(response.getReponse());
+		}
+	}
+
+	@DeleteMapping("/api/v1/contracts/{id}")
+	public ResponseEntity<Object> deleteContract(@RequestAttribute("ae.accountId") String accountId,
+			@PathVariable String id) {
+
+		ServiceResponse<Contract> response = contractService.deleteContract(accountId, id);
+
+		switch (response.getErrorType()) {
+		case OK:
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response.getReponse());
+		case UNAUTHORIZED:
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+		default:
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getFullMessage());
 		}
 	}
 }

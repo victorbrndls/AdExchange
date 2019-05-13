@@ -5,6 +5,12 @@ import java.util.List;
 import org.apache.tomcat.util.security.Escape;
 import org.springframework.stereotype.Service;
 
+/**
+ * Converts {@link TagNode} to HTML
+ * 
+ * @author Harystolho
+ *
+ */
 @Service
 public class TagNodeWriter {
 

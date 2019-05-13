@@ -20,7 +20,6 @@ import com.harystolho.adexchange.information.Visitor;
 public class CacheService<T> implements Visitor {
 
 	private static final int CLEAN_UP_DELAY = 1000 * 60; // 1 Minute
-	private static final Logger logger = LogManager.getLogger();
 
 	private static final Duration DEFAULT_DURATION = Duration.ofMinutes(10);
 

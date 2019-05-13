@@ -416,6 +416,8 @@ body.auth #header {
     font-family: Raleway, serif;
     font-size: 24px;
     border-radius: 4px 4px 0 0;
+    display: flex;
+    justify-content: space-between;
 }
 
 .contract__body {
@@ -552,7 +554,17 @@ body.auth #header {
     color: white;
 }
 
-#createAdTextArea{
+#createAdTextArea {
     height: 75px;
     line-height: 1.7em;
+}
+
+.contract-header__option {
+    font-size: 12px;
+    align-self: center;
+}
+
+.contract-header__option:hover {
+    text-decoration: underline;
+    cursor: pointer;
 }
