@@ -2,6 +2,7 @@ package com.harystolho.adexchange.parser.ad;
 
 import java.util.List;
 
+import org.apache.tomcat.util.security.Escape;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,20 +17,12 @@ public class TagNodeWriter {
 	}
 
 	private void appendTagTo(TagNode tag, StringBuilder sb) {
-		switch (tag.getTag()) {
-		case "b":
-		case "i":
-		case "span":
-			appendCommonTagTo(tag, sb);
-			return;
-		default:
-			break;
-		}
+		appendCommonTagTo(tag, sb);
 	}
 
 	private void appendCommonTagTo(TagNode tag, StringBuilder sb) {
 		sb.append("<" + tag.getTag() + ">");
-		sb.append(tag.getContent());
+		sb.append(Escape.htmlElementContent(tag.getContent()));
 		sb.append("</" + tag.getTag() + ">");
 	}
 
