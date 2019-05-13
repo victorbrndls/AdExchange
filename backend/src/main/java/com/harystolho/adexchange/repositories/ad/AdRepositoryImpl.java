@@ -42,7 +42,7 @@ public class AdRepositoryImpl implements AdRepository {
 	}
 
 	@Override
-	public void deleteById(String id) {
+	public void removeById(String id) {
 		Query query = Query.query(Criteria.where("_id").is(id));
 		mongoOperations.remove(query, Ad.class);
 	}

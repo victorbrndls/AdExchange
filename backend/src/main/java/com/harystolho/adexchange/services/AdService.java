@@ -132,7 +132,7 @@ public class AdService {
 		Ad ad = adRepository.getAdById(id);
 
 		if (ad != null && ad.getAccountId().equals(accountId)) {
-			adRepository.deleteById(id);
+			adRepository.removeById(id);
 			return ServiceResponse.ok(null);
 		}
 
@@ -152,6 +152,10 @@ public class AdService {
 
 		return null;
 	}
+
+	public void removeAd(String id) {
+		adRepository.removeById(id);
+	}	
 
 	private ServiceResponseType verifyAdFields(String name, String type, String refUrl, String text, String bgColor,
 			String textColor, String imageUrl) {

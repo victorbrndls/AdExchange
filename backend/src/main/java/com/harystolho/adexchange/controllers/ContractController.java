@@ -103,7 +103,7 @@ public class ContractController {
 	public ResponseEntity<Object> deleteContract(@RequestAttribute("ae.accountId") String accountId,
 			@PathVariable String id) {
 
-		ServiceResponse<Contract> response = contractService.deleteContract(accountId, id);
+		ServiceResponse<Contract> response = contractService.deleteContractForUser(accountId, id);
 
 		switch (response.getErrorType()) {
 		case OK:

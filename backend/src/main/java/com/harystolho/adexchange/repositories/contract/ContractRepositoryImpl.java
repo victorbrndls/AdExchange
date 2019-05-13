@@ -50,7 +50,7 @@ public class ContractRepositoryImpl implements ContractRepository {
 	}
 
 	@Override
-	public void remove(String id) {
+	public void removeById(String id) {
 		Query query = Query.query(Criteria.where("_id").is(id));
 		mongoOperations.remove(query, Contract.class);
 	}

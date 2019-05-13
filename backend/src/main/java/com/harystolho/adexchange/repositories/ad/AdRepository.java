@@ -14,6 +14,6 @@ public interface AdRepository {
 
 	List<Ad> getAdsById(List<String> ids);
 
-	void deleteById(String id);
+	void removeById(String id);
 
 }

@@ -124,7 +124,7 @@ public class ContractService {
 		return ServiceResponse.ok(contract);
 	}
 
-	public ServiceResponse<Contract> deleteContract(String accountId, String id) {
+	public ServiceResponse<Contract> deleteContractForUser(String accountId, String id) {
 		Contract contract = contractRepository.getById(id);
 
 		if (contract == null)
@@ -144,14 +144,19 @@ public class ContractService {
 			contract.setAcceptorId("");
 		}
 
-		// If the contract is not visible to the creator nor to the acceptor it should
-		// be deleted
+		// If the contract was removed by the creator and by the acceptor it should
+		// be deleted from the db
 		if (!AEUtils.isIdValid(contract.getCreatorId()) && !AEUtils.isIdValid(contract.getAcceptorId())) {
-			contractRepository.remove(contract.getId());
+			deleteContract(contract);
 		} else {
-			contractRepository.save(contract);	
+			contractRepository.save(contract);
 		}
 
 		return ServiceResponse.ok(null);
+	}
+
+	private void deleteContract(Contract contract) {
+		contractRepository.removeById(contract.getId());
+		adService.removeAd(contract.getAdId());
 	}
 }
