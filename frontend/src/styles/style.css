@@ -200,16 +200,21 @@ body.auth #header {
 .dashboard-website__up-url a {
     font-size: 33px;
     font-weight: bold;
+    color: #3f3f3f;
 }
 
 .dashboard-website__tag {
     display: inline-block;
     background-color: #166ac9;
-    border-radius: 7px;
+    border-radius: 4px;
     padding: 2px 11px;
     color: white;
     font-variant: small-caps;
     margin: 0 5px;
+}
+
+.dashboard-website__tag:hover{
+    background-color: #0c4584;
 }
 
 .dashboard-website, .dashboard-website__up-logo {
@@ -569,19 +574,19 @@ body.auth #header {
     cursor: pointer;
 }
 
-.dashboard__main-topbar{
-    display:  flex;
+.dashboard__main-topbar {
+    display: flex;
     justify-content: flex-end;
     padding-right: 20px;
 }
 
-.dashboard__main-topbar--item{
+.dashboard__main-topbar--item {
     display: inline-block;
     align-self: center;
     margin-left: 11px;
 }
 
-.auth--new-account{
+.auth--new-account {
     position: absolute;
     width: 100%;
     height: 40px;
@@ -590,4 +595,11 @@ body.auth #header {
     color: white;
     font-family: Raleway, serif;
     font-size: 22px;
+}
+
+.dashboard-website__description {
+    font-size: 18px;
+    color: #666;
+    text-align: center;
+    margin: 40px 0;
 }
