@@ -199,10 +199,6 @@ export default class AddProposal extends Component {
         let edit_m = mode === 'EDIT';
         let new_m = mode === 'NEW';
         let sent_t = type === 'SENT';
-        let new_t = type === 'NEW';
-
-        let disableFields = sent_t || proposal.rejected;
-
         return (
             <div>
                 <div style="font-family: Raleway; font-size: 30px;">
@@ -226,6 +222,11 @@ export default class AddProposal extends Component {
                                     <option value={ad.id}>{ad.name}</option>
                                 ))}
                             </select>
+                            <small class="form-text text-muted">O anúncio não pode ser editado depois que a proposta for
+                                aceita, isso significa que mesmo que alguma alteração ocorra no anúncio, ela não será
+                                visível para as pessoas. Caso você queira alterar o anúncio será necessário cancelar o
+                                contrato e fazer outro.
+                            </small>
                             <small class="form-text ad-error">{error.ad}</small>
                             <div class="ad-container">
                                 <div class="blocking-container"/>
@@ -320,5 +321,9 @@ export default class AddProposal extends Component {
                 </div>
             </div>
         )
+
+        let new_t = type === 'NEW';
+
+        let disableFields = sent_t || proposal.rejected;
     }
 }

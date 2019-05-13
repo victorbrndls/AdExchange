@@ -578,4 +578,5 @@ body.auth #header {
 .dashboard__main-topbar--item{
     display: inline-block;
     align-self: center;
+    margin-left: 11px;
 }
