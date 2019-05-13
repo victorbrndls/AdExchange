@@ -11,6 +11,7 @@ export default class Auth extends Component {
             mode: 'REGISTER',
             email: "",
             password: "",
+            newAccount: false,
             error: {}
         };
 
@@ -19,7 +20,7 @@ export default class Auth extends Component {
 
     createAccount() {
         createAccount(this.state.email, this.state.password).then(() => {
-            route('/auth?login');
+            route('/auth?login&new_account');
             location.reload();
         }).catch((response) => {
             this.setState({error: {}});
@@ -40,8 +41,7 @@ export default class Auth extends Component {
 
     login() {
         login(this.state.email, this.state.password).then(() => {
-            route('/dashboard');
-//            location.reload();
+            route('/dashboard/panel');
         }).catch((response) => {
             this.setState({error: {}});
 
@@ -59,9 +59,13 @@ export default class Auth extends Component {
         } else {
             this.setState({mode: 'LOGIN'});
         }
+
+        if (location.search.includes('new_account'))
+            this.setState({newAccount: true});
+
     };
 
-    render({url}, {mode, email, password, error}) {
+    render({url}, {mode, email, password, error, newAccount}) {
         if (auth.isUserAuthenticated()) {
             if (UrlUtils.include('/logout'))
                 logout();
@@ -121,6 +125,10 @@ export default class Auth extends Component {
                         </div>
                     </div>
                 </div>
+                {newAccount && (
+                    <div class="auth--new-account">Agora você pode utilizar a conta que você acabou de criar para
+                        entrar</div>
+                )}
             </div>
         )
     }

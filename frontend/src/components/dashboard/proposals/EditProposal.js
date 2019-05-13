@@ -315,7 +315,7 @@ export default class AddProposal extends Component {
                                 {!proposal.owner && (
                                     <div id="dashboardAcceptButton" class="btn dashboard-add__button"
                                          onClick={this.acceptProposal.bind(this)}>
-                                        Aceitar Proposta {/*//TODO don't show this if i am the proposal owner*/}
+                                        Aceitar Proposta
                                         {/*//TODO show terms of use for contract - the owner can break the contract,...*/}
                                     </div>
                                 )}
@@ -327,7 +327,6 @@ export default class AddProposal extends Component {
                                      onClick={this.rejectProposal.bind(this)}>
                                     Rejeitar Proposta
                                 </div>
-                                {/*//TODO add a confirm modal to 'reject proposal'*/}
                             </div>)}
                     </div>
                 </div>

@@ -15,11 +15,7 @@ function login(email, password) {
     formData.append('password', password);
 
     return new Promise((resolve, reject) => {
-        Axios.post(`${HOST}/auth/login`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            }
-        }).then((response) => {
+        AdAxiosPost.post(`${HOST}/auth/login`, formData).then((response) => {
             saveToken(response.data);
             reloadAxiosInstances();
 
@@ -36,11 +32,7 @@ function createAccount(email, password) {
     formData.append('password', password);
 
     return new Promise((resolve, reject) => {
-        Axios.post(`${HOST}/auth/account`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            }
-        }).then((response) => {
+        AdAxiosPost.post(`${HOST}/auth/account`, formData).then(() => {
             //TODO login user after account is created
             resolve();
         }).catch((error) => {
