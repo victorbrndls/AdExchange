@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import com.harystolho.adexchange.models.ads.ImageAd;
 import com.harystolho.adexchange.models.ads.TextAd;
+import com.harystolho.adexchange.parser.ad.AdContentParser;
+import com.harystolho.adexchange.parser.ad.TagNodeWriter;
 
 /**
  * Build the Ad that is displayed in the DOM
@@ -17,17 +19,19 @@ import com.harystolho.adexchange.models.ads.TextAd;
 public class AdTemplateService {
 
 	private TemplateReader templateReader;
+	private TagNodeWriter tagNodeWriter;
 
 	@Autowired
-	public AdTemplateService(TemplateReader templateReader) {
+	public AdTemplateService(TemplateReader templateReader, TagNodeWriter tagNodeWriter) {
 		this.templateReader = templateReader;
+		this.tagNodeWriter = tagNodeWriter;
 	}
 
 	public String assembleUsingTextAd(TextAd ad) {
 		// Escape the content to prevent attacks
 		String bgColor = Escape.htmlElementContent(ad.getBgColor());
 		String textColor = Escape.htmlElementContent(ad.getTextColor());
-		String text = Escape.htmlElementContent(ad.getText());
+		String text = getTextAdParsedOutputAsHTML(ad);
 
 		return String.format(templateReader.getTemplate("TEXT"), bgColor, textColor, text);
 	}
@@ -39,4 +43,10 @@ public class AdTemplateService {
 		return String.format(templateReader.getTemplate("IMAGE"), imageUrl);
 	}
 
+	private String getTextAdParsedOutputAsHTML(TextAd ad) {
+		AdContentParser parser = new AdContentParser();
+		parser.setInput(ad.getText());
+
+		return tagNodeWriter.writeHTML(parser.parse());
+	}
 }

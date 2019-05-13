@@ -42,7 +42,7 @@ public class AdModelServerService {
 	public ServiceResponse<List<AdModel>> getSpots(String ids) {
 		List<AdModel> models = new ArrayList<>();
 
-		String[] spotsId = ids.split(",");
+		String[] spotsId = StringUtils.commaDelimitedListToStringArray(ids);
 
 		for (String id : spotsId) {
 			AdModel model = getAdModelUsingSpotId(id);

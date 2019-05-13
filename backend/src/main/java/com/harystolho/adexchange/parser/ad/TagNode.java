@@ -11,7 +11,7 @@ package com.harystolho.adexchange.parser.ad;
  * tag.setContent("this is a bold text");
  * </pre>
  * 
- * To transform the {@link TagNode} to HTML again use {@link TagNodeToHTML}
+ * To transform the {@link TagNode} to HTML again use {@link TagNodeWriter}
  * 
  * @author Harystolho
  *
