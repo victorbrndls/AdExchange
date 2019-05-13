@@ -6,6 +6,7 @@ import {AdAxiosGet, AdAxiosPost, auth} from "../../../auth";
 import {ImageAd, TextAd} from "../ads/CreateAdd";
 import {route} from "preact-router";
 import UrlUtils from "../../utils/UrlUtils";
+import {ConfirmationModal} from "../../utils/Components";
 
 export default class AddProposal extends Component {
     constructor(props) {
@@ -124,8 +125,10 @@ export default class AddProposal extends Component {
     }
 
     acceptProposal() {
-        AdAxiosPost.post(`${HOST}/api/v1/proposals/accept/${this.state.proposal.id}`).then((response) => {
-            route('/dashboard/contracts');
+        ConfirmationModal.renderFullScreen("Você tem certeza que quer aceitar essa Proposta?", () => {
+            AdAxiosPost.post(`${HOST}/api/v1/proposals/accept/${this.state.proposal.id}`).then((response) => {
+                route('/dashboard/contracts');
+            });
         });
     }
 
@@ -146,18 +149,22 @@ export default class AddProposal extends Component {
     }
 
     rejectProposal() {
-        AdAxiosPost.post(`${HOST}/api/v1/proposals/reject/${this.state.proposal.id}`).then((response) => {
-            route('/dashboard/proposals');
-            this.props.reload();
+        ConfirmationModal.renderFullScreen("Você tem certeza que quer rejeitar essa Proposta?", () => {
+            AdAxiosPost.post(`${HOST}/api/v1/proposals/reject/${this.state.proposal.id}`).then((response) => {
+                route('/dashboard/proposals');
+                this.props.reload();
+            });
         });
     }
 
     deleteProposal() {
-        AdAxiosPost.delete(`${HOST}/api/v1/proposals/${this.state.proposal.id}`).then((response) => {
-            route('/dashboard/proposals');
-            this.props.reload();
-        }).catch((error) => {
-            this.handleErrorResponse(error);
+        ConfirmationModal.renderFullScreen("Você tem certeza que quer deletar essa Proposta?", () => {
+            AdAxiosPost.delete(`${HOST}/api/v1/proposals/${this.state.proposal.id}`).then((response) => {
+                route('/dashboard/proposals');
+                this.props.reload();
+            }).catch((error) => {
+                this.handleErrorResponse(error);
+            });
         });
     }
 
@@ -199,6 +206,10 @@ export default class AddProposal extends Component {
         let edit_m = mode === 'EDIT';
         let new_m = mode === 'NEW';
         let sent_t = type === 'SENT';
+        let new_t = type === 'NEW';
+
+        let disableFields = sent_t || proposal.rejected;
+
         return (
             <div>
                 <div style="font-family: Raleway; font-size: 30px;">
@@ -322,9 +333,5 @@ export default class AddProposal extends Component {
                 </div>
             </div>
         )
-
-        let new_t = type === 'NEW';
-
-        let disableFields = sent_t || proposal.rejected;
     }
 }
