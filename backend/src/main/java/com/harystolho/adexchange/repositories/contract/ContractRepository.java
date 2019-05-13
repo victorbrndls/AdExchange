@@ -21,4 +21,6 @@ public interface ContractRepository {
 
 	List<Contract> getByAcceptorId(String accountId);
 
+	void remove(String id);
+
 }

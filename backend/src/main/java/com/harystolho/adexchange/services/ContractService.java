@@ -12,6 +12,7 @@ import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.Contract.PaymentMethod;
 import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.repositories.contract.ContractRepository;
+import com.harystolho.adexchange.utils.AEUtils;
 
 @Service
 public class ContractService {
@@ -135,13 +136,21 @@ public class ContractService {
 		if (!contract.hasExpired())
 			return ServiceResponse.fail("Contract has not expired yet");
 
+		// Remove the user's id of the contract so the contract doesn't appear to the
+		// user
 		if (contract.getCreatorId().equals(accountId)) {
 			contract.setCreatorId("");
 		} else if (contract.getAcceptorId().equals(accountId)) {
 			contract.setAcceptorId("");
 		}
 
-		contractRepository.save(contract);
+		// If the contract is not visible to the creator nor to the acceptor it should
+		// be deleted
+		if (!AEUtils.isIdValid(contract.getCreatorId()) && !AEUtils.isIdValid(contract.getAcceptorId())) {
+			contractRepository.remove(contract.getId());
+		} else {
+			contractRepository.save(contract);	
+		}
 
 		return ServiceResponse.ok(null);
 	}

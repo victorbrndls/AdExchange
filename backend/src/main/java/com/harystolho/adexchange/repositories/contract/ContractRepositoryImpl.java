@@ -49,4 +49,10 @@ public class ContractRepositoryImpl implements ContractRepository {
 		return mongoOperations.find(query, Contract.class);
 	}
 
+	@Override
+	public void remove(String id) {
+		Query query = Query.query(Criteria.where("_id").is(id));
+		mongoOperations.remove(query, Contract.class);
+	}
+
 }

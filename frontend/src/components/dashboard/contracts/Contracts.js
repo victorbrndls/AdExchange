@@ -31,7 +31,8 @@ export default class Contracts extends Component {
     }
 
     reload() {
-        this.setState({contracts: []});
+        this.setState({contracts: []}); // Don't remove this because it doesn't work without it
+
         this.hasMadeContractRequest = false;
         this.requestContracts();
     }
