@@ -185,7 +185,7 @@ export default class AddProposal extends Component {
                 this.setState({
                     error: {
                         ...error,
-                        paymentValue: "Valor do pagamento inválido. O valor deve ser maior que 0.00 e conter no máximo 2 casas decimais"
+                        paymentValue: "Valor do pagamento inválido. O valor deve ser maior que 0.00 e conter no máximo 2 casas decimais. Use ponto(.) em vez de virgula(,)"
                     }
                 });
                 return;
@@ -222,7 +222,8 @@ export default class AddProposal extends Component {
                                     <option value={ad.id}>{ad.name}</option>
                                 ))}
                             </select>
-                            <small class="form-text text-muted">O anúncio não pode ser editado depois que a proposta for
+                            <small class="form-text text-muted">O anúncio da proposta não pode ser editado depois que
+                                ela for
                                 aceita, isso significa que mesmo que alguma alteração ocorra no anúncio, ela não será
                                 visível para as pessoas. Caso você queira alterar o anúncio será necessário cancelar o
                                 contrato e fazer outro.
