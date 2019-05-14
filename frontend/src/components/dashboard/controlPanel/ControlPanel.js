@@ -1,37 +1,47 @@
 import {Component} from "preact";
+import ControlPanelManager from "../../../managers/ControlPanelManager";
 
 export default class ControlPanel extends Component {
     constructor(props) {
         super(props);
+
+        this.hasRequestedNotifications = false;
     }
 
-    render(){
+    requestNotifications() {
+        if (!this.hasRequestedNotifications) {
+            this.hasRequestedNotifications = true;
+            ControlPanelManager.getNotifications().then((response) => {
+                console.log(response);
+            });
+        }
+    }
+
+    render() {
         return (
             <div>
                 <div class="col-sm-12 col-md-7 col-lg-4">
-                <div class="card">
-                    <div class="card-header dashboard-panel__notification-card">
-                        <span class="dashboard-panel__notification-header">Notificações</span>
+                    <div class="card">
+                        <div class="card-header dashboard-panel__notification-card">
+                            <span class="dashboard-panel__notification-header">Notificações</span>
+                        </div>
+                        <div class="dashboard-panel__notifications card-body">
+                            {this.requestNotifications.bind(this)()}
+                            <NotificationItem/>
+                            <div class="dashboard-panel__notification--item">
+                                <i class="fa fa-check notification-icon notification-icon__accepted"/>
+                                <span>A sua proposta para "Website" foi aceita</span>
+                            </div>
+                            <div class="dashboard-panel__notification--item">
+                                <i class="fa fa-repeat notification-icon notification-icon__repeat"/>
+                                <span>"Nome" viu a proposta para "Website" e enviou-la novamente</span>
+                            </div>
+                            <div class="dashboard-panel__notification--item">
+                                <i class="fa fa-minus notification-icon notification-icon__rejected"/>
+                                <span>Sua proposta para "Website" foi rejeitada</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="dashboard-panel__notifications card-body">
-                        <div class="dashboard-panel__notification--item">
-                            <i class="fa fa-envelope notification-icon notification-icon__sent"/>
-                            <span>"Nome" enviou uma proposta para "Website"</span>
-                        </div>
-                        <div class="dashboard-panel__notification--item">
-                            <i class="fa fa-check notification-icon notification-icon__accepted"/>
-                            <span>A sua proposta para "Website" foi aceita</span>
-                        </div>
-                        <div class="dashboard-panel__notification--item">
-                            <i class="fa fa-repeat notification-icon notification-icon__repeat"/>
-                            <span>"Nome" viu sua proposta e enviou-la novamente</span>
-                        </div>
-                        <div class="dashboard-panel__notification--item">
-                            <i class="fa fa-minus notification-icon notification-icon__rejected"/>
-                            <span>Sua proposta para "Website" foi rejeitada</span>
-                        </div>
-                    </div>
-                </div>
                 </div>
 
                 {/*Remove this latter*/}
@@ -45,6 +55,21 @@ export default class ControlPanel extends Component {
 
                     Imagens, gráficos, vídeos, listas, links, gifs, infográficos
                 </div>
+            </div>
+        )
+    }
+}
+
+class NotificationItem extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <div class="dashboard-panel__notification--item">
+                <i class="fa fa-envelope notification-icon notification-icon__sent"/>
+                <span>"Nome" enviou uma proposta para "Website"</span>
             </div>
         )
     }
