@@ -603,3 +603,42 @@ body.auth #header {
     text-align: center;
     margin: 40px 0;
 }
+
+.dashboard-panel__notification-header{
+    font-weight: 700;
+    font-family: Raleway, serif;
+}
+
+.dashboard-panel__notification-card{
+}
+
+.dashboard-panel__notification--item{
+    padding: 9px 0;
+}
+
+.dashboard-panel__notifications{
+    padding-bottom: 2px;
+    padding-top: 2px;
+}
+
+.notification-icon {
+    margin-right: 8px;
+    border-radius: 50%;
+    padding: 5px 6px;
+}
+
+.notification-icon__rejected{
+    color: red;
+}
+
+.notification-icon__repeat{
+color: darkblue;
+}
+
+.notification-icon__accepted{
+    color: green;
+}
+
+.notification-icon__sent{
+    color: orange;
+}
