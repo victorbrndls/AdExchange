@@ -643,3 +643,22 @@ body.auth #header {
 .notification-icon.fa-envelope {
     color: orange;
 }
+
+.dropdown-item > a{
+    color: black;
+}
+
+.dashboard__main-topbar .dropdown-item:active{
+    background-color: #1c60c6;
+}
+
+.dashboard__main-topbar button{
+    background-color: transparent;
+    font-family: Raleway, serif;
+    font-size: 19px;
+}
+
+.dashboard__main-topbar button:focus{
+    box-shadow: none;
+}
+

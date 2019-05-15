@@ -7,6 +7,7 @@ import Ads from "./ads/Ads";
 import Contracts from "./contracts/Contracts";
 import Spots from "./spots/Spots";
 import ControlPanel from "./controlPanel/ControlPanel";
+import {Dropdown} from "../utils/Components";
 
 export default class Dashboard extends Component {
     constructor(props) {
@@ -61,9 +62,19 @@ export default class Dashboard extends Component {
                             </Link>
                         </div>
                         <div class="dashboard__main-topbar--item">
-                            <Link href="/auth/logout" activeClassName="active">
-                                <div>Logout</div>
-                            </Link>
+
+                        </div>
+                        <div class="d-inline-block align-self-center">
+                            <Dropdown text="Menu">
+                                <div class="dropdown-item">
+                                    Conta
+                                </div>
+                                <div class="dropdown-item">
+                                    <Link href="/auth/logout" activeClassName="active">
+                                        Logout
+                                    </Link>
+                                </div>
+                            </Dropdown>
                         </div>
                     </div>
                     <div class="dashboard__main-content">

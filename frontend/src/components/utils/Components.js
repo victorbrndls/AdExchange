@@ -84,8 +84,33 @@ class TextChangerInput extends Component {
     }
 }
 
+class Dropdown extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            open: false
+        };
+    }
+
+    render({text, children}, {open}) {
+        return (
+            <div class="dropdown">
+                <button class="btn dropdown-toggle" onClick={() => this.setState({open: !open})}>{text}</button>
+                {open && (
+                    <div class="dropdown-menu show" style="right: 0; left: auto">
+                        {children.map(child => (
+                            child
+                        ))}
+                    </div>)}
+            </div>
+        )
+    }
+}
+
 export {
     LeftArrow,
     ConfirmationModal,
-    TextChangerInput
+    TextChangerInput,
+    Dropdown
 }
