@@ -213,7 +213,7 @@ body.auth #header {
     margin: 0 5px;
 }
 
-.dashboard-website__tag:hover{
+.dashboard-website__tag:hover {
     background-color: #0c4584;
 }
 
@@ -604,19 +604,19 @@ body.auth #header {
     margin: 40px 0;
 }
 
-.dashboard-panel__notification-header{
+.dashboard-panel__notification-header {
     font-weight: 700;
     font-family: Raleway, serif;
 }
 
-.dashboard-panel__notification-card{
+.dashboard-panel__notification-card {
 }
 
-.dashboard-panel__notification--item{
+.dashboard-panel__notification--item {
     padding: 9px 0;
 }
 
-.dashboard-panel__notifications{
+.dashboard-panel__notifications {
     padding-bottom: 2px;
     padding-top: 2px;
 }
@@ -627,18 +627,18 @@ body.auth #header {
     padding: 5px 6px;
 }
 
-.notification-icon__rejected{
-    color: red;
+.notification-icon.fa-repeat {
+    color: darkblue;
 }
 
-.notification-icon__repeat{
-color: darkblue;
-}
-
-.notification-icon__accepted{
+.notification-icon.fa-check {
     color: green;
 }
 
-.notification-icon__sent{
+.notification-icon.fa-minus {
+    color: red;
+}
+
+.notification-icon.fa-envelope {
     color: orange;
 }

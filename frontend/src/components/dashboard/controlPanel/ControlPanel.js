@@ -16,7 +16,7 @@ export default class ControlPanel extends Component {
         if (!this.hasRequestedNotifications) {
             this.hasRequestedNotifications = true;
             ControlPanelManager.getNotifications().then((notifs) => {
-                this.setState({notifications: notifs});
+                this.setState({notifications: notifs.reverse()});
             });
         }
     }
@@ -31,22 +31,9 @@ export default class ControlPanel extends Component {
                         </div>
                         <div class="dashboard-panel__notifications card-body">
                             {this.requestNotifications.bind(this)()}
-                            <NotificationItem/>
-                            <div class="dashboard-panel__notification--item">
-                                <i class="fa fa-check notification-icon notification-icon__accepted"/>
-                                <span>A sua proposta para "Website" foi aceita</span>
-                            </div>
-                            <div class="dashboard-panel__notification--item">
-                                <i class="fa fa-repeat notification-icon notification-icon__repeat"/>
-                                <span>"Nome" viu a proposta para "Website" e enviou-la novamente</span>
-                            </div>
-                            <div class="dashboard-panel__notification--item">
-                                <i class="fa fa-minus notification-icon notification-icon__rejected"/>
-                                <span>Sua proposta para "Website" foi rejeitada</span>
-                            </div>
-                            {notifications.map((not)=> (
+                            {notifications.map((notif) => (
                                 <div>
-                                    {not.type}
+                                    <NotificationItem {...notif}/>
                                 </div>
                             ))}
                         </div>
@@ -70,16 +57,45 @@ export default class ControlPanel extends Component {
 }
 
 class NotificationItem extends Component {
+    notificationMapper = {
+        'NEW_PROPOSAL': NewProposalNotification,
+        'REJECTED_PROPOSAL': RejectedProposalNotification,
+        'RESENT_PROPOSAL': ResentProposalNotification,
+        'ACCEPTED_PROPOSAL': AcceptedProposalNotification
+    };
+
     constructor(props) {
         super(props);
     }
 
-    render() {
+    render(props) {
+        let type = props.type;
+        let notification = this.notificationMapper[type];
+
         return (
             <div class="dashboard-panel__notification--item">
-                <i class="fa fa-envelope notification-icon notification-icon__sent"/>
-                <span>"Nome" enviou uma proposta para "Website"</span>
+                <i class={`fa ${notification._iconClass} notification-icon`}/>
+                <span>{notification._messageConvertor({...props})}</span>
             </div>
         )
     }
 }
+
+class NotificationType {
+    constructor(iconClass, converter) {
+        this._iconClass = iconClass;
+        this._messageConvertor = converter || (() => "Erro ao mostrar notificacao");
+    }
+}
+
+let NewProposalNotification = new NotificationType('fa-envelope',
+    ({senderName, websiteName}) => `${senderName || 'Alguem'} enviou uma proposta para ${websiteName}`);
+
+let RejectedProposalNotification = new NotificationType('fa-minus',
+    ({senderName, websiteName}) => `${senderName || 'Alguem'} rejeitou a proposta para ${websiteName}`);
+
+let ResentProposalNotification = new NotificationType('fa-repeat',
+    ({senderName, websiteName}) => `${senderName || 'Alguem'} revisou a proposta para ${websiteName} e enviou-la novamente`);
+
+let AcceptedProposalNotification = new NotificationType('fa-check',
+    ({websiteName}) => `A proposta para ${websiteName} foi aceita`);
