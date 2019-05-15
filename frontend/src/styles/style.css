@@ -622,25 +622,28 @@ body.auth #header {
 }
 
 .notification-icon {
-    margin-right: 8px;
+    margin: auto 12px auto 0;
     border-radius: 50%;
-    padding: 5px 6px;
+    padding: 8px 9px;
+    height: 31px;
+    color: white;
 }
 
 .notification-icon.fa-repeat {
-    color: darkblue;
+    background-color: #0a34c2;
 }
 
 .notification-icon.fa-check {
-    color: green;
+    background-color: #43e443;
 }
 
 .notification-icon.fa-minus {
-    color: red;
+    background-color: #c2170a;
 }
 
 .notification-icon.fa-envelope {
-    color: orange;
+    background-color: #c29f0a;
+    padding: 7px 9px;
 }
 
 .dropdown-item > a{
