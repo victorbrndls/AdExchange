@@ -61,7 +61,7 @@ public class NotificationService {
 		return ServiceResponseType.OK;
 	}
 
-	public ServiceResponseType emitReviewProposalNotification(Proposal proposal, String reviewerId) {
+	public ServiceResponseType emitReviewedProposalNotification(Proposal proposal, String reviewerId) {
 		Account reviewerAccount = accountService.getAccountById(reviewerId).getReponse();
 		Website website = websiteService.getWebsiteById(proposal.getWebsiteId()).getReponse();
 
@@ -70,7 +70,7 @@ public class NotificationService {
 		if (website == null)
 			return ServiceResponseType.INVALID_WEBSITE_ID;
 
-		Notification notif = new ProposalNotification.Review(reviewerAccount.getFullName(), website.getName());
+		Notification notif = new ProposalNotification.Reviewed(reviewerAccount.getFullName(), website.getName());
 
 		userDataService.addNotificationToUser(notif, getOppositeId(proposal, reviewerId));
 

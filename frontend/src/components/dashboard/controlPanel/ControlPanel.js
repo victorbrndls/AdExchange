@@ -60,7 +60,7 @@ class NotificationItem extends Component {
     notificationMapper = {
         'NEW_PROPOSAL': NewProposalNotification,
         'REJECTED_PROPOSAL': RejectedProposalNotification,
-        'RESENT_PROPOSAL': ResentProposalNotification,
+        'REVIEWED_PROPOSAL': ReviewedProposalNotification,
         'ACCEPTED_PROPOSAL': AcceptedProposalNotification
     };
 
@@ -71,6 +71,9 @@ class NotificationItem extends Component {
     render(props) {
         let type = props.type;
         let notification = this.notificationMapper[type];
+
+        if(!notification)
+            return;
 
         return (
             <div class="dashboard-panel__notification--item">
@@ -94,7 +97,7 @@ let NewProposalNotification = new NotificationType('fa-envelope',
 let RejectedProposalNotification = new NotificationType('fa-minus',
     ({senderName, websiteName}) => `${senderName || 'Alguem'} rejeitou a proposta para ${websiteName}`);
 
-let ResentProposalNotification = new NotificationType('fa-repeat',
+let ReviewedProposalNotification = new NotificationType('fa-repeat',
     ({senderName, websiteName}) => `${senderName || 'Alguem'} revisou a proposta para ${websiteName} e enviou-la novamente`);
 
 let AcceptedProposalNotification = new NotificationType('fa-check',

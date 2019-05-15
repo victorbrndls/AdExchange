@@ -33,10 +33,10 @@ public class ProposalNotification extends Notification {
 		}
 	}
 
-	public static class Review extends ProposalNotification {
+	public static class Reviewed extends ProposalNotification {
 
-		public Review(String senderName, String websiteName) {
-			super(NotificationType.RESENT_PROPOSAL, senderName, websiteName);
+		public Reviewed(String senderName, String websiteName) {
+			super(NotificationType.REVIEWED_PROPOSAL, senderName, websiteName);
 		}
 	}
 

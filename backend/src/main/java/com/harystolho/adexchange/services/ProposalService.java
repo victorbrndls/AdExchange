@@ -134,7 +134,7 @@ public class ProposalService {
 		prop.setVersion(prop.getVersion() + 1);
 		swapProposalLocation(prop);
 
-		notificationService.emitReviewProposalNotification(prop, accountId);
+		notificationService.emitReviewedProposalNotification(prop, accountId);
 
 		proposalRepository.save(prop);
 

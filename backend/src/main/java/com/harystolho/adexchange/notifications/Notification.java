@@ -3,7 +3,7 @@ package com.harystolho.adexchange.notifications;
 public class Notification {
 
 	public enum NotificationType {
-		NEW_PROPOSAL, ACCEPTED_PROPOSAL, RESENT_PROPOSAL, REJECTED_PROPOSAL
+		NEW_PROPOSAL, ACCEPTED_PROPOSAL, REVIEWED_PROPOSAL, REJECTED_PROPOSAL
 	}
 
 	protected NotificationType type;

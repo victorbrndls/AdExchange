@@ -13,15 +13,21 @@ public class NotificationReaderConverter implements Converter<Document, Notifica
 
 	@Override
 	public Notification convert(Document source) {
-		NotificationType type = NotificationType.valueOf(source.getString("type"));
+		NotificationType type = null;
+
+		try {
+			type = NotificationType.valueOf(source.getString("type"));
+		} catch (IllegalArgumentException e) {
+			return null;
+		}
 
 		switch (type) {
 		case ACCEPTED_PROPOSAL:
 			return new ProposalNotification.Accepted(source.getString("websiteName"));
 		case REJECTED_PROPOSAL:
 			return new ProposalNotification.Rejected(source.getString("senderName"), source.getString("websiteName"));
-		case RESENT_PROPOSAL:
-			return new ProposalNotification.Review(source.getString("senderName"), source.getString("websiteName"));
+		case REVIEWED_PROPOSAL:
+			return new ProposalNotification.Reviewed(source.getString("senderName"), source.getString("websiteName"));
 		case NEW_PROPOSAL:
 			return new ProposalNotification.New(source.getString("senderName"), source.getString("websiteName"));
 		default:
