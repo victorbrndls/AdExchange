@@ -20,7 +20,7 @@ import com.harystolho.adexchange.utils.PasswordSecurity;
 public class AuthServiceTest {
 
 	@InjectMocks
-	private static AuthService authService;
+	private static AccountService authService;
 
 	@Mock
 	private static AccountRepository authRepository;

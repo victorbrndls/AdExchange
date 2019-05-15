@@ -12,14 +12,14 @@ import com.harystolho.adexchange.utils.Nothing;
 import com.harystolho.adexchange.utils.PasswordSecurity;
 
 @Service
-public class AuthService {
+public class AccountService {
 
-	private AccountRepository authRepository;
+	private AccountRepository accountRepository;
 	private TokenService tokenService;
 
 	@Autowired
-	public AuthService(AccountRepository authRepository, TokenService tokenService) {
-		this.authRepository = authRepository;
+	public AccountService(AccountRepository accountRepository, TokenService tokenService) {
+		this.accountRepository = accountRepository;
 		this.tokenService = tokenService;
 	}
 
@@ -37,7 +37,7 @@ public class AuthService {
 
 		Account account = new Account(email, PasswordSecurity.encryptPassword(password));
 
-		authRepository.save(account);
+		accountRepository.save(account);
 
 		return ServiceResponse.ok(null);
 	}
@@ -46,7 +46,7 @@ public class AuthService {
 		if (StringUtils.isEmpty(email) || StringUtils.isEmpty(password))
 			return ServiceResponse.fail("Email or/and password can't be blank");
 
-		Account possibleAccount = authRepository.getByEmail(sanitizeEmail(email));
+		Account possibleAccount = accountRepository.getByEmail(sanitizeEmail(email));
 
 		if (possibleAccount == null) {
 			return ServiceResponse.fail(null);
@@ -60,6 +60,16 @@ public class AuthService {
 		String token = tokenService.generateTokenForAccount(possibleAccount.getId());
 
 		return ServiceResponse.ok(token);
+	}
+
+	public ServiceResponse<Account> getAccountById(String accountId) {
+		Account account = accountRepository.getById(accountId);
+
+		if (account != null) {
+			return ServiceResponse.ok(account);
+		} else {
+			return ServiceResponse.error(ServiceResponseType.INVALID_ACCOUNT_ID);
+		}
 	}
 
 	/**
@@ -90,7 +100,7 @@ public class AuthService {
 	}
 
 	private boolean emailExists(String email) {
-		return authRepository.getByEmail(email) != null;
+		return accountRepository.getByEmail(email) != null;
 	}
 
 }

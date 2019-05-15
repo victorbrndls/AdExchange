@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.harystolho.adexchange.services.AuthService;
+import com.harystolho.adexchange.services.AccountService;
 import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.utils.AEUtils;
 import com.harystolho.adexchange.utils.Nothing;
@@ -17,10 +17,10 @@ import com.harystolho.adexchange.utils.Nothing;
 @CrossOrigin(origins = AEUtils.corsOrigin)
 public class AuthController {
 
-	private AuthService authService;
+	private AccountService authService;
 
 	@Autowired
-	public AuthController(AuthService authService) {
+	public AuthController(AccountService authService) {
 		this.authService = authService;
 	}
 

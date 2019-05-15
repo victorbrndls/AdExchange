@@ -6,6 +6,8 @@ public interface AccountRepository {
 
 	public Account save(Account account);
 	
+	public Account getById(String accountId);
+	
 	public Account getByEmail(String email);
 	
 }

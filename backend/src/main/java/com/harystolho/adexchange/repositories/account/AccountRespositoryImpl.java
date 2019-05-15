@@ -27,4 +27,10 @@ public class AccountRespositoryImpl implements AccountRepository {
 		return mongoOperations.findOne(query, Account.class);
 	}
 
+	@Override
+	public Account getById(String accountId) {
+		Query query = Query.query(Criteria.where("_id").is(accountId));
+		return mongoOperations.findOne(query, Account.class);
+	}
+
 }

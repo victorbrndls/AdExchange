@@ -13,7 +13,9 @@ public class ServiceResponse<T> {
 		INVALID_AD_NAME, INVALID_AD_TYPE, INVALID_AD_TEXT, INVALID_AD_BG_COLOR, INVALID_AD_TEXT_COLOR,
 		INVALID_AD_IMAGE_URL, INVALID_AD_REF_URL, // Ad
 
-		INVALID_SPOT_NAME // Spot
+		INVALID_SPOT_NAME, // Spot
+
+		INVALID_ACCOUNT_ID // Account
 	}
 
 	private ServiceResponseType errorType;
