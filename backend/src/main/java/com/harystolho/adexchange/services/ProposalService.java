@@ -98,16 +98,16 @@ public class ProposalService {
 		proposal.setRejected(true);
 		swapProposalLocation(proposal);
 
+		notificationService.emitRejectedProposalNotification(proposal, accountId);
+		
 		if (proposal.getProposerId().equals(accountId)) {
 			proposal.setProposerId("");
 		} else {
 			proposal.setProposeeId("");
 		}
-		
-		notificationService.emitRejectedProposalNotification(proposal, accountId);
-		
+
 		proposalRepository.save(proposal);
-		
+
 		return ServiceResponse.ok(null);
 	}
 
@@ -134,6 +134,8 @@ public class ProposalService {
 		prop.setVersion(prop.getVersion() + 1);
 		swapProposalLocation(prop);
 
+		notificationService.emitReviewProposalNotification(prop, accountId);
+
 		proposalRepository.save(prop);
 
 		return ServiceResponse.ok(null);
@@ -150,6 +152,8 @@ public class ProposalService {
 
 		contractService.createContractFromProposal(prop, prop.getProposerId(), prop.getProposeeId());
 
+		notificationService.emitAcceptedProposalNotification(prop);
+		
 		proposalRepository.deleteById(id);
 
 		return ServiceResponse.ok(null);

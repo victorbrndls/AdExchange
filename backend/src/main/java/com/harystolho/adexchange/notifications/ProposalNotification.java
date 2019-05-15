@@ -33,9 +33,9 @@ public class ProposalNotification extends Notification {
 		}
 	}
 
-	public static class Resent extends ProposalNotification {
+	public static class Review extends ProposalNotification {
 
-		public Resent(String senderName, String websiteName) {
+		public Review(String senderName, String websiteName) {
 			super(NotificationType.RESENT_PROPOSAL, senderName, websiteName);
 		}
 	}

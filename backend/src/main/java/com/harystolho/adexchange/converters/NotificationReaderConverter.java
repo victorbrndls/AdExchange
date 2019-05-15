@@ -21,7 +21,7 @@ public class NotificationReaderConverter implements Converter<Document, Notifica
 		case REJECTED_PROPOSAL:
 			return new ProposalNotification.Rejected(source.getString("senderName"), source.getString("websiteName"));
 		case RESENT_PROPOSAL:
-			return new ProposalNotification.Resent(source.getString("senderName"), source.getString("websiteName"));
+			return new ProposalNotification.Review(source.getString("senderName"), source.getString("websiteName"));
 		case NEW_PROPOSAL:
 			return new ProposalNotification.New(source.getString("senderName"), source.getString("websiteName"));
 		default:

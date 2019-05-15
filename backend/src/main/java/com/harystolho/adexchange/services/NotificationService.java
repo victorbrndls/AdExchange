@@ -30,7 +30,7 @@ public class NotificationService {
 	}
 
 	public ServiceResponseType emitNewProposalNotification(Proposal proposal) {
-		Account account = accountService.getAccountById(proposal.getProposeeId()).getReponse();
+		Account account = accountService.getAccountById(proposal.getProposerId()).getReponse();
 		Website website = websiteService.getWebsiteById(proposal.getWebsiteId()).getReponse();
 
 		if (account == null)
@@ -56,17 +56,54 @@ public class NotificationService {
 
 		Notification notif = new ProposalNotification.Rejected(rejectorAccount.getFullName(), website.getName());
 
-		String recieverId = "";
-
-		if (proposal.getProposerId().equals(rejectorId)) {
-			recieverId = proposal.getProposeeId();
-		} else {
-			recieverId = proposal.getProposerId();
-		}
-
-		userDataService.addNotificationToUser(notif, recieverId);
+		userDataService.addNotificationToUser(notif, getOppositeId(proposal, rejectorId));
 
 		return ServiceResponseType.OK;
+	}
+
+	public ServiceResponseType emitReviewProposalNotification(Proposal proposal, String reviewerId) {
+		Account reviewerAccount = accountService.getAccountById(reviewerId).getReponse();
+		Website website = websiteService.getWebsiteById(proposal.getWebsiteId()).getReponse();
+
+		if (reviewerAccount == null)
+			return ServiceResponseType.FAIL;
+		if (website == null)
+			return ServiceResponseType.INVALID_WEBSITE_ID;
+
+		Notification notif = new ProposalNotification.Review(reviewerAccount.getFullName(), website.getName());
+
+		userDataService.addNotificationToUser(notif, getOppositeId(proposal, reviewerId));
+
+		return ServiceResponseType.OK;
+	}
+
+	public ServiceResponseType emitAcceptedProposalNotification(Proposal proposal) {
+		Website website = websiteService.getWebsiteById(proposal.getWebsiteId()).getReponse();
+
+		if (website == null)
+			return ServiceResponseType.INVALID_WEBSITE_ID;
+
+		Notification notif = new ProposalNotification.Accepted(website.getName());
+		userDataService.addNotificationToUser(notif, proposal.getProposerId());
+
+		return ServiceResponseType.OK;
+	}
+
+	/**
+	 * If the {userId} is equal to the {@link Proposal#proposerId} than it returns
+	 * the {@link Proposal#proposeeId}, otherwise it returns the
+	 * {@link Proposal#proposerId}
+	 * 
+	 * @param proposal
+	 * @param userId
+	 * @return
+	 */
+	private String getOppositeId(Proposal proposal, String userId) {
+		if (proposal.getProposerId().equals(userId)) {
+			return proposal.getProposeeId();
+		} else {
+			return proposal.getProposerId();
+		}
 	}
 
 }
