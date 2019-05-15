@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.harystolho.adexchange.models.Account;
 
-@Service
+@Service(value="accountRepository")
 public class AccountRespositoryImpl implements AccountRepository {
 
 	private MongoOperations mongoOperations;

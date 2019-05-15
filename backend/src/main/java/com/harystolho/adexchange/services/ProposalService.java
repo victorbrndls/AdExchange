@@ -20,14 +20,16 @@ public class ProposalService {
 	private AdService adService;
 	private ContractService contractService;
 	private NotificationService notificationService;
+	private AccountService accountService;
 
 	public ProposalService(ProposalRepository proposalRepository, WebsiteService websiteService, AdService adService,
-			ContractService contractService, NotificationService notificationService) {
+			ContractService contractService, NotificationService notificationService, AccountService accountService) {
 		this.proposalRepository = proposalRepository;
 		this.websiteService = websiteService;
 		this.adService = adService;
 		this.contractService = contractService;
 		this.notificationService = notificationService;
+		this.accountService = accountService;
 	}
 
 	public ServiceResponse<List<Proposal>> getProposalsByAccountId(String accountId, String embed) {
@@ -36,9 +38,9 @@ public class ProposalService {
 		for (Proposal p : props) {
 			if (embed.contains("website"))
 				p.setWebsite(websiteService.getWebsiteById(p.getWebsiteId()).getReponse());
-			
-			p.setProposerName("Victor");
-			p.setProposeeName("Ambroszio");
+
+			p.setProposerName(accountService.getAccountNameById(p.getProposerId()));
+			p.setProposeeName(accountService.getAccountNameById(p.getProposeeId()));
 		}
 
 		return ServiceResponse.ok(props);
@@ -102,7 +104,7 @@ public class ProposalService {
 		swapProposalLocation(proposal);
 
 		notificationService.emitRejectedProposalNotification(proposal, accountId);
-		
+
 		if (proposal.getProposerId().equals(accountId)) {
 			proposal.setProposerId("");
 		} else {
@@ -156,7 +158,7 @@ public class ProposalService {
 		contractService.createContractFromProposal(prop, prop.getProposerId(), prop.getProposeeId());
 
 		notificationService.emitAcceptedProposalNotification(prop);
-		
+
 		proposalRepository.deleteById(id);
 
 		return ServiceResponse.ok(null);

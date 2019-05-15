@@ -1,6 +1,7 @@
 package com.harystolho.adexchange.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -18,7 +19,8 @@ public class AccountService {
 	private TokenService tokenService;
 
 	@Autowired
-	public AccountService(AccountRepository accountRepository, TokenService tokenService) {
+	public AccountService(@Qualifier("cachedAccountRepository") AccountRepository accountRepository,
+			TokenService tokenService) {
 		this.accountRepository = accountRepository;
 		this.tokenService = tokenService;
 	}
@@ -101,6 +103,19 @@ public class AccountService {
 
 	private boolean emailExists(String email) {
 		return accountRepository.getByEmail(email) != null;
+	}
+
+	/**
+	 * @param accountId
+	 * @return the {@link Account#fullName} or <code>null</code>
+	 */
+	public String getAccountNameById(String accountId) {
+		Account acc = accountRepository.getById(accountId);
+
+		if (acc != null)
+			return acc.getFullName();
+
+		return null;
 	}
 
 }

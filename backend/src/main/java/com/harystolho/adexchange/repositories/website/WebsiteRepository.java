@@ -8,7 +8,7 @@ public interface WebsiteRepository {
 
 	public List<Website> getWebsites();
 
-	public Website saveWebsite(Website website);
+	public Website save(Website website);
 
 	/**
 	 * @param id

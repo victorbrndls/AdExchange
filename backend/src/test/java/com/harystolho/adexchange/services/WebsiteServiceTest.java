@@ -49,7 +49,7 @@ public class WebsiteServiceTest {
 		Website website = new Website(null, url);
 		website.setDescription(description);
 
-		Mockito.when(websiteRepository.saveWebsite(Mockito.any())).thenReturn(website);
+		Mockito.when(websiteRepository.save(Mockito.any())).thenReturn(website);
 
 		ServiceResponse<Website> response = websiteService.createWebsite("", null, "some name", url, "", description,
 				"OTHER");
@@ -62,7 +62,7 @@ public class WebsiteServiceTest {
 
 	@Test
 	public void createWebsiteWithValidCategory() {
-		Mockito.when(websiteRepository.saveWebsite(Mockito.any())).thenReturn(new Website("", ""));
+		Mockito.when(websiteRepository.save(Mockito.any())).thenReturn(new Website("", ""));
 
 		ServiceResponse<Website> response = websiteService.createWebsite("", null, "some name",
 				"https://ad-exchange.com", "", "some description to use", "UPPER");

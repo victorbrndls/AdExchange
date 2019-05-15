@@ -26,7 +26,7 @@ public class WebsiteRepositoryImpl implements WebsiteRepository {
 	}
 
 	@Override
-	public Website saveWebsite(Website website) {
+	public Website save(Website website) {
 		Website saved = mongoOperations.save(website);
 
 		return saved;

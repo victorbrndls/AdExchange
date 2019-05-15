@@ -614,6 +614,7 @@ body.auth #header {
 
 .dashboard-panel__notification--item {
     padding: 9px 0;
+    display: flex;
 }
 
 .dashboard-panel__notifications {

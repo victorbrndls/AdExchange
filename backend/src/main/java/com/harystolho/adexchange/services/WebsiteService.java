@@ -47,7 +47,7 @@ public class WebsiteService {
 		website.setDescription(description);
 		website.setCategories(categories);
 
-		return ServiceResponse.ok(websiteRepository.saveWebsite(website));
+		return ServiceResponse.ok(websiteRepository.save(website));
 	}
 
 	public ServiceResponse<Website> deleteWebsite(String accountId, String id) {
