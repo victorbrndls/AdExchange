@@ -19,13 +19,15 @@ public class ProposalService {
 	private WebsiteService websiteService;
 	private AdService adService;
 	private ContractService contractService;
+	private NotificationService notificationService;
 
 	public ProposalService(ProposalRepository proposalRepository, WebsiteService websiteService, AdService adService,
-			ContractService contractService) {
+			ContractService contractService, NotificationService notificationService) {
 		this.proposalRepository = proposalRepository;
 		this.websiteService = websiteService;
 		this.adService = adService;
 		this.contractService = contractService;
+		this.notificationService = notificationService;
 	}
 
 	public ServiceResponse<List<Proposal>> getProposalsByAccountId(String accountId, String embed) {
@@ -65,6 +67,8 @@ public class ProposalService {
 		proposal.setDuration(Integer.parseInt(duration));
 		proposal.setPaymentMethod(PaymentMethod.valueOf(paymentMethod));
 		proposal.setPaymentValue(paymentValue);
+
+		notificationService.emitNewProposalNotification(proposal);
 
 		return ServiceResponse.ok(proposalRepository.save(proposal));
 	}

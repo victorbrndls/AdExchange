@@ -8,6 +8,7 @@ import com.harystolho.adexchange.models.Account;
 import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.models.Website;
 import com.harystolho.adexchange.notifications.Notification;
+import com.harystolho.adexchange.notifications.ProposalNotification;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
 
 @Service
@@ -37,7 +38,7 @@ public class NotificationService {
 		if (website == null)
 			return ServiceResponseType.INVALID_WEBSITE_ID;
 
-		Notification notif = new Notification.NewProposal(account.getFullName(), website.getName());
+		Notification notif = new ProposalNotification.New(account.getFullName(), website.getName());
 
 		userDataService.addNotificationToUser(notif, proposal.getProposeeId());
 
