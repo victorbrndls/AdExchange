@@ -11,7 +11,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import com.harystolho.adexchange.auth.TokenService;
 import com.harystolho.adexchange.models.Account;
-import com.harystolho.adexchange.repositories.auth.AuthRepository;
+import com.harystolho.adexchange.repositories.account.AccountRepository;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
 import com.harystolho.adexchange.utils.Nothing;
 import com.harystolho.adexchange.utils.PasswordSecurity;
@@ -23,7 +23,7 @@ public class AuthServiceTest {
 	private static AuthService authService;
 
 	@Mock
-	private static AuthRepository authRepository;
+	private static AccountRepository authRepository;
 	@Mock
 	private static TokenService tokenService;
 

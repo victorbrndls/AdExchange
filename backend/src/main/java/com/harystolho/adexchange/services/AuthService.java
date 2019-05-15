@@ -6,7 +6,7 @@ import org.springframework.util.StringUtils;
 
 import com.harystolho.adexchange.auth.TokenService;
 import com.harystolho.adexchange.models.Account;
-import com.harystolho.adexchange.repositories.auth.AuthRepository;
+import com.harystolho.adexchange.repositories.account.AccountRepository;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
 import com.harystolho.adexchange.utils.Nothing;
 import com.harystolho.adexchange.utils.PasswordSecurity;
@@ -14,11 +14,11 @@ import com.harystolho.adexchange.utils.PasswordSecurity;
 @Service
 public class AuthService {
 
-	private AuthRepository authRepository;
+	private AccountRepository authRepository;
 	private TokenService tokenService;
 
 	@Autowired
-	public AuthService(AuthRepository authRepository, TokenService tokenService) {
+	public AuthService(AccountRepository authRepository, TokenService tokenService) {
 		this.authRepository = authRepository;
 		this.tokenService = tokenService;
 	}

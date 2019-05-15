@@ -1,4 +1,4 @@
-package com.harystolho.adexchange.repositories.auth;
+package com.harystolho.adexchange.repositories.account;
 
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -8,13 +8,13 @@ import org.springframework.stereotype.Service;
 import com.harystolho.adexchange.models.Account;
 
 @Service
-public class AuthRespositoryImpl implements AuthRepository {
+public class AccountRespositoryImpl implements AccountRepository {
 
 	private MongoOperations mongoOperations;
 
-	public AuthRespositoryImpl(MongoOperations mongoOperations) {
+	public AccountRespositoryImpl(MongoOperations mongoOperations) {
 		this.mongoOperations = mongoOperations;
-	} // b3179c4bbe464e9ab7e7e76aa15fc4d2
+	}
 
 	@Override
 	public Account save(Account account) {

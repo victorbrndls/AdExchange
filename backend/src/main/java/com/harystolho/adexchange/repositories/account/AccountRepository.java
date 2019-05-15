@@ -1,8 +1,8 @@
-package com.harystolho.adexchange.repositories.auth;
+package com.harystolho.adexchange.repositories.account;
 
 import com.harystolho.adexchange.models.Account;
 
-public interface AuthRepository {
+public interface AccountRepository {
 
 	public Account save(Account account);
 	
