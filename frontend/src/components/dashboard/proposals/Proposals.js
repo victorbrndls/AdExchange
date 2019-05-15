@@ -101,8 +101,9 @@ class Proposal extends Component {
         this.website = props.website;
     }
 
-    render({id, creationDate, type, version, rejected}) {
-        // TODO display the creator name
+    render({id, creationDate, type, version, rejected, inProposerSent, proposerName, proposeeName}) {
+        let senderName = inProposerSent ? proposeeName : proposerName;
+
         return (
             <div class="proposal shadow">
                 <div>
@@ -113,7 +114,7 @@ class Proposal extends Component {
                     </div>
                     <div class="text-muted" style="font-size: 13px; margin-top: 2px;">
                         {type === 'NEW' ? (
-                            <span style="margin-right: 50px;">De: Alguem Para Min</span>) : ""}
+                            <span style="margin-right: 50px;">De: {senderName}</span>) : ""}
                         <span>Enviada em: {new Date(creationDate).toLocaleDateString()}</span>
                     </div>
                 </div>

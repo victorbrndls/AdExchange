@@ -36,6 +36,9 @@ public class ProposalService {
 		for (Proposal p : props) {
 			if (embed.contains("website"))
 				p.setWebsite(websiteService.getWebsiteById(p.getWebsiteId()).getReponse());
+			
+			p.setProposerName("Victor");
+			p.setProposeeName("Ambroszio");
 		}
 
 		return ServiceResponse.ok(props);

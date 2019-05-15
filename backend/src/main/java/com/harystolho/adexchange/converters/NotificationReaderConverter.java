@@ -5,8 +5,8 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.ReadingConverter;
 
 import com.harystolho.adexchange.notifications.Notification;
-import com.harystolho.adexchange.notifications.ProposalNotification;
 import com.harystolho.adexchange.notifications.Notification.NotificationType;
+import com.harystolho.adexchange.notifications.ProposalNotification;
 
 @ReadingConverter
 public class NotificationReaderConverter implements Converter<Document, Notification> {

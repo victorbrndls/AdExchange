@@ -41,6 +41,10 @@ public class Proposal {
 
 	@Transient
 	private Website website;
+	@Transient
+	private String proposerName;
+	@Transient
+	private String proposeeName;
 
 	public String getId() {
 		return id;
@@ -149,6 +153,24 @@ public class Proposal {
 
 	public void setWebsite(Website website) {
 		this.website = website;
+	}
+
+	@Nullable
+	public String getProposerName() {
+		return proposerName;
+	}
+
+	public void setProposerName(String proposerName) {
+		this.proposerName = proposerName;
+	}
+
+	@Nullable
+	public String getProposeeName() {
+		return proposeeName;
+	}
+
+	public void setProposeeName(String proposeeName) {
+		this.proposeeName = proposeeName;
 	}
 
 }
