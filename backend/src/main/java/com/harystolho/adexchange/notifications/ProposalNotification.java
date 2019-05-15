@@ -42,8 +42,8 @@ public class ProposalNotification extends Notification {
 
 	public static class Rejected extends ProposalNotification {
 
-		public Rejected(String senderName, String websiteName) {
-			super(NotificationType.REJECTED_PROPOSAL, senderName, websiteName);
+		public Rejected(String rejectorName, String websiteName) {
+			super(NotificationType.REJECTED_PROPOSAL, rejectorName, websiteName);
 		}
 	}
 

@@ -5,6 +5,10 @@ export default class ControlPanel extends Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            notifications: []
+        };
+
         this.hasRequestedNotifications = false;
     }
 
@@ -12,12 +16,12 @@ export default class ControlPanel extends Component {
         if (!this.hasRequestedNotifications) {
             this.hasRequestedNotifications = true;
             ControlPanelManager.getNotifications().then((notifs) => {
-                console.log(notifs);
+                this.setState({notifications: notifs});
             });
         }
     }
 
-    render() {
+    render({}, {notifications}) {
         return (
             <div>
                 <div class="col-sm-12 col-md-7 col-lg-4">
@@ -40,6 +44,11 @@ export default class ControlPanel extends Component {
                                 <i class="fa fa-minus notification-icon notification-icon__rejected"/>
                                 <span>Sua proposta para "Website" foi rejeitada</span>
                             </div>
+                            {notifications.map((not)=> (
+                                <div>
+                                    {not.type}
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>

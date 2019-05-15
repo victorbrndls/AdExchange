@@ -45,4 +45,28 @@ public class NotificationService {
 		return ServiceResponseType.OK;
 	}
 
+	public ServiceResponseType emitRejectedProposalNotification(Proposal proposal, String rejectorId) {
+		Account rejectorAccount = accountService.getAccountById(rejectorId).getReponse();
+		Website website = websiteService.getWebsiteById(proposal.getWebsiteId()).getReponse();
+
+		if (rejectorAccount == null)
+			return ServiceResponseType.FAIL;
+		if (website == null)
+			return ServiceResponseType.INVALID_WEBSITE_ID;
+
+		Notification notif = new ProposalNotification.Rejected(rejectorAccount.getFullName(), website.getName());
+
+		String recieverId = "";
+
+		if (proposal.getProposerId().equals(rejectorId)) {
+			recieverId = proposal.getProposeeId();
+		} else {
+			recieverId = proposal.getProposerId();
+		}
+
+		userDataService.addNotificationToUser(notif, recieverId);
+
+		return ServiceResponseType.OK;
+	}
+
 }

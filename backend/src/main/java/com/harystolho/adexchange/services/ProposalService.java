@@ -103,9 +103,11 @@ public class ProposalService {
 		} else {
 			proposal.setProposeeId("");
 		}
-
+		
+		notificationService.emitRejectedProposalNotification(proposal, accountId);
+		
 		proposalRepository.save(proposal);
-
+		
 		return ServiceResponse.ok(null);
 	}
 
