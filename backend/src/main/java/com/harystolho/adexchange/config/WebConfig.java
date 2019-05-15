@@ -18,6 +18,7 @@ import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import com.harystolho.adexchange.converters.AdReaderConverter;
+import com.harystolho.adexchange.converters.NotificationReaderConverter;
 
 @Configuration
 @EnableScheduling
@@ -35,6 +36,7 @@ public class WebConfig {
 		final List<Converter<?, ?>> converters = new ArrayList<>();
 
 		converters.add(new AdReaderConverter());
+		converters.add(new NotificationReaderConverter());
 
 		return new MongoCustomConversions(converters);
 	}
