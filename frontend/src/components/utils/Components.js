@@ -96,7 +96,7 @@ class Dropdown extends Component {
     render({text, children}, {open}) {
         return (
             <div class="dropdown">
-                <button class="btn dropdown-toggle" onClick={() => this.setState({open: !open})}>{text}</button>
+                <button class={`btn dropdown-toggle ${open ? 'btn__active ': ''}`} onClick={() => this.setState({open: !open})}>{text}</button>
                 {open && (
                     <div class="dropdown-menu show" style="right: 0; left: auto">
                         {children.map(child => (

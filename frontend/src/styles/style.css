@@ -658,6 +658,10 @@ body.auth #header {
     font-size: 19px;
 }
 
+.dashboard__main-topbar button:hover, .dashboard__main-topbar button.btn__active{
+    text-decoration: underline;
+}
+
 .dashboard__main-topbar button:focus{
     box-shadow: none;
 }

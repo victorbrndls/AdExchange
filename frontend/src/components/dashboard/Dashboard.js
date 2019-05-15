@@ -67,7 +67,9 @@ export default class Dashboard extends Component {
                         <div class="d-inline-block align-self-center">
                             <Dropdown text="Menu">
                                 <div class="dropdown-item">
-                                    Conta
+                                    <Link href="/account" activeClassName="active">
+                                        Conta
+                                    </Link>
                                 </div>
                                 <div class="dropdown-item">
                                     <Link href="/auth/logout" activeClassName="active">
