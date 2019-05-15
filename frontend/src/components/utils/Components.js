@@ -88,15 +88,37 @@ class Dropdown extends Component {
     constructor(props) {
         super(props);
 
+        this.timeout = null;
+
         this.state = {
             open: false
         };
     }
 
+    componentDidUpdate({}, prevState) {
+        if (!prevState.open && this.state.open) {
+            this.timeout ? clearTimeout(this.timeout) : {}; // Clear if there is an existing timeout
+            this.timeout = null;
+
+            this.startTimeout();
+        }
+
+    }
+
+    startTimeout() {
+        if (!this.timeout) {
+            this.timeout = setTimeout(() => {
+                this.setState({open: false});
+                this.timeout = null;
+            }, 5000);
+        }
+    }
+
     render({text, children}, {open}) {
         return (
             <div class="dropdown">
-                <button class={`btn dropdown-toggle ${open ? 'btn__active ': ''}`} onClick={() => this.setState({open: !open})}>{text}</button>
+                <button class={`btn dropdown-toggle ${open ? 'btn__active ' : ''}`}
+                        onClick={() => this.setState({open: !open})}>{text}</button>
                 {open && (
                     <div class="dropdown-menu show" style="right: 0; left: auto">
                         {children.map(child => (

@@ -56,27 +56,28 @@ export default class Dashboard extends Component {
                 </div>
                 <div class="dashboard__main">
                     <div class="dashboard__main-topbar">
-                        <div class="dashboard__main-topbar--item">
-                            <Link href="/" activeClassName="active">
-                                <div>Home</div>
-                            </Link>
+                        <div class="dashboard__main-topbar__left">
+                            <div class="dashboard__main-topbar--item">
+                                <Link href="/" activeClassName="active">
+                                    <div>Home</div>
+                                </Link>
+                            </div>
                         </div>
-                        <div class="dashboard__main-topbar--item">
-
-                        </div>
-                        <div class="d-inline-block align-self-center">
-                            <Dropdown text="Menu">
-                                <div class="dropdown-item">
-                                    <Link href="/account" activeClassName="active">
-                                        Conta
-                                    </Link>
-                                </div>
-                                <div class="dropdown-item">
-                                    <Link href="/auth/logout" activeClassName="active">
-                                        Logout
-                                    </Link>
-                                </div>
-                            </Dropdown>
+                        <div class="dashboard__main-topbar__right">
+                            <div class="d-inline-block align-self-center">
+                                <Dropdown text="Menu">
+                                    <div class="dropdown-item">
+                                        <Link href="/account" activeClassName="active">
+                                            Conta
+                                        </Link>
+                                    </div>
+                                    <div class="dropdown-item">
+                                        <Link href="/auth/logout" activeClassName="active">
+                                            Logout
+                                        </Link>
+                                    </div>
+                                </Dropdown>
+                            </div>
                         </div>
                     </div>
                     <div class="dashboard__main-content">

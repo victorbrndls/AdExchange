@@ -576,7 +576,6 @@ body.auth #header {
 
 .dashboard__main-topbar {
     display: flex;
-    justify-content: flex-end;
     padding-right: 20px;
 }
 
@@ -666,3 +665,12 @@ body.auth #header {
     box-shadow: none;
 }
 
+.dashboard__main-topbar__right{
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.dashboard__main-topbar__left{
+    display: flex;
+}
