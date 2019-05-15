@@ -9,6 +9,8 @@ public class Account {
 	private String email;
 	private String password;
 
+	private String fullName;
+
 	public Account(String email, String password) {
 		this.email = email;
 		this.password = password;
@@ -36,6 +38,14 @@ public class Account {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 
 }

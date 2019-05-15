@@ -11,8 +11,8 @@ export default class ControlPanel extends Component {
     requestNotifications() {
         if (!this.hasRequestedNotifications) {
             this.hasRequestedNotifications = true;
-            ControlPanelManager.getNotifications().then((response) => {
-                console.log(response);
+            ControlPanelManager.getNotifications().then((notifs) => {
+                console.log(notifs);
             });
         }
     }

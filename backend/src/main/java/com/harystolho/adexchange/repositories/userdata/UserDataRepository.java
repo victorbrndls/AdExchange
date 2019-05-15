@@ -1,0 +1,13 @@
+package com.harystolho.adexchange.repositories.userdata;
+
+import java.util.List;
+
+import com.harystolho.adexchange.notifications.Notification;
+
+public interface UserDataRepository {
+
+	List<Notification> getNotifications(String userId);
+
+	void saveNotifications(String userId, List<Notification> notifications);
+
+}

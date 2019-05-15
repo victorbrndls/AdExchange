@@ -10,11 +10,14 @@ public class Notification {
 	protected String websiteName;
 	protected NotificationType type;
 
-	public Notification(NotificationType type) {
+	public Notification() {
+	}
+
+	private Notification(NotificationType type) {
 		this.type = type;
 	}
 
-	public Notification(NotificationType type, String senderName, String websiteName) {
+	private Notification(NotificationType type, String senderName, String websiteName) {
 		this(type);
 		this.senderName = senderName;
 		this.websiteName = websiteName;
