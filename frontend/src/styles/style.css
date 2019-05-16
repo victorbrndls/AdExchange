@@ -677,3 +677,7 @@ body.auth #header {
 .dashboard__main-topbar__left{
     display: flex;
 }
+
+#dashboardAccountInfoSave{
+    background-color: orangered;
+}
