@@ -118,4 +118,19 @@ public class AccountService {
 		return null;
 	}
 
+	public ServiceResponse<Account> updateAccountName(String accountId, String name) {
+		Account acc = accountRepository.getById(accountId);
+
+		if (acc == null)
+			return ServiceResponse.error(ServiceResponseType.INVALID_ACCOUNT_ID);
+
+		if (!StringUtils.hasText(name))
+			return ServiceResponse.error(ServiceResponseType.INVALID_ACCOUNT_NAME);
+
+		acc.setFullName(name);
+		accountRepository.save(acc);
+
+		return ServiceResponse.ok(null);
+	}
+
 }

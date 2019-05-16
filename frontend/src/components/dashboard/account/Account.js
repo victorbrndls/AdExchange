@@ -11,7 +11,8 @@ export default class Account extends Component {
         this.state = {
             name: "",
             email: "",
-            password: ""
+            password: "",
+            error: {}
         };
 
         this.hasRequestedAccount = false;
@@ -19,27 +20,37 @@ export default class Account extends Component {
         this.requestAccount();
     }
 
-    requestAccount(){
-        if(!this.hasRequestedAccount){
+    requestAccount() {
+        if (!this.hasRequestedAccount) {
             this.hasRequestedAccount = true;
-            AccountManager.getMyAccount().then((response)=>{
+            AccountManager.getMyAccount().then((response) => {
                 this.setState({name: response.name || ""});
                 this.setState({email: response.email || ""});
             })
         }
     }
 
-    // Saves names,
-    saveInformation(){
+    // Saves name,
+    saveInformation() {
+        this.setState({error: {}});
 
+        AccountManager.saveAccountInfo(this.state.name).then((response) => {
+
+        }).catch((error) => {
+            if (error === 'INVALID_ACCOUNT_NAME')
+                this.setState({error: {...this.state.error, name: "Nome inválido"}});
+
+        });
     }
 
     // Saves email and password
     saveEmailAndPassword() {
+        this.setState({error: {}});
+
 
     }
 
-    render({}, {name, email, password}) {
+    render({}, {name, email, password, error}) {
         return (
             <div>
                 <Match path={"/dashboard/account"} not>
@@ -54,11 +65,15 @@ export default class Account extends Component {
                                     <label class="font-weight-bold">Nome</label>
                                     <input type="text" class="form-control" placeholder="Joao Silva da Luz" value={name}
                                            onChange={(e) => this.setState({name: e.target.value})}/>
+                                    {error.name && (
+                                        <small class="form-text text-danger"> {error.name}</small>
+                                    )}
                                     <small class="form-text text-muted">Essa nome é utilizado por outras pessoas para
                                         identificar voce
                                     </small>
                                 </div>
-                                <div id="dashboardAccountInfoSave" class="btn dashboard-add__button" onClick={this.saveInformation.bind(this)}>
+                                <div id="dashboardAccountInfoSave" class="btn dashboard-add__button"
+                                     onClick={this.saveInformation.bind(this)}>
                                     Salvar
                                 </div>
                             </div>
@@ -68,12 +83,18 @@ export default class Account extends Component {
                                     <label class="font-weight-bold">Email</label>
                                     <input type="email" class="form-control" placeholder="Email" value={email}
                                            onChange={(e) => this.setState({email: e.target.value})}/>
+                                    {error.email && (
+                                        <small class="form-text text-danger"> {error.email}</small>
+                                    )}
                                 </div>
 
                                 <div class="form-group">
                                     <label class="font-weight-bold">Senha</label>
                                     <input type="password" class="form-control" placeholder="*********" value={password}
                                            onChange={(e) => this.setState({password: e.target.value})}/>
+                                    {error.password && (
+                                        <small class="form-text text-danger"> {error.password}</small>
+                                    )}
                                 </div>
 
                                 <div class="btn dashboard-add__button" onClick={this.saveEmailAndPassword.bind(this)}>
