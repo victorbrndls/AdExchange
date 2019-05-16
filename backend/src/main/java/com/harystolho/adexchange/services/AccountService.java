@@ -24,6 +24,15 @@ public class AccountService {
 		this.tokenService = tokenService;
 	}
 
+	/**
+	 * Creates a new {@link Account} if the {accountId} is <code>null</code>.
+	 * Updates an existing account if the {accountId} is not <code>null</code>
+	 * 
+	 * @param accountId
+	 * @param email
+	 * @param password
+	 * @return
+	 */
 	public ServiceResponse<Account> createOrUpdateAccount(String accountId, String email, String password) {
 		email = sanitizeEmail(email);
 
@@ -36,16 +45,15 @@ public class AccountService {
 		if (emailExists(email))
 			return ServiceResponse.error(ServiceResponseType.EMAIL_ALREADY_EXISTS);
 
-		Account acc = accountRepository.getById(accountId);
+		Account acc = accountRepository.getById(accountId); // Get account to update
 
-		if (acc == null)
-			acc = new Account();
+		if (acc == null) // If account is null
+			acc = new Account(); // Create a new account
 
 		acc.setEmail(email);
 		acc.setPassword(PasswordSecurity.encryptPassword(password));
-		accountRepository.save(acc);
 
-		return ServiceResponse.ok(null);
+		return ServiceResponse.ok(accountRepository.save(acc));
 	}
 
 	public ServiceResponse<String> login(String email, String password) {
@@ -66,6 +74,28 @@ public class AccountService {
 		String token = tokenService.generateTokenForAccount(possibleAccount.getId());
 
 		return ServiceResponse.ok(token);
+	}
+
+	/**
+	 * Updates the account name,
+	 * 
+	 * @param accountId
+	 * @param name
+	 * @return
+	 */
+	public ServiceResponse<Account> updateAccountInfo(String accountId, String name) {
+		Account acc = accountRepository.getById(accountId);
+
+		if (acc == null)
+			return ServiceResponse.error(ServiceResponseType.INVALID_ACCOUNT_ID);
+
+		if (!StringUtils.hasText(name)) // TODO limit name size
+			return ServiceResponse.error(ServiceResponseType.INVALID_ACCOUNT_NAME);
+
+		acc.setFullName(name);
+		accountRepository.save(acc);
+
+		return ServiceResponse.ok(null);
 	}
 
 	public ServiceResponse<Account> getAccountById(String accountId) {
@@ -120,28 +150,6 @@ public class AccountService {
 			return acc.getFullName();
 
 		return null;
-	}
-
-	/**
-	 * Updates the name,
-	 * 
-	 * @param accountId
-	 * @param name
-	 * @return
-	 */
-	public ServiceResponse<Account> updateAccountInfo(String accountId, String name) {
-		Account acc = accountRepository.getById(accountId);
-
-		if (acc == null)
-			return ServiceResponse.error(ServiceResponseType.INVALID_ACCOUNT_ID);
-
-		if (!StringUtils.hasText(name)) // TODO limit name size
-			return ServiceResponse.error(ServiceResponseType.INVALID_ACCOUNT_NAME);
-
-		acc.setFullName(name);
-		accountRepository.save(acc);
-
-		return ServiceResponse.ok(null);
 	}
 
 }

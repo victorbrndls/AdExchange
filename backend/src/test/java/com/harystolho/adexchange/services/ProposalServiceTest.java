@@ -30,11 +30,14 @@ public class ProposalServiceTest {
 	WebsiteService websiteService;
 	@Mock
 	AdService adService;
+	@Mock
+	NotificationService notificationService;
 
 	@Before
 	public void beforeTests() {
 		Mockito.when(websiteService.getWebsiteById(Mockito.any())).thenReturn(ServiceResponse.ok(new Website("", "")));
-		Mockito.when(adService.getAdById(Mockito.any(), Mockito.any())).thenReturn(ServiceResponse.ok(new Ad(AdType.TEXT)));
+		Mockito.when(adService.getAdById(Mockito.any(), Mockito.any()))
+				.thenReturn(ServiceResponse.ok(new Ad(AdType.TEXT)));
 	}
 
 	@Test

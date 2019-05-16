@@ -85,7 +85,7 @@ export default class Account extends Component {
                                     {error.name && (
                                         <small class="form-text text-danger"> {error.name}</small>
                                     )}
-                                    <small class="form-text text-muted">Essa nome é utilizado por outras pessoas para
+                                    <small class="form-text text-muted">Esse nome é utilizado por outras pessoas para
                                         identificar voce
                                     </small>
                                 </div>

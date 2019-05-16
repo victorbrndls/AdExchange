@@ -7,7 +7,6 @@ import Ads from "./ads/Ads";
 import Contracts from "./contracts/Contracts";
 import Spots from "./spots/Spots";
 import ControlPanel from "./controlPanel/ControlPanel";
-import {Dropdown} from "../utils/Components";
 import Account from "./account/Account";
 
 export default class Dashboard extends Component {
@@ -73,16 +72,24 @@ export default class Dashboard extends Component {
                                     <div>Home</div>
                                 </Link>
                             </div>
+                            <div class="dashboard__main-topbar--item ml-4">
+                                <span>Saldo: R$ </span>
+                            </div>
                         </div>
                         <div class="dashboard__main-topbar__right">
                             <div class="d-inline-block align-self-center">
-                                <Dropdown text="Menu">
+                                {/*<Dropdown text="Menu">
                                     <div class="dropdown-item">
                                         <Link href="/auth/logout" activeClassName="active">
                                             Logout
                                         </Link>
                                     </div>
-                                </Dropdown>
+                                </Dropdown>*/}
+                                <div class="dashboard__main-topbar--item">
+                                    <Link href="/auth/logout" activeClassName="active">
+                                        Logout
+                                    </Link>
+                                </div>
                             </div>
                         </div>
                     </div>

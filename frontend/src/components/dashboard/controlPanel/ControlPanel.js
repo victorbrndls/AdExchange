@@ -25,19 +25,19 @@ export default class ControlPanel extends Component {
         return (
             <div>
                 <div class="col-sm-12 col-md-7 col-lg-4">
-                    <div class="card">
+                    {this.requestNotifications.bind(this)()}
+                    {notifications.length > 0 && (<div class="card">
                         <div class="card-header dashboard-panel__notification-card">
                             <span class="dashboard-panel__notification-header">Notificações</span>
                         </div>
                         <div class="dashboard-panel__notifications card-body">
-                            {this.requestNotifications.bind(this)()}
                             {notifications.map((notif) => (
                                 <div>
                                     <NotificationItem {...notif}/>
                                 </div>
                             ))}
                         </div>
-                    </div>
+                    </div>)}
                 </div>
 
                 {/*Remove this latter*/}
@@ -72,7 +72,7 @@ class NotificationItem extends Component {
         let type = props.type;
         let notification = this.notificationMapper[type];
 
-        if(!notification)
+        if (!notification)
             return;
 
         return (
