@@ -8,6 +8,7 @@ import Contracts from "./contracts/Contracts";
 import Spots from "./spots/Spots";
 import ControlPanel from "./controlPanel/ControlPanel";
 import {Dropdown} from "../utils/Components";
+import Account from "./account/Account";
 
 export default class Dashboard extends Component {
     constructor(props) {
@@ -21,36 +22,45 @@ export default class Dashboard extends Component {
                     <div class="dashboard__sidebar-logo">
                         <span>AdExchange</span>
                     </div>
-                    <div class="dashboard__sidebar-bar">
-                        <div class="dashboard__sidebar--item">
-                            <Link href="/dashboard/panel" activeClassName="active">
-                                <div class="dashboard__sidebar--item-container">Dashboard</div>
-                            </Link>
+                    <div class="dashboard__sidebar-bar d-flex flex-column">
+                        <div>
+                            <div class="dashboard__sidebar--item">
+                                <Link href="/dashboard/panel" activeClassName="active">
+                                    <div class="dashboard__sidebar--item-container">Dashboard</div>
+                                </Link>
+                            </div>
+                            <div class="dashboard__sidebar--item">
+                                <Link href="/dashboard/websites" activeClassName="active">
+                                    <div class="dashboard__sidebar--item-container">Websites</div>
+                                </Link>
+                            </div>
+                            <div class="dashboard__sidebar--item">
+                                <Link href="/dashboard/proposals" activeClassName="active">
+                                    <div class="dashboard__sidebar--item-container">Propostas</div>
+                                </Link>
+                            </div>
+                            <div class="dashboard__sidebar--item">
+                                <Link href="/dashboard/contracts" activeClassName="active">
+                                    <div class="dashboard__sidebar--item-container">Contratos</div>
+                                </Link>
+                            </div>
+                            <div class="dashboard__sidebar--item">
+                                <Link href="/dashboard/ads" activeClassName="active">
+                                    <div class="dashboard__sidebar--item-container">Anúncios</div>
+                                </Link>
+                            </div>
+                            <div class="dashboard__sidebar--item">
+                                <Link href="/dashboard/spots" activeClassName="active">
+                                    <div class="dashboard__sidebar--item-container">Spots</div>
+                                </Link>
+                            </div>
                         </div>
-                        <div class="dashboard__sidebar--item">
-                            <Link href="/dashboard/websites" activeClassName="active">
-                                <div class="dashboard__sidebar--item-container">Websites</div>
-                            </Link>
-                        </div>
-                        <div class="dashboard__sidebar--item">
-                            <Link href="/dashboard/proposals" activeClassName="active">
-                                <div class="dashboard__sidebar--item-container">Propostas</div>
-                            </Link>
-                        </div>
-                        <div class="dashboard__sidebar--item">
-                            <Link href="/dashboard/contracts" activeClassName="active">
-                                <div class="dashboard__sidebar--item-container">Contratos</div>
-                            </Link>
-                        </div>
-                        <div class="dashboard__sidebar--item">
-                            <Link href="/dashboard/ads" activeClassName="active">
-                                <div class="dashboard__sidebar--item-container">Anúncios</div>
-                            </Link>
-                        </div>
-                        <div class="dashboard__sidebar--item">
-                            <Link href="/dashboard/spots" activeClassName="active">
-                                <div class="dashboard__sidebar--item-container">Spots</div>
-                            </Link>
+                        <div class="flex-grow-1 d-flex flex-column justify-content-end">
+                            <div class="dashboard__sidebar--item">
+                                <Link href="/dashboard/account" activeClassName="active">
+                                    <div class="dashboard__sidebar--item-container">Conta</div>
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -67,7 +77,7 @@ export default class Dashboard extends Component {
                             <div class="d-inline-block align-self-center">
                                 <Dropdown text="Menu">
                                     <div class="dropdown-item">
-                                        <Link href="/account" activeClassName="active">
+                                        <Link href="/dashboard/account" activeClassName="active">
                                             Conta
                                         </Link>
                                     </div>
@@ -104,6 +114,10 @@ export default class Dashboard extends Component {
 
                             <Match path="/dashboard/spots" include>
                                 <Spots/>
+                            </Match>
+
+                            <Match path="/dashboard/account" include>
+                                <Account/>
                             </Match>
                         </div>
                     </div>
