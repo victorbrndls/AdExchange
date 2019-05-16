@@ -29,7 +29,8 @@ public class AuthServiceTest {
 
 	@Test
 	public void createAccountWithInvalidEmail() {
-		ServiceResponse<Nothing> response = authService.createAccount("invalid.email", "some random password");
+		ServiceResponse<Account> response = authService.createOrUpdateAccount(null, "invalid.email",
+				"some random password");
 		assertEquals(ServiceResponseType.INVALID_EMAIL, response.getErrorType());
 	}
 
@@ -38,13 +39,14 @@ public class AuthServiceTest {
 		Mockito.when(authRepository.save(Mockito.any())).thenReturn(null);
 		Mockito.when(authRepository.getByEmail(Mockito.anyString())).thenReturn(null);
 
-		ServiceResponse<Nothing> response = authService.createAccount("valid2123@email.com", "some random password");
+		ServiceResponse<Account> response = authService.createOrUpdateAccount(null, "valid2123@email.com",
+				"some random password");
 		assertEquals(ServiceResponseType.OK, response.getErrorType());
 	}
 
 	@Test
 	public void createAccountWithInvalidPassword() {
-		ServiceResponse<Nothing> response = authService.createAccount("valid@email.com", "smal");
+		ServiceResponse<Account> response = authService.createOrUpdateAccount(null, "valid@email.com", "smal");
 		assertEquals(ServiceResponseType.INVALID_PASSWORD, response.getErrorType());
 	}
 
@@ -52,7 +54,7 @@ public class AuthServiceTest {
 	public void createAccountWithExistingEmail() {
 		Mockito.when(authRepository.getByEmail("valid@email.com")).thenReturn(new Account("", ""));
 
-		ServiceResponse<Nothing> response = authService.createAccount("valid@email.com", "123456");
+		ServiceResponse<Account> response = authService.createOrUpdateAccount(null, "valid@email.com", "123456");
 		assertEquals(ServiceResponseType.EMAIL_ALREADY_EXISTS, response.getErrorType());
 	}
 

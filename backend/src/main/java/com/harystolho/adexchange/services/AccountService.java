@@ -9,7 +9,6 @@ import com.harystolho.adexchange.auth.TokenService;
 import com.harystolho.adexchange.models.Account;
 import com.harystolho.adexchange.repositories.account.AccountRepository;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
-import com.harystolho.adexchange.utils.Nothing;
 import com.harystolho.adexchange.utils.PasswordSecurity;
 
 @Service
@@ -25,7 +24,7 @@ public class AccountService {
 		this.tokenService = tokenService;
 	}
 
-	public ServiceResponse<Nothing> createAccount(String email, String password) {
+	public ServiceResponse<Account> createOrUpdateAccount(String accountId, String email, String password) {
 		email = sanitizeEmail(email);
 
 		if (!verifyEmail(email))
@@ -37,9 +36,14 @@ public class AccountService {
 		if (emailExists(email))
 			return ServiceResponse.error(ServiceResponseType.EMAIL_ALREADY_EXISTS);
 
-		Account account = new Account(email, PasswordSecurity.encryptPassword(password));
+		Account acc = accountRepository.getById(accountId);
 
-		accountRepository.save(account);
+		if (acc == null)
+			acc = new Account();
+
+		acc.setEmail(email);
+		acc.setPassword(PasswordSecurity.encryptPassword(password));
+		accountRepository.save(acc);
 
 		return ServiceResponse.ok(null);
 	}
@@ -135,36 +139,6 @@ public class AccountService {
 			return ServiceResponse.error(ServiceResponseType.INVALID_ACCOUNT_NAME);
 
 		acc.setFullName(name);
-		accountRepository.save(acc);
-
-		return ServiceResponse.ok(null);
-	}
-
-	/**
-	 * Updates the email and password
-	 * 
-	 * @param accountId
-	 * @return
-	 */
-	public ServiceResponse<Account> updateAccountAuth(String accountId, String email, String password) {
-		email = sanitizeEmail(email);
-
-		Account acc = accountRepository.getById(accountId);
-
-		if (acc == null)
-			return ServiceResponse.error(ServiceResponseType.INVALID_ACCOUNT_ID);
-
-		if (!verifyEmail(email))
-			return ServiceResponse.error(ServiceResponseType.INVALID_EMAIL);
-
-		if (!verifyPassword(password))
-			return ServiceResponse.error(ServiceResponseType.INVALID_PASSWORD);
-
-		if (emailExists(email))
-			return ServiceResponse.error(ServiceResponseType.EMAIL_ALREADY_EXISTS);
-
-		acc.setEmail(email);
-		acc.setPassword(PasswordSecurity.encryptPassword(password));
 		accountRepository.save(acc);
 
 		return ServiceResponse.ok(null);
