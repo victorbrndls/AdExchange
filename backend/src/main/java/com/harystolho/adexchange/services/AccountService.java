@@ -1,5 +1,7 @@
 package com.harystolho.adexchange.services;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -9,10 +11,13 @@ import com.harystolho.adexchange.auth.TokenService;
 import com.harystolho.adexchange.models.Account;
 import com.harystolho.adexchange.repositories.account.AccountRepository;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
+import com.harystolho.adexchange.utils.AEUtils;
 import com.harystolho.adexchange.utils.PasswordSecurity;
 
 @Service
 public class AccountService {
+
+	private static final Logger logger = LogManager.getLogger();
 
 	private AccountRepository accountRepository;
 	private TokenService tokenService;
@@ -150,6 +155,37 @@ public class AccountService {
 			return acc.getFullName();
 
 		return null;
+	}
+
+	public ServiceResponse<String> getAccountBalance(String accountId) {
+		Account acc = accountRepository.getById(accountId);
+
+		if (acc == null)
+			return ServiceResponse.error(ServiceResponseType.INVALID_ACCOUNT_ID);
+
+		if (verifyAccountBalance(acc)) {
+			return ServiceResponse.ok(acc.getBalance());
+		} else {
+			return ServiceResponse.error(ServiceResponseType.INVALID_ACCOUNT_BALANCE);
+		}
+
+	}
+
+	/**
+	 * This method verifies that the user balance is valid, if it is not valid then
+	 * it throws an error for devs to notice and fix it
+	 * 
+	 * @param account
+	 * @return
+	 */
+	private boolean verifyAccountBalance(Account account) {
+		if (!StringUtils.hasText(account.getBalance()))
+			return false;
+
+		if (!AEUtils.validateMonetaryValue(account.getBalance()))
+			return false;
+
+		return true;
 	}
 
 }

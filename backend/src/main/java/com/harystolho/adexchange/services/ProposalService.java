@@ -9,6 +9,7 @@ import com.harystolho.adexchange.models.Contract.PaymentMethod;
 import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.repositories.proposal.ProposalRepository;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
+import com.harystolho.adexchange.utils.AEUtils;
 import com.harystolho.adexchange.utils.Nothing;
 
 @Service
@@ -122,7 +123,7 @@ public class ProposalService {
 			return ServiceResponse.error(ServiceResponseType.INVALID_DURATION);
 		if (!validatePaymentMethod(paymentMethod))
 			return ServiceResponse.error(ServiceResponseType.INVALID_PAYMENT_METHOD);
-		if (!validatePaymentValue(paymentValue))
+		if (!AEUtils.validateMonetaryValue(paymentValue))
 			return ServiceResponse.error(ServiceResponseType.INVALID_PAYMENT_VALUE);
 
 		Proposal prop = proposalRepository.getById(id);
@@ -198,7 +199,7 @@ public class ProposalService {
 		if (!validatePaymentMethod(paymentMethod))
 			return ServiceResponseType.INVALID_PAYMENT_METHOD;
 
-		if (!validatePaymentValue(paymentValue))
+		if (!AEUtils.validateMonetaryValue(paymentValue))
 			return ServiceResponseType.INVALID_PAYMENT_VALUE;
 
 		return ServiceResponseType.OK;
@@ -223,28 +224,6 @@ public class ProposalService {
 
 		if (!(method.equals("PAY_PER_CLICK") || method.equals("PAY_PER_VIEW")))
 			return false;
-
-		return true;
-	}
-
-	private boolean validatePaymentValue(String pValue) {
-		try {
-			int occurences = StringUtils.countOccurrencesOf(pValue, ".");
-
-			if (occurences > 1)
-				return false;
-
-			if (pValue.contains("."))
-				if (pValue.split("\\.")[1].length() > 2) // More than 2 places after the '.'
-					return false;
-
-			double value = Double.parseDouble(pValue);
-
-			if (value <= 0.0)
-				return false;
-		} catch (Exception e) {
-			return false;
-		}
 
 		return true;
 	}

@@ -36,8 +36,19 @@ function saveAccountAuth(email, password) {
     });
 }
 
+function requestBalance() {
+    return new Promise((resolve, reject) => {
+        AdAxiosPost.get(`${HOST}/api/v1/account?fields=balance`).then((response) => {
+            resolve(response.data);
+        }).catch((error) => {
+            reject(error.response.data);
+        });
+    });
+}
+
 export default {
     getMyAccount,
     saveAccountInfo,
-    saveAccountAuth
+    saveAccountAuth,
+    requestBalance
 };

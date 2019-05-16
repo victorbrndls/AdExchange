@@ -8,13 +8,26 @@ import Contracts from "./contracts/Contracts";
 import Spots from "./spots/Spots";
 import ControlPanel from "./controlPanel/ControlPanel";
 import Account from "./account/Account";
+import AccountManager from "../../managers/AccountManager";
 
 export default class Dashboard extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            balance: "0,00"
+        };
+
+        this.requestBalance();
     }
 
-    render() {
+    requestBalance() {
+        AccountManager.requestBalance().then((response) => {
+            this.setState({balance: response.balance});
+        });
+    }
+
+    render({}, {balance}) {
         return (
             <div id="dashboard" class="h-100">
                 <div class="dashboard__sidebar">
@@ -73,7 +86,7 @@ export default class Dashboard extends Component {
                                 </Link>
                             </div>
                             <div class="dashboard__main-topbar--item ml-4">
-                                <span>Saldo: R$ </span>
+                                <span>Saldo: R$ {balance}</span>
                             </div>
                         </div>
                         <div class="dashboard__main-topbar__right">

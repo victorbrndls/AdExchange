@@ -15,7 +15,7 @@ public class ServiceResponse<T> {
 
 		INVALID_SPOT_NAME, // Spot
 
-		INVALID_ACCOUNT_ID, INVALID_ACCOUNT_NAME // Account
+		INVALID_ACCOUNT_ID, INVALID_ACCOUNT_NAME, INVALID_ACCOUNT_BALANCE // Account
 	}
 
 	private ServiceResponseType errorType;

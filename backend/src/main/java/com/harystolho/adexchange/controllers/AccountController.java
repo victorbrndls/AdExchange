@@ -65,4 +65,17 @@ public class AccountController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getErrorType());
 		}
 	}
+
+	@GetMapping(path = "/api/v1/account", params = "fields=balance")
+	public ResponseEntity<Object> getUserBalance(@RequestAttribute("ae.accountId") String accountId) {
+		ServiceResponse<String> response = accountService.getAccountBalance(accountId);
+
+		switch (response.getErrorType()) {
+		case OK:
+			return ResponseEntity.status(HttpStatus.OK).body(JsonResponse.of("balance", response.getReponse())
+					.pair("lastUpdate", System.currentTimeMillis()).build());
+		default:
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+	}
 }

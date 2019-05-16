@@ -10,11 +10,14 @@ public class Account {
 	private String password;
 
 	private String fullName;
+	private String balance;
 
 	public Account() {
+		this.balance = "0,00";
 	}
 
 	public Account(String email, String password) {
+		this();
 		this.email = email;
 		this.password = password;
 	}
@@ -51,4 +54,11 @@ public class Account {
 		this.fullName = fullName;
 	}
 
+	public String getBalance() {
+		return balance;
+	}
+
+	public void setBalance(String balance) {
+		this.balance = balance;
+	}
 }
