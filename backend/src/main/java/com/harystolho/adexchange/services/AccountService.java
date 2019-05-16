@@ -118,16 +118,53 @@ public class AccountService {
 		return null;
 	}
 
-	public ServiceResponse<Account> updateAccountName(String accountId, String name) {
+	/**
+	 * Updates the name,
+	 * 
+	 * @param accountId
+	 * @param name
+	 * @return
+	 */
+	public ServiceResponse<Account> updateAccountInfo(String accountId, String name) {
 		Account acc = accountRepository.getById(accountId);
 
 		if (acc == null)
 			return ServiceResponse.error(ServiceResponseType.INVALID_ACCOUNT_ID);
 
-		if (!StringUtils.hasText(name))
+		if (!StringUtils.hasText(name)) // TODO limit name size
 			return ServiceResponse.error(ServiceResponseType.INVALID_ACCOUNT_NAME);
 
 		acc.setFullName(name);
+		accountRepository.save(acc);
+
+		return ServiceResponse.ok(null);
+	}
+
+	/**
+	 * Updates the email and password
+	 * 
+	 * @param accountId
+	 * @return
+	 */
+	public ServiceResponse<Account> updateAccountAuth(String accountId, String email, String password) {
+		email = sanitizeEmail(email);
+
+		Account acc = accountRepository.getById(accountId);
+
+		if (acc == null)
+			return ServiceResponse.error(ServiceResponseType.INVALID_ACCOUNT_ID);
+
+		if (!verifyEmail(email))
+			return ServiceResponse.error(ServiceResponseType.INVALID_EMAIL);
+
+		if (!verifyPassword(password))
+			return ServiceResponse.error(ServiceResponseType.INVALID_PASSWORD);
+
+		if (emailExists(email))
+			return ServiceResponse.error(ServiceResponseType.EMAIL_ALREADY_EXISTS);
+
+		acc.setEmail(email);
+		acc.setPassword(PasswordSecurity.encryptPassword(password));
 		accountRepository.save(acc);
 
 		return ServiceResponse.ok(null);

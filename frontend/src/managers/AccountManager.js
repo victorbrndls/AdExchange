@@ -20,10 +20,24 @@ function saveAccountInfo(name) {
             reject(error.response.data);
         });
     });
+}
 
+function saveAccountAuth(email, password) {
+    return new Promise((resolve, reject) => {
+        let formData = new FormData();
+        formData.append("email", email);
+        formData.append("password", password);
+
+        AdAxiosPost.patch(`${HOST}/api/v1/account?form=auth`, formData).then((response) => {
+            resolve(response.data);
+        }).catch((error) => {
+            reject(error.response.data);
+        });
+    });
 }
 
 export default {
     getMyAccount,
-    saveAccountInfo
+    saveAccountInfo,
+    saveAccountAuth
 };

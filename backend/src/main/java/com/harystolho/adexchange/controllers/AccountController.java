@@ -43,7 +43,7 @@ public class AccountController {
 
 	@PatchMapping(path = "/api/v1/account", params = "form=info")
 	public ResponseEntity<Object> updateAccountInfo(@RequestAttribute("ae.accountId") String accountId, String name) {
-		ServiceResponse<Account> response = accountService.updateAccountName(accountId, name);
+		ServiceResponse<Account> response = accountService.updateAccountInfo(accountId, name);
 
 		switch (response.getErrorType()) {
 		case OK:
@@ -53,17 +53,16 @@ public class AccountController {
 		}
 	}
 
-	@PatchMapping("/api/v1/account?form=auth")
-	public ResponseEntity<Object> updateAccountAuth(@RequestAttribute("ae.accountId") String accountId) {
-		ServiceResponse<Account> response = accountService.getAccountById(accountId);
+	@PatchMapping(path = "/api/v1/account", params = "form=auth")
+	public ResponseEntity<Object> updateAccountAuth(@RequestAttribute("ae.accountId") String accountId, String email,
+			String password) {
+		ServiceResponse<Account> response = accountService.updateAccountAuth(accountId, email, password);
 
 		switch (response.getErrorType()) {
 		case OK:
-			Account acc = response.getReponse();
-			ObjectNode node = JsonResponse.of("name", acc.getFullName()).pair("email", acc.getEmail()).build();
-			return ResponseEntity.status(HttpStatus.OK).body(node);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 		default:
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getErrorType());
 		}
 	}
 }

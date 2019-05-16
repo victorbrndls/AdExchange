@@ -4,7 +4,10 @@ import {LeftArrow} from "../../utils/Components";
 import {route} from "preact-router";
 import AccountManager from "../../../managers/AccountManager";
 
+const SUCCESS_CSS = 'form-text text-success d-inline ml-3';
+
 export default class Account extends Component {
+
     constructor(props) {
         super(props);
 
@@ -35,6 +38,7 @@ export default class Account extends Component {
         this.setState({error: {}});
 
         AccountManager.saveAccountInfo(this.state.name).then((response) => {
+            this.setState({error: {...this.state.error, infoSuccess: "Informações salvas com sucesso"}});
 
         }).catch((error) => {
             if (error === 'INVALID_ACCOUNT_NAME')
@@ -47,7 +51,20 @@ export default class Account extends Component {
     saveEmailAndPassword() {
         this.setState({error: {}});
 
+        AccountManager.saveAccountAuth(this.state.email, this.state.password).then((response) => {
+            this.setState({error: {...this.state.error, authSuccess: "Informações salvas com sucesso"}});
 
+        }).catch((error) => {
+            if (error === 'INVALID_EMAIL')
+                this.setState({error: {...this.state.error, email: "Email inválido"}});
+
+            if (error === 'EMAIL_ALREADY_EXISTS')
+                this.setState({error: {...this.state.error, email: "Esse email já existe"}});
+
+            if (error === 'INVALID_PASSWORD')
+                this.setState({error: {...this.state.error, password: "Senha inválida"}});
+
+        });
     }
 
     render({}, {name, email, password, error}) {
@@ -76,6 +93,9 @@ export default class Account extends Component {
                                      onClick={this.saveInformation.bind(this)}>
                                     Salvar
                                 </div>
+                                {error.infoSuccess && (
+                                    <small class={SUCCESS_CSS}> {error.infoSuccess}</small>
+                                )}
                             </div>
 
                             <div class="shadow p-2 rounded bg-white">
@@ -100,6 +120,9 @@ export default class Account extends Component {
                                 <div class="btn dashboard-add__button" onClick={this.saveEmailAndPassword.bind(this)}>
                                     Salvar
                                 </div>
+                                {error.authSuccess && (
+                                    <small class={SUCCESS_CSS}> {error.authSuccess}</small>
+                                )}
                             </div>
                         </div>
                     </Match>
