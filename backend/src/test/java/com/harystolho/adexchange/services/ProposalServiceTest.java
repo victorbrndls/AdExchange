@@ -54,14 +54,14 @@ public class ProposalServiceTest {
 	public void createProposalWithValidDuration() {
 		for (String duration : new String[] { "1", "100", "365" }) {
 			ServiceResponse<Proposal> response = proposalService.createProposal("ac1", "12gfas4fas", "dasd1wa5e",
-					duration, "PAY_PER_CLICK", "1.0");
+					duration, "PAY_PER_CLICK", "1,0");
 			assertEquals("Duration should be valid: " + duration, ServiceResponseType.OK, response.getErrorType());
 		}
 	}
 
 	@Test
 	public void createProposalWithInvalidPaymentValue() {
-		for (String value : new String[] { "-1", "-0", "0", "0.111", "1.157", "784..0", "0.0.0", "0,47", "0000",
+		for (String value : new String[] { "-1", "-0", "0", "0.111", "1.157", "784..0", "0.0.0", "0.47", "0000",
 				"1,0.2" }) {
 			ServiceResponse<Proposal> response = proposalService.createProposal("ac1", "12gfas4fas", "dasd1wa5e", "1",
 					"PAY_PER_CLICK", value);
@@ -72,8 +72,8 @@ public class ProposalServiceTest {
 
 	@Test
 	public void createProposalWithValidPaymentValue() {
-		for (String value : new String[] { "1", "0.1", "0.01", "0.05", "1.0", "750", "0.99", "1.74", "1597",
-				"12.24" }) {
+		for (String value : new String[] { "1", "0,1", "0,01", "0,05", "1,0", "750", "0,99", "1,74", "1597",
+				"12,24" }) {
 			ServiceResponse<Proposal> response = proposalService.createProposal("ac1", "12gfas4fas", "dasd1wa5e", "1",
 					"PAY_PER_CLICK", value);
 			assertEquals("Payment value should be valid: " + value, ServiceResponseType.OK, response.getErrorType());

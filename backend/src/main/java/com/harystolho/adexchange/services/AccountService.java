@@ -168,22 +168,27 @@ public class AccountService {
 		} else {
 			return ServiceResponse.error(ServiceResponseType.INVALID_ACCOUNT_BALANCE);
 		}
-
 	}
 
 	/**
 	 * This method verifies that the user balance is valid, if it is not valid then
-	 * it throws an error for devs to notice and fix it
+	 * it prints an error for devs to notice and fix it
 	 * 
 	 * @param account
 	 * @return
 	 */
 	private boolean verifyAccountBalance(Account account) {
-		if (!StringUtils.hasText(account.getBalance()))
+		if (!StringUtils.hasText(account.getBalance())) {
+			logger.error("Invalid balace on account - AccountId: [{}], Balance: [{}]", account.getId(),
+					account.getBalance());
 			return false;
+		}
 
-		if (!AEUtils.validateMonetaryValue(account.getBalance()))
+		if (!AEUtils.isValueValidForAccountBalance(account.getBalance())) {
+			logger.error("Invalid balace on account - AccountId: [{}], Balance: [{}]", account.getId(),
+					account.getBalance());
 			return false;
+		}
 
 		return true;
 	}

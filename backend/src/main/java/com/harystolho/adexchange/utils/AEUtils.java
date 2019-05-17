@@ -21,23 +21,40 @@ public class AEUtils {
 	 * @return
 	 */
 	public static boolean validateMonetaryValue(String value) {
+		if (isValueValidForAccountBalance(value)) {
+			value = value.replace(',', '.');
+			double dValue = Double.parseDouble(value);
+
+			if (dValue > 0.00)
+				return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * A monetary value has to be bigger than 0.00 but the account balance can be
+	 * 0.00
+	 * 
+	 * @param value
+	 * @return
+	 */
+	public static boolean isValueValidForAccountBalance(String value) {
 		try {
 			int occurences = StringUtils.countOccurrencesOf(value, ",");
 
 			if (occurences > 1) // Can't contain more than one ','
 				return false;
-			
+
 			if (value.contains(","))
-				if (value.split("\\.")[1].length() > 2) // If there are more than 2 cases after the ','
+				if (value.split("\\,")[1].length() > 2) // If there are more than 2 cases after the ','
 					return false;
 
-			if(value.contains("."))
+			if (value.contains("."))
 				return false;
-			
-			double dValue = Double.parseDouble(value); // Try to cast to double to make sure it's a number
 
-			if (dValue <= 0.0)
-				return false;
+			value = value.replace(',', '.');
+			Double.parseDouble(value); // Try to cast to double to make sure it's a number
 		} catch (Exception e) {
 			return false;
 		}

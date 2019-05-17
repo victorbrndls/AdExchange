@@ -17,7 +17,16 @@ public class AeUtilsTest {
 		for (String value : list) {
 			assertEquals("Value: " + value, false, AEUtils.validateMonetaryValue(value));
 		}
+	}
 
+	@Test
+	public void validMoneyValuesShouldWork() {
+		List<String> list = Arrays.asList("1,0", "2,5", "1,10", "0,10", "0,99", "157,00", "14", "99", "0,99", "14,1",
+				"1,99", "0,01");
+
+		for (String value : list) {
+			assertEquals("Value: " + value, true, AEUtils.validateMonetaryValue(value));
+		}
 	}
 
 }
