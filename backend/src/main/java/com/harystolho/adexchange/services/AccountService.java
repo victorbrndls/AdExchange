@@ -179,18 +179,20 @@ public class AccountService {
 	 */
 	private boolean verifyAccountBalance(Account account) {
 		if (!StringUtils.hasText(account.getBalance())) {
-			logger.error("Invalid balace on account - AccountId: [{}], Balance: [{}]", account.getId(),
-					account.getBalance());
+			logInvalidAccountBalance(account.getId(), account.getBalance());
 			return false;
 		}
 
 		if (!AEUtils.isValueValidForAccountBalance(account.getBalance())) {
-			logger.error("Invalid balace on account - AccountId: [{}], Balance: [{}]", account.getId(),
-					account.getBalance());
+			logInvalidAccountBalance(account.getId(), account.getBalance());
 			return false;
 		}
 
 		return true;
+	}
+
+	private void logInvalidAccountBalance(String accountId, String balance) {
+		logger.error("Invalid balace on account - AccountId: [{}], Balance: [{}]", accountId, balance);
 	}
 
 }
