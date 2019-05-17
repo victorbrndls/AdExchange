@@ -192,7 +192,7 @@ export default class AddProposal extends Component {
                 this.setState({
                     error: {
                         ...error,
-                        paymentValue: "Valor do pagamento inválido. O valor deve ser maior que 0.00 e conter no máximo 2 casas decimais. Use ponto(.) em vez de virgula(,)"
+                        paymentValue: "Valor do pagamento inválido. O valor deve ser maior que 0,00 e conter no máximo 2 casas decimais. Use virgula(,) em vez de ponto(.)"
                     }
                 });
                 return;
@@ -287,7 +287,7 @@ export default class AddProposal extends Component {
                                     <span class="input-group-text">R$</span>
                                 </div>
                                 <input id="p_paymentValue" class="form-control" pattern={this.moneyPattern}
-                                       placeholder="Valores com no maximo 2 casas decimais (1.50, 4.54, 0.10, 18.01, 0.50)"
+                                       placeholder="Valores com no maximo 2 casas decimais (Ex.: 1,50 4,54 0,10 18,01 0,50)"
                                        value={proposal.paymentValue || ""} disabled={disableFields}
                                        onChange={(e) => this.setState({
                                            proposal: {
