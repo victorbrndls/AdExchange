@@ -13,21 +13,9 @@ import AccountManager from "../../managers/AccountManager";
 export default class Dashboard extends Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            balance: "0,00"
-        };
-
-        this.requestBalance();
     }
 
-    requestBalance() {
-        AccountManager.requestBalance().then((response) => {
-            this.setState({balance: response.balance});
-        });
-    }
-
-    render({}, {balance}) {
+    render({}, {}) {
         return (
             <div id="dashboard" class="h-100">
                 <div class="dashboard__sidebar">
@@ -86,7 +74,7 @@ export default class Dashboard extends Component {
                                 </Link>
                             </div>
                             <div class="dashboard__main-topbar--item ml-4">
-                                <span>Saldo: R$ {balance}</span>
+                                <AccountBalance/>
                             </div>
                         </div>
                         <div class="dashboard__main-topbar__right">
@@ -141,4 +129,29 @@ export default class Dashboard extends Component {
             </div>
         )
     }
+}
+
+export class AccountBalance extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            balance: "0,00"
+        };
+
+        this.requestBalance();
+    }
+
+    requestBalance() {
+        AccountManager.requestBalance().then((response) => {
+            this.setState({balance: response.balance});
+        });
+    }
+
+    render({}, {balance}) {
+        return (
+            <span class="dashboard__account-balance">Saldo: R$ {balance}</span>
+        )
+    }
+
 }
