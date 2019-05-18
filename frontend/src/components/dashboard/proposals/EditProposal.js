@@ -4,7 +4,7 @@ import Axios from "axios";
 import {HOST} from "../../../configs";
 import {AdAxiosGet, AdAxiosPost, auth} from "../../../auth";
 import {ImageAd, TextAd} from "../ads/CreateAdd";
-import {route} from "preact-router";
+import {Link, route} from "preact-router";
 import UrlUtils from "../../utils/UrlUtils";
 import {ConfirmationModal} from "../../utils/Components";
 
@@ -233,6 +233,12 @@ export default class AddProposal extends Component {
                                     <option value={ad.id}>{ad.name}</option>
                                 ))}
                             </select>
+                            {ads.length === 0 && new_m && (
+                                <small class="form-text">Voce não possiu nenhum anúncio.&nbsp;
+                                    <Link href="/dashboard/ads/edit?type=new">
+                                        Clique aqui para criar um.
+                                    </Link>
+                                </small>)}
                             <small class="form-text text-muted">O anúncio da proposta não pode ser editado depois que
                                 ela for
                                 aceita, isso significa que mesmo que alguma alteração ocorra no anúncio, ela não será
