@@ -50,7 +50,7 @@ export default class Ads extends Component {
                     <Match path="/dashboard/ads" exact>
                         <div>
                             <div class="ads-add dashboard-website__rounded-button" style="margin-bottom: 15px;"
-                                 onClick={() => route('/dashboard/ads/edit?type=new')}>
+                                 onClick={() => route('/dashboard/ads/edit?mode=new')}>
                                 Criar Anúncio
                             </div>
                             <div style="display: flex; flex-direction: column;">

@@ -235,7 +235,7 @@ export default class AddProposal extends Component {
                             </select>
                             {ads.length === 0 && new_m && (
                                 <small class="form-text">Voce não possiu nenhum anúncio.&nbsp;
-                                    <Link href="/dashboard/ads/edit?type=new">
+                                    <Link href="/dashboard/ads/edit?mode=new">
                                         Clique aqui para criar um.
                                     </Link>
                                 </small>)}

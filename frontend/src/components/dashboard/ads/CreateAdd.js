@@ -26,8 +26,8 @@ export default class CreateAdd extends Component {
         super(props);
 
         console.log(DEFAULT_PARSED_OUTPUT);
-        
-        this.state = { // Default state
+
+        this.state = {
             error: {},
             mode: "EDIT",
             adType: "TEXT",
@@ -40,14 +40,14 @@ export default class CreateAdd extends Component {
             adTextColor: "#000",
         };
 
-        this.ad = () => document.getElementsByClassName('ae-ad text')[0];
-
         this.updateMode();
         this.requestAdInformation();
     }
 
     updateMode() {
-        if (new URLSearchParams(location.search).get('type') === 'new')
+        let params = new URLSearchParams(location.search);
+
+        if (params.get('mode') === 'new')
             this.setState({mode: "NEW"});
     }
 
@@ -204,6 +204,9 @@ export default class CreateAdd extends Component {
     }
 
     render({}, state) {
+        let edit_m = state.mode === 'EDIT';
+        let new_m = state.mode === 'NEW';
+
         return (
             <div>
                 <div class="websites-add__container">
@@ -225,22 +228,29 @@ export default class CreateAdd extends Component {
                         <div class="form-group websites-add__form">
                             <label>Modelo do Anúncio</label>
                             <div style="display: flex;">
-                                <div class="ads-ad__checkbox" onClick={this.handleAdCheckbox.bind(this, 'TEXT')}>
-                                    <div class="shadow ads-ad-wrapper">
-                                        <TextAd
-                                            parsedOutput={state.adParsedCode} bgColor={state.adBgColor}
-                                            textColor={state.adTextColor}/>
+
+                                <div class="dashboard-add__blocking-container">
+                                    {edit_m && state.adType !== 'TEXT' && (<div class="blocking-container"/>)}
+                                    <div class="ads-ad__checkbox" onClick={this.handleAdCheckbox.bind(this, 'TEXT')}>
+                                        <div class="shadow ads-ad-wrapper">
+                                            <TextAd
+                                                parsedOutput={state.adParsedCode} bgColor={state.adBgColor}
+                                                textColor={state.adTextColor}/>
+                                        </div>
+                                        <div
+                                            class={`ads-ad__checkbox-box ${this.state.adType === 'TEXT' ? "active" : ""}`}/>
                                     </div>
-                                    <div
-                                        class={`ads-ad__checkbox-box ${this.state.adType === 'TEXT' ? "active" : ""}`}/>
                                 </div>
 
-                                <div class="ads-ad__checkbox" onClick={this.handleAdCheckbox.bind(this, 'IMAGE')}>
-                                    <div class="shadow ads-ad-wrapper">
-                                        <ImageAd imageUrl={state.adImageUrl || DEFAULT_IMAGE_URL}/>
+                                <div class="dashboard-add__blocking-container">
+                                    {edit_m && state.adType !== 'IMAGE' && (<div class="blocking-container"/>)}
+                                    <div class="ads-ad__checkbox" onClick={this.handleAdCheckbox.bind(this, 'IMAGE')}>
+                                        <div class="shadow ads-ad-wrapper">
+                                            <ImageAd imageUrl={state.adImageUrl || DEFAULT_IMAGE_URL}/>
+                                        </div>
+                                        <div
+                                            class={`ads-ad__checkbox-box ${this.state.adType === 'IMAGE' ? "active" : ""}`}/>
                                     </div>
-                                    <div
-                                        class={`ads-ad__checkbox-box ${this.state.adType === 'IMAGE' ? "active" : ""}`}/>
                                 </div>
                             </div>
                         </div>
