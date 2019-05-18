@@ -11,6 +11,8 @@ import Account from "./account/Account";
 import AccountManager from "../../managers/AccountManager";
 import {route} from "preact-router";
 
+import '../../assets/font-awesome-4.7.0/css/font-awesome.min.css'
+
 export default class Dashboard extends Component {
     constructor(props) {
         super(props);
