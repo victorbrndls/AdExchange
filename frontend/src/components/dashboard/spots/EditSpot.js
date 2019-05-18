@@ -97,7 +97,7 @@ export default class EditSpot extends Component {
                     </div>
 
                     <div class="form-group websites-add__form">
-                        <label>Contrato (nao obrigatorio)</label>
+                        <label>Contrato (não obrigatório)</label>
                         <select class="custom-select"
                                 onChange={(e) => this.setState({spot: {...spot, contractId: e.target.value}})}
                                 value={this.state.spot.contractId}>
@@ -109,7 +109,7 @@ export default class EditSpot extends Component {
                     </div>
 
                     <div class="form-group websites-add__form">
-                        <label>Anúncio reserva (nao obrigatorio)</label>
+                        <label>Anúncio reserva (não obrigatório)</label>
                         <select class="custom-select"
                                 onChange={(e) => this.setState({spot: {...spot, fallbackAdId: e.target.value}})}
                                 value={this.state.spot.fallbackAdId}>

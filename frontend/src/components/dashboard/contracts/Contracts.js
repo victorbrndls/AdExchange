@@ -147,7 +147,7 @@ class Contract extends Component {
                         {PaymentMethod[paymentMethod]}</div>
                     <div class="contract__body-item">Valor do pagamento R${paymentValue}</div>
                     <div class="contract__body-item">
-                        <div class="contract__body-show_ad" onClick={this.handleShowAd.bind(this)}>Ver Anuncio
+                        <div class="contract__body-show_ad" onClick={this.handleShowAd.bind(this)}>Ver Anúncio
                         </div>
                         {showAd && ad !== null && (
                             <div class="ad-container">

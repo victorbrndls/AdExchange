@@ -148,7 +148,7 @@ class Spot extends Component {
                     </div>
                     <div class="contract__body-item">
                         <div>
-                            Anuncio reserva: {adName}
+                            Anúncio reserva: {adName}
                         </div>
                         {extended && fallbackAd && (
                             <AdWrapper ad={fallbackAd}/>

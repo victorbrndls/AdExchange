@@ -240,7 +240,7 @@ export default class CreateAdd extends Component {
                                             {error.adRefUrl}
                                         </small>)}
                                     <small class="form-text text-muted">O usuario sera redirecionado para esse link
-                                        quando o anuncio for clicado.
+                                        quando o anúncio for clicado.
                                     </small>
                                 </div>
                             </div>
@@ -276,7 +276,7 @@ export default class CreateAdd extends Component {
                                             {error.adRefUrl}
                                         </small>)}
                                     <small class="form-text text-muted">O usuario sera redirecionado para esse link
-                                        quando o anuncio for clicado.
+                                        quando o anúncio for clicado.
                                     </small>
                                 </div>
                             </div>

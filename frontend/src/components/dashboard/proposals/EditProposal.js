@@ -228,7 +228,7 @@ export default class AddProposal extends Component {
                             <label>Anúncio</label>
                             <select class="custom-select" onChange={this.handleAdChange.bind(this)}
                                     disabled={edit_m}>
-                                <option value="none">Selecione um anuncio</option>
+                                <option value="none">Selecione um anúncio</option>
                                 {ads && ads.map((ad) => (
                                     <option value={ad.id}>{ad.name}</option>
                                 ))}
@@ -268,7 +268,7 @@ export default class AddProposal extends Component {
                                        }
                                    })}/>
                             <small class="form-text ad-error">{error.duration}</small>
-                            <small class="form-text text-muted">Por quanto tempo o anuncio ficara ativo (de 1 a 365)
+                            <small class="form-text text-muted">Por quanto tempo o anúncio ficará ativo (de 1 a 365)
                             </small>
                         </div>
 

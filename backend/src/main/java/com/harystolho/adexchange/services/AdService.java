@@ -167,7 +167,7 @@ public class AdService {
 			return ServiceResponseType.INVALID_AD_REF_URL;
 
 		if (type.equals("TEXT")) {
-			if (StringUtils.isEmpty(text))
+			if (!StringUtils.hasText(text))
 				return ServiceResponseType.INVALID_AD_TEXT;
 
 			if (!bgColor.matches(HEX_COLOR_REGEX))
