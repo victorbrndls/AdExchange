@@ -155,12 +155,12 @@ public class AdService {
 
 	public void removeAd(String id) {
 		adRepository.removeById(id);
-	}	
+	}
 
 	private ServiceResponseType verifyAdFields(String name, String type, String refUrl, String text, String bgColor,
 			String textColor, String imageUrl) {
 
-		if (StringUtils.isEmpty(name))
+		if (!StringUtils.hasText(name))
 			return ServiceResponseType.INVALID_AD_NAME;
 
 		if (!refUrl.matches(URL_REGEX))

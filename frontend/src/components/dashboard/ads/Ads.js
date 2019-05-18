@@ -62,7 +62,7 @@ export default class Ads extends Component {
                                             </div>
                                             <div style="margin-left: 7px;">
                                                 <span class="ad__container-option"
-                                                      onClick={() => route(`/dashboard/ads/edit?id=${ad.id}`)}>Editar</span>
+                                                      onClick={() => route(`/dashboard/ads/edit?mode=edit&id=${ad.id}`)}>Editar</span>
                                                 <span class="ad__container-option"
                                                       onClick={this.deleteAd.bind(this, ad.id)}>Deletar</span>
                                             </div>
