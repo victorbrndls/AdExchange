@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.harystolho.adexchange.auth.TokenService;
+import com.harystolho.adexchange.auth.AuthService;
 import com.harystolho.adexchange.models.Account;
 import com.harystolho.adexchange.repositories.account.AccountRepository;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
@@ -20,11 +20,11 @@ public class AccountService {
 	private static final Logger logger = LogManager.getLogger();
 
 	private AccountRepository accountRepository;
-	private TokenService tokenService;
+	private AuthService tokenService;
 
 	@Autowired
 	public AccountService(@Qualifier("cachedAccountRepository") AccountRepository accountRepository,
-			TokenService tokenService) {
+			AuthService tokenService) {
 		this.accountRepository = accountRepository;
 		this.tokenService = tokenService;
 	}

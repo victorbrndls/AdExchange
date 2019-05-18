@@ -9,7 +9,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import com.harystolho.adexchange.auth.TokenService;
+import com.harystolho.adexchange.auth.AuthService;
 import com.harystolho.adexchange.models.Account;
 import com.harystolho.adexchange.repositories.account.AccountRepository;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
@@ -25,7 +25,7 @@ public class AuthServiceTest {
 	@Mock
 	private static AccountRepository authRepository;
 	@Mock
-	private static TokenService tokenService;
+	private static AuthService tokenService;
 
 	@Test
 	public void createAccountWithInvalidEmail() {

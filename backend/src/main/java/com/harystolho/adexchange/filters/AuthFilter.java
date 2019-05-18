@@ -11,15 +11,15 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.harystolho.adexchange.auth.TokenService;
+import com.harystolho.adexchange.auth.AuthService;
 
 @Component
 public class AuthFilter extends AbstractFilter {
 
-	private TokenService tokenService;
+	private AuthService tokenService;
 
 	@Autowired
-	public AuthFilter(TokenService tokenService) {
+	public AuthFilter(AuthService tokenService) {
 		this.tokenService = tokenService;
 	}
 
@@ -34,7 +34,7 @@ public class AuthFilter extends AbstractFilter {
 		Optional<String> token = getTokenFromHeader(req.getHeader("Authorization"));
 
 		if (token.isPresent()) {
-			Optional<String> accountId = tokenService.getAccountIdByTokenValue(token.get());
+			Optional<String> accountId = tokenService.getAccountIdByToken(token.get());
 			if (accountId.isPresent()) {
 				req.setAttribute("ae.accountId", accountId.get());
 				chain.doFilter(req, res);
