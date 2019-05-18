@@ -681,3 +681,16 @@ body.auth #header {
 #dashboardAccountInfoSave{
     background-color: orangered;
 }
+
+.dashboard__account-balance i{
+    font-size: 16px;
+    margin-left: 9px;
+    border-radius: 50%;
+    padding: 4px 7px;
+    box-shadow: 0 0 5px #9f9f9f96;
+    cursor: pointer;
+}
+
+.dashboard__account-balance i:hover{
+
+}

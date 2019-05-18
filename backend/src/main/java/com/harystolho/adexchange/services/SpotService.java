@@ -22,7 +22,6 @@ public class SpotService {
 	private AdService adService;
 	private AdModelServerService adModelServerService;
 
-	@Autowired
 	private SpotService(SpotRepository spotRepository, ContractService contractService, AdService adService) {
 		this.spotRepository = spotRepository;
 		this.contractService = contractService;

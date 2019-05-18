@@ -3,6 +3,7 @@ import Match from "../../utils/Match";
 import {LeftArrow} from "../../utils/Components";
 import {route} from "preact-router";
 import AccountManager from "../../../managers/AccountManager";
+import AddBalance from "./AddBalance";
 
 const SUCCESS_CSS = 'form-text text-success d-inline ml-3';
 
@@ -125,6 +126,10 @@ export default class Account extends Component {
                                 )}
                             </div>
                         </div>
+                    </Match>
+
+                    <Match path="/dashboard/account/add-balance" include>
+                        <AddBalance/>
                     </Match>
                 </div>
             </div>

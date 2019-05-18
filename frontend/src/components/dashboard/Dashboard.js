@@ -9,6 +9,7 @@ import Spots from "./spots/Spots";
 import ControlPanel from "./controlPanel/ControlPanel";
 import Account from "./account/Account";
 import AccountManager from "../../managers/AccountManager";
+import {route} from "preact-router";
 
 export default class Dashboard extends Component {
     constructor(props) {
@@ -150,7 +151,10 @@ export class AccountBalance extends Component {
 
     render({}, {balance}) {
         return (
-            <span class="dashboard__account-balance">Saldo: R$ {balance}</span>
+            <span class="dashboard__account-balance">
+                Saldo: R$ {balance}
+                <i class="fa fa-plus" onClick={() => route('/dashboard/account/add-balance')}/>
+            </span>
         )
     }
 
