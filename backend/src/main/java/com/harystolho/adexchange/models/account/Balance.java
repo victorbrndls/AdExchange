@@ -17,14 +17,15 @@ import java.math.MathContext;
  */
 public class Balance {
 
-	private static final BigDecimal ZERO_POINT_ONE = new BigDecimal("0.1");
-	private static final BigDecimal MINUS_ZERO_POINT_ONE = new BigDecimal("-0.1");
-
 	// Use setBalance() to set this value
 	private BigDecimal value;
 
 	public Balance(String value) throws BalanceException, NumberFormatException {
 		setBalance(new BigDecimal(value));
+	}
+
+	public Balance(BigDecimal value) throws NumberFormatException {
+		setBalance(value);
 	}
 
 	private void setBalance(BigDecimal value) throws BalanceException {
@@ -46,11 +47,11 @@ public class Balance {
 		int precision = numbersBeforePoint + 2; // Numbers before the point + 2 because it must round to at most 2
 												// decimal points
 
-		if (value.compareTo(ZERO_POINT_ONE) == -1 && value.compareTo(MINUS_ZERO_POINT_ONE) == 1) {
+		if (value.compareTo(BigDecimal.ONE) == -1) {
 			/*
-			 * For some reason the rounding for numbers > -0.1 && < 0.1 doesn't work. The
-			 * workaround is to add 1 to that number, round the new number and then remove 1
-			 * from it you get the correct result.
+			 * For some reason the rounding for numbers < 1 doesn't work. The workaround is
+			 * to add 1 to that number, round the new number and then remove 1 from it you
+			 * get the correct result.
 			 */
 			return value.add(BigDecimal.ONE).round(new MathContext(precision)).subtract(BigDecimal.ONE);
 		} else {
@@ -58,9 +59,22 @@ public class Balance {
 		}
 	}
 
+	/**
+	 * Adds the {@code other} balance to {@code this} and returns a new
+	 * {@link Balance}
+	 * 
+	 * @param other
+	 * @return
+	 */
+	public Balance add(Balance other) {
+		BigDecimal newValue = this.value.add(other.value);
+
+		return new Balance(newValue);
+	}
+
 	@Override
 	public String toString() {
-		return value.toPlainString();
+		return value.setScale(2).toPlainString();
 	}
 
 	public static class BalanceException extends RuntimeException {
