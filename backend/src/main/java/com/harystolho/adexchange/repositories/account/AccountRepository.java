@@ -1,6 +1,6 @@
 package com.harystolho.adexchange.repositories.account;
 
-import com.harystolho.adexchange.models.Account;
+import com.harystolho.adexchange.models.account.Account;
 
 public interface AccountRepository {
 

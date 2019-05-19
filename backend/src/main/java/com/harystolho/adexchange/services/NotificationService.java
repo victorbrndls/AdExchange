@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.harystolho.adexchange.models.Account;
 import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.models.Website;
+import com.harystolho.adexchange.models.account.Account;
 import com.harystolho.adexchange.notifications.Notification;
 import com.harystolho.adexchange.notifications.ProposalNotification;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;

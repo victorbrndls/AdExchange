@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.harystolho.adServer.services.CacheService;
-import com.harystolho.adexchange.models.Account;
+import com.harystolho.adexchange.models.account.Account;
 
 @Service(value = "cachedAccountRepository")
 public class CachedAccountRepositoryImpl implements AccountRepository {

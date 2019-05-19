@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import com.harystolho.adexchange.models.Account;
+import com.harystolho.adexchange.models.account.Account;
 
 @Service(value="accountRepository")
 public class AccountRespositoryImpl implements AccountRepository {

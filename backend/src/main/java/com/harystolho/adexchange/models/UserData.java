@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.harystolho.adexchange.models.account.Account;
 import com.harystolho.adexchange.notifications.Notification;
 
 /**

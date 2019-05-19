@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.harystolho.adexchange.models.Account;
+import com.harystolho.adexchange.models.account.Account;
 import com.harystolho.adexchange.services.AccountService;
 import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.utils.AEUtils;

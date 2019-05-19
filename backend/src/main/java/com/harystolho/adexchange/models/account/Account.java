@@ -1,4 +1,4 @@
-package com.harystolho.adexchange.models;
+package com.harystolho.adexchange.models.account;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -10,10 +10,10 @@ public class Account {
 	private String password;
 
 	private String fullName;
-	private String balance;
+	private Balance balance;
 
 	public Account() {
-		this.balance = "0,00";
+		this.balance = new Balance("0.00");
 	}
 
 	public Account(String email, String password) {
@@ -54,11 +54,11 @@ public class Account {
 		this.fullName = fullName;
 	}
 
-	public String getBalance() {
+	public Balance getBalance() {
 		return balance;
 	}
 
-	public void setBalance(String balance) {
+	public void setBalance(Balance balance) {
 		this.balance = balance;
 	}
 }
