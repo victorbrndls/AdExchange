@@ -23,7 +23,7 @@ export default class Dashboard extends Component {
             <div id="dashboard" class="h-100">
                 <div class="dashboard__sidebar">
                     <div class="dashboard__sidebar-logo">
-                        <span>AdExchange</span>
+                        <img src="/assets/logo.png"/>
                     </div>
                     <div class="dashboard__sidebar-bar d-flex flex-column">
                         <div>

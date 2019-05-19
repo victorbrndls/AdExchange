@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway');
 
 :root {
-    --ad-primary: #007bff;
-    --header-height: 50px;
+    --ad-primary: #2b47bf;
     --dashboard-sidebar-width: 250px;
+    --header-height: 60px;
 }
 
 html, body {
@@ -15,37 +15,52 @@ body.auth #header {
 }
 
 .header {
-    height: 60px;
+    height: 75px;
+    box-shadow: 0 1px 0 #e6e8ec;
+    background-color: white;
+}
+
+.header #logo {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
     font-family: Raleway, serif;
     font-size: 30px;
-    padding: 7px 0px 0px 15px;
-    background: linear-gradient(45deg, #2B47BF, #0F76CC);
     color: white;
-    margin-bottom: 90px;
+    padding: 0 15px;
 }
 
-.home-card {
-    border-radius: 2px;
-    height: 150px;
-    width: 375px;
+#logo > img {
+    height: 70px;
+}
+
+.header > .container {
     display: flex;
-    margin-bottom: 30px;
+    height: 100%;
 }
 
-#dashboardCard {
-    background: linear-gradient(45deg, #2ca961, #2ed88a);
-    width: 270px;
-    height: 80px;
-    padding-left: 10px;
+.ae-navbar {
+    display: flex;
+    justify-content: end;
+    flex: 1;
 }
 
-#dashboardCard > * {
-    align-self: center;
+.ae-navbar--link {
+    margin: auto 15px;
+    border: solid 2px var(--ad-primary);
+    border-radius: 6px;
+    padding: 2px 13px;
 }
 
-#dashboardCard a {
-    font-size: 50px;
-    color: white;
+.ae-navbar--link:hover {
+    background-color: #0028ff29;
+}
+
+.ae-navbar--link > a {
+    font-family: Raleway, serif;
+    font-size: 20px;
+    color: var(--ad-primary);
+    text-decoration: none;
 }
 
 .auth-sign {
@@ -93,10 +108,14 @@ body.auth #header {
     height: var(--header-height);
 }
 
-.dashboard__sidebar-logo {
-    background: linear-gradient(45deg, #2B47BF, #0F76CC);
-    color: white;
-    padding: 5px 0 0 8px;
+.dashboard__sidebar-logo{
+    display: flex;
+    box-shadow: inset 0 0 4px -2px #0000007a;
+}
+
+.dashboard__sidebar-logo > img {
+    height: 55px;
+    align-self: center;
 }
 
 .dashboard__sidebar-logo span {
@@ -129,7 +148,7 @@ body.auth #header {
     background-color: #ededed;
 }
 
-.dashboard__sidebar--item a, .dashboard__main-topbar--item a, .dashboard__main-topbar--item > span{
+.dashboard__sidebar--item a, .dashboard__main-topbar--item a, .dashboard__main-topbar--item > span {
     font-family: Raleway, serif;
     font-size: 19px;
     color: black;
@@ -641,44 +660,44 @@ body.auth #header {
     padding: 7px 9px;
 }
 
-.dropdown-item > a{
+.dropdown-item > a {
     color: black;
 }
 
-.dashboard__main-topbar .dropdown-item:active{
+.dashboard__main-topbar .dropdown-item:active {
     background-color: #1c60c6;
 }
 
-.dashboard__main-topbar button{
+.dashboard__main-topbar button {
     background-color: transparent;
     font-family: Raleway, serif;
     font-size: 19px;
 }
 
-.dashboard__main-topbar button:hover, .dashboard__main-topbar button.btn__active{
+.dashboard__main-topbar button:hover, .dashboard__main-topbar button.btn__active {
     text-decoration: underline;
 }
 
-.dashboard__main-topbar button:focus{
+.dashboard__main-topbar button:focus {
     box-shadow: none;
 }
 
-.dashboard__main-topbar__right{
+.dashboard__main-topbar__right {
     flex: 1;
     display: flex;
     justify-content: flex-end;
 }
 
-.dashboard__main-topbar__left{
+.dashboard__main-topbar__left {
     display: flex;
     padding: 0 17px;
 }
 
-#dashboardAccountInfoSave{
+#dashboardAccountInfoSave {
     background-color: orangered;
 }
 
-.dashboard__account-balance i{
+.dashboard__account-balance i {
     font-size: 16px;
     margin-left: 9px;
     border-radius: 50%;
@@ -687,15 +706,15 @@ body.auth #header {
     cursor: pointer;
 }
 
-.dashboard__account-balance i:hover{
+.dashboard__account-balance i:hover {
 
 }
 
-.dashboard-add__blocking-container{
+.dashboard-add__blocking-container {
     position: relative;
     margin: 0 10px 0 0;
 }
 
-.dashboard-add__blocking-container > .blocking-container{
+.dashboard-add__blocking-container > .blocking-container {
     background-color: #7a7a7a87;
 }

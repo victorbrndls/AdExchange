@@ -3,12 +3,12 @@ import {Component} from "preact";
 // https://scotch.io/tutorials/lazy-loading-routes-in-react
 export default function asyncComponent(getComponent) {
     class AsyncComponent extends Component {
-        static Component = null;
-
         constructor(props) {
             super(props);
 
-            this.state = {Component: AsyncComponent.Component};
+            this.state = {
+                Component: null
+            };
         }
 
         componentWillMount() {
@@ -21,12 +21,12 @@ export default function asyncComponent(getComponent) {
         }
 
         render() {
-            const { Component } = this.state;
+            const {Component} = this.state;
 
-            if (Component) {
-                return (<Component/>)
-            }
-            return null
+            if (Component)
+                return (<Component {...this.props}/>);
+
+            return null;
         }
     }
 
