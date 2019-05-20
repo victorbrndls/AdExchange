@@ -70,11 +70,14 @@ public class BalanceTest {
 
 	@Test
 	public void addBalancesShouldWork() {
-		assertEquals("0.90", new Balance("0.0").add(new Balance("0.9")).toString());
-		assertEquals("4.40", new Balance("1.50").add(new Balance("2.9")).toString());
 		assertEquals("0.00", new Balance("0.0").add(new Balance("0.0")).toString());
-		assertEquals("10.99", new Balance("9.49").add(new Balance("1.50")).toString());
+		assertEquals("0.90", new Balance("0.0").add(new Balance("0.9")).toString());
+		assertEquals("23.20", new Balance("0.0").add(new Balance("23.20")).toString());
 		assertEquals("1.97", new Balance("1.96").add(new Balance("0.01")).toString());
+		assertEquals("4.40", new Balance("1.50").add(new Balance("2.9")).toString());
+		assertEquals("10.99", new Balance("9.49").add(new Balance("1.50")).toString());
+		assertEquals("29.99", new Balance("23.23").add(new Balance("6.76")).toString());
+		assertEquals("99.99", new Balance("0.0").add(new Balance("99.99")).toString());
 		assertEquals("100.11", new Balance("99.01").add(new Balance("1.10")).toString());
 	}
 

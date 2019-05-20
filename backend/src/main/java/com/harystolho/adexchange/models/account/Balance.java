@@ -9,7 +9,7 @@ import java.math.MathContext;
  * <pre>
  * Rounding Rules: 
  * - The balance value MUST have at most 2 decimal points
- * - The balance value MUST be bigger or equal than 0
+ * - The balance value MUST be bigger or equal to 0
  * </pre>
  * 
  * @author Harystolho
@@ -67,9 +67,7 @@ public class Balance {
 	 * @return
 	 */
 	public Balance add(Balance other) {
-		BigDecimal newValue = this.value.add(other.value);
-
-		return new Balance(newValue);
+		return new Balance(this.value.add(other.value));
 	}
 
 	@Override

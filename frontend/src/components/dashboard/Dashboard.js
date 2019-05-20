@@ -147,7 +147,7 @@ export class AccountBalance extends Component {
 
     requestBalance() {
         AccountManager.requestBalance().then((response) => {
-            this.setState({balance: response.balance});
+            this.setState({balance: response.balance.replace('.', ',')});
         });
     }
 

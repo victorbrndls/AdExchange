@@ -163,36 +163,7 @@ public class AccountService {
 		if (acc == null)
 			return ServiceResponse.error(ServiceResponseType.INVALID_ACCOUNT_ID);
 
-		if (verifyAccountBalance(acc)) {
-			return ServiceResponse.ok(acc.getBalance());
-		} else {
-			return ServiceResponse.error(ServiceResponseType.INVALID_ACCOUNT_BALANCE);
-		}
-	}
-
-	/**
-	 * This method verifies that the user balance is valid, if it is not valid then
-	 * it prints an error for devs to notice and fix it
-	 * 
-	 * @param account
-	 * @return
-	 */
-	private boolean verifyAccountBalance(Account account) {
-		if (!StringUtils.hasText(account.getBalance())) {
-			logInvalidAccountBalance(account.getId(), account.getBalance());
-			return false;
-		}
-
-		if (!AEUtils.isValueValidForAccountBalance(account.getBalance())) {
-			logInvalidAccountBalance(account.getId(), account.getBalance());
-			return false;
-		}
-
-		return true;
-	}
-
-	private void logInvalidAccountBalance(String accountId, String balance) {
-		logger.error("Invalid balace on account - AccountId: [{}], Balance: [{}]", accountId, balance);
+		return ServiceResponse.ok(acc.getBalance().toString());
 	}
 
 }
