@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.harystolho.adServer.events.EventDispatcher;
+import com.harystolho.adServer.events.SpotClickedEvent;
+import com.harystolho.adServer.events.SpotEventHandler;
 import com.harystolho.adServer.services.UrlRedirecterService;
 import com.harystolho.adexchange.services.ServiceResponse;
 
@@ -18,10 +21,12 @@ public class UrlRedirectorController {
 	public static final String REDIRECT_ENDPOINT = "/redirect";
 
 	private UrlRedirecterService urlRedirectirService;
+	private EventDispatcher eventDispatcher;
 
 	@Autowired
-	private UrlRedirectorController(UrlRedirecterService urlRedirectorService) {
+	private UrlRedirectorController(UrlRedirecterService urlRedirectorService, EventDispatcher eventDispatcher) {
 		this.urlRedirectirService = urlRedirectorService;
+		this.eventDispatcher = eventDispatcher;
 	}
 
 	@GetMapping(path = REDIRECT_ENDPOINT + "/{id}")
@@ -30,11 +35,11 @@ public class UrlRedirectorController {
 
 		try {
 			switch (response.getErrorType()) {
-			case FAIL:
-				res.getWriter().write("No mapping for this id");
+			case OK:
+				res.sendRedirect(response.getReponse());
 				break;
 			default:
-				res.sendRedirect(response.getReponse());
+				res.getWriter().write("No mapping for url id"); // TODO redirect back to origin page
 				break;
 			}
 		} catch (Exception e) {
