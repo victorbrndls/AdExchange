@@ -22,7 +22,7 @@ import com.harystolho.adexchange.services.ServiceResponse;
  *
  */
 @Service
-public class AdModelServerService {
+public class AdServerService {
 
 	// Cache the AdModels because they don't change
 	private CacheService<AdModel> cacheService;
@@ -30,7 +30,7 @@ public class AdModelServerService {
 	private UrlRedirecterService urlRedirectorService;
 
 	@Autowired
-	private AdModelServerService(CacheService<AdModel> cacheService, AdModelService adModelService,
+	private AdServerService(CacheService<AdModel> cacheService, AdModelService adModelService,
 			UrlRedirecterService urlRedirecterService, GlobalInformant globalInformant) {
 		this.cacheService = cacheService;
 		this.adModelService = adModelService;

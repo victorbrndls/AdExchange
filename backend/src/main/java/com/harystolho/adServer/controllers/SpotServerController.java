@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.harystolho.adServer.AdModel;
-import com.harystolho.adServer.services.AdModelServerService;
+import com.harystolho.adServer.services.AdServerService;
 import com.harystolho.adexchange.services.ServiceResponse;
 
 @Controller
 @CrossOrigin
 public class SpotServerController {
 
-	private AdModelServerService spotServerService;
+	private AdServerService spotServerService;
 
 	@Autowired
-	private SpotServerController(AdModelServerService spotServerService) {
+	private SpotServerController(AdServerService spotServerService) {
 		this.spotServerService = spotServerService;
 	}
 

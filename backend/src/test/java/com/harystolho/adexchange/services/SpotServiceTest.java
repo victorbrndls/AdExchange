@@ -10,7 +10,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import com.harystolho.adServer.services.AdModelServerService;
+import com.harystolho.adServer.services.AdServerService;
 import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.repositories.spot.SpotRepository;
@@ -34,7 +34,7 @@ public class SpotServiceTest {
 	AdService adService;
 
 	@Mock
-	AdModelServerService adModelServerService;
+	AdServerService adModelServerService;
 
 	@Test
 	public void createSpotWith_InvalidName() {

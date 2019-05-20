@@ -30,8 +30,6 @@ export default class AddProposal extends Component {
             ads: []
         };
 
-        this.moneyPattern = "^(\\d+(\\.\\d{1,2}){0,1})$";
-
         this.updateMode();
 
         this.requestProposalInformation().then(() => {
@@ -292,7 +290,7 @@ export default class AddProposal extends Component {
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">R$</span>
                                 </div>
-                                <input id="p_paymentValue" class="form-control" pattern={this.moneyPattern}
+                                <input id="p_paymentValue" class="form-control"
                                        placeholder="Valores com no maximo 2 casas decimais (Ex.: 1,50 4,54 0,10 18,01 0,50)"
                                        value={proposal.paymentValue || ""} disabled={disableFields}
                                        onChange={(e) => this.setState({

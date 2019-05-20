@@ -77,7 +77,7 @@ export default class CreateAdd extends Component {
         formData.append("input", input);
 
         AdAxiosPost.post(`${HOST}/api/v1/ads/parser`, formData).then((response) => {
-            this.setState({adParsedCode: response.data});
+            this.setState({ad: {...this.state.ad, parsedOutput: response.data}});
         });
     }
 

@@ -73,7 +73,7 @@ public class UrlRedirecterService {
 		String finalID = "";
 
 		for (int x = 0; x < strength; x++) {
-			finalID += UUID.randomUUID().toString();
+			finalID += UUID.randomUUID().toString().replaceAll("-", "");	
 		}
 
 		return finalID;

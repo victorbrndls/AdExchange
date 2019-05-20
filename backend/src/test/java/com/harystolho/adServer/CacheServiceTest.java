@@ -14,7 +14,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import com.harystolho.adServer.services.CacheService;
 
 @RunWith(MockitoJUnitRunner.class)
-public class AdModelCacheTest {
+public class CacheServiceTest {
 
 	@InjectMocks
 	CacheService<String> cacheService;

@@ -20,6 +20,10 @@ public class Balance {
 	// Use setBalance() to set this value
 	private BigDecimal value;
 
+	public Balance() {
+		this("0.00");
+	}
+
 	public Balance(String value) throws BalanceException, NumberFormatException {
 		setBalance(new BigDecimal(value));
 	}

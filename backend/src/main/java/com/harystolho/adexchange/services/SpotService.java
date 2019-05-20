@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.harystolho.adServer.services.AdModelServerService;
+import com.harystolho.adServer.services.AdServerService;
 import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.models.ads.Ad;
@@ -20,7 +20,7 @@ public class SpotService {
 
 	private ContractService contractService;
 	private AdService adService;
-	private AdModelServerService adModelServerService;
+	private AdServerService adModelServerService;
 
 	private SpotService(SpotRepository spotRepository, ContractService contractService, AdService adService) {
 		this.spotRepository = spotRepository;
@@ -143,7 +143,7 @@ public class SpotService {
 
 	// Inject using setter to break dependency cycle
 	@Autowired
-	public void setAdModelServerService(AdModelServerService adModelServerService) {
+	public void setAdModelServerService(AdServerService adModelServerService) {
 		this.adModelServerService = adModelServerService;
 	}
 
