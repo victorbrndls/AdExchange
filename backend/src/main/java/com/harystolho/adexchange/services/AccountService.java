@@ -1,7 +1,5 @@
 package com.harystolho.adexchange.services;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -9,15 +7,13 @@ import org.springframework.util.StringUtils;
 
 import com.harystolho.adexchange.auth.AuthService;
 import com.harystolho.adexchange.models.account.Account;
+import com.harystolho.adexchange.models.account.Balance;
 import com.harystolho.adexchange.repositories.account.AccountRepository;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
-import com.harystolho.adexchange.utils.AEUtils;
 import com.harystolho.adexchange.utils.PasswordSecurity;
 
 @Service
 public class AccountService {
-
-	private static final Logger logger = LogManager.getLogger();
 
 	private AccountRepository accountRepository;
 	private AuthService tokenService;
@@ -164,6 +160,19 @@ public class AccountService {
 			return ServiceResponse.error(ServiceResponseType.INVALID_ACCOUNT_ID);
 
 		return ServiceResponse.ok(acc.getBalance().toString());
+	}
+
+	public ServiceResponseType addBalanceToAccount(String accountId, Balance balance) {
+		Account acc = accountRepository.getById(accountId);
+
+		if (acc == null)
+			return ServiceResponseType.INVALID_ACCOUNT_ID;
+
+		Balance newBalance = acc.getBalance().add(balance);
+
+		acc.setBalance(newBalance);
+
+		return ServiceResponseType.OK;
 	}
 
 }

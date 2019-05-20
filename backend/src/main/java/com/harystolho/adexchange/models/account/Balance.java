@@ -24,7 +24,7 @@ public class Balance {
 		setBalance(new BigDecimal(value));
 	}
 
-	public Balance(BigDecimal value) throws NumberFormatException {
+	public Balance(BigDecimal value) throws BalanceException {
 		setBalance(value);
 	}
 
@@ -73,6 +73,18 @@ public class Balance {
 	@Override
 	public String toString() {
 		return value.setScale(2).toPlainString();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Balance) {
+			Balance b = (Balance) obj;
+
+			if (this.value.compareTo(b.value) == 0)
+				return true;
+		}
+
+		return false;
 	}
 
 	public static class BalanceException extends RuntimeException {
