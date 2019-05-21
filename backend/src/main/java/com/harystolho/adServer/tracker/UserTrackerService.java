@@ -59,8 +59,7 @@ public class UserTrackerService {
 	 * @return <code>true</code> if the tracker has interacted with the interactor.
 	 *         The interactor is an identifier for some other object, for example if
 	 *         the user identified by this tracker has clicked some ad, you can map
-	 *         this tracker to the ad id. Some prefix should be used before the
-	 *         interactor id to make sure they don't collide
+	 *         this tracker to the ad id.
 	 */
 	public boolean hasTrackerInteractedWith(Tracker tracker, String interactor) {
 		List<String> listByCookie = trackerIdToInteraction.get(tracker.getCookie().getValue());
@@ -78,8 +77,16 @@ public class UserTrackerService {
 		return false;
 	}
 
-	public void interactTrackerWith(String interactor) {
-		
+	/**
+	 * Some prefix should be used before the interactor id to make sure they don't
+	 * collide
+	 * 
+	 * @param tracker
+	 * @param interactorId
+	 */
+	public void interactTrackerWith(Tracker tracker, String interactorId) {
+		trackerIdToInteraction.add(tracker.getCookie().getValue(), interactorId);
+		trackerIdToInteraction.add(tracker.getClientAddr(), interactorId);
 	}
-	
+
 }

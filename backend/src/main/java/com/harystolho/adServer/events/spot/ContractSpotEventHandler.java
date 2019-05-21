@@ -18,6 +18,8 @@ import com.harystolho.adexchange.utils.AEUtils;
 @Service
 public class ContractSpotEventHandler implements Handler<SpotClickedEvent> {
 
+	private static final String INTERACTOR_PREFIX = "c_";
+
 	private EventDispatcher eventDispatcher;
 	private UrlRedirecterService urlRedirecterService;
 	private ContractPaymentService contractPaymentService;
@@ -56,8 +58,11 @@ public class ContractSpotEventHandler implements Handler<SpotClickedEvent> {
 		if (spot.getContractId() == null || spot.getContractId().equals("-1"))
 			return; // There is no contract in the spot, so there is no need to pay the advertiser
 
-		if (userTrackerService.hasTrackerInteractedWith(event.getTracker(), spot.getContractId()))
+		if (userTrackerService.hasTrackerInteractedWith(event.getTracker(), INTERACTOR_PREFIX + spot.getContractId()))
 			return; // TODO what do do now ?
+
+		// The c_ is to avoid collisions
+		userTrackerService.interactTrackerWith(event.getTracker(), INTERACTOR_PREFIX + spot.getContractId());
 
 		contractPaymentService.issueContractPayment(spot.getContractId());
 	}

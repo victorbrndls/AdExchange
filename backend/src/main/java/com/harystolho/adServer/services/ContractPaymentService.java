@@ -22,13 +22,7 @@ public class ContractPaymentService {
 	 * @param contractId
 	 */
 	public void issueContractPayment(String contractId) {
-		if (!shouldPaymentOccur())
-			return; // TODO should payment occur?
-
-	}
-
-	private boolean shouldPaymentOccur() {
-		return false;
+		System.out.println("paying: " + contractId);
 	}
 
 }
