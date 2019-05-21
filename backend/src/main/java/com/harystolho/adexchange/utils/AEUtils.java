@@ -1,10 +1,12 @@
 package com.harystolho.adexchange.utils;
 
+import java.util.UUID;
+
 import javax.servlet.http.Cookie;
 
 import org.springframework.util.StringUtils;
 
-import com.harystolho.adServer.services.UserTrackerService;
+import com.harystolho.adServer.tracker.UserTrackerService;
 
 public class AEUtils {
 
@@ -76,5 +78,15 @@ public class AEUtils {
 		}
 
 		return null;
+	}
+
+	public static String generateUUIDString(int strength) {
+		String finalID = "";
+
+		for (int x = 0; x < strength; x++) {
+			finalID += UUID.randomUUID().toString().replaceAll("-", "");
+		}
+
+		return finalID;
 	}
 }

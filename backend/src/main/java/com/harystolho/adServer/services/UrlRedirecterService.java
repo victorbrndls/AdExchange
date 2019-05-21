@@ -1,13 +1,12 @@
 package com.harystolho.adServer.services;
 
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.harystolho.adexchange.information.GlobalInformant;
 import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.services.ServiceResponse;
+import com.harystolho.adexchange.utils.AEUtils;
 
 /**
  * Creates a mapping from a generated url to the {@link Ad#getRefUrl()}. This is
@@ -71,22 +70,12 @@ public class UrlRedirecterService {
 	}
 
 	private String genereteUrlId() {
-		String possibleId = generateUUIDString(2);
+		String possibleId = AEUtils.generateUUIDString(2);
 
 		if (cacheService.contains(possibleId))
 			return genereteUrlId();
 
 		return possibleId;
-	}
-
-	private String generateUUIDString(int strength) {
-		String finalID = "";
-
-		for (int x = 0; x < strength; x++) {
-			finalID += UUID.randomUUID().toString().replaceAll("-", "");
-		}
-
-		return finalID;
 	}
 
 	public void removeFromCache(String id) {

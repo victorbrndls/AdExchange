@@ -10,8 +10,8 @@ import com.harystolho.adServer.services.ContractPaymentService;
 import com.harystolho.adServer.services.UrlRedirecterService;
 import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.services.ServiceResponse;
-import com.harystolho.adexchange.services.SpotService;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
+import com.harystolho.adexchange.services.SpotService;
 import com.harystolho.adexchange.utils.AEUtils;
 
 @Service
