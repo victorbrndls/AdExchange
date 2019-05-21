@@ -1,19 +1,30 @@
 package com.harystolho.adServer.tracker;
 
+import java.util.List;
+
 import javax.servlet.http.Cookie;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import com.harystolho.adexchange.utils.AEUtils;
+
+// when user goes to /redict add a cookie
+// req.getRemoteAddr()
+// req.getRemoteHost()
 
 @Service
 public class UserTrackerService {
 
 	public static final String COOKIE_NAME = "t_ae";
 
-	// when user goes to /redict add a cookie
-	// req.getRemoteAddr()
-	// req.getRemoteHost()
+	// Maps a tracker id(cookie value, remote addr) to some id
+	private final MultiValueMap<String, String> trackerIdToInteraction;
+
+	private UserTrackerService() {
+		this.trackerIdToInteraction = new LinkedMultiValueMap<>();
+	}
 
 	public boolean isTrackerValid(Tracker tracker) {
 		Cookie cookie = tracker.getCookie();
@@ -42,4 +53,33 @@ public class UserTrackerService {
 		return cookie;
 	}
 
+	/**
+	 * @param tracker
+	 * @param interactor
+	 * @return <code>true</code> if the tracker has interacted with the interactor.
+	 *         The interactor is an identifier for some other object, for example if
+	 *         the user identified by this tracker has clicked some ad, you can map
+	 *         this tracker to the ad id. Some prefix should be used before the
+	 *         interactor id to make sure they don't collide
+	 */
+	public boolean hasTrackerInteractedWith(Tracker tracker, String interactor) {
+		List<String> listByCookie = trackerIdToInteraction.get(tracker.getCookie().getValue());
+
+		if (listByCookie != null)
+			if (listByCookie.contains(interactor))
+				return true;
+
+		List<String> listByClientAddr = trackerIdToInteraction.get(tracker.getClientAddr());
+
+		if (listByClientAddr != null)
+			if (listByClientAddr.contains(interactor))
+				return true;
+
+		return false;
+	}
+
+	public void interactTrackerWith(String interactor) {
+		
+	}
+	
 }

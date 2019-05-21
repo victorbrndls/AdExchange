@@ -39,13 +39,7 @@ public class UrlRedirectorController {
 	public void redirect(HttpServletRequest req, HttpServletResponse res, @PathVariable String id) {
 		ServiceResponse<String> response = urlRedirectirService.getUrlUsingRequestPath(req.getRequestURI());
 
-		Tracker tracker = new Tracker(AEUtils.getCookieByName(req.getCookies(), UserTrackerService.COOKIE_NAME),
-				req.getRemoteAddr());
-
-		if (!userTrackerService.isTrackerValid(tracker)) {
-			tracker = userTrackerService.createTracker(req.getRemoteAddr());
-			res.addCookie(tracker.getCookie());
-		}
+		Tracker tracker = addTrackerToRequest(req, res);
 
 		try {
 			switch (response.getErrorType()) {
@@ -60,6 +54,19 @@ public class UrlRedirectorController {
 		} catch (Exception e) {
 			// Do nothing
 		}
+	}
+
+	private Tracker addTrackerToRequest(HttpServletRequest req, HttpServletResponse res) {
+		Tracker tracker = new Tracker(AEUtils.getCookieByName(req.getCookies(), UserTrackerService.COOKIE_NAME),
+				req.getRemoteAddr());
+
+		if (!userTrackerService.isTrackerValid(tracker)) {
+			tracker = userTrackerService.createTracker(req.getRemoteAddr());
+			res.addCookie(tracker.getCookie());
+		}
+
+		return tracker;
+
 	}
 
 }

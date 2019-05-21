@@ -8,6 +8,7 @@ import com.harystolho.adServer.events.EventDispatcher;
 import com.harystolho.adServer.events.Handler;
 import com.harystolho.adServer.services.ContractPaymentService;
 import com.harystolho.adServer.services.UrlRedirecterService;
+import com.harystolho.adServer.tracker.UserTrackerService;
 import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
@@ -15,19 +16,22 @@ import com.harystolho.adexchange.services.SpotService;
 import com.harystolho.adexchange.utils.AEUtils;
 
 @Service
-public class SpotEventHandler implements Handler<SpotClickedEvent> {
+public class ContractSpotEventHandler implements Handler<SpotClickedEvent> {
 
 	private EventDispatcher eventDispatcher;
 	private UrlRedirecterService urlRedirecterService;
 	private ContractPaymentService contractPaymentService;
 	private SpotService spotService;
+	private UserTrackerService userTrackerService;
 
-	private SpotEventHandler(EventDispatcher eventDispatcher, UrlRedirecterService urlRedirecterService,
-			ContractPaymentService contractPaymentService, SpotService spotService) {
+	private ContractSpotEventHandler(EventDispatcher eventDispatcher, UrlRedirecterService urlRedirecterService,
+			ContractPaymentService contractPaymentService, SpotService spotService,
+			UserTrackerService userTrackerService) {
 		this.eventDispatcher = eventDispatcher;
 		this.urlRedirecterService = urlRedirecterService;
 		this.contractPaymentService = contractPaymentService;
 		this.spotService = spotService;
+		this.userTrackerService = userTrackerService;
 	}
 
 	@PostConstruct
@@ -51,7 +55,10 @@ public class SpotEventHandler implements Handler<SpotClickedEvent> {
 
 		if (spot.getContractId() == null || spot.getContractId().equals("-1"))
 			return; // There is no contract in the spot, so there is no need to pay the advertiser
-		
+
+		if (userTrackerService.hasTrackerInteractedWith(event.getTracker(), spot.getContractId()))
+			return; // TODO what do do now ?
+
 		contractPaymentService.issueContractPayment(spot.getContractId());
 	}
 
