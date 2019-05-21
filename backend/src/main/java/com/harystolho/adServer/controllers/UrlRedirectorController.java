@@ -6,11 +6,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.harystolho.adServer.events.EventDispatcher;
-import com.harystolho.adServer.events.SpotClickedEvent;
-import com.harystolho.adServer.events.SpotEventHandler;
+import com.harystolho.adServer.events.spot.SpotClickedEvent;
 import com.harystolho.adServer.services.UrlRedirecterService;
 import com.harystolho.adexchange.services.ServiceResponse;
 
@@ -30,12 +30,13 @@ public class UrlRedirectorController {
 	}
 
 	@GetMapping(path = REDIRECT_ENDPOINT + "/{id}")
-	public void redirect(HttpServletRequest req, HttpServletResponse res) {
+	public void redirect(HttpServletRequest req, HttpServletResponse res, @PathVariable String id) {
 		ServiceResponse<String> response = urlRedirectirService.getUrlUsingRequestPath(req.getRequestURI());
 
 		try {
 			switch (response.getErrorType()) {
 			case OK:
+				eventDispatcher.dispatch(new SpotClickedEvent(id));
 				res.sendRedirect(response.getReponse());
 				break;
 			default:
