@@ -1,6 +1,10 @@
 package com.harystolho.adexchange.utils;
 
+import javax.servlet.http.Cookie;
+
 import org.springframework.util.StringUtils;
+
+import com.harystolho.adServer.services.UserTrackerService;
 
 public class AEUtils {
 
@@ -60,5 +64,17 @@ public class AEUtils {
 		}
 
 		return true;
+	}
+
+	public static Cookie getCookieByName(Cookie[] cookies, String cookieName) {
+		if (cookies == null)
+			return null;
+
+		for (Cookie cookie : cookies) {
+			if (cookie.getName().equals(UserTrackerService.COOKIE_NAME))
+				return cookie;
+		}
+
+		return null;
 	}
 }

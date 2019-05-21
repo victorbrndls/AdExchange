@@ -69,7 +69,7 @@ public class AdModelService {
 
 		model.setSpotId(spot.getId());
 		model.setRedirectUrl(buildRedirectUrl("https://localhost:8080", UrlRedirectorController.REDIRECT_ENDPOINT,
-				urlRedirecterService.mapRefUrl(ad.getRefUrl())));
+				urlRedirecterService.mapRefUrl(spot.getId(), ad.getRefUrl())));
 		return model;
 	}
 

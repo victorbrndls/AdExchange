@@ -176,7 +176,7 @@ export default class AddProposal extends Component {
                 this.setState({error: {...error, website: "ID do website inválido"}});
                 return;
             case 'INVALID_AD_ID':
-                this.setState({error: {...error, ad: "ID to anúncio inválido, tente outro"}});
+                this.setState({error: {...error, ad: "ID do anúncio inválido, tente outro"}});
                 return;
             case 'INVALID_DURATION':
                 this.setState({

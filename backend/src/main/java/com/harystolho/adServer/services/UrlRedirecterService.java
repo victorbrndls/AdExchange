@@ -20,25 +20,26 @@ import com.harystolho.adexchange.services.ServiceResponse;
 @Service
 public class UrlRedirecterService {
 
-	private CacheService<String> cacheService;
+	private CacheService<SpotData> cacheService;
 
 	@Autowired
-	private UrlRedirecterService(CacheService<String> cacheService, GlobalInformant globalInformant) {
+	private UrlRedirecterService(CacheService<SpotData> cacheService, GlobalInformant globalInformant) {
 		this.cacheService = cacheService;
-		
+
 		globalInformant.add(cacheService);
 	}
 
 	/**
 	 * @param refUrl
+	 * @param string
 	 * @return an id that is mapped to the refUrl, to get the refUrl use
 	 *         {@link #getUrlUsingRequestPath(String)}
 	 */
-	public String mapRefUrl(String refUrl) {
+	public String mapRefUrl(String spotId, String refUrl) {
 		String urlId = genereteUrlId();
 
-		if (refUrl != null)
-			cacheService.store(urlId, refUrl);
+		if (refUrl != null && spotId != null)
+			cacheService.store(urlId, new SpotData(spotId, refUrl));
 
 		return urlId;
 	}
@@ -52,10 +53,19 @@ public class UrlRedirecterService {
 			return ServiceResponse.fail("NO_ID");
 		}
 
-		String refUrl = cacheService.get(id);
+		SpotData sData = cacheService.get(id);
 
-		if (refUrl != null)
-			return ServiceResponse.ok(refUrl);
+		if (sData != null)
+			return ServiceResponse.ok(sData.getRefUrl());
+
+		return ServiceResponse.fail("INVALID_ID");
+	}
+
+	public ServiceResponse<String> getSpotIdUsingRedirectId(String redirectId) {
+		SpotData sData = cacheService.get(redirectId);
+
+		if (sData != null)
+			return ServiceResponse.ok(sData.getSpotId());
 
 		return ServiceResponse.fail("INVALID_ID");
 	}
@@ -73,7 +83,7 @@ public class UrlRedirecterService {
 		String finalID = "";
 
 		for (int x = 0; x < strength; x++) {
-			finalID += UUID.randomUUID().toString().replaceAll("-", "");	
+			finalID += UUID.randomUUID().toString().replaceAll("-", "");
 		}
 
 		return finalID;
@@ -81,5 +91,24 @@ public class UrlRedirecterService {
 
 	public void removeFromCache(String id) {
 		cacheService.evict(id);
+	}
+
+	private class SpotData {
+		private final String refUrl;
+		private final String spotId;
+
+		private SpotData(String spotId, String refUrl) {
+			this.refUrl = refUrl;
+			this.spotId = spotId;
+		}
+
+		public String getRefUrl() {
+			return refUrl;
+		}
+
+		public String getSpotId() {
+			return spotId;
+		}
+
 	}
 }
