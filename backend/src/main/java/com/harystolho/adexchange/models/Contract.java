@@ -143,4 +143,15 @@ public class Contract {
 		this.acceptorContractName = acceptorContractName;
 	}
 
+	/**
+	 * By default the payment value uses a comma (,) to separate the integer portion
+	 * from the decimal portion of the number. This method replaces the comma (,)
+	 * with a dot (.)
+	 * 
+	 * @return
+	 */
+	public String convertPaymentValueToDotNotation() {
+		return this.paymentValue.replace(',', '.');
+	}
+
 }

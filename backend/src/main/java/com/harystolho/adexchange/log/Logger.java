@@ -12,4 +12,6 @@ public interface Logger {
 
 	void error(String msg, String arg1);
 
+	void error(String msg, String arg1, String arg2, String arg3);
+
 }

@@ -7,8 +7,10 @@ import org.springframework.util.StringUtils;
 
 import com.harystolho.adexchange.auth.AuthService;
 import com.harystolho.adexchange.log.Logger;
+import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.account.Account;
 import com.harystolho.adexchange.models.account.Balance;
+import com.harystolho.adexchange.models.account.Balance.BalanceException;
 import com.harystolho.adexchange.repositories.account.AccountRepository;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
 import com.harystolho.adexchange.utils.PasswordSecurity;
@@ -187,10 +189,44 @@ public class AccountService {
 	/**
 	 * @param from  {accountId}
 	 * @param to    {accountId}
-	 * @param value
+	 * @param value must contain a dot(.) instead of a comma(,). Use
+	 *              {@link Contract#convertPaymentValueToDotNotation()} to convert
 	 */
 	public void transferBalance(String from, String to, String value) {
-		
+		Account fromAccount = accountRepository.getById(from);
+
+		if (fromAccount == null) {
+			logger.error(
+					"Balance transfer failed, payer accountId is not valid // payer: [%s], reciever: [%s], amount: [%s]",
+					from, to, value);
+			return;
+		}
+
+		Account toAccount = accountRepository.getById(to);
+
+		if (toAccount == null) {
+			logger.error(
+					"Balance transfer failed, reciever accountId is not valid // payer: [%s], reciever: [%s], amount: [%s]",
+					from, to, value);
+			return;
+		}
+
+		Balance balance = null;
+
+		try {
+			balance = new Balance(value);
+		} catch (BalanceException | NumberFormatException e) {
+			logger.error(
+					"Balance transfer failed, payment value can't be converted to Balance // payer: [%s], reciever: [%s], amount: [%s]",
+					from, to, value);
+			return;
+		}
+
+		transferBalance(fromAccount, toAccount, balance);
+	}
+
+	private void transferBalance(Account from, Account to, Balance balance) {
+
 	}
 
 }

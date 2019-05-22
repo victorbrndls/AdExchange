@@ -50,6 +50,11 @@ public class MongoLoggerImpl implements Logger {
 		mongoOperations.save(formatMessage(Level.ERROR, msg, arg1));
 	}
 
+	@Override
+	public void error(String msg, String arg1, String arg2, String arg3) {
+		mongoOperations.save(formatMessage(Level.ERROR, msg, arg1, arg2, arg3));
+	}
+
 	private Log formatMessage(Level level, String msg, Object... args) {
 		try {
 			return new Log(level, String.format(msg, args));

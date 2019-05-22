@@ -47,7 +47,7 @@ public class ContractPaymentService {
 
 		String payerId = contract.getCreatorId();
 		String recieverId = contract.getAcceptorId();
-		String value = contract.getPaymentValue();
+		String value = contract.convertPaymentValueToDotNotation();
 
 		accountService.transferBalance(payerId, recieverId, value);
 	}
