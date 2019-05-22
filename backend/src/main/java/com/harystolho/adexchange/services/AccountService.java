@@ -184,7 +184,7 @@ public class AccountService {
 
 		accountRepository.save(account);
 
-		logger.info("Updated account balance. accountId: [%s], old balance: [%s], new balance: [%s]", account.getId(),
+		logger.info("Updated account balance // accountId: [%s], old balance: [%s], new balance: [%s]", account.getId(),
 				oldBalance.toString(), newBalance.toString());
 
 		return ServiceResponseType.OK;
@@ -208,7 +208,6 @@ public class AccountService {
 			 * pay for the ad, the ad shouldn't be displayed. If the execution got here it's
 			 * because there in an error in the AdModelService was the ad got displayed.
 			 */
-			logger.error("Account doesn't have sufficient balance. accountId: [%s]", account.getId());
 			return ServiceResponseType.INSUFFICIENT_ACCOUNT_BALANCE;
 		}
 
@@ -218,7 +217,7 @@ public class AccountService {
 
 		accountRepository.save(account);
 
-		logger.info("Updated account balance. accountId: [%s], old balance: [%s], new balance: [%s]", account.getId(),
+		logger.info("Updated account balance // accountId: [%s], old balance: [%s], new balance: [%s]", account.getId(),
 				oldBalance.toString(), newBalance.toString());
 
 		return ServiceResponseType.OK;
@@ -264,12 +263,16 @@ public class AccountService {
 	}
 
 	private void transferBalance(Account from, Account to, Balance balance) {
-		ServiceResponseType subtractResponse = subtractBalanceFromAccount(from, balance);
+		ServiceResponseType subtractResponse = subtractBalanceFromAccount(from, balance); // Remove money from ad owner
 
-		if (subtractResponse != ServiceResponseType.OK)
+		if (subtractResponse != ServiceResponseType.OK) {
+			logger.error(
+					"Balance transfer failed, payer account doesn't contain sufficient balance. // payer: [%s], reciever: [%s], amount: [%s]",
+					from.getId(), to.getId(), balance.toString());
 			return;
+		}
 
-		addBalanceToAccount(to, balance);
+		addBalanceToAccount(to, balance); // Ad money to website owner
 	}
 
 }
