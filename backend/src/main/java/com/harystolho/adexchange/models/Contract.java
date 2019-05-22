@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.lang.Nullable;
 
 import com.harystolho.adexchange.models.ads.Ad;
+import com.harystolho.adexchange.utils.AEUtils;
 
 @Document("contracts")
 public class Contract {
@@ -105,7 +106,7 @@ public class Contract {
 	}
 
 	public boolean isAuthorized(String accessId) {
-		return accessId.equals(acceptorId) || accessId.equals(creatorId);
+		return accessId.equals(acceptorId) || accessId.equals(creatorId) || accessId.equals(AEUtils.ADMIN_ACESS_ID);
 	}
 
 	@Nullable

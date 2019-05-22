@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.harystolho.adexchange.auth.AuthService;
+import com.harystolho.adexchange.log.Logger;
 import com.harystolho.adexchange.models.account.Account;
 import com.harystolho.adexchange.models.account.Balance;
 import com.harystolho.adexchange.repositories.account.AccountRepository;
@@ -17,12 +18,14 @@ public class AccountService {
 
 	private AccountRepository accountRepository;
 	private AuthService tokenService;
+	private Logger logger;
 
 	@Autowired
 	public AccountService(@Qualifier("cachedAccountRepository") AccountRepository accountRepository,
-			AuthService tokenService) {
+			AuthService tokenService, Logger logger) {
 		this.accountRepository = accountRepository;
 		this.tokenService = tokenService;
+		this.logger = logger;
 	}
 
 	/**
@@ -168,11 +171,26 @@ public class AccountService {
 		if (acc == null)
 			return ServiceResponseType.INVALID_ACCOUNT_ID;
 
-		Balance newBalance = acc.getBalance().add(balance);
+		Balance oldBalance = acc.getBalance();
+		Balance newBalance = oldBalance.add(balance);
 
 		acc.setBalance(newBalance);
 
+		accountRepository.save(acc);
+
+		logger.info("Updated account balance. accountId: [%s], old balance: [%s], new balance: [%s]", acc.getId(),
+				oldBalance.toString(), newBalance.toString());
+
 		return ServiceResponseType.OK;
+	}
+
+	/**
+	 * @param from  {accountId}
+	 * @param to    {accountId}
+	 * @param value
+	 */
+	public void transferBalance(String from, String to, String value) {
+		
 	}
 
 }
