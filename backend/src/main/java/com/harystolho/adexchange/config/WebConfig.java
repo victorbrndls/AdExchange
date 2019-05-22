@@ -63,7 +63,7 @@ public class WebConfig {
 		return new MongoTemplate(mongoDbFactory, mongoConverter());
 	}
 
-	@Bean
+	@Bean("ae_taskExecutor")
 	public TaskExecutor threatPoolTaskExecutor() {
 		ThreadPoolTaskExecutor te = new ThreadPoolTaskExecutor();
 
