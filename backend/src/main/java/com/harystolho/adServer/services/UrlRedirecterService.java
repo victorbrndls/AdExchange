@@ -32,7 +32,7 @@ public class UrlRedirecterService {
 	 * @param refUrl
 	 * @param string
 	 * @return an id that is mapped to the refUrl, to get the refUrl use
-	 *         {@link #getUrlUsingRequestPath(String)}
+	 *         {@link #getRefUrlUsingRequestPath(String)}
 	 */
 	public String mapRefUrl(String spotId, String refUrl) {
 		String urlId = genereteUrlId();
@@ -43,7 +43,7 @@ public class UrlRedirecterService {
 		return urlId;
 	}
 
-	public ServiceResponse<String> getUrlUsingRequestPath(String path) {
+	public ServiceResponse<String> getRefUrlUsingRequestPath(String path) {
 		String id = null;
 
 		try {

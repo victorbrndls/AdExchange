@@ -4,6 +4,13 @@ import javax.servlet.http.Cookie;
 
 import org.springframework.lang.Nullable;
 
+/**
+ * Tracks an user. This is used to avoid charging the advertiser owner more than
+ * once.
+ * 
+ * @author Harystolho
+ *
+ */
 public class Tracker {
 
 	@Nullable

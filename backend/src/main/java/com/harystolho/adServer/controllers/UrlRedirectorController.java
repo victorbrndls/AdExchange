@@ -23,21 +23,21 @@ public class UrlRedirectorController {
 
 	public static final String REDIRECT_ENDPOINT = "/redirect";
 
-	private UrlRedirecterService urlRedirectirService;
+	private UrlRedirecterService urlRedirectorService;
 	private EventDispatcher eventDispatcher;
 	private UserTrackerService userTrackerService;
 
 	@Autowired
 	private UrlRedirectorController(UrlRedirecterService urlRedirectorService, EventDispatcher eventDispatcher,
 			UserTrackerService userTrackerService) {
-		this.urlRedirectirService = urlRedirectorService;
+		this.urlRedirectorService = urlRedirectorService;
 		this.eventDispatcher = eventDispatcher;
 		this.userTrackerService = userTrackerService;
 	}
 
 	@GetMapping(path = REDIRECT_ENDPOINT + "/{id}")
 	public void redirect(HttpServletRequest req, HttpServletResponse res, @PathVariable String id) {
-		ServiceResponse<String> response = urlRedirectirService.getUrlUsingRequestPath(req.getRequestURI());
+		ServiceResponse<String> response = urlRedirectorService.getRefUrlUsingRequestPath(req.getRequestURI());
 
 		Tracker tracker = addTrackerToRequest(req, res);
 
@@ -56,6 +56,13 @@ public class UrlRedirectorController {
 		}
 	}
 
+	/**
+	 * Adds a tracker the the request if it doesn't contain one
+	 * 
+	 * @param req
+	 * @param res
+	 * @return
+	 */
 	private Tracker addTrackerToRequest(HttpServletRequest req, HttpServletResponse res) {
 		Tracker tracker = new Tracker(AEUtils.getCookieByName(req.getCookies(), UserTrackerService.COOKIE_NAME),
 				req.getRemoteAddr());
