@@ -1,11 +1,13 @@
 package com.harystolho.adexchange.models;
 
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.lang.Nullable;
 
 import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.utils.AEUtils;
 
+@Document("spots")
 public class Spot {
 
 	private String id;

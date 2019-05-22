@@ -74,6 +74,28 @@ public class Balance {
 		return new Balance(this.value.add(other.value));
 	}
 
+	/**
+	 * Subtracts the {@code other} balance to {@code this} and returns a new
+	 * {@link Balance}
+	 * 
+	 * @param other
+	 * @return
+	 */
+	public Balance subtract(Balance other) {
+		return new Balance(this.value.subtract(other.value));
+	}
+
+	/**
+	 * 
+	 * @param balance
+	 * @return <code>true</code> if this balance value is equal or greater than the
+	 *         other balance. This method should be called before
+	 *         {@link #subtract(Balance)}
+	 */
+	public boolean canSubtract(Balance balance) {
+		return this.value.compareTo(balance.value) >= 0;
+	}
+
 	@Override
 	public String toString() {
 		return value.setScale(2).toPlainString();

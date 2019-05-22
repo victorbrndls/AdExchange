@@ -173,14 +173,52 @@ public class AccountService {
 		if (acc == null)
 			return ServiceResponseType.INVALID_ACCOUNT_ID;
 
-		Balance oldBalance = acc.getBalance();
+		return addBalanceToAccount(acc, balance);
+	}
+
+	public ServiceResponseType addBalanceToAccount(Account account, Balance balance) {
+		Balance oldBalance = account.getBalance();
 		Balance newBalance = oldBalance.add(balance);
 
-		acc.setBalance(newBalance);
+		account.setBalance(newBalance);
 
-		accountRepository.save(acc);
+		accountRepository.save(account);
 
-		logger.info("Updated account balance. accountId: [%s], old balance: [%s], new balance: [%s]", acc.getId(),
+		logger.info("Updated account balance. accountId: [%s], old balance: [%s], new balance: [%s]", account.getId(),
+				oldBalance.toString(), newBalance.toString());
+
+		return ServiceResponseType.OK;
+	}
+
+	public ServiceResponseType subtractBalanceFromAccount(String accountId, Balance balance) {
+		Account acc = accountRepository.getById(accountId);
+
+		if (acc == null)
+			return ServiceResponseType.INVALID_ACCOUNT_ID;
+
+		return subtractBalanceFromAccount(acc, balance);
+	}
+
+	private ServiceResponseType subtractBalanceFromAccount(Account account, Balance balance) {
+		Balance oldBalance = account.getBalance();
+
+		if (!oldBalance.canSubtract(balance)) {
+			/*
+			 * If the user paying for the ad doesn't have sufficient money in its account to
+			 * pay for the ad, the ad shouldn't be displayed. If the execution got here it's
+			 * because there in an error in the AdModelService was the ad got displayed.
+			 */
+			logger.error("Account doesn't have sufficient balance. accountId: [%s]", account.getId());
+			return ServiceResponseType.INSUFFICIENT_ACCOUNT_BALANCE;
+		}
+
+		Balance newBalance = oldBalance.subtract(balance);
+
+		account.setBalance(newBalance);
+
+		accountRepository.save(account);
+
+		logger.info("Updated account balance. accountId: [%s], old balance: [%s], new balance: [%s]", account.getId(),
 				oldBalance.toString(), newBalance.toString());
 
 		return ServiceResponseType.OK;
@@ -226,7 +264,12 @@ public class AccountService {
 	}
 
 	private void transferBalance(Account from, Account to, Balance balance) {
+		ServiceResponseType subtractResponse = subtractBalanceFromAccount(from, balance);
 
+		if (subtractResponse != ServiceResponseType.OK)
+			return;
+
+		addBalanceToAccount(to, balance);
 	}
 
 }
