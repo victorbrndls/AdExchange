@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.convert.DbRefResolver;
@@ -16,6 +17,7 @@ import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
 import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import com.harystolho.adexchange.converters.AdReaderConverter;
 import com.harystolho.adexchange.converters.NotificationReaderConverter;
@@ -59,6 +61,18 @@ public class WebConfig {
 	@Bean
 	public MongoTemplate mongoTemplate() throws Exception {
 		return new MongoTemplate(mongoDbFactory, mongoConverter());
+	}
+
+	@Bean
+	public TaskExecutor threatPoolTaskExecutor() {
+		ThreadPoolTaskExecutor te = new ThreadPoolTaskExecutor();
+
+		te.setCorePoolSize(2);
+		te.setMaxPoolSize(8);
+		te.setThreadNamePrefix("task_executor_bean");
+		te.initialize();
+
+		return te;
 	}
 
 }

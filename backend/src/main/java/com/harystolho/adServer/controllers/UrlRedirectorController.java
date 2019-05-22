@@ -45,6 +45,7 @@ public class UrlRedirectorController {
 			switch (response.getErrorType()) {
 			case OK:
 				res.sendRedirect(response.getReponse());
+
 				eventDispatcher.dispatch(new SpotClickedEvent(id, tracker));
 				break;
 			default:
