@@ -1,5 +1,7 @@
 package com.harystolho.adexchange.repositories.account;
 
+import java.time.Duration;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -22,8 +24,11 @@ public class CachedAccountRepositoryImpl implements AccountRepository {
 
 	@Override
 	public Account save(Account account) {
-		if (account.getId() != null) // The account already exists, it's just resaving it
-			cacheService.evict(account.getId());
+		if (cacheService.contains(account.getId())) {
+			cacheService.evict(account.getId()); // Remove old version
+
+			cacheService.store(account.getId(), account, Duration.ofMinutes(1)); // Store new version
+		}
 
 		return accountRepository.save(account);
 	}
