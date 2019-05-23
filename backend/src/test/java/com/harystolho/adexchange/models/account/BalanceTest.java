@@ -81,4 +81,16 @@ public class BalanceTest {
 		assertEquals("100.11", new Balance("99.01").add(new Balance("1.10")).toString());
 	}
 
+	@Test
+	public void compareBalances() {
+		Balance b1 = new Balance("7.10");
+		Balance b2 = new Balance("4.70");
+		Balance b3 = new Balance("7.10");
+
+		assertEquals(1, b1.compare(b2));
+		assertEquals(-1, b2.compare(b1));
+		
+		assertEquals(0, b1.compare(b3));
+	}
+
 }

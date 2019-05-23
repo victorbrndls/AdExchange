@@ -1,6 +1,6 @@
-package com.harystolho.adServer.events.account;
+package com.harystolho.adexchange.events.account;
 
-import com.harystolho.adServer.events.Event;
+import com.harystolho.adexchange.events.Event;
 import com.harystolho.adexchange.models.account.Account;
 import com.harystolho.adexchange.models.account.Balance;
 

@@ -10,6 +10,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import com.harystolho.adexchange.auth.AuthService;
+import com.harystolho.adexchange.events.EventDispatcher;
 import com.harystolho.adexchange.log.Logger;
 import com.harystolho.adexchange.models.account.Account;
 import com.harystolho.adexchange.models.account.Balance;
@@ -29,6 +30,8 @@ public class AccountServiceTest {
 	AuthService tokenService;
 	@Mock
 	Logger logger;
+	@Mock
+	EventDispatcher eventDispatcher;
 
 	@Test
 	public void createAccountWithInvalidEmail() {
@@ -136,11 +139,13 @@ public class AccountServiceTest {
 	@Test
 	public void transferBalanceShouldWork() {
 		Account a1 = new Account();
+		a1.setId("09_1");
 		a1.setBalance(new Balance("10.00"));
 		Mockito.when(authRepository.getById("09_1")).thenReturn(a1);
 
 		Account a2 = new Account();
 		a2.setBalance(new Balance("1.00"));
+		a2.setId("09_2");
 		Mockito.when(authRepository.getById("09_2")).thenReturn(a2);
 
 		accountService.transferBalance("09_1", "09_2", "3.00");

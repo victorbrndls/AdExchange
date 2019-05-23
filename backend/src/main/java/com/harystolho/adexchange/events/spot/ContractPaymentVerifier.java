@@ -1,4 +1,4 @@
-package com.harystolho.adServer.events.spot;
+package com.harystolho.adexchange.events.spot;
 
 import javax.annotation.PostConstruct;
 
@@ -6,12 +6,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
-import com.harystolho.adServer.events.EventDispatcher;
-import com.harystolho.adServer.events.Handler;
 import com.harystolho.adServer.services.ContractPaymentService;
 import com.harystolho.adServer.services.UrlRedirecterService;
 import com.harystolho.adServer.tracker.Tracker;
 import com.harystolho.adServer.tracker.UserTrackerService;
+import com.harystolho.adexchange.events.EventDispatcher;
+import com.harystolho.adexchange.events.Handler;
 import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;

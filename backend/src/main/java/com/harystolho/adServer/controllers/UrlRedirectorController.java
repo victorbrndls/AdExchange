@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.harystolho.adServer.events.EventDispatcher;
-import com.harystolho.adServer.events.spot.SpotClickedEvent;
 import com.harystolho.adServer.services.UrlRedirecterService;
 import com.harystolho.adServer.tracker.Tracker;
 import com.harystolho.adServer.tracker.UserTrackerService;
+import com.harystolho.adexchange.events.EventDispatcher;
+import com.harystolho.adexchange.events.spot.SpotClickedEvent;
 import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.utils.AEUtils;
 

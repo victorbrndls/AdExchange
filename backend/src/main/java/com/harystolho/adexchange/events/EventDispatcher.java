@@ -1,4 +1,4 @@
-package com.harystolho.adServer.events;
+package com.harystolho.adexchange.events;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

@@ -1,4 +1,4 @@
-package com.harystolho.adServer.events;
+package com.harystolho.adexchange.events;
 
 public interface Handler<E> {
 

@@ -96,6 +96,15 @@ public class Balance {
 		return this.value.compareTo(balance.value) >= 0;
 	}
 
+	/**
+	 * @param other
+	 * @return -1, 0, or 1 if this balance is numerically less than, equal to, or
+	 *         greater than other.value.
+	 */
+	public int compare(Balance other) {
+		return this.value.compareTo(other.value);
+	}
+
 	@Override
 	public String toString() {
 		return value.setScale(2).toPlainString();

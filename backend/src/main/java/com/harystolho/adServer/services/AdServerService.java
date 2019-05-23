@@ -76,7 +76,7 @@ public class AdServerService {
 	 */
 	public void updateSpot(Spot spot) {
 		AdModel model = cacheService.get(spot.getId());
-
+		
 		if (model == null)
 			return;
 

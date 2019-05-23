@@ -5,9 +5,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.harystolho.adServer.events.EventDispatcher;
-import com.harystolho.adServer.events.account.AccountBalanceChangedEvent;
 import com.harystolho.adexchange.auth.AuthService;
+import com.harystolho.adexchange.events.EventDispatcher;
+import com.harystolho.adexchange.events.account.AccountBalanceChangedEvent;
 import com.harystolho.adexchange.log.Logger;
 import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.account.Account;
