@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.harystolho.adServer.events.EventDispatcher;
+import com.harystolho.adServer.events.account.AccountBalanceChangedEvent;
 import com.harystolho.adexchange.auth.AuthService;
 import com.harystolho.adexchange.log.Logger;
 import com.harystolho.adexchange.models.Contract;
@@ -21,13 +23,15 @@ public class AccountService {
 	private AccountRepository accountRepository;
 	private AuthService tokenService;
 	private Logger logger;
+	private EventDispatcher eventDispatcher;
 
 	@Autowired
 	public AccountService(@Qualifier("cachedAccountRepository") AccountRepository accountRepository,
-			AuthService tokenService, Logger logger) {
+			AuthService tokenService, Logger logger, EventDispatcher eventDispatcher) {
 		this.accountRepository = accountRepository;
 		this.tokenService = tokenService;
 		this.logger = logger;
+		this.eventDispatcher = eventDispatcher;
 	}
 
 	/**
@@ -180,8 +184,7 @@ public class AccountService {
 
 		accountRepository.save(acc);
 
-		logger.info("Updated account balance // accountId: [%s], old balance: [%s], new balance: [%s]", acc.getId(),
-				oldBalance.toString(), newBalance.toString());
+		eventDispatcher.dispatch(new AccountBalanceChangedEvent(acc.clone(), oldBalance));
 
 		return ServiceResponseType.OK;
 	}
@@ -194,14 +197,13 @@ public class AccountService {
 
 		Balance oldBalance = acc.getBalance();
 
-		if (!oldBalance.canSubtract(balance)) {
-			/*
-			 * If the user paying for the ad doesn't have sufficient money in its account to
-			 * pay for the ad, the ad shouldn't be displayed. If the execution got here it's
-			 * because there in an error in the AdModelService was the ad got displayed.
-			 */
+		/*
+		 * If the user paying for the ad doesn't have sufficient money in its account to
+		 * pay for the ad, the ad shouldn't be displayed. If the execution got here it's
+		 * because there in an error in the AdModelService was the ad got displayed.
+		 */
+		if (!oldBalance.canSubtract(balance))
 			return ServiceResponseType.INSUFFICIENT_ACCOUNT_BALANCE;
-		}
 
 		Balance newBalance = oldBalance.subtract(balance);
 
@@ -209,8 +211,7 @@ public class AccountService {
 
 		accountRepository.save(acc);
 
-		logger.info("Updated account balance // accountId: [%s], old balance: [%s], new balance: [%s]", acc.getId(),
-				oldBalance.toString(), newBalance.toString());
+		eventDispatcher.dispatch(new AccountBalanceChangedEvent(acc.clone(), oldBalance));
 
 		return ServiceResponseType.OK;
 	}

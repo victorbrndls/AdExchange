@@ -3,7 +3,7 @@ package com.harystolho.adexchange.models.account;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("accounts")
-public class Account {
+public class Account implements Cloneable {
 
 	private String id;
 	private String email;
@@ -61,4 +61,17 @@ public class Account {
 	public void setBalance(Balance balance) {
 		this.balance = balance;
 	}
+
+	@Override
+	public Account clone() {
+		Account acc = new Account();
+		acc.setId(id);
+		acc.setEmail(email);
+		acc.setFullName(fullName);
+		acc.setPassword(password);
+		acc.setBalance(balance); // Balance is immutable
+
+		return acc;
+	}
+
 }
