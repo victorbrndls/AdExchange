@@ -7,6 +7,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document("logs")
 public class Log {
 
+	public enum Identifier {
+		ACCOUNT_BALANCE_CHANGED //
+	}
+
 	public enum Level {
 		INFO, ERROR
 	}
@@ -14,17 +18,20 @@ public class Log {
 	private final LocalTime createdAt;
 	private final Level level;
 
-	// The all fiels can be null
+	// All fields below can be null
 	// The null ones aren't saved to the database
 
 	private String message;
+	private Identifier identifier;
 
 	// Used by mongo
 	@SuppressWarnings("unused")
-	private Log(LocalTime createdAt, Level level, String message) {
+	private Log(LocalTime createdAt, Level level, String message, Identifier identifier) {
 		this.createdAt = createdAt;
 		this.level = level;
+
 		this.message = message;
+		this.identifier = identifier;
 	}
 
 	private Log(Level level) {
@@ -38,12 +45,14 @@ public class Log {
 		this.message = message;
 	}
 
-	public String getMessage() {
-		return message;
+	public Log(Level level, Identifier id, String message) {
+		this(level, message);
+
+		this.identifier = id;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
+	public String getMessage() {
+		return message;
 	}
 
 	public LocalTime getCreatedAt() {
@@ -52,6 +61,10 @@ public class Log {
 
 	public Level getLevel() {
 		return level;
+	}
+
+	public Identifier getIdentifier() {
+		return identifier;
 	}
 
 }
