@@ -109,4 +109,93 @@ public class AccountServiceTest {
 		assertEquals(new Balance("12.12"), acc.getBalance());
 	}
 
+	@Test
+	public void subtractBalanceFromAccountShouldWork() {
+		Account acc = new Account();
+		acc.setBalance(new Balance("15.00"));
+		Mockito.when(authRepository.getById("o78")).thenReturn(acc);
+
+		ServiceResponseType response = accountService.subtractBalanceFromAccount("o78", new Balance("6.00"));
+		assertEquals(ServiceResponseType.OK, response);
+
+		assertEquals(new Balance("9.00"), acc.getBalance());
+	}
+
+	@Test
+	public void subtractBalanceFromAccountThatDoesntHaveEnoughShouldFail() {
+		Account acc = new Account();
+		acc.setBalance(new Balance("4.00"));
+		Mockito.when(authRepository.getById("l79")).thenReturn(acc);
+
+		ServiceResponseType response = accountService.subtractBalanceFromAccount("l79", new Balance("6.00"));
+		assertEquals(ServiceResponseType.INSUFFICIENT_ACCOUNT_BALANCE, response);
+
+		assertEquals(new Balance("4.00"), acc.getBalance());
+	}
+
+	@Test
+	public void transferBalanceShouldWork() {
+		Account a1 = new Account();
+		a1.setBalance(new Balance("10.00"));
+		Mockito.when(authRepository.getById("09_1")).thenReturn(a1);
+
+		Account a2 = new Account();
+		a2.setBalance(new Balance("1.00"));
+		Mockito.when(authRepository.getById("09_2")).thenReturn(a2);
+
+		accountService.transferBalance("09_1", "09_2", "3.00");
+
+		Mockito.verify(logger, Mockito.never()).error(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(),
+				Mockito.anyString());
+
+		assertEquals(new Balance("7.00"), a1.getBalance());
+		assertEquals(new Balance("4.00"), a2.getBalance());
+	}
+
+	@Test
+	public void transferBalanceFromInvalidAccount() {
+		Mockito.when(authRepository.getById("03=51")).thenReturn(null);
+
+		accountService.transferBalance("03=51", "123", "1.00");
+
+		Mockito.verify(logger).error(Mockito.anyString(), Mockito.contains("03=51"), Mockito.anyString(),
+				Mockito.anyString());
+	}
+
+	@Test
+	public void transferBalanceToInvalidAccount() {
+		Mockito.when(authRepository.getById("06_1")).thenReturn(new Account());
+		Mockito.when(authRepository.getById("06_2")).thenReturn(null);
+
+		accountService.transferBalance("06_1", "06_2", "3.00");
+
+		Mockito.verify(logger).error(Mockito.anyString(), Mockito.contains("06_1"), Mockito.contains("06_2"),
+				Mockito.anyString());
+	}
+
+	@Test
+	public void transferBalanceWithInvalidBalance() {
+		Mockito.when(authRepository.getById("06_1")).thenReturn(new Account());
+		Mockito.when(authRepository.getById("06_2")).thenReturn(new Account());
+
+		accountService.transferBalance("06_1", "06_2", "12,00");
+
+		Mockito.verify(logger).error(Mockito.anyString(), Mockito.contains("06_1"), Mockito.contains("06_2"),
+				Mockito.contains("12,00"));
+	}
+
+	@Test
+	public void transferBalanceFromAccountThatDoesntHaveEnoughBalance() {
+		Account a1 = new Account();
+		a1.setId("96_1");
+		a1.setBalance(new Balance("10.00"));
+
+		Mockito.when(authRepository.getById("96_1")).thenReturn(a1);
+		Mockito.when(authRepository.getById("96_2")).thenReturn(new Account());
+
+		accountService.transferBalance("96_1", "96_2", "14.00");
+
+		Mockito.verify(logger).error(Mockito.anyString(), Mockito.contains("96_1"), Mockito.any(),
+				Mockito.contains("14.00"));
+	}
 }

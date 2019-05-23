@@ -12,7 +12,7 @@ import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
 import com.harystolho.adexchange.utils.AEUtils;
 
 /**
- * Transfers money from the contract owner to the website owner
+ * Checks wheater a payment to the website owner should be made
  * 
  * @author Harystolho
  *

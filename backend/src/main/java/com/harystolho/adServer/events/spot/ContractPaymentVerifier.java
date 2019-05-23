@@ -64,7 +64,7 @@ public class ContractPaymentVerifier implements Handler<SpotClickedEvent> {
 		ServiceResponse<Spot> spotResponse = spotService.getSpot(AEUtils.ADMIN_ACESS_ID, response.getReponse(), "");
 
 		if (spotResponse.getErrorType() != ServiceResponseType.OK) {
-			logger.error("Spot redirect id is not linked to a Spot. redirectId: [{}]", event.getSpotRedirectId());
+			logger.error("AdModel redirect url is not linked to a Spot. redirectId: [{}]", event.getSpotRedirectId());
 			return;
 		}
 

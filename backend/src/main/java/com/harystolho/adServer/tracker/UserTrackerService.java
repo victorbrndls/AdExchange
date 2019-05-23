@@ -63,16 +63,12 @@ public class UserTrackerService {
 	 */
 	public boolean hasTrackerInteractedWith(Tracker tracker, String interactor) {
 		List<String> listByCookie = trackerIdToInteraction.get(tracker.getCookie().getValue());
-
-		if (listByCookie != null)
-			if (listByCookie.contains(interactor))
-				return true;
+		if (listByCookie != null && listByCookie.contains(interactor))
+			return true;
 
 		List<String> listByClientAddr = trackerIdToInteraction.get(tracker.getClientAddr());
-
-		if (listByClientAddr != null)
-			if (listByClientAddr.contains(interactor))
-				return true;
+		if (listByClientAddr != null && listByClientAddr.contains(interactor))
+			return true;
 
 		return false;
 	}
