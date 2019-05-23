@@ -173,18 +173,14 @@ public class AccountService {
 		if (acc == null)
 			return ServiceResponseType.INVALID_ACCOUNT_ID;
 
-		return addBalanceToAccount(acc, balance);
-	}
-
-	public ServiceResponseType addBalanceToAccount(Account account, Balance balance) {
-		Balance oldBalance = account.getBalance();
+		Balance oldBalance = acc.getBalance();
 		Balance newBalance = oldBalance.add(balance);
 
-		account.setBalance(newBalance);
+		acc.setBalance(newBalance);
 
-		accountRepository.save(account);
+		accountRepository.save(acc);
 
-		logger.info("Updated account balance // accountId: [%s], old balance: [%s], new balance: [%s]", account.getId(),
+		logger.info("Updated account balance // accountId: [%s], old balance: [%s], new balance: [%s]", acc.getId(),
 				oldBalance.toString(), newBalance.toString());
 
 		return ServiceResponseType.OK;
@@ -196,11 +192,7 @@ public class AccountService {
 		if (acc == null)
 			return ServiceResponseType.INVALID_ACCOUNT_ID;
 
-		return subtractBalanceFromAccount(acc, balance);
-	}
-
-	private ServiceResponseType subtractBalanceFromAccount(Account account, Balance balance) {
-		Balance oldBalance = account.getBalance();
+		Balance oldBalance = acc.getBalance();
 
 		if (!oldBalance.canSubtract(balance)) {
 			/*
@@ -213,11 +205,11 @@ public class AccountService {
 
 		Balance newBalance = oldBalance.subtract(balance);
 
-		account.setBalance(newBalance);
+		acc.setBalance(newBalance);
 
-		accountRepository.save(account);
+		accountRepository.save(acc);
 
-		logger.info("Updated account balance // accountId: [%s], old balance: [%s], new balance: [%s]", account.getId(),
+		logger.info("Updated account balance // accountId: [%s], old balance: [%s], new balance: [%s]", acc.getId(),
 				oldBalance.toString(), newBalance.toString());
 
 		return ServiceResponseType.OK;
@@ -263,7 +255,8 @@ public class AccountService {
 	}
 
 	private void transferBalance(Account from, Account to, Balance balance) {
-		ServiceResponseType subtractResponse = subtractBalanceFromAccount(from, balance); // Remove money from ad owner
+		ServiceResponseType subtractResponse = subtractBalanceFromAccount(from.getId(), balance); // Remove money from
+																									// ad owner
 
 		if (subtractResponse != ServiceResponseType.OK) {
 			logger.error(
@@ -272,7 +265,7 @@ public class AccountService {
 			return;
 		}
 
-		addBalanceToAccount(to, balance); // Ad money to website owner
+		addBalanceToAccount(to.getId(), balance); // Ad money to website owner
 	}
 
 }
