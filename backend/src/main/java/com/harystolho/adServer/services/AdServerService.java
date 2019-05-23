@@ -70,7 +70,7 @@ public class AdServerService {
 	}
 
 	/**
-	 * This method should be called when a field in a {@link Spot} is changed
+	 * This method should be called when a field in a {@link Spot} changes
 	 * 
 	 * @param spot
 	 */

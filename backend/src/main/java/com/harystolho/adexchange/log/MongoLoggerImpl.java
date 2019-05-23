@@ -2,10 +2,8 @@ package com.harystolho.adexchange.log;
 
 import java.util.IllegalFormatException;
 
-import org.mockito.internal.util.StringUtil;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import com.harystolho.adexchange.log.Log.Level;
 

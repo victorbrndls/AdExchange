@@ -2,6 +2,7 @@ package com.harystolho.adServer.services;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.validator.constraints.br.CNPJ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.models.ads.Ad.AdType;
 import com.harystolho.adexchange.models.ads.ImageAd;
 import com.harystolho.adexchange.models.ads.TextAd;
+import com.harystolho.adexchange.services.AccountService;
 import com.harystolho.adexchange.services.AdService;
 import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.services.SpotService;
@@ -34,14 +36,16 @@ public class AdModelService {
 	private AdService adService;
 	private UrlRedirecterService urlRedirecterService;
 	private AdTemplateService adTemplateService;
+	private AccountService accountService;
 
 	@Autowired
 	private AdModelService(SpotService spotService, AdService adService, UrlRedirecterService urlRedirecterService,
-			AdTemplateService adTemplateService) {
+			AdTemplateService adTemplateService, AccountService accountService) {
 		this.spotService = spotService;
 		this.adService = adService;
 		this.urlRedirecterService = urlRedirecterService;
 		this.adTemplateService = adTemplateService;
+		this.accountService = accountService;
 	}
 
 	public AdModel buildUsingSpotId(String spotId) {
@@ -79,19 +83,21 @@ public class AdModelService {
 	 * @return the id of the Ad that will be used to create the {@link AdModel}
 	 */
 	private String getAdId(Spot spot, Contract contract) {
-		if (contract == null) { // Spot has no contract or contractId is invalid
-			logger.info("Contract is null, returning fallback Ad [SpotId: {}, ContractId: {}]", spot.getId(),
-					spot.getContractId());
-
-			return spot.getFallbackAdId();
-		} else if (contract.hasExpired()) { // Contract has expired
-			logger.info("Contract has expired, returning fallback Ad [SpotId: {}, ContractId: {}]", spot.getId(),
-					spot.getContractId());
-
-			return spot.getFallbackAdId();
-		} else {
+		if (contract != null && !contract.hasExpired() && hasContractOwnerBalanceToPayAd(contract)) {
 			return contract.getAdId();
 		}
+
+		return spot.getFallbackAdId();
+	}
+
+	/**
+	 * @param contract
+	 * @return <code>true</code> if the {@link Contract#getCreatorId()} has
+	 *         balance(money) to pay for the ad
+	 */
+	private boolean hasContractOwnerBalanceToPayAd(Contract contract) {
+		// TODO notify contract owner that he doesn't have balance
+		return accountService.hasAccountBalance(contract.getCreatorId(), contract.convertPaymentValueToDotNotation());
 	}
 
 	private AdModel buildUsingAd(Ad ad) {

@@ -268,4 +268,32 @@ public class AccountService {
 		addBalanceToAccount(to.getId(), balance); // Ad money to website owner
 	}
 
+	/**
+	 * 
+	 * @param creatorId
+	 * @param value     must contain a dot(.) instead of a comma(,). Use
+	 *                  {@link Contract#convertPaymentValueToDotNotation()} to
+	 *                  convert
+	 * @return <code>true</code> if the account balance is at least the specified
+	 *         {value}
+	 */
+	public boolean hasAccountBalance(String id, String valueAsString) {
+		Balance value = null;
+
+		try {
+			value = new Balance(valueAsString);
+		} catch (BalanceException | NumberFormatException e) {
+			return false;
+		}
+
+		Account acc = accountRepository.getById(id);
+
+		if (acc == null)
+			return false;
+
+		Balance balance = acc.getBalance();
+
+		return balance.canSubtract(value); // If the balance can subtract another value it's because it's greater
+	}
+
 }
