@@ -5,7 +5,7 @@ import java.util.IllegalFormatException;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
 
-import com.harystolho.adexchange.log.Log.Identifier;
+import com.harystolho.adexchange.log.Log.LogIdentifier;
 import com.harystolho.adexchange.log.Log.Level;
 
 /**
@@ -40,7 +40,7 @@ public class MongoLoggerImpl implements Logger {
 	}
 
 	@Override
-	public void info(Identifier identifier, String msg, String arg1, String arg2, String arg3) {
+	public void info(LogIdentifier identifier, String msg, String arg1, String arg2, String arg3) {
 		mongoOperations.save(formatMessage(Level.INFO, identifier, msg, arg1, arg2, arg3));
 	}
 
@@ -63,7 +63,7 @@ public class MongoLoggerImpl implements Logger {
 		return formatMessage(level, null, msg, args);
 	}
 
-	private Log formatMessage(Level level, Identifier id, String msg, Object... args) {
+	private Log formatMessage(Level level, LogIdentifier id, String msg, Object... args) {
 		try {
 			return new Log(level, id, String.format(msg, args));
 		} catch (IllegalFormatException e) {

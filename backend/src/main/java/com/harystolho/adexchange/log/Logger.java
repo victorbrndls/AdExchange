@@ -1,6 +1,6 @@
 package com.harystolho.adexchange.log;
 
-import com.harystolho.adexchange.log.Log.Identifier;
+import com.harystolho.adexchange.log.Log.LogIdentifier;
 
 public interface Logger {
 
@@ -10,7 +10,7 @@ public interface Logger {
 
 	void info(String msg, String arg1, String arg2, String arg3);
 
-	void info(Identifier identifier, String msg, String arg1, String arg2, String arg3);
+	void info(LogIdentifier identifier, String msg, String arg1, String arg2, String arg3);
 
 	void error(String msg);
 

@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document("logs")
 public class Log {
 
-	public enum Identifier {
+	public enum LogIdentifier {
 		ACCOUNT_BALANCE_CHANGED //
 	}
 
@@ -22,11 +22,11 @@ public class Log {
 	// The null ones aren't saved to the database
 
 	private String message;
-	private Identifier identifier;
+	private LogIdentifier identifier;
 
 	// Used by mongo
 	@SuppressWarnings("unused")
-	private Log(LocalTime createdAt, Level level, String message, Identifier identifier) {
+	private Log(LocalTime createdAt, Level level, String message, LogIdentifier identifier) {
 		this.createdAt = createdAt;
 		this.level = level;
 
@@ -45,7 +45,7 @@ public class Log {
 		this.message = message;
 	}
 
-	public Log(Level level, Identifier id, String message) {
+	public Log(Level level, LogIdentifier id, String message) {
 		this(level, message);
 
 		this.identifier = id;
@@ -63,7 +63,7 @@ public class Log {
 		return level;
 	}
 
-	public Identifier getIdentifier() {
+	public LogIdentifier getIdentifier() {
 		return identifier;
 	}
 

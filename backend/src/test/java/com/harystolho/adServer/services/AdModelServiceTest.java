@@ -1,7 +1,5 @@
 package com.harystolho.adServer.services;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -35,11 +33,6 @@ public class AdModelServiceTest {
 	AccountService accountService;
 	@Mock
 	AdServerService adServerService;
-
-	@Before
-	public void before() {
-		adModelService.setAdServerService(adServerService);
-	}
 
 	@Test
 	public void removeSpotsThatTheUserCantPayFor() {

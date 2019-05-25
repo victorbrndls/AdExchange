@@ -3,21 +3,21 @@ package com.harystolho.adexchange.events.account;
 import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Service;
-import com.harystolho.adexchange.log.Logger;
+
 import com.harystolho.adServer.services.AdModelService;
 import com.harystolho.adexchange.events.EventDispatcher;
 import com.harystolho.adexchange.events.Handler;
-import com.harystolho.adexchange.log.Log.Identifier;
+import com.harystolho.adexchange.log.Log.LogIdentifier;
+import com.harystolho.adexchange.log.Logger;
 import com.harystolho.adexchange.models.account.Account;
-import com.harystolho.adexchange.models.account.Balance;
 
 @Service
 public class AccountBalanceEventHandler implements Handler<AccountBalanceChangedEvent> {
 
-	private EventDispatcher eventDispatcher;
+	private final EventDispatcher eventDispatcher;
 	private final Logger logger;
 
-	private AdModelService adModelService;
+	private final AdModelService adModelService;
 
 	public AccountBalanceEventHandler(Logger logger, EventDispatcher eventDispatcher, AdModelService adModelService) {
 		this.logger = logger;
@@ -34,16 +34,12 @@ public class AccountBalanceEventHandler implements Handler<AccountBalanceChanged
 	public void onEvent(AccountBalanceChangedEvent event) {
 		Account acc = event.getAccount();
 
-		logger.info(Identifier.ACCOUNT_BALANCE_CHANGED, "accountId: [%s], old balance: [%s], new balance: [%s]",
+		logger.info(LogIdentifier.ACCOUNT_BALANCE_CHANGED, "accountId: [%s], old balance: [%s], new balance: [%s]",
 				acc.getId(), event.getOldBalance().toString(), acc.getBalance().toString());
 
-		if (hasBalanceDecreased(acc.getBalance(), event.getOldBalance())) {
-			adModelService.updateSpotsAdvertisedByUser(event.getAccount().getId());
+		if (event.hasBalanceDecreased()) {
+			adModelService.updateSpotsAdvertisedByUser(acc.getId());
 		}
-	}
-
-	private boolean hasBalanceDecreased(Balance newBalance, Balance oldBalance) {
-		return newBalance.compare(oldBalance) == -1;
 	}
 
 }
