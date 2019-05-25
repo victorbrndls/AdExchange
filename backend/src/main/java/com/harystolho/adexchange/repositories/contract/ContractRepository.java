@@ -7,7 +7,7 @@ import com.harystolho.adexchange.models.Contract;
 
 public interface ContractRepository {
 
-	void save(Contract contract);
+	Contract save(Contract contract);
 
 	Contract getById(String id);
 

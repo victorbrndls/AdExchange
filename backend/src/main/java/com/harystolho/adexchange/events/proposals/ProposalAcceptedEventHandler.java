@@ -1,5 +1,7 @@
 package com.harystolho.adexchange.events.proposals;
 
+import org.springframework.stereotype.Service;
+
 import com.harystolho.adexchange.events.EventDispatcher;
 import com.harystolho.adexchange.events.Handler;
 import com.harystolho.adexchange.events.proposals.events.ProposalAcceptedEvent;
@@ -7,6 +9,7 @@ import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.services.ContractService;
 import com.harystolho.adexchange.services.NotificationService;
 
+@Service
 public class ProposalAcceptedEventHandler extends AbstractProposalEventHandler
 		implements Handler<ProposalAcceptedEvent> {
 

@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.harystolho.adexchange.events.EventDispatcher;
+import com.harystolho.adexchange.events.contracts.events.ContractCreatedEvent;
 import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.Contract.PaymentMethod;
 import com.harystolho.adexchange.models.Proposal;
@@ -21,12 +23,15 @@ public class ContractService {
 
 	private AdService adService;
 	private WebsiteService websiteService;
+	private EventDispatcher eventDispatcher;
 
 	@Autowired
-	public ContractService(ContractRepository contractRepository, AdService adService, WebsiteService websiteService) {
+	public ContractService(ContractRepository contractRepository, AdService adService, WebsiteService websiteService,
+			EventDispatcher eventDispatcher) {
 		this.contractRepository = contractRepository;
 		this.adService = adService;
 		this.websiteService = websiteService;
+		this.eventDispatcher = eventDispatcher;
 	}
 
 	private Contract createContract(String creatorId, String acceptorId, String websiteId, String adId,
@@ -41,12 +46,14 @@ public class ContractService {
 		contract.setExpiration(LocalDateTime.now().plusDays(duration));
 
 		// Duplicate the Ad to make sure it doesn't change
-		String finalAd = adService.duplicateAd(adId);
-		contract.setAdId(finalAd);
+		String copiedAd = adService.duplicateAd(adId);
+		contract.setAdId(copiedAd);
 
-		contractRepository.save(contract);
+		Contract saved = contractRepository.save(contract);
 
-		return contract;
+		eventDispatcher.dispatch(new ContractCreatedEvent(contract.clone()));
+
+		return saved;
 	}
 
 	public void createContractFromProposal(Proposal prop, String creatorId, String acceptorId) {

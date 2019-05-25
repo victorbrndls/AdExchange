@@ -20,8 +20,8 @@ public class ContractRepositoryImpl implements ContractRepository {
 	}
 
 	@Override
-	public void save(Contract contract) {
-		mongoOperations.save(contract);
+	public Contract save(Contract contract) {
+		return mongoOperations.save(contract);
 	}
 
 	@Override

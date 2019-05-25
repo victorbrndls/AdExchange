@@ -1,10 +1,13 @@
 package com.harystolho.adexchange.events.proposals;
 
+import org.springframework.stereotype.Service;
+
 import com.harystolho.adexchange.events.EventDispatcher;
 import com.harystolho.adexchange.events.Handler;
 import com.harystolho.adexchange.events.proposals.events.ProposalRejectedEvent;
 import com.harystolho.adexchange.services.NotificationService;
 
+@Service
 public class ProposalRejectedEventHandler extends AbstractProposalEventHandler
 		implements Handler<ProposalRejectedEvent> {
 

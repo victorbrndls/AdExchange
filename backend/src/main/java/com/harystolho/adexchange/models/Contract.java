@@ -10,7 +10,7 @@ import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.utils.AEUtils;
 
 @Document("contracts")
-public class Contract {
+public class Contract implements Cloneable {
 
 	public enum PaymentMethod {
 		PAY_PER_CLICK, PAY_PER_VIEW, PAY_ONCE
@@ -154,4 +154,21 @@ public class Contract {
 		return this.paymentValue.replace(',', '.');
 	}
 
+	@Override
+	public Contract clone() {
+		Contract contract = new Contract();
+
+		contract.setId(id);
+		contract.setCreatorId(creatorId);
+		contract.setCreatorContractName(creatorContractName);
+		contract.setAcceptorId(acceptorId);
+		contract.setAcceptorContractName(acceptorContractName);
+		contract.setExpiration(expiration);
+		contract.setWebsiteId(websiteId);
+		contract.setAdId(adId);
+		contract.setPaymentMethod(paymentMethod);
+		contract.setPaymentValue(paymentValue);
+
+		return contract;
+	}
 }
