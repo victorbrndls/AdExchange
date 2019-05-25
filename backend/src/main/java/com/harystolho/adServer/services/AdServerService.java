@@ -30,10 +30,9 @@ public class AdServerService {
 	private UrlRedirecterService urlRedirectorService;
 
 	@Autowired
-	private AdServerService(CacheService<AdModel> cacheService, AdModelService adModelService,
-			UrlRedirecterService urlRedirecterService, GlobalInformant globalInformant) {
+	private AdServerService(CacheService<AdModel> cacheService, UrlRedirecterService urlRedirecterService,
+			GlobalInformant globalInformant) {
 		this.cacheService = cacheService;
-		this.adModelService = adModelService;
 		this.urlRedirectorService = urlRedirecterService;
 
 		globalInformant.add(cacheService);
@@ -76,7 +75,7 @@ public class AdServerService {
 	 */
 	public void updateSpot(Spot spot) {
 		AdModel model = cacheService.get(spot.getId());
-		
+
 		if (model == null)
 			return;
 
@@ -93,4 +92,10 @@ public class AdServerService {
 	private boolean isSpotIdValid(String id) {
 		return StringUtils.hasText(id);
 	}
+
+	@Autowired
+	public void setAdModelService(AdModelService adModelService) {
+		this.adModelService = adModelService;
+	}
+
 }

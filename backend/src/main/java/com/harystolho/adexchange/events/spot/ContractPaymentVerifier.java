@@ -75,6 +75,8 @@ public class ContractPaymentVerifier implements Handler<SpotClickedEvent> {
 			// owner
 			return;
 
+		// TODO make sure the ad owner has money to pay the ad
+		
 		verifyUserHasNotInteractedWithContract(event.getTracker(), spot.getContractId());
 	}
 
