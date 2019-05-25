@@ -5,8 +5,8 @@ import java.util.IllegalFormatException;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
 
-import com.harystolho.adexchange.log.Log.LogIdentifier;
 import com.harystolho.adexchange.log.Log.Level;
+import com.harystolho.adexchange.log.Log.LogIdentifier;
 
 /**
  * Saves the logs to the database. This is used to store errors that need to be

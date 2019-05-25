@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import com.harystolho.adexchange.events.EventDispatcher;
 import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.models.Website;
 import com.harystolho.adexchange.models.ads.Ad;
@@ -31,7 +32,7 @@ public class ProposalServiceTest {
 	@Mock
 	AdService adService;
 	@Mock
-	NotificationService notificationService;
+	EventDispatcher eventDispatcher;
 
 	@Before
 	public void beforeTests() {
@@ -52,6 +53,8 @@ public class ProposalServiceTest {
 
 	@Test
 	public void createProposalWithValidDuration() {
+		Mockito.when(proposalRepository.save(Mockito.any())).thenAnswer(inv -> inv.getArgument(0));
+		
 		for (String duration : new String[] { "1", "100", "365" }) {
 			ServiceResponse<Proposal> response = proposalService.createProposal("ac1", "12gfas4fas", "dasd1wa5e",
 					duration, "PAY_PER_CLICK", "1,0");
@@ -72,6 +75,8 @@ public class ProposalServiceTest {
 
 	@Test
 	public void createProposalWithValidPaymentValue() {
+		Mockito.when(proposalRepository.save(Mockito.any())).thenAnswer(inv -> inv.getArgument(0));
+
 		for (String value : new String[] { "1", "0,1", "0,01", "0,05", "1,0", "750", "0,99", "1,74", "1597",
 				"12,24" }) {
 			ServiceResponse<Proposal> response = proposalService.createProposal("ac1", "12gfas4fas", "dasd1wa5e", "1",

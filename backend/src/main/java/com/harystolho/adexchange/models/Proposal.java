@@ -11,7 +11,7 @@ import org.springframework.lang.Nullable;
 import com.harystolho.adexchange.models.Contract.PaymentMethod;
 
 @Document("proposals")
-public class Proposal {
+public class Proposal implements Cloneable {
 
 	public Proposal() {
 		creationDate = Date.from(Instant.now());
@@ -171,6 +171,26 @@ public class Proposal {
 
 	public void setProposeeName(String proposeeName) {
 		this.proposeeName = proposeeName;
+	}
+
+	@Override
+	public Proposal clone() {
+		Proposal clone = new Proposal();
+
+		clone.setId(id);
+		clone.setProposerId(proposerId);
+		clone.setProposeeId(proposeeId);
+		clone.setWebsiteId(websiteId);
+		clone.setAdId(adId);
+		clone.setDuration(duration);
+		clone.setPaymentMethod(paymentMethod);
+		clone.setPaymentValue(paymentValue);
+		clone.setCreationDate(creationDate);
+		clone.setVersion(version);
+		clone.setInProposerSent(inProposerSent);
+		clone.setRejected(rejected);
+
+		return clone;
 	}
 
 }
