@@ -23,16 +23,14 @@ public class ProposalService {
 
 	private WebsiteService websiteService;
 	private AdService adService;
-	private ContractService contractService;
 	private AccountService accountService;
 	private EventDispatcher eventDispatcher;
 
 	public ProposalService(ProposalRepository proposalRepository, WebsiteService websiteService, AdService adService,
-			ContractService contractService, AccountService accountService, EventDispatcher eventDispatcher) {
+			AccountService accountService, EventDispatcher eventDispatcher) {
 		this.proposalRepository = proposalRepository;
 		this.websiteService = websiteService;
 		this.adService = adService;
-		this.contractService = contractService;
 		this.accountService = accountService;
 		this.eventDispatcher = eventDispatcher;
 	}
@@ -80,7 +78,7 @@ public class ProposalService {
 
 		Proposal saved = proposalRepository.save(proposal);
 
-		eventDispatcher.dispatch(new ProposalCreatedEvent(saved));
+		eventDispatcher.dispatch(new ProposalCreatedEvent(saved.clone()));
 
 		return ServiceResponse.ok(saved);
 	}
@@ -110,7 +108,7 @@ public class ProposalService {
 		proposal.setRejected(true);
 		swapProposalLocation(proposal);
 
-		eventDispatcher.dispatch(new ProposalRejectedEvent(proposal, accountId));
+		eventDispatcher.dispatch(new ProposalRejectedEvent(proposal.clone(), accountId));
 
 		if (proposal.getProposerId().equals(accountId)) {
 			proposal.setProposerId("");
@@ -148,7 +146,7 @@ public class ProposalService {
 
 		proposalRepository.save(prop);
 
-		eventDispatcher.dispatch(new ProposalReviewedEvent(prop, accountId));
+		eventDispatcher.dispatch(new ProposalReviewedEvent(prop.clone(), accountId));
 
 		return ServiceResponse.ok(null);
 	}
@@ -162,7 +160,7 @@ public class ProposalService {
 		if (!prop.getProposeeId().equals(accountId))
 			return ServiceResponse.unauthorized();
 
-		eventDispatcher.dispatch(new ProposalAcceptedEvent(prop));
+		eventDispatcher.dispatch(new ProposalAcceptedEvent(prop.clone()));
 
 		proposalRepository.deleteById(id);
 
