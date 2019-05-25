@@ -221,7 +221,7 @@ public class ProposalService {
 		if (method == null)
 			return false;
 
-		if (!(method.equals("PAY_PER_CLICK") || method.equals("PAY_PER_VIEW")))
+		if (!(method.equals("PAY_PER_CLICK") || method.equals("PAY_PER_VIEW") || method.equals("PAY_ONCE")))
 			return false;
 
 		return true;

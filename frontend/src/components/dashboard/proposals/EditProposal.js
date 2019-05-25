@@ -200,6 +200,17 @@ export default class AddProposal extends Component {
         }
     }
 
+    getPaymentMethodDescription() {
+        switch (this.state.proposal.paymentMethod) {
+            case 'PAY_PER_CLICK':
+                return "O dono do anúncio será cobrado toda vez que alguem clicar no anúncio";
+            case 'PAY_PER_VIEW':
+                return "O dono do anúncio será cobrado toda vez que alguem ver o anúncio";
+            case 'PAY_ONCE':
+                return "O dono do anúncio será cobrado somente uma vez, isto é, no memento em que a proposta for aceita.";
+        }
+    }
+
     render({}, {proposal, error, ads, mode, type}) {
         let edit_m = mode === 'EDIT';
         let new_m = mode === 'NEW';
@@ -281,11 +292,15 @@ export default class AddProposal extends Component {
                                             paymentMethod: e.target.value
                                         }
                                     })}>
-                                <option value="PAY_PER_CLICK">Custo por Click</option>
-                                <option value="PAY_PER_VIEW">Custo por Visualização</option>
+                                <option value="PAY_PER_CLICK">Custo por click</option>
+                                <option value="PAY_PER_VIEW">Custo por visualização</option>
+                                <option value="PAY_ONCE">Custo único</option>
                             </select>
+                            <small class="form-text text-muted">
+                                {this.getPaymentMethodDescription.bind(this)()}
+                            </small>
                             <small class="form-text ad-error">{error.paymentMethod}</small>
-                            <div class="mb-2"/>
+                            <div class="mb-3"/>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">R$</span>

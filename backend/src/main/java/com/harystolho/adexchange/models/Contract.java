@@ -13,7 +13,7 @@ import com.harystolho.adexchange.utils.AEUtils;
 public class Contract {
 
 	public enum PaymentMethod {
-		PAY_PER_CLICK, PAY_PER_VIEW
+		PAY_PER_CLICK, PAY_PER_VIEW, PAY_ONCE
 	}
 
 	private String id;
