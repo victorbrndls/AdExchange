@@ -1,5 +1,7 @@
 package com.harystolho.adServer.services;
 
+import java.util.Collection;
+
 import org.springframework.stereotype.Service;
 
 import com.harystolho.adexchange.log.Logger;
@@ -30,7 +32,14 @@ public class ContractPaymentService {
 		this.logger = logger;
 	}
 
-	public void issueContractPayment(String contractId) {
+	/**
+	 * 
+	 * @param contractId
+	 * @param allowedMethods only issue payment if the
+	 *                       {@link Contract#getPaymentMethod()} is one of the
+	 *                       {allowedMethods}
+	 */
+	public void issueContractPayment(String contractId, Collection<PaymentMethod> allowedMethods) {
 		ServiceResponse<Contract> response = contractService.getContractById(AEUtils.ADMIN_ACESS_ID, contractId);
 
 		if (response.getErrorType() != ServiceResponseType.OK) {
@@ -38,11 +47,11 @@ public class ContractPaymentService {
 			return;
 		}
 
-		issueContractPayment(response.getReponse());
+		issueContractPayment(response.getReponse(), allowedMethods);
 	}
 
-	private void issueContractPayment(Contract contract) {
-		if (!verifyPaymentMethod(contract.getPaymentMethod()))
+	private void issueContractPayment(Contract contract, Collection<PaymentMethod> allowedMethods) {
+		if (!verifyPaymentMethod(contract.getPaymentMethod(), allowedMethods))
 			return;
 
 		String payerId = contract.getCreatorId();
@@ -52,14 +61,8 @@ public class ContractPaymentService {
 		accountService.transferBalance(payerId, recieverId, value);
 	}
 
-	/**
-	 * The payment should only if the the payment method is one of the below
-	 * 
-	 * @param paymentMethod
-	 * @return
-	 */
-	private boolean verifyPaymentMethod(PaymentMethod paymentMethod) {
-		return paymentMethod == PaymentMethod.PAY_PER_CLICK || paymentMethod == PaymentMethod.PAY_PER_VIEW;
+	private boolean verifyPaymentMethod(PaymentMethod paymentMethod, Collection<PaymentMethod> allowedMethods) {
+		return allowedMethods.contains(paymentMethod);
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.harystolho.adexchange.events.spot;
 
+import java.util.Arrays;
+
 import javax.annotation.PostConstruct;
 
 import org.apache.logging.log4j.LogManager;
@@ -12,6 +14,7 @@ import com.harystolho.adServer.tracker.Tracker;
 import com.harystolho.adServer.tracker.UserTrackerService;
 import com.harystolho.adexchange.events.EventDispatcher;
 import com.harystolho.adexchange.events.Handler;
+import com.harystolho.adexchange.models.Contract.PaymentMethod;
 import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
@@ -26,7 +29,7 @@ import com.harystolho.adexchange.utils.AEUtils;
  *
  */
 @Service
-public class ContractPaymentVerifier implements Handler<SpotClickedEvent> {
+public class SpotClickedEventHandler implements Handler<SpotClickedEvent> {
 
 	// Used to avoid collision in the userTrackerService
 	private static final String INTERACTOR_PREFIX = "c_";
@@ -39,7 +42,7 @@ public class ContractPaymentVerifier implements Handler<SpotClickedEvent> {
 	private SpotService spotService;
 	private UserTrackerService userTrackerService;
 
-	private ContractPaymentVerifier(EventDispatcher eventDispatcher, UrlRedirecterService urlRedirecterService,
+	private SpotClickedEventHandler(EventDispatcher eventDispatcher, UrlRedirecterService urlRedirecterService,
 			ContractPaymentService contractPaymentService, SpotService spotService,
 			UserTrackerService userTrackerService) {
 		this.eventDispatcher = eventDispatcher;
@@ -56,6 +59,16 @@ public class ContractPaymentVerifier implements Handler<SpotClickedEvent> {
 
 	@Override
 	public void onEvent(SpotClickedEvent event) {
+		contractPaymentVerifier(event);
+	}
+
+	/**
+	 * Verify the user has not interacted with the clicked spot and issues a
+	 * contract payment if applicable
+	 * 
+	 * @param event
+	 */
+	private void contractPaymentVerifier(SpotClickedEvent event) {
 		ServiceResponse<String> response = urlRedirecterService.getSpotIdUsingRedirectId(event.getSpotRedirectId());
 
 		if (response.getErrorType() != ServiceResponseType.OK)
@@ -75,8 +88,6 @@ public class ContractPaymentVerifier implements Handler<SpotClickedEvent> {
 			// owner
 			return;
 
-		// TODO make sure the ad owner has money to pay the ad
-		
 		verifyUserHasNotInteractedWithContract(event.getTracker(), spot.getContractId());
 	}
 
@@ -88,7 +99,8 @@ public class ContractPaymentVerifier implements Handler<SpotClickedEvent> {
 		userTrackerService.interactTrackerWith(tracker, INTERACTOR_PREFIX + contractId);
 
 		// Issue payment to the website owner
-		contractPaymentService.issueContractPayment(contractId);
+		contractPaymentService.issueContractPayment(contractId,
+				Arrays.asList(PaymentMethod.PAY_PER_CLICK, PaymentMethod.PAY_PER_VIEW));
 	}
 
 }
