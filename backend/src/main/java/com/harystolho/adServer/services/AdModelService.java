@@ -166,6 +166,9 @@ public class AdModelService {
 		dc.removeContracts(contractsToBeRemoved);
 		dc.removeSpots(spotsToBeRemoved);
 
+		if (dc.isEmpty())
+			accountIdToDataCache.remove(accountId);
+
 		spotsToBeRemoved.forEach(s -> adServerService.updateSpot(s));
 	}
 
@@ -216,6 +219,10 @@ public class AdModelService {
 
 		public void removeSpots(Collection<Spot> spots) {
 			this.spots.removeAll(spots);
+		}
+
+		public boolean isEmpty() {
+			return contracts.isEmpty() && spots.isEmpty();
 		}
 
 	}
