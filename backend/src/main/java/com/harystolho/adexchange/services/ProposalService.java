@@ -4,6 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.harystolho.adexchange.events.EventDispatcher;
+import com.harystolho.adexchange.events.proposals.events.ProposalAcceptedEvent;
+import com.harystolho.adexchange.events.proposals.events.ProposalCreatedEvent;
+import com.harystolho.adexchange.events.proposals.events.ProposalRejectedEvent;
+import com.harystolho.adexchange.events.proposals.events.ProposalReviewedEvent;
 import com.harystolho.adexchange.models.Contract.PaymentMethod;
 import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.repositories.proposal.ProposalRepository;
@@ -19,17 +24,17 @@ public class ProposalService {
 	private WebsiteService websiteService;
 	private AdService adService;
 	private ContractService contractService;
-	private NotificationService notificationService;
 	private AccountService accountService;
+	private EventDispatcher eventDispatcher;
 
 	public ProposalService(ProposalRepository proposalRepository, WebsiteService websiteService, AdService adService,
-			ContractService contractService, NotificationService notificationService, AccountService accountService) {
+			ContractService contractService, AccountService accountService, EventDispatcher eventDispatcher) {
 		this.proposalRepository = proposalRepository;
 		this.websiteService = websiteService;
 		this.adService = adService;
 		this.contractService = contractService;
-		this.notificationService = notificationService;
 		this.accountService = accountService;
+		this.eventDispatcher = eventDispatcher;
 	}
 
 	public ServiceResponse<List<Proposal>> getProposalsByAccountId(String accountId, String embed) {
@@ -73,9 +78,11 @@ public class ProposalService {
 		proposal.setPaymentMethod(PaymentMethod.valueOf(paymentMethod));
 		proposal.setPaymentValue(paymentValue);
 
-		notificationService.emitNewProposalNotification(proposal);
+		Proposal saved = proposalRepository.save(proposal);
 
-		return ServiceResponse.ok(proposalRepository.save(proposal));
+		eventDispatcher.dispatch(new ProposalCreatedEvent(saved));
+
+		return ServiceResponse.ok(saved);
 	}
 
 	public ServiceResponse<Nothing> deleteProposalById(String accountId, String id) {
@@ -103,7 +110,7 @@ public class ProposalService {
 		proposal.setRejected(true);
 		swapProposalLocation(proposal);
 
-		notificationService.emitRejectedProposalNotification(proposal, accountId);
+		eventDispatcher.dispatch(new ProposalRejectedEvent(proposal, accountId));
 
 		if (proposal.getProposerId().equals(accountId)) {
 			proposal.setProposerId("");
@@ -139,9 +146,9 @@ public class ProposalService {
 		prop.setVersion(prop.getVersion() + 1);
 		swapProposalLocation(prop);
 
-		notificationService.emitReviewedProposalNotification(prop, accountId);
-
 		proposalRepository.save(prop);
+
+		eventDispatcher.dispatch(new ProposalReviewedEvent(prop, accountId));
 
 		return ServiceResponse.ok(null);
 	}
@@ -155,9 +162,7 @@ public class ProposalService {
 		if (!prop.getProposeeId().equals(accountId))
 			return ServiceResponse.unauthorized();
 
-		contractService.createContractFromProposal(prop, prop.getProposerId(), prop.getProposeeId());
-
-		notificationService.emitAcceptedProposalNotification(prop);
+		eventDispatcher.dispatch(new ProposalAcceptedEvent(prop));
 
 		proposalRepository.deleteById(id);
 
