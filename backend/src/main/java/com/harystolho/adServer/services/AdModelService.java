@@ -54,7 +54,7 @@ public class AdModelService {
 	}
 
 	public AdModel buildUsingSpotId(String spotId) {
-		ServiceResponse<Spot> response = spotService.getSpot(AEUtils.ADMIN_ACESS_ID, spotId, "contract");
+		ServiceResponse<Spot> response = spotService.getSpot(AEUtils.ADMIN_ACCESS_ID, spotId, "contract");
 		Spot spot = response.getReponse();
 
 		if (spot == null) {

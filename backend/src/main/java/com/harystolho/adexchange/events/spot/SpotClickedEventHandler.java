@@ -74,7 +74,7 @@ public class SpotClickedEventHandler implements Handler<SpotClickedEvent> {
 		if (response.getErrorType() != ServiceResponseType.OK)
 			return; // This should never happen
 
-		ServiceResponse<Spot> spotResponse = spotService.getSpot(AEUtils.ADMIN_ACESS_ID, response.getReponse(), "");
+		ServiceResponse<Spot> spotResponse = spotService.getSpot(AEUtils.ADMIN_ACCESS_ID, response.getReponse(), "");
 
 		if (spotResponse.getErrorType() != ServiceResponseType.OK) {
 			logger.error("AdModel redirect url is not linked to a Spot. redirectId: [{}]", event.getSpotRedirectId());

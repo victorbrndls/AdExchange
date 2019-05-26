@@ -66,7 +66,7 @@ public class Spot {
 	 * @return TRUE if the {accessId} has authority to edit this object
 	 */
 	public boolean isAuthorized(String accessId) {
-		return accessId.equals(getAccountId()) || accessId.equals(AEUtils.ADMIN_ACESS_ID);
+		return accessId.equals(getAccountId()) || accessId.equals(AEUtils.ADMIN_ACCESS_ID);
 	}
 
 	@Nullable

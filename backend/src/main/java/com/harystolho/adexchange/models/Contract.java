@@ -106,7 +106,7 @@ public class Contract implements Cloneable {
 	}
 
 	public boolean isAuthorized(String accessId) {
-		return accessId.equals(acceptorId) || accessId.equals(creatorId) || accessId.equals(AEUtils.ADMIN_ACESS_ID);
+		return accessId.equals(acceptorId) || accessId.equals(creatorId) || accessId.equals(AEUtils.ADMIN_ACCESS_ID);
 	}
 
 	@Nullable

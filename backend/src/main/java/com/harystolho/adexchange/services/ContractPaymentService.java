@@ -37,7 +37,7 @@ public class ContractPaymentService {
 	 *                       {allowedMethods}
 	 */
 	public void issueContractPayment(String contractId, Collection<PaymentMethod> allowedMethods) {
-		ServiceResponse<Contract> response = contractService.getContractById(AEUtils.ADMIN_ACESS_ID, contractId);
+		ServiceResponse<Contract> response = contractService.getContractById(AEUtils.ADMIN_ACCESS_ID, contractId);
 
 		if (response.getErrorType() != ServiceResponseType.OK) {
 			logger.error("Error while issuing payment. The contract id is not valid. contractId: [%s]", contractId);
