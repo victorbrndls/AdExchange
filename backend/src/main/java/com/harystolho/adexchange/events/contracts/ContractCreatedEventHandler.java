@@ -4,11 +4,11 @@ import java.util.Arrays;
 
 import org.springframework.stereotype.Service;
 
-import com.harystolho.adServer.services.ContractPaymentService;
 import com.harystolho.adexchange.events.EventDispatcher;
 import com.harystolho.adexchange.events.Handler;
 import com.harystolho.adexchange.events.contracts.events.ContractCreatedEvent;
 import com.harystolho.adexchange.models.Contract.PaymentMethod;
+import com.harystolho.adexchange.services.ContractPaymentService;
 
 @Service
 public class ContractCreatedEventHandler extends AbstractContractEventHandler implements Handler<ContractCreatedEvent> {

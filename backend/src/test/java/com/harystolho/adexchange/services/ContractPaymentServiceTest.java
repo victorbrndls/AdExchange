@@ -1,4 +1,6 @@
-package com.harystolho.adServer.services;
+package com.harystolho.adexchange.services;
+
+import java.util.Arrays;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +13,7 @@ import com.harystolho.adexchange.log.Logger;
 import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.Contract.PaymentMethod;
 import com.harystolho.adexchange.services.AccountService;
+import com.harystolho.adexchange.services.ContractPaymentService;
 import com.harystolho.adexchange.services.ContractService;
 import com.harystolho.adexchange.services.ServiceResponse;
 
@@ -32,7 +35,7 @@ public class ContractPaymentServiceTest {
 		Mockito.when(contractService.getContractById(Mockito.any(), Mockito.same("abcd")))
 				.thenReturn(ServiceResponse.fail(""));
 
-		contractPaymentService.issueContractPayment("abcd");
+		contractPaymentService.issueContractPayment("abcd", Arrays.asList());
 
 		Mockito.verify(logger).error(Mockito.any(), Mockito.same("abcd"));
 	}
@@ -49,12 +52,27 @@ public class ContractPaymentServiceTest {
 			return ServiceResponse.ok(contract);
 		});
 
-		contractPaymentService.issueContractPayment("klm");
+		contractPaymentService.issueContractPayment("klm", Arrays.asList(PaymentMethod.PAY_PER_CLICK));
 
 		Mockito.verify(accountService).transferBalance(Mockito.contains("123"), Mockito.contains("456"),
 				Mockito.contains("5.00"));
 	}
 
-	
-	
+	@Test
+	public void issuePaymentToContractWithPaymentMethodNotAllowed_ShoudFail() {
+		Mockito.when(contractService.getContractById(Mockito.any(), Mockito.same("cc1"))).thenAnswer((inv) -> {
+			Contract contract = new Contract();
+			contract.setPaymentMethod(PaymentMethod.PAY_ONCE);
+			contract.setCreatorId("ac1");
+			contract.setAcceptorId("ac2");
+			contract.setPaymentValue("5,00");
+
+			return ServiceResponse.ok(contract);
+		});
+
+		contractPaymentService.issueContractPayment("cc1", Arrays.asList(PaymentMethod.PAY_PER_CLICK));
+
+		Mockito.verify(accountService, Mockito.never()).transferBalance(Mockito.any(), Mockito.any(), Mockito.any());
+	}
+
 }
