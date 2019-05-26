@@ -28,6 +28,8 @@ public class ProposalServiceTest {
 	@Mock
 	ProposalRepository proposalRepository;
 	@Mock
+	AccountService accountService;
+	@Mock
 	WebsiteService websiteService;
 	@Mock
 	AdService adService;
@@ -39,6 +41,8 @@ public class ProposalServiceTest {
 		Mockito.when(websiteService.getWebsiteById(Mockito.any())).thenReturn(ServiceResponse.ok(new Website("", "")));
 		Mockito.when(adService.getAdById(Mockito.any(), Mockito.any()))
 				.thenReturn(ServiceResponse.ok(new Ad(AdType.TEXT)));
+
+		Mockito.when(proposalRepository.save(Mockito.any())).thenAnswer(inv -> inv.getArgument(0));
 	}
 
 	@Test
@@ -53,8 +57,6 @@ public class ProposalServiceTest {
 
 	@Test
 	public void createProposalWithValidDuration() {
-		Mockito.when(proposalRepository.save(Mockito.any())).thenAnswer(inv -> inv.getArgument(0));
-		
 		for (String duration : new String[] { "1", "100", "365" }) {
 			ServiceResponse<Proposal> response = proposalService.createProposal("ac1", "12gfas4fas", "dasd1wa5e",
 					duration, "PAY_PER_CLICK", "1,0");
@@ -75,7 +77,6 @@ public class ProposalServiceTest {
 
 	@Test
 	public void createProposalWithValidPaymentValue() {
-		Mockito.when(proposalRepository.save(Mockito.any())).thenAnswer(inv -> inv.getArgument(0));
 
 		for (String value : new String[] { "1", "0,1", "0,01", "0,05", "1,0", "750", "0,99", "1,74", "1597",
 				"12,24" }) {
@@ -83,6 +84,13 @@ public class ProposalServiceTest {
 					"PAY_PER_CLICK", value);
 			assertEquals("Payment value should be valid: " + value, ServiceResponseType.OK, response.getErrorType());
 		}
+	}
+
+	@Test
+	public void createProposalWithInvalidPaymentMethod() {
+		ServiceResponse<Proposal> response = proposalService.createProposal("ac1", "12gfas4fas", "dasd1wa5e", "1",
+				"PAY_WITH_LIFE", "7,0");
+		assertEquals(ServiceResponseType.INVALID_PAYMENT_METHOD, response.getErrorType());
 	}
 
 	@Test
@@ -206,6 +214,56 @@ public class ProposalServiceTest {
 		assertEquals(true, p.isRejected());
 		assertEquals(false, p.isInProposerSent());
 		assertEquals(p.getProposeeId(), "");
+	}
+
+	@Test
+	public void createPayOnceProposalWithSufficientAccountBalance_ShouldWork() {
+		Mockito.when(accountService.hasAccountBalance(Mockito.same("am1"), Mockito.anyString())).thenReturn(true);
+
+		ServiceResponse<Proposal> response = proposalService.createProposal("am1", "wm1", "valid ad", "7", "PAY_ONCE",
+				"11,00");
+
+		assertEquals(ServiceResponseType.OK, response.getErrorType());
+	}
+
+	@Test
+	public void createPayOnceProposalWithoutSufficientAccountBalance_ShouldFail() {
+		Mockito.when(accountService.hasAccountBalance(Mockito.same("an1"), Mockito.anyString())).thenReturn(false);
+
+		ServiceResponse<Proposal> response = proposalService.createProposal("an1", "wn1", "valid ad", "7", "PAY_ONCE",
+				"17,00");
+
+		assertEquals(ServiceResponseType.INSUFFICIENT_ACCOUNT_BALANCE, response.getErrorType());
+	}
+
+	@Test
+	public void acceptPayOnceProposalIfProposerHasInsufficientBalance_ShouldFail() {
+		Proposal p = new Proposal();
+		p.setProposerId("ao1");
+		p.setPaymentValue("17,70");
+		Mockito.when(proposalRepository.getById("po1")).thenReturn(p);
+
+		Mockito.when(accountService.hasAccountBalance(Mockito.same("ao1"), Mockito.anyString())).thenReturn(false);
+
+		ServiceResponseType response = proposalService.acceptProposal("ao1", "po1");
+
+		assertEquals(ServiceResponseType.INSUFFICIENT_ACCOUNT_BALANCE, response);
+	}
+
+	@Test
+	public void acceptPayOnceProposalIfProposerHasSufficientBalance_ShouldWork() {
+		Proposal p = new Proposal();
+		p.setProposerId("ap1");
+		p.setProposeeId("ap2");
+		p.setInProposerSent(true);
+		p.setPaymentValue("4,70");
+		Mockito.when(proposalRepository.getById("pp1")).thenReturn(p);
+
+		Mockito.when(accountService.hasAccountBalance(Mockito.same("ap1"), Mockito.anyString())).thenReturn(true);
+
+		ServiceResponseType response = proposalService.acceptProposal("ap2", "pp1");
+
+		assertEquals(ServiceResponseType.OK, response);
 	}
 
 }

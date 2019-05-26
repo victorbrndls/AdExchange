@@ -9,6 +9,7 @@ import com.harystolho.adexchange.events.proposals.events.ProposalAcceptedEvent;
 import com.harystolho.adexchange.events.proposals.events.ProposalCreatedEvent;
 import com.harystolho.adexchange.events.proposals.events.ProposalRejectedEvent;
 import com.harystolho.adexchange.events.proposals.events.ProposalReviewedEvent;
+import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.Contract.PaymentMethod;
 import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.repositories.proposal.ProposalRepository;
@@ -61,7 +62,8 @@ public class ProposalService {
 	public ServiceResponse<Proposal> createProposal(String accountId, String websiteId, String adId, String duration,
 			String paymentMethod, String paymentValue) {
 
-		ServiceResponseType validation = validateProposalFields(websiteId, adId, duration, paymentMethod, paymentValue);
+		ServiceResponseType validation = validateProposalFields(accountId, websiteId, adId, duration, paymentMethod,
+				paymentValue);
 		if (validation != ServiceResponseType.OK)
 			return ServiceResponse.error(validation);
 
@@ -121,22 +123,22 @@ public class ProposalService {
 		return ServiceResponse.ok(null);
 	}
 
-	public ServiceResponse<Nothing> reviewProposal(String accountId, String id, String duration, String paymentMethod,
+	public ServiceResponseType reviewProposal(String accountId, String id, String duration, String paymentMethod,
 			String paymentValue) {
 		if (!validateDuration(duration))
-			return ServiceResponse.error(ServiceResponseType.INVALID_DURATION);
+			return ServiceResponseType.INVALID_DURATION;
 		if (!validatePaymentMethod(paymentMethod))
-			return ServiceResponse.error(ServiceResponseType.INVALID_PAYMENT_METHOD);
+			return ServiceResponseType.INVALID_PAYMENT_METHOD;
 		if (!AEUtils.validateMonetaryValue(paymentValue))
-			return ServiceResponse.error(ServiceResponseType.INVALID_PAYMENT_VALUE);
+			return ServiceResponseType.INVALID_PAYMENT_VALUE;
 
 		Proposal prop = proposalRepository.getById(id);
 
 		if (prop == null)
-			return ServiceResponse.fail("Can't find a Proposal using the given id");
+			return ServiceResponseType.FAIL;
 
 		if (!containsProposalInNew(accountId, prop))
-			return ServiceResponse.proposalNotInNew(); // User can only reject proposals in new
+			return ServiceResponseType.PROPOSAL_NOT_IN_NEW; // User can only reject proposals in new
 
 		prop.setDuration(Integer.parseInt(duration));
 		prop.setPaymentMethod(PaymentMethod.valueOf(paymentMethod));
@@ -148,23 +150,29 @@ public class ProposalService {
 
 		eventDispatcher.dispatch(new ProposalReviewedEvent(prop.clone(), accountId));
 
-		return ServiceResponse.ok(null);
+		return ServiceResponseType.OK;
 	}
 
-	public ServiceResponse<Nothing> acceptProposal(String accountId, String id) {
+	public ServiceResponseType acceptProposal(String accountId, String id) {
 		Proposal prop = proposalRepository.getById(id);
 
+		if (prop == null)
+			return ServiceResponseType.FAIL;
+
+		if (!verifyUserHasBalanceToCreatePayOnceContract(prop.getProposerId(), prop.getPaymentValue()))
+			return ServiceResponseType.INSUFFICIENT_ACCOUNT_BALANCE;
+
 		if (!containsProposalInNew(accountId, prop))
-			return ServiceResponse.proposalNotInNew();
+			return ServiceResponseType.PROPOSAL_NOT_IN_NEW;
 
 		if (!prop.getProposeeId().equals(accountId))
-			return ServiceResponse.unauthorized();
+			return ServiceResponseType.UNAUTHORIZED;
 
 		eventDispatcher.dispatch(new ProposalAcceptedEvent(prop.clone()));
 
 		proposalRepository.deleteById(id);
 
-		return ServiceResponse.ok(null);
+		return ServiceResponseType.OK;
 	}
 
 	/**
@@ -187,8 +195,8 @@ public class ProposalService {
 	 * @return <code>null</code> if the fields are valid for the proposal creation
 	 *         or the corresponding error
 	 */
-	private ServiceResponseType validateProposalFields(String websiteId, String adId, String duration,
-			String paymentMethod, String paymentValue) {
+	private ServiceResponseType validateProposalFields(String proposerId, String websiteId, String adId,
+			String duration, String paymentMethod, String paymentValue) {
 		if (!websiteExists(websiteId))
 			return ServiceResponseType.INVALID_WEBSITE_ID;
 
@@ -203,6 +211,10 @@ public class ProposalService {
 
 		if (!AEUtils.validateMonetaryValue(paymentValue))
 			return ServiceResponseType.INVALID_PAYMENT_VALUE;
+
+		if (PaymentMethod.valueOf(paymentMethod) == PaymentMethod.PAY_ONCE)
+			if (!verifyUserHasBalanceToCreatePayOnceContract(proposerId, paymentValue))
+				return ServiceResponseType.INSUFFICIENT_ACCOUNT_BALANCE;
 
 		return ServiceResponseType.OK;
 	}
@@ -221,13 +233,28 @@ public class ProposalService {
 	}
 
 	private boolean validatePaymentMethod(String method) {
-		if (method == null)
+		try {
+			PaymentMethod.valueOf(method);
+			return true;
+		} catch (Exception e) {
 			return false;
+		}
+	}
 
-		if (!(method.equals("PAY_PER_CLICK") || method.equals("PAY_PER_VIEW") || method.equals("PAY_ONCE")))
-			return false;
+	/**
+	 * If the proposal payment method is {@link PaymentMethod#PAY_ONCE}, the
+	 * proposer is billed when the proposal is created and he must have balance in
+	 * his account to pay
+	 * 
+	 * @param accountId
+	 * @param paymentValue
+	 * @return
+	 */
+	private boolean verifyUserHasBalanceToCreatePayOnceContract(String accountId, String paymentValue) {
+		Contract temp = new Contract();
+		temp.setPaymentValue(paymentValue);
 
-		return true;
+		return accountService.hasAccountBalance(accountId, temp.convertPaymentValueToDotNotation());
 	}
 
 	/**

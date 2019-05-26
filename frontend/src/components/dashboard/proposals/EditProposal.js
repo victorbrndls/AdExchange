@@ -126,6 +126,8 @@ export default class AddProposal extends Component {
         ConfirmationModal.renderFullScreen("Você tem certeza que quer aceitar essa Proposta?", () => {
             AdAxiosPost.post(`${HOST}/api/v1/proposals/accept/${this.state.proposal.id}`).then((response) => {
                 route('/dashboard/contracts');
+            }).catch((error) => {
+                this.handleErrorResponse(error);
             });
         });
     }
@@ -196,6 +198,15 @@ export default class AddProposal extends Component {
                 return;
             case 'INVALID_PAYMENT_METHOD':
                 this.setState({error: {...error, paymentMethod: "Método de pagamento inválido"}});
+                return;
+            case 'INSUFFICIENT_ACCOUNT_BALANCE':
+                this.setState({
+                    error: {
+                        ...error,
+                        paymentValue: this.state.mode === 'NEW' ? "Voce não tem saldo suficiente para pagar por esse contrato. Adicione saldo antes de cria-lo" :
+                            "O criador da proposta não tem saldo suficiente para pagar por esse contrato"
+                    }
+                });
                 return;
         }
     }

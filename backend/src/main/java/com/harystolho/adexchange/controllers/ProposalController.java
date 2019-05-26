@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.services.ProposalService;
 import com.harystolho.adexchange.services.ServiceResponse;
+import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
 import com.harystolho.adexchange.utils.AEUtils;
 import com.harystolho.adexchange.utils.JsonResponse;
 import com.harystolho.adexchange.utils.Nothing;
@@ -129,16 +130,14 @@ public class ProposalController {
 	public ResponseEntity<Object> reviewProposal(@RequestAttribute("ae.accountId") String accountId,
 			@PathVariable String id, String duration, String paymentMethod, String paymentValue) {
 
-		ServiceResponse<Nothing> response = proposalService.reviewProposal(accountId, id, duration, paymentMethod,
+		ServiceResponseType response = proposalService.reviewProposal(accountId, id, duration, paymentMethod,
 				paymentValue);
 
-		switch (response.getErrorType()) {
+		switch (response) {
 		case OK:
-			return ResponseEntity.status(HttpStatus.CREATED).body(response.getReponse());
-		case FAIL:
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getFullMessage());
+			return ResponseEntity.status(HttpStatus.CREATED).body(null);
 		default:
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getErrorType());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 	}
 
@@ -146,14 +145,13 @@ public class ProposalController {
 	public ResponseEntity<Object> acceptProposal(@RequestAttribute("ae.accountId") String accountId,
 			@PathVariable String id) {
 
-		ServiceResponse<Nothing> response = proposalService.acceptProposal(accountId, id);
+		ServiceResponseType response = proposalService.acceptProposal(accountId, id);
 
-		switch (response.getErrorType()) {
-		case PROPOSAL_NOT_IN_NEW:
-		case UNAUTHORIZED:
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getErrorType().toString());
-		default:
+		switch (response) {
+		case OK:
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		default:
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		}
 	}
 }
