@@ -11,6 +11,7 @@ import com.harystolho.adServer.data.AdModelDataCache;
 import com.harystolho.adServer.templates.AdTemplateService;
 import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.Spot;
+import com.harystolho.adexchange.models.Contract.PaymentMethod;
 import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.models.ads.Ad.AdType;
 import com.harystolho.adexchange.models.ads.ImageAd;
@@ -82,26 +83,17 @@ public class AdModelFactory {
 	/**
 	 * @param spot
 	 * @param contract
-	 * @return the id of the Ad that will be used to create the {@link AdModel}
+	 * @return the contract ad id if the contract is valid or the spot fallback ad
+	 *         id
 	 */
-	private String getAdId(Spot spot, Contract contract) { // TODO change the method bc some ads are fixed price
-		if (contract != null && !contract.hasExpired() && hasContractOwnerBalanceToPayAd(contract)) {
+	private String getAdId(Spot spot, Contract contract) {
+		if (contract != null && isContractValid(contract)) {
 			adModelCache.update(spot, contract);
 
 			return contract.getAdId();
 		}
 
 		return spot.getFallbackAdId();
-	}
-
-	/**
-	 * @param contract
-	 * @return <code>true</code> if the {@link Contract#getCreatorId()} has
-	 *         balance(money) to pay for the ad
-	 */
-	private boolean hasContractOwnerBalanceToPayAd(Contract contract) {
-		// TODO notify contract owner that he doesn't have balance
-		return accountService.hasAccountBalance(contract.getCreatorId(), contract.convertPaymentValueToDotNotation());
 	}
 
 	private AdModel buildUsingAd(Ad ad) {
@@ -124,6 +116,30 @@ public class AdModelFactory {
 
 	private String buildRedirectUrl(String path, String redirectEndpoint, String id) {
 		return path + redirectEndpoint + "/" + id;
+	}
+
+	private boolean isContractValid(Contract contract) {
+		if (contract.hasExpired())
+			return false;
+
+		// There is no need to check the balance for PAY_ONCE contracts because they
+		// have already been payed
+		if (contract.getPaymentMethod() == PaymentMethod.PAY_PER_CLICK
+				|| contract.getPaymentMethod() == PaymentMethod.PAY_PER_VIEW)
+			if (!hasContractOwnerBalanceToPayAd(contract))
+				return false;
+
+		return true;
+	}
+
+	/**
+	 * @param contract
+	 * @return <code>true</code> if the {@link Contract#getCreatorId()} has
+	 *         balance(money) to pay for the ad
+	 */
+	private boolean hasContractOwnerBalanceToPayAd(Contract contract) {
+		// TODO notify contract owner that he doesn't have balance
+		return accountService.hasAccountBalance(contract.getCreatorId(), contract.convertPaymentValueToDotNotation());
 	}
 
 }

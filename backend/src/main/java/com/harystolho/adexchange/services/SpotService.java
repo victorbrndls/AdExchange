@@ -20,7 +20,7 @@ public class SpotService {
 
 	private ContractService contractService;
 	private AdService adService;
-	private AdModelService adModelServerService;
+	private AdModelService adModelService;
 
 	private SpotService(SpotRepository spotRepository, ContractService contractService, AdService adService) {
 		this.spotRepository = spotRepository;
@@ -53,7 +53,7 @@ public class SpotService {
 
 		// If the Spot has changed, the adModel cache has the remove the old one
 		if (id != null)
-			adModelServerService.updateSpot(saved);
+			adModelService.updateSpot(saved);
 
 		return ServiceResponse.ok(saved);
 	}
@@ -144,7 +144,7 @@ public class SpotService {
 	// Inject using setter to break dependency cycle
 	@Autowired
 	public void setAdModelServerService(AdModelService adModelServerService) {
-		this.adModelServerService = adModelServerService;
+		this.adModelService = adModelServerService;
 	}
 
 }
