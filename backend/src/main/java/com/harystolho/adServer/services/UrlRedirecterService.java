@@ -1,4 +1,4 @@
-package com.harystolho.adServer.services;
+package com.harystolho.adserver.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

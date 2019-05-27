@@ -1,4 +1,4 @@
-package com.harystolho.adServer.data;
+package com.harystolho.adserver.data;
 
 import java.util.Collection;
 import java.util.HashSet;

@@ -1,6 +1,6 @@
 package com.harystolho.adexchange.events.spot;
 
-import com.harystolho.adServer.tracker.Tracker;
+import com.harystolho.adserver.tracker.Tracker;
 import com.harystolho.adexchange.events.Event;
 
 public class SpotClickedEvent implements Event {

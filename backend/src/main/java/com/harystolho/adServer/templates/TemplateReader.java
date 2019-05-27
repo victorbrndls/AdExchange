@@ -1,4 +1,4 @@
-package com.harystolho.adServer.templates;
+package com.harystolho.adserver.templates;
 
 import java.io.File;
 import java.io.FileNotFoundException;

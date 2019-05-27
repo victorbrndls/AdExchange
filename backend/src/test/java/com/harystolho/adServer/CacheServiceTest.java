@@ -1,4 +1,4 @@
-package com.harystolho.adServer;
+package com.harystolho.adserver;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -11,7 +11,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import com.harystolho.adServer.services.CacheService;
+import com.harystolho.adserver.services.CacheService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CacheServiceTest {

@@ -6,7 +6,7 @@ import javax.servlet.http.Cookie;
 
 import org.springframework.util.StringUtils;
 
-import com.harystolho.adServer.tracker.UserTrackerService;
+import com.harystolho.adserver.tracker.UserTrackerService;
 
 public class AEUtils {
 

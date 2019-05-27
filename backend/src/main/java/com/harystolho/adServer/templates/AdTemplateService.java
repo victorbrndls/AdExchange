@@ -1,4 +1,4 @@
-package com.harystolho.adServer.templates;
+package com.harystolho.adserver.templates;
 
 import org.apache.tomcat.util.security.Escape;
 import org.springframework.beans.factory.annotation.Autowired;

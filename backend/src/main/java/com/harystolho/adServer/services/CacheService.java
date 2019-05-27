@@ -1,4 +1,4 @@
-package com.harystolho.adServer.services;
+package com.harystolho.adserver.services;
 
 import java.time.Duration;
 import java.util.concurrent.ConcurrentHashMap;

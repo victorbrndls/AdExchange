@@ -1,4 +1,4 @@
-package com.harystolho.adServer.controllers;
+package com.harystolho.adserver.controllers;
 
 import java.util.List;
 
@@ -9,8 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.harystolho.adServer.AdModel;
-import com.harystolho.adServer.services.AdModelService;
+import com.harystolho.adserver.AdModel;
+import com.harystolho.adserver.services.AdModelService;
 import com.harystolho.adexchange.services.ServiceResponse;
 
 @Controller

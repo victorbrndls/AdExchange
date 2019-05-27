@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
-@SpringBootApplication(scanBasePackages = { "com.harystolho.adexchange", "com.harystolho.adServer" })
+@SpringBootApplication(scanBasePackages = { "com.harystolho.adexchange", "com.harystolho.adserver" })
 public class Main {
 
 	static {

@@ -1,4 +1,4 @@
-package com.harystolho.adServer;
+package com.harystolho.adserver;
 
 /**
  * Represents an Ad that is rendered in the DOM, it contains raw HTML that is

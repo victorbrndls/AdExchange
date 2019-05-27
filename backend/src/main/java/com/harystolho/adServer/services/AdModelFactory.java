@@ -1,14 +1,14 @@
-package com.harystolho.adServer.services;
+package com.harystolho.adserver.services;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.harystolho.adServer.AdModel;
-import com.harystolho.adServer.controllers.UrlRedirectorController;
-import com.harystolho.adServer.data.AdModelDataCache;
-import com.harystolho.adServer.templates.AdTemplateService;
+import com.harystolho.adserver.AdModel;
+import com.harystolho.adserver.controllers.UrlRedirectorController;
+import com.harystolho.adserver.data.AdModelDataCache;
+import com.harystolho.adserver.templates.AdTemplateService;
 import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.models.Contract.PaymentMethod;

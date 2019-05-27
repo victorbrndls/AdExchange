@@ -1,4 +1,4 @@
-package com.harystolho.adServer.services;
+package com.harystolho.adserver.services;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,8 +7,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import com.harystolho.adServer.data.AdModelData;
-import com.harystolho.adServer.data.AdModelDataCache;
+import com.harystolho.adserver.data.AdModelData;
+import com.harystolho.adserver.data.AdModelDataCache;
 import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.models.account.Balance;

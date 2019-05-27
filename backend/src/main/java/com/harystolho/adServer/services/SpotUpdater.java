@@ -1,12 +1,12 @@
-package com.harystolho.adServer.services;
+package com.harystolho.adserver.services;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
-import com.harystolho.adServer.data.AdModelData;
-import com.harystolho.adServer.data.AdModelDataCache;
+import com.harystolho.adserver.data.AdModelData;
+import com.harystolho.adserver.data.AdModelDataCache;
 import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.services.AccountService;

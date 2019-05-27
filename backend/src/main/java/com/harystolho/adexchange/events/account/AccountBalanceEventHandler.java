@@ -4,7 +4,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Service;
 
-import com.harystolho.adServer.services.SpotUpdater;
+import com.harystolho.adserver.services.SpotUpdater;
 import com.harystolho.adexchange.events.EventDispatcher;
 import com.harystolho.adexchange.events.Handler;
 import com.harystolho.adexchange.log.Log.LogIdentifier;

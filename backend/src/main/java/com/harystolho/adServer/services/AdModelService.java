@@ -1,4 +1,4 @@
-package com.harystolho.adServer.services;
+package com.harystolho.adserver.services;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.harystolho.adServer.AdModel;
-import com.harystolho.adServer.controllers.UrlRedirectorController;
+import com.harystolho.adserver.AdModel;
+import com.harystolho.adserver.controllers.UrlRedirectorController;
 import com.harystolho.adexchange.information.GlobalInformant;
 import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.services.ServiceResponse;

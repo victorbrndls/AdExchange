@@ -1,4 +1,4 @@
-package com.harystolho.adServer.controllers;
+package com.harystolho.adserver.controllers;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.harystolho.adServer.services.UrlRedirecterService;
-import com.harystolho.adServer.tracker.Tracker;
-import com.harystolho.adServer.tracker.UserTrackerService;
+import com.harystolho.adserver.services.UrlRedirecterService;
+import com.harystolho.adserver.tracker.Tracker;
+import com.harystolho.adserver.tracker.UserTrackerService;
 import com.harystolho.adexchange.events.EventDispatcher;
 import com.harystolho.adexchange.events.spot.SpotClickedEvent;
 import com.harystolho.adexchange.services.ServiceResponse;
