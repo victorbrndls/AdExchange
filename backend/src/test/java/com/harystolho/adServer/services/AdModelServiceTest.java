@@ -19,7 +19,7 @@ import com.harystolho.adexchange.services.SpotService;
 public class AdModelServiceTest {
 
 	@InjectMocks
-	static AdModelService adModelService;
+	static AdModelFactory adModelService;
 
 	@Mock
 	SpotService spotService;
@@ -32,7 +32,7 @@ public class AdModelServiceTest {
 	@Mock
 	AccountService accountService;
 	@Mock
-	AdServerService adServerService;
+	AdModelService adServerService;
 
 	@Test
 	public void removeSpotsThatTheUserCantPayFor() {

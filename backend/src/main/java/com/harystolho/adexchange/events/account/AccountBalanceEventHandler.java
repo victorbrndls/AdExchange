@@ -4,7 +4,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Service;
 
-import com.harystolho.adServer.services.AdModelService;
+import com.harystolho.adServer.services.AdModelFactory;
 import com.harystolho.adexchange.events.EventDispatcher;
 import com.harystolho.adexchange.events.Handler;
 import com.harystolho.adexchange.log.Log.LogIdentifier;
@@ -17,9 +17,9 @@ public class AccountBalanceEventHandler implements Handler<AccountBalanceChanged
 	private final EventDispatcher eventDispatcher;
 	private final Logger logger;
 
-	private final AdModelService adModelService;
+	private final AdModelFactory adModelService;
 
-	public AccountBalanceEventHandler(Logger logger, EventDispatcher eventDispatcher, AdModelService adModelService) {
+	public AccountBalanceEventHandler(Logger logger, EventDispatcher eventDispatcher, AdModelFactory adModelService) {
 		this.logger = logger;
 		this.eventDispatcher = eventDispatcher;
 		this.adModelService = adModelService;
