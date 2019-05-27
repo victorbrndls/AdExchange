@@ -7,6 +7,7 @@ import com.harystolho.adexchange.information.GlobalInformant;
 import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.utils.AEUtils;
+import com.harystolho.adserver.services.AdModelFactory.AdSource;
 
 /**
  * Creates a mapping from a generated url to the {@link Ad#getRefUrl()}. This is
@@ -30,15 +31,16 @@ public class UrlRedirecterService {
 
 	/**
 	 * @param refUrl
+	 * @param adSource
 	 * @param string
 	 * @return an id that is mapped to the refUrl, to get the refUrl use
 	 *         {@link #getRefUrlUsingRequestPath(String)}
 	 */
-	public String mapRefUrl(String spotId, String refUrl) {
+	public String mapRefUrl(String spotId, String refUrl, AdSource adSource) {
 		String urlId = genereteUrlId();
 
 		if (refUrl != null && spotId != null)
-			cacheService.store(urlId, new SpotData(spotId, refUrl));
+			cacheService.store(urlId, new SpotData(spotId, refUrl, adSource));
 
 		return urlId;
 	}
@@ -60,11 +62,11 @@ public class UrlRedirecterService {
 		return ServiceResponse.fail("INVALID_ID");
 	}
 
-	public ServiceResponse<String> getSpotIdUsingRedirectId(String redirectId) {
+	public ServiceResponse<SpotData> getSpotDataUsingRedirectId(String redirectId) {
 		SpotData sData = cacheService.get(redirectId);
 
 		if (sData != null)
-			return ServiceResponse.ok(sData.getSpotId());
+			return ServiceResponse.ok(sData);
 
 		return ServiceResponse.fail("INVALID_ID");
 	}
@@ -82,13 +84,16 @@ public class UrlRedirecterService {
 		cacheService.evict(id);
 	}
 
-	private class SpotData {
+	public static class SpotData {
+
 		private final String refUrl;
 		private final String spotId;
+		private final AdSource adSource;
 
-		private SpotData(String spotId, String refUrl) {
+		public SpotData(String spotId, String refUrl, AdSource adSource) {
 			this.refUrl = refUrl;
 			this.spotId = spotId;
+			this.adSource = adSource;
 		}
 
 		public String getRefUrl() {
@@ -97,6 +102,10 @@ public class UrlRedirecterService {
 
 		public String getSpotId() {
 			return spotId;
+		}
+
+		public AdSource getAdSource() {
+			return adSource;
 		}
 
 	}

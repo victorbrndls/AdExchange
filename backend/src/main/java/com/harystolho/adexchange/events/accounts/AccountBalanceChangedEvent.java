@@ -1,4 +1,4 @@
-package com.harystolho.adexchange.events.account;
+package com.harystolho.adexchange.events.accounts;
 
 import com.harystolho.adexchange.events.Event;
 import com.harystolho.adexchange.models.account.Account;

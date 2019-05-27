@@ -8,7 +8,7 @@ import org.springframework.util.StringUtils;
 
 import com.harystolho.adserver.services.AdModelService;
 import com.harystolho.adexchange.events.EventDispatcher;
-import com.harystolho.adexchange.events.spot.events.SpotUpdatedEvent;
+import com.harystolho.adexchange.events.spots.events.SpotUpdatedEvent;
 import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.models.ads.Ad;

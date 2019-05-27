@@ -21,6 +21,7 @@ import com.harystolho.adexchange.services.AdService;
 import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.services.SpotService;
 import com.harystolho.adexchange.utils.AEUtils;
+import com.harystolho.adexchange.utils.Pair;
 
 /**
  * Builds {@link AdModel}
@@ -39,6 +40,10 @@ public class AdModelFactory {
 	private AdTemplateService adTemplateService;
 	private AccountService accountService;
 	private AdModelDataCache adModelCache;
+
+	public enum AdSource { // If the adModel was created using a contract or a spot fallback ad
+		CONTRACT, SPOT_FALLBACK
+	}
 
 	@Autowired
 	private AdModelFactory(SpotService spotService, AdService adService, UrlRedirecterService urlRedirecterService,
@@ -64,11 +69,12 @@ public class AdModelFactory {
 	}
 
 	private AdModel buildUsingSpot(Spot spot) {
-		String adId = getAdId(spot, spot.getContract());
+		Pair<String, AdSource> adPair = getAdId(spot, spot.getContract());
 
-		Ad ad = adService.getAdById(adId).getReponse();
+		Ad ad = adService.getAdById(adPair.getFist()).getReponse();
+
 		if (ad == null) {
-			logger.error("Can't find an Ad using the given id", adId);
+			logger.error("Can't find an Ad using the given id", adPair.getFist());
 			return errorAdModel("INVALID_AD_ID");
 		}
 
@@ -76,7 +82,7 @@ public class AdModelFactory {
 
 		model.setSpotId(spot.getId());
 		model.setRedirectUrl(buildRedirectUrl("https://localhost:8080", UrlRedirectorController.REDIRECT_ENDPOINT,
-				urlRedirecterService.mapRefUrl(spot.getId(), ad.getRefUrl())));
+				urlRedirecterService.mapRefUrl(spot.getId(), ad.getRefUrl(), adPair.getSecond())));
 		return model;
 	}
 
@@ -86,14 +92,14 @@ public class AdModelFactory {
 	 * @return the contract ad id if the contract is valid or the spot fallback ad
 	 *         id
 	 */
-	private String getAdId(Spot spot, Contract contract) {
+	private Pair<String, AdSource> getAdId(Spot spot, Contract contract) {
 		if (contract != null && isContractValid(contract)) {
 			adModelCache.update(spot, contract);
 
-			return contract.getAdId();
+			return Pair.of(contract.getAdId(), AdSource.CONTRACT);
 		}
 
-		return spot.getFallbackAdId();
+		return Pair.of(spot.getFallbackAdId(), AdSource.SPOT_FALLBACK);
 	}
 
 	private AdModel buildUsingAd(Ad ad) {

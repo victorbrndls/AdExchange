@@ -1,4 +1,4 @@
-package com.harystolho.adexchange.events.spot;
+package com.harystolho.adexchange.events.spots;
 
 import com.harystolho.adexchange.events.AbstractEventHandler;
 import com.harystolho.adexchange.events.EventDispatcher;

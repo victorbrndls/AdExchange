@@ -1,4 +1,4 @@
-package com.harystolho.adexchange.events.spot;
+package com.harystolho.adexchange.events.spots;
 
 import java.util.Arrays;
 
@@ -9,11 +9,13 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.harystolho.adserver.services.UrlRedirecterService;
+import com.harystolho.adserver.services.AdModelFactory.AdSource;
+import com.harystolho.adserver.services.UrlRedirecterService.SpotData;
 import com.harystolho.adserver.tracker.Tracker;
 import com.harystolho.adserver.tracker.UserTrackerService;
 import com.harystolho.adexchange.events.EventDispatcher;
 import com.harystolho.adexchange.events.Handler;
-import com.harystolho.adexchange.events.spot.events.SpotClickedEvent;
+import com.harystolho.adexchange.events.spots.events.SpotClickedEvent;
 import com.harystolho.adexchange.models.Contract.PaymentMethod;
 import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.services.ContractPaymentService;
@@ -66,12 +68,17 @@ public class SpotClickedEventHandler extends AbstractSpotEventHandler implements
 	 * @param event
 	 */
 	private void contractPaymentVerifier(SpotClickedEvent event) {
-		ServiceResponse<String> response = urlRedirecterService.getSpotIdUsingRedirectId(event.getSpotRedirectId());
+		ServiceResponse<SpotData> response = urlRedirecterService.getSpotDataUsingRedirectId(event.getSpotRedirectId());
 
 		if (response.getErrorType() != ServiceResponseType.OK)
 			return; // This should never happen
 
-		ServiceResponse<Spot> spotResponse = spotService.getSpot(AEUtils.ADMIN_ACCESS_ID, response.getReponse(), "");
+		SpotData data = response.getReponse();
+
+		if (data.getAdSource() != AdSource.CONTRACT)
+			return; // If the Ad wasn't created from a contract, payment shouldn't happen
+
+		ServiceResponse<Spot> spotResponse = spotService.getSpot(AEUtils.ADMIN_ACCESS_ID, data.getSpotId(), "");
 
 		if (spotResponse.getErrorType() != ServiceResponseType.OK) {
 			logger.error("AdModel redirect url is not linked to a Spot. redirectId: [{}]", event.getSpotRedirectId());
@@ -79,11 +86,6 @@ public class SpotClickedEventHandler extends AbstractSpotEventHandler implements
 		}
 
 		Spot spot = spotResponse.getReponse();
-
-		if (spot.getContractId() == null || spot.getContractId().equals("-1"))
-			// There is no contract in the spot, so there is no need to pay the website
-			// owner
-			return;
 
 		verifyUserHasNotInteractedWithContract(event.getTracker(), spot.getContractId());
 	}

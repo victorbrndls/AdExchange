@@ -3,12 +3,16 @@ package com.harystolho.adexchange.events;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EventDispatcher {
+
+	private static final Logger logger = LogManager.getLogger();
 
 	private final Map<Class<? extends Event>, Handler<? extends Event>> handlers;
 
@@ -30,7 +34,11 @@ public class EventDispatcher {
 		taskExecutor.execute(() -> {
 			Handler<E> handler = (Handler<E>) handlers.get(event.getClass());
 
-			handler.onEvent((E) event);
+			try {
+				handler.onEvent((E) event);
+			} catch (NullPointerException e) {
+				logger.error("Can't find a handler for: {}", event.getClass());
+			}
 		});
 	}
 

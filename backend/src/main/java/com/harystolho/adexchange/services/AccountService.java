@@ -7,7 +7,7 @@ import org.springframework.util.StringUtils;
 
 import com.harystolho.adexchange.auth.AuthService;
 import com.harystolho.adexchange.events.EventDispatcher;
-import com.harystolho.adexchange.events.account.AccountBalanceChangedEvent;
+import com.harystolho.adexchange.events.accounts.AccountBalanceChangedEvent;
 import com.harystolho.adexchange.log.Logger;
 import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.account.Account;

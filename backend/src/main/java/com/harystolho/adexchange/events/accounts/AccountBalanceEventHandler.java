@@ -1,4 +1,4 @@
-package com.harystolho.adexchange.events.account;
+package com.harystolho.adexchange.events.accounts;
 
 import javax.annotation.PostConstruct;
 

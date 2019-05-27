@@ -1,4 +1,4 @@
-package com.harystolho.adexchange.events.spot.events;
+package com.harystolho.adexchange.events.spots.events;
 
 import com.harystolho.adserver.tracker.Tracker;
 import com.harystolho.adexchange.events.Event;
