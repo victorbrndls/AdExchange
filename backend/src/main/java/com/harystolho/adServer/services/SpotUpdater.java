@@ -11,14 +11,21 @@ import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.services.AccountService;
 
+/**
+ * Removes Spots from {@link AdModelService} if the cached Spot is not suitable
+ * for distribution
+ * 
+ * @author Harystolho
+ *
+ */
 @Service
-public class ContractUpdater {
+public class SpotUpdater {
 
 	private AdModelDataCache adModelCache;
 	private AccountService accountService;
 	private AdModelService adModelService;
 
-	public ContractUpdater(AdModelDataCache dataCacheContainer, AccountService accountService,
+	public SpotUpdater(AdModelDataCache dataCacheContainer, AccountService accountService,
 			AdModelService adModelService) {
 		this.adModelCache = dataCacheContainer;
 		this.accountService = accountService;
@@ -27,7 +34,7 @@ public class ContractUpdater {
 
 	/**
 	 * This method is called when the account balance changes and for that reason
-	 * the user may not jave enough balance to pay for more ads. This method updates
+	 * the user may not have enough balance to pay for more ads. This method updates
 	 * all the spots that are bound to contracts owned by the {accountId} and
 	 * removes the ones that the user can't pay for
 	 * 
