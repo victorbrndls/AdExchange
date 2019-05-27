@@ -1,11 +1,5 @@
 package com.harystolho.adServer.services;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.harystolho.adServer.AdModel;
 import com.harystolho.adServer.controllers.UrlRedirectorController;
+import com.harystolho.adServer.data.AdModelDataCache;
 import com.harystolho.adServer.templates.AdTemplateService;
 import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.Spot;
@@ -37,26 +32,22 @@ public class AdModelFactory {
 
 	private static final Logger logger = LogManager.getLogger();
 
-	private final Map<String, DataCache> accountIdToDataCache;
-
 	private SpotService spotService;
 	private AdService adService;
 	private UrlRedirecterService urlRedirecterService;
 	private AdTemplateService adTemplateService;
 	private AccountService accountService;
-	private AdModelService adServerService;
+	private AdModelDataCache adModelCache;
 
 	@Autowired
 	private AdModelFactory(SpotService spotService, AdService adService, UrlRedirecterService urlRedirecterService,
-			AdTemplateService adTemplateService, AccountService accountService, AdModelService adServerService) {
+			AdTemplateService adTemplateService, AccountService accountService, AdModelDataCache dataCacheService) {
 		this.spotService = spotService;
 		this.adService = adService;
 		this.urlRedirecterService = urlRedirecterService;
 		this.adTemplateService = adTemplateService;
 		this.accountService = accountService;
-		this.adServerService = adServerService;
-
-		this.accountIdToDataCache = new HashMap<>();
+		this.adModelCache = dataCacheService;
 	}
 
 	public AdModel buildUsingSpotId(String spotId) {
@@ -95,7 +86,7 @@ public class AdModelFactory {
 	 */
 	private String getAdId(Spot spot, Contract contract) { // TODO change the method bc some ads are fixed price
 		if (contract != null && !contract.hasExpired() && hasContractOwnerBalanceToPayAd(contract)) {
-			updateDataCacheEntry(spot, contract);
+			adModelCache.update(spot, contract);
 
 			return contract.getAdId();
 		}
@@ -135,101 +126,4 @@ public class AdModelFactory {
 		return path + redirectEndpoint + "/" + id;
 	}
 
-	/**
-	 * This method is called when the account balance changes and for that reason
-	 * the user may not jave enough balance to pay for more ads. This method updates
-	 * all the spots that are bound to contracts owned by the {accountId} and
-	 * removes the ones that the user can't pay for
-	 * 
-	 * @param accountId
-	 */
-	public void updateSpotsAdvertisedByUser(String accountId) {
-		DataCache dc = accountIdToDataCache.get(accountId);
-
-		if (dc == null)
-			return; // There are no ads being displayed that are payed by this user
-
-		Set<Contract> contractsToBeRemoved = new HashSet<>();
-		Set<Spot> spotsToBeRemoved = new HashSet<>();
-
-		// Contracts that the user doesn't have balance to pay
-		for (Contract c : dc.getContracts()) {
-			if (!accountService.hasAccountBalance(accountId, c.convertPaymentValueToDotNotation())) {
-				contractsToBeRemoved.add(c);
-			}
-		}
-
-		// Spots that are bound to contracts that the user doesn't have balance to pay
-		for (Spot s : dc.getSpots()) {
-			for (Contract c : contractsToBeRemoved) {
-				if (c.getId().equals(s.getContractId())) {
-					spotsToBeRemoved.add(s);
-					continue;
-				}
-			}
-		}
-
-		dc.removeContracts(contractsToBeRemoved);
-		dc.removeSpots(spotsToBeRemoved);
-
-		if (dc.isEmpty())
-			accountIdToDataCache.remove(accountId);
-
-		spotsToBeRemoved.forEach(s -> adServerService.updateSpot(s));
-	}
-
-	protected void updateDataCacheEntry(Spot spot, Contract contract) {
-		DataCache dc = accountIdToDataCache.getOrDefault(contract.getCreatorId(), new DataCache());
-
-		dc.addContract(contract);
-		dc.addSpot(spot);
-
-		accountIdToDataCache.put(contract.getCreatorId(), dc);
-	}
-
-	/**
-	 * Caches the contracts the belong to an user and the spots that are bound to
-	 * these contracts
-	 * 
-	 * @author Harystolho
-	 *
-	 */
-	private class DataCache {
-		private Set<Contract> contracts;
-		private Set<Spot> spots;
-
-		public DataCache() {
-			contracts = new HashSet<>();
-			spots = new HashSet<>();
-		}
-
-		public Set<Contract> getContracts() {
-			return contracts;
-		}
-
-		public void addContract(Contract contract) {
-			this.contracts.add(contract);
-		}
-
-		public void removeContracts(Collection<Contract> contracts) {
-			this.contracts.removeAll(contracts);
-		}
-
-		public Set<Spot> getSpots() {
-			return spots;
-		}
-
-		public void addSpot(Spot spot) {
-			this.spots.add(spot);
-		}
-
-		public void removeSpots(Collection<Spot> spots) {
-			this.spots.removeAll(spots);
-		}
-
-		public boolean isEmpty() {
-			return contracts.isEmpty() && spots.isEmpty();
-		}
-
-	}
 }

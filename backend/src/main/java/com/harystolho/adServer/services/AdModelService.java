@@ -26,14 +26,15 @@ public class AdModelService {
 
 	// Cache the AdModels because they don't change
 	private CacheService<AdModel> cacheService;
-	private AdModelFactory adModelService;
+	private AdModelFactory adModelFactory;
 	private UrlRedirecterService urlRedirectorService;
 
 	@Autowired
 	private AdModelService(CacheService<AdModel> cacheService, UrlRedirecterService urlRedirecterService,
-			GlobalInformant globalInformant) {
+			AdModelFactory adModelFactory, GlobalInformant globalInformant) {
 		this.cacheService = cacheService;
 		this.urlRedirectorService = urlRedirecterService;
+		this.adModelFactory = adModelFactory;
 
 		globalInformant.add(cacheService);
 	}
@@ -62,7 +63,7 @@ public class AdModelService {
 		if (model != null)
 			return model;
 
-		model = adModelService.buildUsingSpotId(spotId);
+		model = adModelFactory.buildUsingSpotId(spotId);
 		cacheService.store(spotId, model);
 
 		return model;
@@ -91,11 +92,6 @@ public class AdModelService {
 
 	private boolean isSpotIdValid(String id) {
 		return StringUtils.hasText(id);
-	}
-
-	@Autowired
-	public void setAdModelService(AdModelFactory adModelService) {
-		this.adModelService = adModelService;
 	}
 
 }
