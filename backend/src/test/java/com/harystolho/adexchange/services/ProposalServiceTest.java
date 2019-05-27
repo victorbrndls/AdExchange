@@ -11,6 +11,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import com.harystolho.adexchange.events.EventDispatcher;
+import com.harystolho.adexchange.models.Contract.PaymentMethod;
 import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.models.Website;
 import com.harystolho.adexchange.models.ads.Ad;
@@ -241,6 +242,7 @@ public class ProposalServiceTest {
 		Proposal p = new Proposal();
 		p.setProposerId("ao1");
 		p.setPaymentValue("17,70");
+		p.setPaymentMethod(PaymentMethod.PAY_ONCE);
 		Mockito.when(proposalRepository.getById("po1")).thenReturn(p);
 
 		Mockito.when(accountService.hasAccountBalance(Mockito.same("ao1"), Mockito.anyString())).thenReturn(false);
@@ -257,6 +259,7 @@ public class ProposalServiceTest {
 		p.setProposeeId("ap2");
 		p.setInProposerSent(true);
 		p.setPaymentValue("4,70");
+		p.setPaymentMethod(PaymentMethod.PAY_ONCE);
 		Mockito.when(proposalRepository.getById("pp1")).thenReturn(p);
 
 		Mockito.when(accountService.hasAccountBalance(Mockito.same("ap1"), Mockito.anyString())).thenReturn(true);
@@ -264,6 +267,36 @@ public class ProposalServiceTest {
 		ServiceResponseType response = proposalService.acceptProposal("ap2", "pp1");
 
 		assertEquals(ServiceResponseType.OK, response);
+	}
+
+	@Test
+	public void acceptPPC_ProposalIfProposerHasInsufficientBalance_ShouldWork() {
+		Proposal p = new Proposal();
+		p.setPaymentMethod(PaymentMethod.PAY_PER_CLICK);
+		p.setProposerId("aq1");
+		p.setProposeeId("aq2");
+		p.setInProposerSent(true);
+		p.setPaymentValue("14,70");
+		Mockito.when(proposalRepository.getById("pq1")).thenReturn(p);
+
+		ServiceResponseType response = proposalService.acceptProposal("aq2", "pq1");
+
+		assertEquals(ServiceResponseType.OK, response);
+		Mockito.verify(accountService, Mockito.never()).hasAccountBalance(Mockito.anyString(), Mockito.anyString());
+	}
+
+	@Test
+	public void acceptPPV_ProposalThatIsNotInNew_ShouldFail() {
+		Proposal p = new Proposal();
+		p.setPaymentMethod(PaymentMethod.PAY_PER_VIEW);
+		p.setProposerId("ar1");
+		p.setProposeeId("ar2");
+		p.setInProposerSent(false);
+		Mockito.when(proposalRepository.getById("pr1")).thenReturn(p);
+
+		ServiceResponseType response = proposalService.acceptProposal("ar2", "pr1");
+
+		assertEquals(ServiceResponseType.PROPOSAL_NOT_IN_NEW, response);
 	}
 
 }

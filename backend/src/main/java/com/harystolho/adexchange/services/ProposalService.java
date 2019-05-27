@@ -159,14 +159,12 @@ public class ProposalService {
 		if (prop == null)
 			return ServiceResponseType.FAIL;
 
-		if (!verifyUserHasBalanceToCreatePayOnceContract(prop.getProposerId(), prop.getPaymentValue()))
-			return ServiceResponseType.INSUFFICIENT_ACCOUNT_BALANCE;
+		if (prop.getPaymentMethod() == PaymentMethod.PAY_ONCE)
+			if (!verifyUserHasBalanceToCreatePayOnceContract(prop.getProposerId(), prop.getPaymentValue()))
+				return ServiceResponseType.INSUFFICIENT_ACCOUNT_BALANCE;
 
 		if (!containsProposalInNew(accountId, prop))
 			return ServiceResponseType.PROPOSAL_NOT_IN_NEW;
-
-		if (!prop.getProposeeId().equals(accountId))
-			return ServiceResponseType.UNAUTHORIZED;
 
 		eventDispatcher.dispatch(new ProposalAcceptedEvent(prop.clone()));
 
