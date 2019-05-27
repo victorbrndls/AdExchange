@@ -1,4 +1,4 @@
-package com.harystolho.adexchange.services;
+package com.harystolho.adexchange.services.payment;
 
 import java.util.Collection;
 
@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 import com.harystolho.adexchange.log.Logger;
 import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.Contract.PaymentMethod;
+import com.harystolho.adexchange.services.AccountService;
+import com.harystolho.adexchange.services.ContractService;
+import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
 import com.harystolho.adexchange.utils.AEUtils;
 

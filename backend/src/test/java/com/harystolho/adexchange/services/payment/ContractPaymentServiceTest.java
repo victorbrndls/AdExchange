@@ -1,4 +1,4 @@
-package com.harystolho.adexchange.services;
+package com.harystolho.adexchange.services.payment;
 
 import java.util.Arrays;
 
@@ -13,9 +13,9 @@ import com.harystolho.adexchange.log.Logger;
 import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.Contract.PaymentMethod;
 import com.harystolho.adexchange.services.AccountService;
-import com.harystolho.adexchange.services.ContractPaymentService;
 import com.harystolho.adexchange.services.ContractService;
 import com.harystolho.adexchange.services.ServiceResponse;
+import com.harystolho.adexchange.services.payment.ContractPaymentService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ContractPaymentServiceTest {

@@ -1,4 +1,4 @@
-package com.harystolho.adexchange.events.spots;
+package com.harystolho.adexchange.services.payment;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,26 +7,22 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import com.harystolho.adexchange.events.EventDispatcher;
 import com.harystolho.adexchange.events.spots.events.SpotClickedEvent;
 import com.harystolho.adexchange.models.Spot;
-import com.harystolho.adexchange.services.ContractPaymentService;
 import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.services.SpotService;
-import com.harystolho.adserver.services.AdModelFactory.AdSource;
 import com.harystolho.adserver.services.UrlRedirecterService;
+import com.harystolho.adserver.services.AdModelFactory.AdSource;
 import com.harystolho.adserver.services.UrlRedirecterService.SpotData;
 import com.harystolho.adserver.tracker.Tracker;
 import com.harystolho.adserver.tracker.UserTrackerService;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SpotClickedEventHandlerTest {
+public class ContractPaymentVerifierTest {
 
 	@InjectMocks
-	SpotClickedEventHandler spotClickedEventHandler;
+	ContractPaymentVerifier contractPaymentVerifier;
 
-	@Mock
-	EventDispatcher eventDispacher;
 	@Mock
 	UrlRedirecterService urlRedirecterService;
 	@Mock
@@ -42,7 +38,7 @@ public class SpotClickedEventHandlerTest {
 
 		Mockito.when(urlRedirecterService.getSpotDataUsingRedirectId("ar1")).thenReturn(ServiceResponse.ok(sd));
 
-		spotClickedEventHandler.onEvent(new SpotClickedEvent("ar1", new Tracker(null, null)));
+		contractPaymentVerifier.verifySpotClick("ar1", new Tracker(null, null));
 
 		Mockito.verify(spotService, Mockito.never()).getSpot(Mockito.anyString(), Mockito.anyString(),
 				Mockito.anyString());
@@ -62,7 +58,7 @@ public class SpotClickedEventHandlerTest {
 		Mockito.when(userTrackerService.hasTrackerInteractedWith(Mockito.any(), Mockito.contains("bc1")))
 				.thenReturn(false);
 
-		spotClickedEventHandler.onEvent(new SpotClickedEvent("br1", new Tracker(null, null)));
+		contractPaymentVerifier.verifySpotClick("br1", new Tracker(null, null));
 
 		Mockito.verify(contractPaymentService).issueContractPayment(Mockito.anyString(), Mockito.any());
 	}
@@ -81,7 +77,7 @@ public class SpotClickedEventHandlerTest {
 		Mockito.when(userTrackerService.hasTrackerInteractedWith(Mockito.any(), Mockito.contains("cc1")))
 				.thenReturn(true);
 
-		spotClickedEventHandler.onEvent(new SpotClickedEvent("cr1", new Tracker(null, null)));
+		contractPaymentVerifier.verifySpotClick("cr1", new Tracker(null, null));
 
 		Mockito.verify(contractPaymentService, Mockito.never()).issueContractPayment(Mockito.anyString(),
 				Mockito.any());
