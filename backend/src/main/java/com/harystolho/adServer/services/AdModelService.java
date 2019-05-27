@@ -70,7 +70,7 @@ public class AdModelService {
 	}
 
 	/**
-	 * This method should be called when a field in a {@link Spot} changes
+	 * If the {@link Spot} changes this method has to be called to update the cache
 	 * 
 	 * @param spot
 	 */

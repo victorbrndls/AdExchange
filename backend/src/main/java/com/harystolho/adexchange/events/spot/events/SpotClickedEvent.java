@@ -1,4 +1,4 @@
-package com.harystolho.adexchange.events.spot;
+package com.harystolho.adexchange.events.spot.events;
 
 import com.harystolho.adserver.tracker.Tracker;
 import com.harystolho.adexchange.events.Event;
@@ -19,11 +19,6 @@ public class SpotClickedEvent implements Event {
 
 	public Tracker getTracker() {
 		return tracker;
-	}
-
-	@Override
-	public Class<? extends Event> getType() {
-		return SpotClickedEvent.class;
 	}
 
 }

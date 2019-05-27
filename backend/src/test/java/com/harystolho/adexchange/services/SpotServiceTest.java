@@ -10,6 +10,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import com.harystolho.adserver.services.AdModelService;
+import com.harystolho.adexchange.events.EventDispatcher;
 import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.repositories.spot.SpotRepository;
@@ -33,7 +34,7 @@ public class SpotServiceTest {
 	AdService adService;
 
 	@Mock
-	AdModelService adModelServerService;
+	EventDispatcher eventDispatcher;
 
 	@Test
 	public void createSpotWith_InvalidName() {
@@ -44,8 +45,6 @@ public class SpotServiceTest {
 
 	@Test
 	public void updateSpot() {
-		spotService.setAdModelServerService(adModelServerService);
-
 		Spot spot = new Spot();
 		spot.setAccountId("123");
 		Mockito.when(spotRepository.getById(Mockito.same("spot1"))).thenReturn(spot);
@@ -55,7 +54,7 @@ public class SpotServiceTest {
 
 		ServiceResponse<Spot> response = spotService.createOrUpdateSpot("123", "spot1", "New Name", "c1", "ad1");
 
-		Mockito.verify(adModelServerService).updateSpot(Mockito.any());
+		Mockito.verify(eventDispatcher).dispatch(Mockito.any());
 
 		assertEquals(ServiceResponseType.OK, response.getErrorType());
 	}

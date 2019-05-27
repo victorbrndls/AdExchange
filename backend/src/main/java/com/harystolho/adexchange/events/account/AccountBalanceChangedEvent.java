@@ -26,9 +26,4 @@ public class AccountBalanceChangedEvent implements Event {
 		return account.getBalance().compare(oldBalance) == -1;
 	}
 
-	@Override
-	public Class<? extends Event> getType() {
-		return AccountBalanceChangedEvent.class;
-	}
-
 }

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.harystolho.adserver.services.AdModelService;
+import com.harystolho.adexchange.events.EventDispatcher;
+import com.harystolho.adexchange.events.spot.events.SpotUpdatedEvent;
 import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.models.ads.Ad;
@@ -20,12 +22,14 @@ public class SpotService {
 
 	private ContractService contractService;
 	private AdService adService;
-	private AdModelService adModelService;
+	private EventDispatcher eventDispatcher;
 
-	private SpotService(SpotRepository spotRepository, ContractService contractService, AdService adService) {
+	private SpotService(SpotRepository spotRepository, ContractService contractService, AdService adService,
+			EventDispatcher eventDispatcher) {
 		this.spotRepository = spotRepository;
 		this.contractService = contractService;
 		this.adService = adService;
+		this.eventDispatcher = eventDispatcher;
 	}
 
 	/**
@@ -38,7 +42,7 @@ public class SpotService {
 		if (response != ServiceResponseType.OK)
 			return ServiceResponse.error(response);
 
-		ServiceResponse<Spot> spotResponse = createOrGetSpotToUpdate(id, accountId);
+		ServiceResponse<Spot> spotResponse = createOrGetSpot(id, accountId);
 		if (spotResponse.getErrorType() != ServiceResponseType.OK)
 			return ServiceResponse.error(spotResponse.getErrorType());
 
@@ -53,26 +57,30 @@ public class SpotService {
 
 		// If the Spot has changed, the adModel cache has the remove the old one
 		if (id != null)
-			adModelService.updateSpot(saved);
+			eventDispatcher.dispatch(new SpotUpdatedEvent(spot.clone()));
 
 		return ServiceResponse.ok(saved);
 	}
 
-	private ServiceResponse<Spot> createOrGetSpotToUpdate(String spotId, String accountId) {
-		Spot spot = new Spot();
-
+	/**
+	 * @param spotId
+	 * @param accountId
+	 * @return if there is a {@link Spot} with the {spotId} it gets returned,
+	 *         otherwise a new {@link Spot} is created
+	 */
+	private ServiceResponse<Spot> createOrGetSpot(String spotId, String accountId) {
 		if (spotId != null) {
-			Spot spt = spotRepository.getById(spotId);
+			Spot existingSpot = spotRepository.getById(spotId);
 
-			if (spt != null) {
-				if (!spt.isAuthorized(accountId))
+			if (existingSpot != null) {
+				if (!existingSpot.isAuthorized(accountId))
 					return ServiceResponse.unauthorized();
 
-				spot.setId(spotId);
+				return ServiceResponse.ok(existingSpot);
 			}
 		}
 
-		return ServiceResponse.ok(spot);
+		return ServiceResponse.ok(new Spot());
 	}
 
 	public ServiceResponse<Spot> getSpot(String accountId, String id, String embed) {
@@ -139,12 +147,6 @@ public class SpotService {
 		ServiceResponse<Contract> response = contractService.getContractById(spot.getAccountId(), spot.getContractId());
 
 		spot.setContract(response.getReponse());
-	}
-
-	// Inject using setter to break dependency cycle
-	@Autowired
-	public void setAdModelServerService(AdModelService adModelServerService) {
-		this.adModelService = adModelServerService;
 	}
 
 }

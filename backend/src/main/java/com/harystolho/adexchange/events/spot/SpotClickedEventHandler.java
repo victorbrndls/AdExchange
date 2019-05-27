@@ -13,6 +13,7 @@ import com.harystolho.adserver.tracker.Tracker;
 import com.harystolho.adserver.tracker.UserTrackerService;
 import com.harystolho.adexchange.events.EventDispatcher;
 import com.harystolho.adexchange.events.Handler;
+import com.harystolho.adexchange.events.spot.events.SpotClickedEvent;
 import com.harystolho.adexchange.models.Contract.PaymentMethod;
 import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.services.ContractPaymentService;
@@ -29,14 +30,13 @@ import com.harystolho.adexchange.utils.AEUtils;
  *
  */
 @Service
-public class SpotClickedEventHandler implements Handler<SpotClickedEvent> {
+public class SpotClickedEventHandler extends AbstractSpotEventHandler implements Handler<SpotClickedEvent> {
 
 	// Used to avoid collision in the userTrackerService
 	private static final String INTERACTOR_PREFIX = "c_";
 
 	private static final Logger logger = LogManager.getLogger();
 
-	private EventDispatcher eventDispatcher;
 	private UrlRedirecterService urlRedirecterService;
 	private ContractPaymentService contractPaymentService;
 	private SpotService spotService;
@@ -45,15 +45,12 @@ public class SpotClickedEventHandler implements Handler<SpotClickedEvent> {
 	private SpotClickedEventHandler(EventDispatcher eventDispatcher, UrlRedirecterService urlRedirecterService,
 			ContractPaymentService contractPaymentService, SpotService spotService,
 			UserTrackerService userTrackerService) {
-		this.eventDispatcher = eventDispatcher;
+		super(eventDispatcher);
 		this.urlRedirecterService = urlRedirecterService;
 		this.contractPaymentService = contractPaymentService;
 		this.spotService = spotService;
 		this.userTrackerService = userTrackerService;
-	}
 
-	@PostConstruct
-	private void postConstruct() {
 		eventDispatcher.registerHandler(SpotClickedEvent.class, this);
 	}
 

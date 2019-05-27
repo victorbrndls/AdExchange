@@ -8,7 +8,7 @@ import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.utils.AEUtils;
 
 @Document("spots")
-public class Spot {
+public class Spot implements Cloneable {
 
 	private String id;
 	private String accountId;
@@ -85,6 +85,18 @@ public class Spot {
 
 	public void setFallbackAd(Ad fallbackAd) {
 		this.fallbackAd = fallbackAd;
+	}
+
+	public Spot clone() {
+		Spot spot = new Spot();
+
+		spot.setId(id);
+		spot.setAccountId(accountId);
+		spot.setName(name);
+		spot.setContractId(contractId);
+		spot.setFallbackAdId(fallbackAdId);
+
+		return spot;
 	}
 
 }
