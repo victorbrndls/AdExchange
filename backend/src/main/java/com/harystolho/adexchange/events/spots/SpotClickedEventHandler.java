@@ -5,14 +5,14 @@ import org.springframework.stereotype.Service;
 import com.harystolho.adexchange.events.EventDispatcher;
 import com.harystolho.adexchange.events.Handler;
 import com.harystolho.adexchange.events.spots.events.SpotClickedEvent;
-import com.harystolho.adexchange.services.payment.ContractPaymentVerifier;
+import com.harystolho.adexchange.services.payment.SpotActionVerifier;
 
 @Service
 public class SpotClickedEventHandler extends AbstractSpotEventHandler implements Handler<SpotClickedEvent> {
 
-	private ContractPaymentVerifier contractPaymentVerifier;
+	private SpotActionVerifier contractPaymentVerifier;
 
-	private SpotClickedEventHandler(EventDispatcher eventDispatcher, ContractPaymentVerifier contractPaymentVerifier) {
+	private SpotClickedEventHandler(EventDispatcher eventDispatcher, SpotActionVerifier contractPaymentVerifier) {
 		super(eventDispatcher);
 		this.contractPaymentVerifier = contractPaymentVerifier;
 

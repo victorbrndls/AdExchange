@@ -200,7 +200,7 @@ public class AccountService {
 		/*
 		 * If the user paying for the ad doesn't have sufficient money in its account to
 		 * pay for the ad, the ad shouldn't be displayed. If the execution got here it's
-		 * because there in an error in the AdModelService was the ad got displayed.
+		 * because there in an error in the AdModelService.
 		 */
 		if (!oldBalance.canSubtract(balance))
 			return ServiceResponseType.INSUFFICIENT_ACCOUNT_BALANCE;

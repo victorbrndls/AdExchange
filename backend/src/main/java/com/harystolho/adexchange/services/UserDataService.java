@@ -11,6 +11,8 @@ import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
 @Service
 public class UserDataService {
 
+	protected static final int MAX_NOTIFICATIONS = 15;
+
 	private UserDataRepository userDataRepository;
 
 	private UserDataService(UserDataRepository userDataRepository) {
@@ -19,6 +21,9 @@ public class UserDataService {
 
 	public ServiceResponseType addNotificationToUser(Notification notif, String userId) {
 		List<Notification> notifications = userDataRepository.getNotifications(userId);
+
+		if (notifications.size() >= MAX_NOTIFICATIONS)
+			removeExcessNotifications(notifications);
 
 		notifications.add(notif);
 
@@ -31,4 +36,11 @@ public class UserDataService {
 		return userDataRepository.getNotifications(userId);
 	}
 
+	private void removeExcessNotifications(List<Notification> notifications) {
+		int notificationsToRemove = notifications.size() - MAX_NOTIFICATIONS + 1;
+
+		for (int i = 0; i <= notificationsToRemove; i++) {
+			notifications.remove(0);
+		}
+	}
 }

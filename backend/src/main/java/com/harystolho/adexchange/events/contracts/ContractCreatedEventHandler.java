@@ -24,15 +24,6 @@ public class ContractCreatedEventHandler extends AbstractContractEventHandler im
 
 	@Override
 	public void onEvent(ContractCreatedEvent event) {
-		contractPaymentVerifier(event);
-	}
-
-	/**
-	 * Issues a possible contract payment
-	 * 
-	 * @param event
-	 */
-	private void contractPaymentVerifier(ContractCreatedEvent event) {
 		contractPaymentService.issueContractPayment(event.getContract().getId(), Arrays.asList(PaymentMethod.PAY_ONCE));
 	}
 

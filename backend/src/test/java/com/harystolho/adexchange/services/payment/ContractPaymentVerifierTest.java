@@ -21,7 +21,7 @@ import com.harystolho.adserver.tracker.UserTrackerService;
 public class ContractPaymentVerifierTest {
 
 	@InjectMocks
-	ContractPaymentVerifier contractPaymentVerifier;
+	SpotActionVerifier contractPaymentVerifier;
 
 	@Mock
 	UrlRedirecterService urlRedirecterService;

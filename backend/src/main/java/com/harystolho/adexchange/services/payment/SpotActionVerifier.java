@@ -19,14 +19,14 @@ import com.harystolho.adserver.tracker.Tracker;
 import com.harystolho.adserver.tracker.UserTrackerService;
 
 /**
- * If the user has not clicked the spot before, make a request payment to the
- * website owner. If the user has clicked the spot before nothing happens
+ * Verifies whether the spot click/view was valid, and issues a payment in that
+ * case
  * 
  * @author Harystolho
  *
  */
 @Service
-public class ContractPaymentVerifier {
+public class SpotActionVerifier {
 
 	// Used to avoid collision in the userTrackerService
 	private static final String INTERACTOR_PREFIX = "c_";
@@ -38,9 +38,8 @@ public class ContractPaymentVerifier {
 	private SpotService spotService;
 	private UserTrackerService userTrackerService;
 
-	public ContractPaymentVerifier(UrlRedirecterService urlRedirecterService,
-			ContractPaymentService contractPaymentService, SpotService spotService,
-			UserTrackerService userTrackerService) {
+	public SpotActionVerifier(UrlRedirecterService urlRedirecterService, ContractPaymentService contractPaymentService,
+			SpotService spotService, UserTrackerService userTrackerService) {
 		this.urlRedirecterService = urlRedirecterService;
 		this.contractPaymentService = contractPaymentService;
 		this.spotService = spotService;
