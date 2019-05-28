@@ -9,7 +9,7 @@ export default class AddBalance extends Component {
         return (
             <div>
                 <div style="font-family: Raleway; font-size: 30px; border-bottom: solid 2px #1768c8;">
-                    Adicionar Dinheiro
+                    Adicionar Saldo
                 </div>
 
                 <div>

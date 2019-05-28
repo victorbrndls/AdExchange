@@ -103,7 +103,7 @@ export default class EditSpot extends Component {
                                 value={this.state.spot.contractId}>
                             <option value="-1">Selecione um contrato</option>
                             {contracts && contracts.map((contract) => (
-                                <option value={contract.id}>{contract.acceptorContractName}</option>
+                                <option value={contract.id}>{contract.acceptorContractName || "*Contrato sem nome*"}</option>
                             ))}
                         </select>
                     </div>

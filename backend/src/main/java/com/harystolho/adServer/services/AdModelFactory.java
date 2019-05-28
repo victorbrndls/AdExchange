@@ -73,10 +73,8 @@ public class AdModelFactory {
 
 		Ad ad = adService.getAdById(adPair.getFist()).getReponse();
 
-		if (ad == null) {
-			logger.error("Can't find an Ad using the given id", adPair.getFist());
+		if (ad == null)
 			return errorAdModel("INVALID_AD_ID");
-		}
 
 		AdModel model = buildUsingAd(ad);
 

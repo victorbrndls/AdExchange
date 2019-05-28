@@ -114,7 +114,7 @@ class Spot extends Component {
 
     render({spot, contract, ad}, {extended, contractAd, fallbackAd}) {
         let adName = ad ? ad.name : 'Nenhum';
-        let contractName = contract ? contract.acceptorContractName : "Nenhum";
+        let contractName = contract ? (contract.acceptorContractName ? contract.acceptorContractName : "*Contrato sem nome*") : "Nenhum";
 
         let contractExpired = contract ? hasContractExpired(contract.expiration) : false;
 
