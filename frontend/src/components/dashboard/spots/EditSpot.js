@@ -82,9 +82,26 @@ export default class EditSpot extends Component {
     render({}, {contracts, ads, spot, error, mode}) {
         return (
             <div>
-                <div style="font-family: Raleway; font-size: 30px; margin-bottom: 25px;">
+                <div style="font-family: Raleway; font-size: 30px; margin-bottom: 10px;">
                     Spot
                 </div>
+
+                <div class="mb-2 shadow-sm dashboard-info-container">
+                    <dl>
+                        <dt>Usar anúncio de contrato</dt>
+                        <dd>
+                            No campo 'Contrato', selecione o contrato que deseja utilizar, com isso o Spot já funcionará.
+                            É aconselhado usar um anúncio reserva caso o anúncio do contrato não possa ser exibido.
+                            Para fazer isso selecione um anúncio criado por voce no campo 'Anúncio reserva'
+                        </dd>
+                        <dt>Usar anúncio próprio</dt>
+                        <dd>
+                            No campo 'Contrato', selecione a opcão 'Selecione um contrato', depois
+                            selecione o anúncio que deseja usar no campo 'Anúncio reserva'
+                        </dd>
+                    </dl>
+                </div>
+
                 <div>
                     <div class="form-group websites-add__form">
                         <label>Nome</label>
@@ -103,7 +120,8 @@ export default class EditSpot extends Component {
                                 value={this.state.spot.contractId}>
                             <option value="-1">Selecione um contrato</option>
                             {contracts && contracts.map((contract) => (
-                                <option value={contract.id}>{contract.acceptorContractName || "*Contrato sem nome*"}</option>
+                                <option
+                                    value={contract.id}>{contract.acceptorContractName || "*Contrato sem nome*"}</option>
                             ))}
                         </select>
                     </div>
@@ -118,7 +136,9 @@ export default class EditSpot extends Component {
                                 <option value={ad.id}>{ad.name}</option>
                             ))}
                         </select>
-                        <small class="text-muted">Esse anúncio aparecerá caso o contrato expire</small>
+                        <small class="text-muted">Esse anúncio aparecerá caso o contrato expire ou caso o dono do
+                            anuncio não tenha saldo para paga-lo
+                        </small>
                     </div>
 
                     <div class="btn dashboard-add__button" onClick={this.submitRequest.bind(this)}>

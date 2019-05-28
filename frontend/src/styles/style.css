@@ -718,3 +718,10 @@ body.auth #header {
 .dashboard-add__blocking-container > .blocking-container {
     background-color: #7a7a7a87;
 }
+
+.dashboard-info-container{
+    background-color: #fff3cd;
+    color: #856404;
+    padding: 2px 11px;
+    border-radius: 4px;
+}
