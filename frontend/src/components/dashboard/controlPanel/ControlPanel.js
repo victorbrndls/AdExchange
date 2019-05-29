@@ -1,24 +1,34 @@
 import {Component} from "preact";
 import ControlPanelManager from "../../../managers/ControlPanelManager";
+import AnalyticsManager from "../../../managers/AnalyticsManager";
 
 export default class ControlPanel extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            notifications: []
-        };
-
-        this.series = {
-            first: {
-                name: "Visualizações",
-                uniqueName: "Visualizações Únicas"
-            },
-            second: {
-                name: "Cliques",
-                uniqueName: "Cliques Únicos"
+            notifications: [],
+            contractId: "5cec7688f669ff0758cf68ce",
+            chartClasses: {
+                hasBeenLoaded: false,
+                views: {
+                    name: "Visualizações",
+                    uniqueName: "Visualizações Únicas",
+                    labels: [],
+                    totalData: [],
+                    uniqueData: []
+                },
+                clicks: {
+                    name: "Cliques",
+                    uniqueName: "Cliques Únicos",
+                    labels: [],
+                    totalData: [],
+                    uniqueData: []
+                }
             }
         };
+
+        this.getChartsData();
 
         this.hasRequestedNotifications = false;
     }
@@ -32,20 +42,75 @@ export default class ControlPanel extends Component {
         }
     }
 
-    render({}, {notifications}) {
+    getChartsData() {
+        AnalyticsManager.getAnalytics(this.state.contractId).then((data) => {
+            let models = data.map((model) => {
+                return this.createAnalyticModel(model.date, model.totalClicks, model.uniqueClicks, model.totalViews, model.uniqueViews);
+            }).sort((a, b) => {
+                return new Date(a) < new Date(b);
+            });
+
+            let filledModels = this.fillMissingDays(models);
+
+            console.log(filledModels);
+
+            this.setState({chartClasses: {...this.state.chartClasses, hasBeenLoaded: true}})
+        });
+    }
+
+    fillMissingDays(array) {
+        let filledArray = [];
+
+        for (let i = 0; i < array.length; i++) {
+            if(i === array.length -1){
+                filledArray.push(array[i]);
+                continue;
+            }
+
+            let next = array[i + 1];
+            let current = array[i];
+
+            let diff = (new Date(next.date) - new Date(current.date)) / 24 / 60 / 60 / 1000 - 1; // day
+
+            filledArray.push(current);
+
+            if (diff > 0) {
+                for (let x = 0; x < diff; x++) {
+                    filledArray.push(this.createAnalyticModel("2019-05-XX", 0, 0, 0, 0));
+                }
+            }
+        }
+
+        return filledArray;
+    }
+
+    createAnalyticModel(date, tClicks, uClicks, tViews, uViews) {
+        return {
+            date: date,
+            totalClicks: tClicks,
+            uniqueClicks: uClicks,
+            totalViews: tViews,
+            uniqueViews: uViews
+        };
+    }
+
+    render({}, {notifications, chartClasses}) {
         let chartColumnClass = "col-xl-5 col-md-6";
 
         return (
             <div>
                 <div class="row">
-                    <div class={chartColumnClass}>
-                        <DashboardChartContainer config={this.series.first}/>
-                    </div>
-                    <div class={chartColumnClass}>
-                        <DashboardChartContainer config={this.series.second}/>
-                    </div>
+                    {chartClasses.hasBeenLoaded && (
+                        <div class={chartColumnClass}>
+                            <DashboardChartContainer config={chartClasses.clicks}/>
+                        </div>
+                    )}
+                    {chartClasses.hasBeenLoaded && (
+                        <div class={chartColumnClass}>
+                            <DashboardChartContainer config={chartClasses.views}/>
+                        </div>)
+                    }
                 </div>
-
 
                 <div class="col-sm-12 col-md-7 col-lg-4 d-none">
                     {this.requestNotifications.bind(this)()}
@@ -160,6 +225,7 @@ class DashboardChartContainer extends Component {
             let ChartJS = this.state.chartJs;
 
             let labels = [];
+
 
             new ChartJS(document.getElementById(this.state.id), {
                 type: 'line',
