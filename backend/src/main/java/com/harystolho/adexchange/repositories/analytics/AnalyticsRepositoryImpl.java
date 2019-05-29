@@ -1,6 +1,7 @@
 package com.harystolho.adexchange.repositories.analytics;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -17,6 +18,13 @@ public class AnalyticsRepositoryImpl implements AnalyticsRepository {
 
 	public AnalyticsRepositoryImpl(MongoOperations mongoOperations) {
 		this.mongoOperations = mongoOperations;
+	}
+
+	@Override
+	public List<AnalyticModel> get(String modelId) {
+		Query query = Query.query(Criteria.where("modelId").is(modelId));
+
+		return mongoOperations.find(query, AnalyticModel.class);
 	}
 
 	@Override

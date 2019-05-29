@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.harystolho.adserver.services.CacheService;
 import com.harystolho.adexchange.models.account.Account;
+import com.harystolho.adserver.services.CacheService;
 
 @Service(value = "cachedAccountRepository")
 public class CachedAccountRepositoryImpl implements AccountRepository {

@@ -2,11 +2,9 @@ package com.harystolho.adexchange.services;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.harystolho.adserver.services.AdModelService;
 import com.harystolho.adexchange.events.EventDispatcher;
 import com.harystolho.adexchange.events.spots.events.SpotUpdatedEvent;
 import com.harystolho.adexchange.models.Contract;

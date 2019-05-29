@@ -9,9 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adserver.AdModel;
 import com.harystolho.adserver.services.AdModelService;
-import com.harystolho.adexchange.services.ServiceResponse;
 
 @Controller
 @CrossOrigin

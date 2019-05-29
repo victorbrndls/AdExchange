@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.harystolho.adserver.services.UrlRedirecterService;
-import com.harystolho.adserver.tracker.Tracker;
-import com.harystolho.adserver.tracker.UserTrackerService;
 import com.harystolho.adexchange.events.EventDispatcher;
 import com.harystolho.adexchange.events.spots.events.SpotClickedEvent;
 import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.utils.AEUtils;
+import com.harystolho.adserver.services.UrlRedirecterService;
+import com.harystolho.adserver.tracker.Tracker;
+import com.harystolho.adserver.tracker.UserTrackerService;
 
 @RestController
 @CrossOrigin

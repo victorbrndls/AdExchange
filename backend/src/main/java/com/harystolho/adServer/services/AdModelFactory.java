@@ -5,13 +5,9 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.harystolho.adserver.AdModel;
-import com.harystolho.adserver.controllers.UrlRedirectorController;
-import com.harystolho.adserver.data.AdModelDataCache;
-import com.harystolho.adserver.templates.AdTemplateService;
 import com.harystolho.adexchange.models.Contract;
-import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.models.Contract.PaymentMethod;
+import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.models.ads.Ad.AdType;
 import com.harystolho.adexchange.models.ads.ImageAd;
@@ -22,6 +18,10 @@ import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.services.SpotService;
 import com.harystolho.adexchange.utils.AEUtils;
 import com.harystolho.adexchange.utils.Pair;
+import com.harystolho.adserver.AdModel;
+import com.harystolho.adserver.controllers.UrlRedirectorController;
+import com.harystolho.adserver.data.AdModelDataCache;
+import com.harystolho.adserver.templates.AdTemplateService;
 
 /**
  * Builds {@link AdModel}

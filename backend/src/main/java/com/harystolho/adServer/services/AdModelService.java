@@ -7,11 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.harystolho.adserver.AdModel;
-import com.harystolho.adserver.controllers.UrlRedirectorController;
 import com.harystolho.adexchange.information.GlobalInformant;
 import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.services.ServiceResponse;
+import com.harystolho.adserver.AdModel;
+import com.harystolho.adserver.controllers.UrlRedirectorController;
 
 /**
  * Returns the {@link AdModel} for the requested {@link Spot}, first it tries to

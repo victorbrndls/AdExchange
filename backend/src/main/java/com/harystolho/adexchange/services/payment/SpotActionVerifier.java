@@ -7,14 +7,14 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.harystolho.adexchange.analytics.AnalyticsService;
-import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.models.Contract.PaymentMethod;
+import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.services.ServiceResponse;
-import com.harystolho.adexchange.services.SpotService;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
+import com.harystolho.adexchange.services.SpotService;
 import com.harystolho.adexchange.utils.AEUtils;
-import com.harystolho.adserver.services.UrlRedirecterService;
 import com.harystolho.adserver.services.AdModelFactory.AdSource;
+import com.harystolho.adserver.services.UrlRedirecterService;
 import com.harystolho.adserver.services.UrlRedirecterService.SpotData;
 import com.harystolho.adserver.tracker.Tracker;
 import com.harystolho.adserver.tracker.UserTrackerService;
