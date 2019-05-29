@@ -725,3 +725,11 @@ body.auth #header {
     padding: 2px 11px;
     border-radius: 4px;
 }
+
+.controlpanel-card__text h2{
+    font-weight: 600;
+}
+
+.controlpanel-card__text span{
+    color: deepskyblue;
+}
