@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import com.harystolho.adexchange.analytics.AnalyticsService;
 import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.models.Contract.PaymentMethod;
 import com.harystolho.adexchange.services.ServiceResponse;
@@ -37,13 +38,15 @@ public class SpotActionVerifier {
 	private ContractPaymentService contractPaymentService;
 	private SpotService spotService;
 	private UserTrackerService userTrackerService;
+	private AnalyticsService analyticsService;
 
 	public SpotActionVerifier(UrlRedirecterService urlRedirecterService, ContractPaymentService contractPaymentService,
-			SpotService spotService, UserTrackerService userTrackerService) {
+			SpotService spotService, UserTrackerService userTrackerService, AnalyticsService analyticsService) {
 		this.urlRedirecterService = urlRedirecterService;
 		this.contractPaymentService = contractPaymentService;
 		this.spotService = spotService;
 		this.userTrackerService = userTrackerService;
+		this.analyticsService = analyticsService;
 	}
 
 	/**
@@ -76,11 +79,16 @@ public class SpotActionVerifier {
 	}
 
 	private void verifyUserHasNotInteractedWithContract(Tracker tracker, String contractId) {
-		if (userTrackerService.hasTrackerInteractedWith(tracker, INTERACTOR_PREFIX + contractId))
-			return; // User has clicked the spot in the past, do nothing
+		if (userTrackerService.hasTrackerInteractedWith(tracker, INTERACTOR_PREFIX + contractId)) {
+			// User has clicked the spot in the past
+			analyticsService.incrementTotalClicks(contractId);
+			return;
+		}
 
 		// Record that user has clicked the spot
 		userTrackerService.interactTrackerWith(tracker, INTERACTOR_PREFIX + contractId);
+
+		analyticsService.incrementUniqueClicks(contractId);
 
 		// Issue payment to the website owner
 		contractPaymentService.issueContractPayment(contractId,

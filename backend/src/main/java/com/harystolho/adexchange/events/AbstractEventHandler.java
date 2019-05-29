@@ -1,6 +1,6 @@
 package com.harystolho.adexchange.events;
 
-public class AbstractEventHandler {
+public abstract class AbstractEventHandler {
 
 	protected EventDispatcher eventDispatcher;
 

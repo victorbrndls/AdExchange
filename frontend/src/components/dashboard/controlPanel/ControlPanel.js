@@ -159,18 +159,20 @@ class DashboardChartContainer extends Component {
 
             let ChartJS = this.state.chartJs;
 
+            let labels = [];
+
             new ChartJS(document.getElementById(this.state.id), {
                 type: 'line',
                 data: {
-                    labels: ["Jan 01", "Jan 02", "Jan 03"],
+                    labels: labels,
                     datasets: [
                         {
-                            label: "Visualizações",
+                            label: this.state.name,
                             data: [5, 16, 7],
                             borderColor: "blue"
                         },
                         {
-                            label: "Visualizações Únicas",
+                            label: this.state.uniqueName,
                             data: [1, 3, 1],
                             borderColor: "#2dc9cc"
                         }]
