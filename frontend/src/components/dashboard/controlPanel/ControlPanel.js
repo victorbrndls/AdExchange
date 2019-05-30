@@ -273,6 +273,10 @@ class DashboardChartContainer extends Component {
                         line: {
                             tension: 0
                         }
+                    },
+                    tooltips: {
+                        intersect: false,
+                        mode: 'index'
                     }
                 }
             });
