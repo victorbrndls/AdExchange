@@ -13,19 +13,18 @@ export default class ControlPanel extends Component {
                 hasBeenLoaded: false,
                 views: {
                     name: "Visualizações",
-                    uniqueName: "Visualizações Únicas",
-                    labels: [],
-                    totalData: [],
-                    uniqueData: []
+                    uniqueName: "Visualizações Únicas"
                 },
                 clicks: {
                     name: "Cliques",
-                    uniqueName: "Cliques Únicos",
-                    labels: [],
-                    totalData: [],
-                    uniqueData: []
+                    uniqueName: "Cliques Únicos"
                 }
             }
+        };
+
+        this.chartData = {
+            view: {},
+            click: {}
         };
 
         this.getChartsData();
@@ -44,39 +43,63 @@ export default class ControlPanel extends Component {
 
     getChartsData() {
         AnalyticsManager.getAnalytics(this.state.contractId).then((data) => {
-            let models = data.map((model) => {
-                return this.createAnalyticModel(model.date, model.totalClicks, model.uniqueClicks, model.totalViews, model.uniqueViews);
-            }).sort((a, b) => {
-                return new Date(a) < new Date(b);
-            });
+                let models = data.map((model) => {
+                    // Remove useless data from object
+                    return this.createAnalyticModel(model.date, model.totalClicks, model.uniqueClicks, model.totalViews, model.uniqueViews);
+                }).sort((a, b) => {
+                    return new Date(a) < new Date(b); // Sort in chronological order
+                });
 
-            let filledModels = this.fillMissingDays(models);
+                let filledModels = this.fillMissingDays(models);
 
-            console.log(filledModels);
+                this.chartData.click = {
+                    date: filledModels.map((model) => model.date),
+                    total: filledModels.map((model) => model.totalClicks),
+                    unique: filledModels.map((model) => model.uniqueClicks)
+                };
 
-            this.setState({chartClasses: {...this.state.chartClasses, hasBeenLoaded: true}})
-        });
+                this.chartData.view = {
+                    date: filledModels.map((model) => model.date),
+                    total: filledModels.map((model) => model.totalViews),
+                    unique: filledModels.map((model) => model.uniqueViews)
+                };
+
+                this.setState({chartClasses: {...this.state.chartClasses, hasBeenLoaded: true}})
+            }
+        )
+        ;
     }
 
+    /**
+     * When the server returns the analytic models, it doesn't return the model for days that haven't had any activity.
+     * For example if nobody viewed or clicked a contract on a certain day, there is no analytic model for that day. This
+     * method fills the missing days with an empty analytic model.
+     *
+     * @param array {Array} a sorted array of analytic models in chronological order
+     **/
     fillMissingDays(array) {
+        const DAY_MILLIS = 1000 * 60 * 60 * 24;
+
         let filledArray = [];
 
         for (let i = 0; i < array.length; i++) {
-            if(i === array.length -1){
+            if (i === array.length - 1) {
                 filledArray.push(array[i]);
                 continue;
             }
 
             let next = array[i + 1];
             let current = array[i];
+            let currentDate = new Date(current.date);
 
-            let diff = (new Date(next.date) - new Date(current.date)) / 24 / 60 / 60 / 1000 - 1; // day
+            let diff = (new Date(next.date) - currentDate) / DAY_MILLIS - 1;
 
             filledArray.push(current);
 
             if (diff > 0) {
                 for (let x = 0; x < diff; x++) {
-                    filledArray.push(this.createAnalyticModel("2019-05-XX", 0, 0, 0, 0));
+                    let missingDate = new Date(currentDate - -(DAY_MILLIS * (x + 1))); // the '+' sign doesn't work
+                    filledArray.push(this.createAnalyticModel(`${missingDate.getUTCFullYear()}-${missingDate.getUTCMonth() + 1}-${missingDate.getUTCDate()}`, 0, 0, 0, 0));
                 }
             }
         }
@@ -102,12 +125,12 @@ export default class ControlPanel extends Component {
                 <div class="row">
                     {chartClasses.hasBeenLoaded && (
                         <div class={chartColumnClass}>
-                            <DashboardChartContainer config={chartClasses.clicks}/>
+                            <DashboardChartContainer config={chartClasses.clicks} data={this.chartData.click}/>
                         </div>
                     )}
                     {chartClasses.hasBeenLoaded && (
                         <div class={chartColumnClass}>
-                            <DashboardChartContainer config={chartClasses.views}/>
+                            <DashboardChartContainer config={chartClasses.views} data={this.chartData.view}/>
                         </div>)
                     }
                 </div>
@@ -201,7 +224,10 @@ class DashboardChartContainer extends Component {
             chartJs: undefined,
             id: `dashboardChart${DashboardChartContainer.ID++}`,
             name: this.props.config.name,
-            uniqueName: this.props.config.uniqueName
+            uniqueName: this.props.config.uniqueName,
+            date: this.props.data.date,
+            total: this.props.data.total,
+            unique: this.props.data.unique
         };
 
         this.hasChartBeenRendered = false;
@@ -224,22 +250,21 @@ class DashboardChartContainer extends Component {
 
             let ChartJS = this.state.chartJs;
 
-            let labels = [];
-
+            let state = this.state;
 
             new ChartJS(document.getElementById(this.state.id), {
                 type: 'line',
                 data: {
-                    labels: labels,
+                    labels: state.date,
                     datasets: [
                         {
                             label: this.state.name,
-                            data: [5, 16, 7],
+                            data: state.total,
                             borderColor: "blue"
                         },
                         {
                             label: this.state.uniqueName,
-                            data: [1, 3, 1],
+                            data: state.unique,
                             borderColor: "#2dc9cc"
                         }]
                 },
@@ -254,16 +279,18 @@ class DashboardChartContainer extends Component {
         }
     }
 
-    render({}, {id, name, uniqueName}) {
+    render({}, {id, name, uniqueName, total, unique}) {
+        const reducer = (a, c) => a + c;
+
         return (
             <div class="card mb-4">
                 <div class="card-body d-flex justify-content-between">
                     <div class="controlpanel-card__text">
-                        <h2 class="m-0">250</h2>
+                        <h2 class="m-0">{total.reduce(reducer)}</h2>
                         <span>{name}</span>
                     </div>
                     <div class="controlpanel-card__text text-right">
-                        <h2 class="m-0">25</h2>
+                        <h2 class="m-0">{unique.reduce(reducer)}</h2>
                         <span>{uniqueName}</span>
                     </div>
                 </div>
