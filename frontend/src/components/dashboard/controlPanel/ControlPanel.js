@@ -260,12 +260,16 @@ class DashboardChartContainer extends Component {
                         {
                             label: this.state.name,
                             data: state.total,
-                            borderColor: "blue"
+                            backgroundColor: "#1689cf",
+                            borderColor: "#1689cf",
+                            fill: false
                         },
                         {
                             label: this.state.uniqueName,
                             data: state.unique,
-                            borderColor: "#2dc9cc"
+                            backgroundColor: "#cf5c16",
+                            borderColor: "#cf5c16",
+                            fill: false
                         }]
                 },
                 options: {
