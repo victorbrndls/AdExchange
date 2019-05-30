@@ -1,6 +1,8 @@
 import {Component} from "preact";
 import ControlPanelManager from "../../../managers/ControlPanelManager";
 import AnalyticsManager from "../../../managers/AnalyticsManager";
+import ContractManager from "../../../managers/ContractManager";
+import DashboardChartContainer from "./DashboardChartContainer";
 
 export default class ControlPanel extends Component {
     constructor(props) {
@@ -8,28 +10,36 @@ export default class ControlPanel extends Component {
 
         this.state = {
             notifications: [],
-            contractId: "5cec7688f669ff0758cf68ce",
-            chartClasses: {
-                hasBeenLoaded: false,
-                views: {
-                    name: "Visualizações",
-                    uniqueName: "Visualizações Únicas"
-                },
-                clicks: {
-                    name: "Cliques",
-                    uniqueName: "Cliques Únicos"
-                }
+            contracts: [],
+            chartData: {
+                view: {},
+                click: {}
             }
         };
 
-        this.chartData = {
-            view: {},
-            click: {}
+        this.chartClasses = {
+            views: {
+                name: "Visualizações",
+                uniqueName: "Visualizações Únicas"
+            },
+            clicks: {
+                name: "Cliques",
+                uniqueName: "Cliques Únicos"
+            }
         };
 
-        this.getChartsData();
-
+        this.hasRequestedContracts = false;
         this.hasRequestedNotifications = false;
+    }
+
+    requestContracts() {
+        if (!this.hasRequestedContracts) {
+            this.hasRequestedContracts = true;
+
+            ContractManager.getContracts().then((data) => {
+                this.setState({contracts: data});
+            })
+        }
     }
 
     requestNotifications() {
@@ -41,33 +51,43 @@ export default class ControlPanel extends Component {
         }
     }
 
-    getChartsData() {
-        AnalyticsManager.getAnalytics(this.state.contractId).then((data) => {
-                let models = data.map((model) => {
-                    // Remove useless data from object
-                    return this.createAnalyticModel(model.date, model.totalClicks, model.uniqueClicks, model.totalViews, model.uniqueViews);
-                }).sort((a, b) => {
-                    return new Date(a) < new Date(b); // Sort in chronological order
-                });
+    handleContractChange(value) {
+        if (value)
+            this.getChartsData(value);
 
-                let filledModels = this.fillMissingDays(models);
+    }
 
-                this.chartData.click = {
-                    date: filledModels.map((model) => model.date),
-                    total: filledModels.map((model) => model.totalClicks),
-                    unique: filledModels.map((model) => model.uniqueClicks)
-                };
-
-                this.chartData.view = {
-                    date: filledModels.map((model) => model.date),
-                    total: filledModels.map((model) => model.totalViews),
-                    unique: filledModels.map((model) => model.uniqueViews)
-                };
-
-                this.setState({chartClasses: {...this.state.chartClasses, hasBeenLoaded: true}})
+    getChartsData(modelId) {
+        AnalyticsManager.getAnalytics(modelId).then((data) => {
+            if (data.length === 0) {
+                this.setState({chartData: {view: {}, click: {}}});
+                return;
             }
-        )
-        ;
+
+            let models = data.map((model) => {
+                // Remove useless data from object
+                return this.createAnalyticModel(model.date, model.totalClicks, model.uniqueClicks, model.totalViews, model.uniqueViews);
+            }).sort((a, b) => {
+                return new Date(a) < new Date(b); // Sort in chronological order
+            });
+
+            let filledModels = this.fillMissingDays(models);
+
+            this.setState({
+                chartData: {
+                    click: {
+                        date: filledModels.map((model) => model.date),
+                        total: filledModels.map((model) => model.totalClicks),
+                        unique: filledModels.map((model) => model.uniqueClicks)
+                    },
+                    view: {
+                        date: filledModels.map((model) => model.date),
+                        total: filledModels.map((model) => model.totalViews),
+                        unique: filledModels.map((model) => model.uniqueViews)
+                    }
+                }
+            });
+        });
     }
 
     /**
@@ -117,22 +137,32 @@ export default class ControlPanel extends Component {
         };
     }
 
-    render({}, {notifications, chartClasses}) {
+    render({}, {notifications, chartData, contracts}) {
         let chartColumnClass = "col-xl-5 col-md-6";
 
         return (
             <div>
-                <div class="row">
-                    {chartClasses.hasBeenLoaded && (
+                <div>
+                    {this.requestContracts.bind(this)()}
+                    <div style="max-width: 300px;" class="mb-2">
+                        <select class='custom-select' onChange={e => this.handleContractChange(e.target.value)}>
+                            <option value="-1">Selecione um contrato</option>
+                            {contracts.map((contract) => (
+                                <option
+                                    value={contract.id}>{(contract.acceptorContractName ? contract.acceptorContractName : contract.creatorContractName) || "*Contrato sem nome*"}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div class="row">
                         <div class={chartColumnClass}>
-                            <DashboardChartContainer config={chartClasses.clicks} data={this.chartData.click}/>
+                            {console.log("=== controlPanel ===")}
+                            <DashboardChartContainer config={this.chartClasses.clicks} data={chartData.click}/>
                         </div>
-                    )}
-                    {chartClasses.hasBeenLoaded && (
-                        <div class={chartColumnClass}>
-                            <DashboardChartContainer config={chartClasses.views} data={this.chartData.view}/>
-                        </div>)
-                    }
+                        {/*<div class={chartColumnClass}>
+                            <DashboardChartContainer config={this.chartClasses.views} data={chartData.view}/>
+                        </div>*/}
+                    </div>
                 </div>
 
                 <div class="col-sm-12 col-md-7 col-lg-4 d-none">
@@ -213,99 +243,3 @@ let ReviewedProposalNotification = new NotificationType('fa-repeat',
 
 let AcceptedProposalNotification = new NotificationType('fa-check',
     ({websiteName}) => `A proposta para ${websiteName} foi aceita`);
-
-class DashboardChartContainer extends Component {
-    static ID = 1;
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            chartJs: undefined,
-            id: `dashboardChart${DashboardChartContainer.ID++}`,
-            name: this.props.config.name,
-            uniqueName: this.props.config.uniqueName,
-            date: this.props.data.date,
-            total: this.props.data.total,
-            unique: this.props.data.unique
-        };
-
-        this.hasChartBeenRendered = false;
-    }
-
-    componentDidMount() {
-        if (!this.state.chartJs) {
-            import('chart.js').then(module => this.setState({chartJs: module}));
-        }
-    }
-
-    componentDidUpdate() {
-        if (this.state.chartJs)
-            this.renderChart();
-    }
-
-    renderChart() {
-        if (!this.hasChartBeenRendered) {
-            this.hasChartBeenRendered = true;
-
-            let ChartJS = this.state.chartJs;
-
-            let state = this.state;
-
-            new ChartJS(document.getElementById(this.state.id), {
-                type: 'line',
-                data: {
-                    labels: state.date,
-                    datasets: [
-                        {
-                            label: this.state.name,
-                            data: state.total,
-                            backgroundColor: "#1689cf",
-                            borderColor: "#1689cf",
-                            fill: false
-                        },
-                        {
-                            label: this.state.uniqueName,
-                            data: state.unique,
-                            backgroundColor: "#cf5c16",
-                            borderColor: "#cf5c16",
-                            fill: false
-                        }]
-                },
-                options: {
-                    elements: {
-                        line: {
-                            tension: 0
-                        }
-                    },
-                    tooltips: {
-                        intersect: false,
-                        mode: 'index'
-                    }
-                }
-            });
-        }
-    }
-
-    render({}, {id, name, uniqueName, total, unique}) {
-        const reducer = (a, c) => a + c;
-
-        return (
-            <div class="card mb-4">
-                <div class="card-body d-flex justify-content-between">
-                    <div class="controlpanel-card__text">
-                        <h2 class="m-0">{total.reduce(reducer)}</h2>
-                        <span>{name}</span>
-                    </div>
-                    <div class="controlpanel-card__text text-right">
-                        <h2 class="m-0">{unique.reduce(reducer)}</h2>
-                        <span>{uniqueName}</span>
-                    </div>
-                </div>
-                <div>
-                    <canvas id={id}/>
-                </div>
-            </div>
-        )
-    }
-}
