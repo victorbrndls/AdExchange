@@ -81,6 +81,11 @@ export default class DashboardChartContainer extends Component {
         });
     }
 
+    componentWillUnmount(){
+        if(this.chart)
+            this.chart.destroy();
+    }
+
     render({}, {name, uniqueName}) {
         const reducer = (a, c) => a + c;
 

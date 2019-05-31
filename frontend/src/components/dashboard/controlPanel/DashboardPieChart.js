@@ -44,13 +44,18 @@ export default class DashboardPieChart extends Component {
                         datasets: [
                             {
                                 data: this.data.data,
-                                backgroundColor: ["#b1f435", "#7835f4"]
+                                backgroundColor: ["#389438  ", "#7835f4"]
                             }],
                         labels: this.data.labels
                     }
                 });
             }
         });
+    }
+
+    componentWillUnmount(){
+        if(this.chart)
+            this.chart.destroy();
     }
 
     render() {
