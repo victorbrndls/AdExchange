@@ -144,7 +144,7 @@ export default class ControlPanel extends Component {
      * **/
     convertDateToString(strDate) {
         let date = new Date(strDate);
-        let options = {month: 'short', day:'numeric'};
+        let options = {month: 'short', day:'numeric', timeZone: 'UTC'};
 
         return date.toLocaleDateString('default', options);
     }
