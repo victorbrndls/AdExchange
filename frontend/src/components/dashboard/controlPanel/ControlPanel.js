@@ -53,9 +53,8 @@ export default class ControlPanel extends Component {
     }
 
     handleContractChange(value) {
-        if (value)
+        if (value && value  !== '-1')
             this.getChartsData(value);
-
     }
 
     getChartsData(modelId) {
