@@ -150,10 +150,20 @@ export default class ControlPanel extends Component {
         return date.toLocaleDateString('default', options);
     }
 
-    getClickToViewRatioData(){
+    getClickToViewRatioData() {
+        const reducer = (a, c) => a + c;
+
+        let chartData = this.state.chartData;
+
+        if (!chartData.click.total || !chartData.view.total)
+            return {
+                labels: [],
+                data: []
+            };
+
         return {
-            labels: ["Clicks", "Views"],
-            data: [7,65]
+            labels: ["Cliques", "Visualizações"],
+            data: [chartData.click.total.reduce(reducer), chartData.view.total.reduce(reducer)]
         }
     }
 

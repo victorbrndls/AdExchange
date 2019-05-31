@@ -726,7 +726,7 @@ body.auth #header {
     border-radius: 4px;
 }
 
-.controlpanel-card__text h2{
+.controlpanel-card__text h2, h4{
     font-weight: 600;
 }
 
