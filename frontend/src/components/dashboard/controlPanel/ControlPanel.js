@@ -2,7 +2,8 @@ import {Component} from "preact";
 import ControlPanelManager from "../../../managers/ControlPanelManager";
 import AnalyticsManager from "../../../managers/AnalyticsManager";
 import ContractManager from "../../../managers/ContractManager";
-import DashboardChartContainer from "./DashboardChartContainer";
+import DashboardChartContainer from "./DashboardLineChart";
+import DashboardPieChart from "./DashboardPieChart";
 
 export default class ControlPanel extends Component {
     constructor(props) {
@@ -138,15 +139,22 @@ export default class ControlPanel extends Component {
     }
 
     /**
-     *
+     * Converts a string date to 'month day' format. Eg: "2019-05-31" -> "May 31"
      *
      * @param strDate {String} a valid string that can be converted to Date
      * **/
     convertDateToString(strDate) {
         let date = new Date(strDate);
-        let options = {month: 'short', day:'numeric', timeZone: 'UTC'};
+        let options = {month: 'short', day: 'numeric', timeZone: 'UTC'};
 
         return date.toLocaleDateString('default', options);
+    }
+
+    getClickToViewRatioData(){
+        return {
+            labels: ["Clicks", "Views"],
+            data: [7,65]
+        }
     }
 
     render({}, {notifications, chartData, contracts}) {
@@ -172,6 +180,11 @@ export default class ControlPanel extends Component {
                         </div>
                         <div class={chartColumnClass}>
                             <DashboardChartContainer config={this.chartClasses.views} data={chartData.view}/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class={chartColumnClass}>
+                            <DashboardPieChart data={this.getClickToViewRatioData()}/>
                         </div>
                     </div>
                 </div>

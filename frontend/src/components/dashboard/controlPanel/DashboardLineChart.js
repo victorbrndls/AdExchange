@@ -1,4 +1,5 @@
 import {Component} from "preact";
+import LazyLoading from "../../utils/LazyLoading";
 
 export default class DashboardChartContainer extends Component {
     static ID = 1;
@@ -20,7 +21,7 @@ export default class DashboardChartContainer extends Component {
         this.id = `dashboardChart${DashboardChartContainer.ID++}`;
 
         if (!DashboardChartContainer.CHART_JS) // Lazy loading
-            import('chart.js').then(module => DashboardChartContainer.CHART_JS = module);
+            LazyLoading.getChartJS().then(module => DashboardChartContainer.CHART_JS = module);
     }
 
     componentWillReceiveProps(props /*nextProps*/) {
