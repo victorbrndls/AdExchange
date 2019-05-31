@@ -76,12 +76,12 @@ export default class ControlPanel extends Component {
             this.setState({
                 chartData: {
                     click: {
-                        date: filledModels.map((model) => model.date),
+                        date: filledModels.map((model) => this.convertDateToString(model.date)),
                         total: filledModels.map((model) => model.totalClicks),
                         unique: filledModels.map((model) => model.uniqueClicks)
                     },
                     view: {
-                        date: filledModels.map((model) => model.date),
+                        date: filledModels.map((model) => this.convertDateToString(model.date)),
                         total: filledModels.map((model) => model.totalViews),
                         unique: filledModels.map((model) => model.uniqueViews)
                     }
@@ -137,6 +137,18 @@ export default class ControlPanel extends Component {
         };
     }
 
+    /**
+     *
+     *
+     * @param strDate {String} a valid string that can be converted to Date
+     * **/
+    convertDateToString(strDate) {
+        let date = new Date(strDate);
+        let options = {month: 'short', day:'numeric'};
+
+        return date.toLocaleDateString('default', options);
+    }
+
     render({}, {notifications, chartData, contracts}) {
         let chartColumnClass = "col-xl-5 col-md-6";
 
@@ -156,12 +168,11 @@ export default class ControlPanel extends Component {
                     </div>
                     <div class="row">
                         <div class={chartColumnClass}>
-                            {console.log("=== controlPanel ===")}
                             <DashboardChartContainer config={this.chartClasses.clicks} data={chartData.click}/>
                         </div>
-                        {/*<div class={chartColumnClass}>
+                        <div class={chartColumnClass}>
                             <DashboardChartContainer config={this.chartClasses.views} data={chartData.view}/>
-                        </div>*/}
+                        </div>
                     </div>
                 </div>
 

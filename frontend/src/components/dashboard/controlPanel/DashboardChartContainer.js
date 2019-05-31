@@ -20,16 +20,12 @@ export default class DashboardChartContainer extends Component {
         this.id = `dashboardChart${DashboardChartContainer.ID++}`;
 
         if (!DashboardChartContainer.CHART_JS) // Lazy loading
-            import('chart.js').then(module => {
-                DashboardChartContainer.CHART_JS = module;
-            });
+            import('chart.js').then(module => DashboardChartContainer.CHART_JS = module);
     }
 
     componentWillReceiveProps(props /*nextProps*/) {
         if (!props.data)
             return;
-
-        console.log("willReceiveProps");
 
         this.data = {
             date: props.data.date ? props.data.date : [],
@@ -46,34 +42,31 @@ export default class DashboardChartContainer extends Component {
 
         const Chart = DashboardChartContainer.CHART_JS;
 
-
-
         if (this.chart) {
-            console.log("rendering chart - u");
+            let chartData = this.chart.data;
+            let data = this.data;
 
-            this.chart.data.labels = this.data.date;
-            this.chart.data.datasets[0].data = this.data.total;
-            this.chart.data.datasets[1].data = this.data.unique;
+            chartData.labels = data.date;
+            chartData.datasets[0].data = data.total;
+            chartData.datasets[1].data = data.unique;
 
             this.chart.update();
         } else {
-            console.log("rendering chart - n");
-
             this.chart = new Chart(document.getElementById(this.id), {
                 type: 'line',
                 data: {
-                    labels: this.data.date || [],
+                    labels: this.data.date,
                     datasets: [
                         {
                             label: this.state.name,
-                            data: this.data.total || [],
+                            data: this.data.total,
                             backgroundColor: "#1689cf",
                             borderColor: "#1689cf",
                             fill: false
                         },
                         {
                             label: this.state.uniqueName,
-                            data: this.data.unique || [],
+                            data: this.data.unique,
                             backgroundColor: "#cf5c16",
                             borderColor: "#cf5c16",
                             fill: false
@@ -99,8 +92,6 @@ export default class DashboardChartContainer extends Component {
 
         let total = this.data.total;
         let unique = this.data.unique;
-
-        console.log("render");
 
         return (
             <div class="card mb-4">
