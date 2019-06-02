@@ -4,7 +4,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import com.harystolho.adexchange.events.EventDispatcher;
-import com.harystolho.adexchange.events.accounts.AccountBalanceEventHandler;
 import com.harystolho.adexchange.log.Logger;
 
 public class AccountBalanceEventHandlerTest {

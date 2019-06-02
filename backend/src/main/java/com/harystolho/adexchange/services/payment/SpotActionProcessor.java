@@ -93,7 +93,6 @@ public class SpotActionProcessor {
 		Spot spot = spotResponse.getReponse();
 
 		verifyUserHasNotViewedContract(tracker, spot.getContractId());
-
 	}
 
 	private void verifyUserHasNotViewedContract(Tracker tracker, String contractId) {
@@ -120,7 +119,7 @@ public class SpotActionProcessor {
 	 * @return <code>true</code> if the user has interacted with the contract in the
 	 *         past
 	 */
-	private boolean verifyUserHasNotInteractedWithContract(Tracker tracker, String prefix, String contractId,
+	protected boolean verifyUserHasNotInteractedWithContract(Tracker tracker, String prefix, String contractId,
 			Consumer<String> hasInteractedFunction, Consumer<String> hasNotInteractedFunction) {
 		if (userTrackerService.hasTrackerInteractedWith(tracker, prefix + contractId)) {
 			hasInteractedFunction.accept(contractId);

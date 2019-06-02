@@ -15,7 +15,6 @@ import com.harystolho.adexchange.models.Contract.PaymentMethod;
 import com.harystolho.adexchange.services.AccountService;
 import com.harystolho.adexchange.services.ContractService;
 import com.harystolho.adexchange.services.ServiceResponse;
-import com.harystolho.adexchange.services.payment.ContractPaymentService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ContractPaymentServiceTest {
