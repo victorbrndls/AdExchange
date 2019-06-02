@@ -21,7 +21,7 @@ import com.harystolho.adserver.tracker.UserTrackerService;
 public class ContractPaymentVerifierTest {
 
 	@InjectMocks
-	SpotActionVerifier contractPaymentVerifier;
+	SpotActionProcessor contractPaymentVerifier;
 
 	@Mock
 	UrlRedirecterService urlRedirecterService;
@@ -38,7 +38,7 @@ public class ContractPaymentVerifierTest {
 
 		Mockito.when(urlRedirecterService.getSpotDataUsingRedirectId("ar1")).thenReturn(ServiceResponse.ok(sd));
 
-		contractPaymentVerifier.verifySpotClick("ar1", new Tracker(null, null));
+		contractPaymentVerifier.processSpotClick("ar1", new Tracker(null, null));
 
 		Mockito.verify(spotService, Mockito.never()).getSpot(Mockito.anyString(), Mockito.anyString(),
 				Mockito.anyString());
@@ -58,7 +58,7 @@ public class ContractPaymentVerifierTest {
 		Mockito.when(userTrackerService.hasTrackerInteractedWith(Mockito.any(), Mockito.contains("bc1")))
 				.thenReturn(false);
 
-		contractPaymentVerifier.verifySpotClick("br1", new Tracker(null, null));
+		contractPaymentVerifier.processSpotClick("br1", new Tracker(null, null));
 
 		Mockito.verify(contractPaymentService).issueContractPayment(Mockito.anyString(), Mockito.any());
 	}
@@ -77,7 +77,7 @@ public class ContractPaymentVerifierTest {
 		Mockito.when(userTrackerService.hasTrackerInteractedWith(Mockito.any(), Mockito.contains("cc1")))
 				.thenReturn(true);
 
-		contractPaymentVerifier.verifySpotClick("cr1", new Tracker(null, null));
+		contractPaymentVerifier.processSpotClick("cr1", new Tracker(null, null));
 
 		Mockito.verify(contractPaymentService, Mockito.never()).issueContractPayment(Mockito.anyString(),
 				Mockito.any());

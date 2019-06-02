@@ -22,25 +22,19 @@ import com.harystolho.adserver.services.admodel.AdModelFactory.AdSource;
 import com.harystolho.adserver.tracker.Tracker;
 import com.harystolho.adserver.tracker.UserTrackerService;
 
-/**
- * Verifies whether the spot acton (click/view) was valid
- * 
- * @author Harystolho
- *
- */
 @Service
-public class SpotActionVerifier {
+public class SpotActionProcessor {
 
 	private static final Logger logger = LogManager.getLogger();
 
-	private UrlRedirecterService urlRedirecterService;
-	private ContractPaymentService contractPaymentService;
-	private SpotService spotService;
-	private UserTrackerService userTrackerService;
-	private AnalyticsService analyticsService;
-	private AdModelCacheService adModelCacheService;
+	private final UrlRedirecterService urlRedirecterService;
+	private final ContractPaymentService contractPaymentService;
+	private final SpotService spotService;
+	private final UserTrackerService userTrackerService;
+	private final AnalyticsService analyticsService;
+	private final AdModelCacheService adModelCacheService;
 
-	public SpotActionVerifier(UrlRedirecterService urlRedirecterService, ContractPaymentService contractPaymentService,
+	public SpotActionProcessor(UrlRedirecterService urlRedirecterService, ContractPaymentService contractPaymentService,
 			SpotService spotService, UserTrackerService userTrackerService, AnalyticsService analyticsService,
 			AdModelCacheService adModelCacheService) {
 		this.urlRedirecterService = urlRedirecterService;
@@ -57,7 +51,7 @@ public class SpotActionVerifier {
 	 * 
 	 * @param event
 	 */
-	public void verifySpotClick(String spotRedirectId, Tracker tracker) {
+	public void processSpotClick(String spotRedirectId, Tracker tracker) {
 		ServiceResponse<SpotData> response = urlRedirecterService.getSpotDataUsingRedirectId(spotRedirectId);
 
 		if (response.getErrorType() != ServiceResponseType.OK)
@@ -80,7 +74,7 @@ public class SpotActionVerifier {
 		verifyUserHasNotClickedContract(tracker, spot.getContractId());
 	}
 
-	public void verifySpotView(String spotId, Tracker tracker) {
+	public void processSpotView(String spotId, Tracker tracker) {
 		AdModel model = adModelCacheService.get(spotId);
 
 		if (model == null)

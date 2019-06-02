@@ -5,14 +5,14 @@ import org.springframework.stereotype.Service;
 import com.harystolho.adexchange.events.EventDispatcher;
 import com.harystolho.adexchange.events.Handler;
 import com.harystolho.adexchange.events.spots.events.SpotViewedEvent;
-import com.harystolho.adexchange.services.payment.SpotActionVerifier;
+import com.harystolho.adexchange.services.payment.SpotActionProcessor;
 
 @Service
 public class SpotViewedEventHandler extends AbstractSpotEventHandler implements Handler<SpotViewedEvent> {
 
-	private SpotActionVerifier spotActionVerifier;
+	private SpotActionProcessor spotActionVerifier;
 
-	private SpotViewedEventHandler(EventDispatcher eventDispatcher, SpotActionVerifier contractPaymentVerifier) {
+	private SpotViewedEventHandler(EventDispatcher eventDispatcher, SpotActionProcessor contractPaymentVerifier) {
 		super(eventDispatcher);
 		this.spotActionVerifier = contractPaymentVerifier;
 
@@ -21,7 +21,7 @@ public class SpotViewedEventHandler extends AbstractSpotEventHandler implements 
 
 	@Override
 	public void onEvent(SpotViewedEvent event) {
-		spotActionVerifier.verifySpotView(event.getSpotId(), event.getTracker());
+		spotActionVerifier.processSpotView(event.getSpotId(), event.getTracker());
 	}
 
 }
