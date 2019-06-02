@@ -1,4 +1,4 @@
-package com.harystolho.adserver.services;
+package com.harystolho.adserver.services.admodel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +12,7 @@ import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adserver.AdModel;
 import com.harystolho.adserver.controllers.UrlRedirectorController;
+import com.harystolho.adserver.services.UrlRedirecterService;
 
 /**
  * Returns the {@link AdModel} for the requested {@link Spot}, first it tries to
@@ -24,19 +25,18 @@ import com.harystolho.adserver.controllers.UrlRedirectorController;
 @Service
 public class AdModelService {
 
-	// Cache the AdModels because they don't change
-	private CacheService<AdModel> cacheService;
+	private AdModelCacheService cacheService;
 	private AdModelFactory adModelFactory;
 	private UrlRedirecterService urlRedirectorService;
 
 	@Autowired
-	private AdModelService(CacheService<AdModel> cacheService, UrlRedirecterService urlRedirecterService,
+	private AdModelService(AdModelCacheService adModelCacheService, UrlRedirecterService urlRedirecterService,
 			AdModelFactory adModelFactory, GlobalInformant globalInformant) {
-		this.cacheService = cacheService;
+		this.cacheService = adModelCacheService;
 		this.urlRedirectorService = urlRedirecterService;
 		this.adModelFactory = adModelFactory;
 
-		globalInformant.add(cacheService);
+		globalInformant.add(adModelCacheService);
 	}
 
 	public ServiceResponse<List<AdModel>> getSpots(String ids) {

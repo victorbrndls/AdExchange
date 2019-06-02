@@ -44,7 +44,7 @@ export default class DashboardPieChart extends Component {
                         datasets: [
                             {
                                 data: this.data.data,
-                                backgroundColor: ["#389438  ", "#7835f4"]
+                                backgroundColor: ["#389438", "#7835f4"]
                             }],
                         labels: this.data.labels
                     }

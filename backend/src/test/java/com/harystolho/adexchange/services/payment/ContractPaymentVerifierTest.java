@@ -12,8 +12,8 @@ import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.services.SpotService;
 import com.harystolho.adserver.services.UrlRedirecterService;
-import com.harystolho.adserver.services.AdModelFactory.AdSource;
 import com.harystolho.adserver.services.UrlRedirecterService.SpotData;
+import com.harystolho.adserver.services.admodel.AdModelFactory.AdSource;
 import com.harystolho.adserver.tracker.Tracker;
 import com.harystolho.adserver.tracker.UserTrackerService;
 

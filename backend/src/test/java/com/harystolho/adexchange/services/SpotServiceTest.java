@@ -9,12 +9,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import com.harystolho.adserver.services.AdModelService;
 import com.harystolho.adexchange.events.EventDispatcher;
 import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.repositories.spot.SpotRepository;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
+import com.harystolho.adserver.services.admodel.AdModelService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SpotServiceTest {

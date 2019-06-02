@@ -7,7 +7,7 @@ import com.harystolho.adexchange.information.GlobalInformant;
 import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.utils.AEUtils;
-import com.harystolho.adserver.services.AdModelFactory.AdSource;
+import com.harystolho.adserver.services.admodel.AdModelFactory.AdSource;
 
 /**
  * Creates a mapping from a generated url to the {@link Ad#getRefUrl()}. This is

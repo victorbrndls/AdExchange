@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import com.harystolho.adexchange.events.EventDispatcher;
 import com.harystolho.adexchange.events.Handler;
 import com.harystolho.adexchange.events.spots.events.SpotUpdatedEvent;
-import com.harystolho.adserver.services.AdModelService;
+import com.harystolho.adserver.services.admodel.AdModelService;
 
 @Service
 public class SpotUpdatedEventHandler extends AbstractSpotEventHandler implements Handler<SpotUpdatedEvent> {

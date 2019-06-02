@@ -1,6 +1,7 @@
 package com.harystolho.adexchange.services.payment;
 
 import java.util.Arrays;
+import java.util.function.Consumer;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,24 +14,22 @@ import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
 import com.harystolho.adexchange.services.SpotService;
 import com.harystolho.adexchange.utils.AEUtils;
-import com.harystolho.adserver.services.AdModelFactory.AdSource;
+import com.harystolho.adserver.AdModel;
 import com.harystolho.adserver.services.UrlRedirecterService;
 import com.harystolho.adserver.services.UrlRedirecterService.SpotData;
+import com.harystolho.adserver.services.admodel.AdModelCacheService;
+import com.harystolho.adserver.services.admodel.AdModelFactory.AdSource;
 import com.harystolho.adserver.tracker.Tracker;
 import com.harystolho.adserver.tracker.UserTrackerService;
 
 /**
- * Verifies whether the spot click/view was valid, and issues a payment in that
- * case
+ * Verifies whether the spot acton (click/view) was valid
  * 
  * @author Harystolho
  *
  */
 @Service
 public class SpotActionVerifier {
-
-	// Used to avoid collision in the userTrackerService
-	private static final String INTERACTOR_PREFIX = "c_";
 
 	private static final Logger logger = LogManager.getLogger();
 
@@ -39,14 +38,17 @@ public class SpotActionVerifier {
 	private SpotService spotService;
 	private UserTrackerService userTrackerService;
 	private AnalyticsService analyticsService;
+	private AdModelCacheService adModelCacheService;
 
 	public SpotActionVerifier(UrlRedirecterService urlRedirecterService, ContractPaymentService contractPaymentService,
-			SpotService spotService, UserTrackerService userTrackerService, AnalyticsService analyticsService) {
+			SpotService spotService, UserTrackerService userTrackerService, AnalyticsService analyticsService,
+			AdModelCacheService adModelCacheService) {
 		this.urlRedirecterService = urlRedirecterService;
 		this.contractPaymentService = contractPaymentService;
 		this.spotService = spotService;
 		this.userTrackerService = userTrackerService;
 		this.analyticsService = analyticsService;
+		this.adModelCacheService = adModelCacheService;
 	}
 
 	/**
@@ -75,24 +77,68 @@ public class SpotActionVerifier {
 
 		Spot spot = spotResponse.getReponse();
 
-		verifyUserHasNotInteractedWithContract(tracker, spot.getContractId());
+		verifyUserHasNotClickedContract(tracker, spot.getContractId());
 	}
 
-	private void verifyUserHasNotInteractedWithContract(Tracker tracker, String contractId) {
-		if (userTrackerService.hasTrackerInteractedWith(tracker, INTERACTOR_PREFIX + contractId)) {
-			// User has clicked the spot in the past
-			analyticsService.incrementTotalClicks(contractId);
+	public void verifySpotView(String spotId, Tracker tracker) {
+		AdModel model = adModelCacheService.get(spotId);
+
+		if (model == null)
+			return;
+
+		if (model.getAdSource() != AdSource.CONTRACT)
+			return;
+
+		ServiceResponse<Spot> spotResponse = spotService.getSpot(AEUtils.ADMIN_ACCESS_ID, spotId, "");
+
+		if (spotResponse.getErrorType() != ServiceResponseType.OK) {
+			logger.error("AdModel spot id is not valid. spotId: [{}]", spotId);
 			return;
 		}
 
-		// Record that user has clicked the spot
-		userTrackerService.interactTrackerWith(tracker, INTERACTOR_PREFIX + contractId);
+		Spot spot = spotResponse.getReponse();
 
-		analyticsService.incrementUniqueClicks(contractId);
+		verifyUserHasNotViewedContract(tracker, spot.getContractId());
 
-		// Issue payment to the website owner
-		contractPaymentService.issueContractPayment(contractId,
-				Arrays.asList(PaymentMethod.PAY_PER_CLICK, PaymentMethod.PAY_PER_VIEW));
 	}
 
+	private void verifyUserHasNotViewedContract(Tracker tracker, String contractId) {
+		verifyUserHasNotInteractedWithContract(tracker, "v_", contractId, analyticsService::incrementTotalViews,
+				analyticsService::incrementUniqueViews);
+	}
+
+	private void verifyUserHasNotClickedContract(Tracker tracker, String contractId) {
+		boolean hasInteracted = verifyUserHasNotInteractedWithContract(tracker, "c_", contractId,
+				analyticsService::incrementTotalClicks, analyticsService::incrementUniqueClicks);
+
+		if (!hasInteracted)
+			// Issue payment to the website owner
+			contractPaymentService.issueContractPayment(contractId,
+					Arrays.asList(PaymentMethod.PAY_PER_CLICK, PaymentMethod.PAY_PER_VIEW));
+	}
+
+	/**
+	 * @param hasInteractedFunction    function called if the user has interacted
+	 *                                 with the contract before
+	 * @param hasNotInteractedFunction function called if the user has NOT
+	 *                                 interacted with the contract before
+	 * 
+	 * @return <code>true</code> if the user has interacted with the contract in the
+	 *         past
+	 */
+	private boolean verifyUserHasNotInteractedWithContract(Tracker tracker, String prefix, String contractId,
+			Consumer<String> hasInteractedFunction, Consumer<String> hasNotInteractedFunction) {
+		if (userTrackerService.hasTrackerInteractedWith(tracker, prefix + contractId)) {
+			hasInteractedFunction.accept(contractId);
+
+			return true;
+		} else {
+			// Record that the user has interacted with the contract
+			userTrackerService.interactTrackerWith(tracker, prefix + contractId);
+
+			hasNotInteractedFunction.accept(contractId);
+
+			return false;
+		}
+	}
 }

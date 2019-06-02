@@ -11,7 +11,7 @@ import com.harystolho.adexchange.models.Spot;
 @Service
 public class AdModelDataCache {
 
-	// AccountId -> DataDache
+	// AccountId -> AdModelData
 	private final Map<String, AdModelData> container;
 
 	public AdModelDataCache() {

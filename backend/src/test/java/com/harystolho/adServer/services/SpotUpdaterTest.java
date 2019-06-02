@@ -9,6 +9,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import com.harystolho.adserver.data.AdModelData;
 import com.harystolho.adserver.data.AdModelDataCache;
+import com.harystolho.adserver.services.admodel.AdModelService;
 import com.harystolho.adexchange.models.Contract;
 import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.models.account.Balance;

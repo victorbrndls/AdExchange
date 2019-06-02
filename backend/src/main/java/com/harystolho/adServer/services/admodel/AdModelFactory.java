@@ -1,4 +1,4 @@
-package com.harystolho.adserver.services;
+package com.harystolho.adserver.services.admodel;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,6 +21,7 @@ import com.harystolho.adexchange.utils.Pair;
 import com.harystolho.adserver.AdModel;
 import com.harystolho.adserver.controllers.UrlRedirectorController;
 import com.harystolho.adserver.data.AdModelDataCache;
+import com.harystolho.adserver.services.UrlRedirecterService;
 import com.harystolho.adserver.templates.AdTemplateService;
 
 /**
@@ -77,6 +78,7 @@ public class AdModelFactory {
 			return errorAdModel("INVALID_AD_ID");
 
 		AdModel model = buildUsingAd(ad);
+		model.setAdSource(adPair.getSecond());
 
 		model.setSpotId(spot.getId());
 		model.setRedirectUrl(buildRedirectUrl("https://localhost:8080", UrlRedirectorController.REDIRECT_ENDPOINT,

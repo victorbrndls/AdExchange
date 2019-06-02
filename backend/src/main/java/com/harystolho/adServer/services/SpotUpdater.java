@@ -10,6 +10,7 @@ import com.harystolho.adexchange.models.Spot;
 import com.harystolho.adexchange.services.AccountService;
 import com.harystolho.adserver.data.AdModelData;
 import com.harystolho.adserver.data.AdModelDataCache;
+import com.harystolho.adserver.services.admodel.AdModelService;
 
 /**
  * Removes Spots from {@link AdModelService} if the cached Spot is not suitable

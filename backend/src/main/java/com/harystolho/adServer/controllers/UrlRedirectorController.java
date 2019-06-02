@@ -12,10 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.harystolho.adexchange.events.EventDispatcher;
 import com.harystolho.adexchange.events.spots.events.SpotClickedEvent;
 import com.harystolho.adexchange.services.ServiceResponse;
-import com.harystolho.adexchange.utils.AEUtils;
+import com.harystolho.adserver.services.TrackableRequestService;
 import com.harystolho.adserver.services.UrlRedirecterService;
 import com.harystolho.adserver.tracker.Tracker;
-import com.harystolho.adserver.tracker.UserTrackerService;
 
 @RestController
 @CrossOrigin
@@ -25,21 +24,21 @@ public class UrlRedirectorController {
 
 	private UrlRedirecterService urlRedirectorService;
 	private EventDispatcher eventDispatcher;
-	private UserTrackerService userTrackerService;
+	private TrackableRequestService trackableRequestService;
 
 	@Autowired
 	private UrlRedirectorController(UrlRedirecterService urlRedirectorService, EventDispatcher eventDispatcher,
-			UserTrackerService userTrackerService) {
+			TrackableRequestService trackableRequestService) {
 		this.urlRedirectorService = urlRedirectorService;
 		this.eventDispatcher = eventDispatcher;
-		this.userTrackerService = userTrackerService;
+		this.trackableRequestService = trackableRequestService;
 	}
 
 	@GetMapping(path = REDIRECT_ENDPOINT + "/{id}")
 	public void redirect(HttpServletRequest req, HttpServletResponse res, @PathVariable String id) {
+		Tracker tracker = trackableRequestService.addTrackerToRequest(req, res);
+		
 		ServiceResponse<String> response = urlRedirectorService.getRefUrlUsingRequestPath(req.getRequestURI());
-
-		Tracker tracker = addTrackerToRequest(req, res);
 
 		try {
 			switch (response.getErrorType()) {
@@ -55,26 +54,6 @@ public class UrlRedirectorController {
 		} catch (Exception e) {
 			// Do nothing
 		}
-	}
-
-	/**
-	 * Adds a tracker the the request if it doesn't contain one
-	 * 
-	 * @param req
-	 * @param res
-	 * @return
-	 */
-	private Tracker addTrackerToRequest(HttpServletRequest req, HttpServletResponse res) {
-		Tracker tracker = new Tracker(AEUtils.getCookieByName(req.getCookies(), UserTrackerService.COOKIE_NAME),
-				req.getRemoteAddr());
-
-		if (!userTrackerService.isTrackerValid(tracker)) {
-			tracker = userTrackerService.createTracker(req.getRemoteAddr());
-			res.addCookie(tracker.getCookie());
-		}
-
-		return tracker;
-
 	}
 
 }
