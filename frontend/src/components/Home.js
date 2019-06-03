@@ -64,40 +64,21 @@ export default class Home extends Component {
                                     <div class="row justify-content-center ae-home-benefits-header mb-5">
                                         <h2>Alcance os resultados desejados</h2>
                                     </div>
-                                    <div class="row justify-content-around">
-                                        <div class="ae-home-tile col-sm-12 col-md-6 col-lg-3">
-                                            <div class="tile-header">
-                                                {/*Icon should be SVG*/}
-                                                <img src="https://via.placeholder.com/120x100.png"/>
-                                            </div>
-                                            <p class="tile-title">Aumente o número de visitas ao site</p>
-                                            <p class="tile-body">Aumente o número de vendas on-line, reservas ou
-                                                inscrições
-                                                na lista de
-                                                e-mails com anúncios na Internet que direcionam as pessoas para seu
-                                                site.</p>
+                                    <div class="row justify-content-center">
+                                        <div class="col-sm-12 col-md-6 col-lg-3">
+                                            <BenefitCard header="Aumente o número de visitas ao site"
+                                                         subHeader="Aumente o número de vendas on-line, reservas ou inscrições na lista de e-mails com anúncios na Internet que direcionam as pessoas para seu site."
+                                                         imgSrc="https://via.placeholder.com/120x100.png"/>
                                         </div>
                                         <div class="ae-home-tile col-sm-12 col-md-6 col-lg-3">
-                                            <div class="tile-header">
-                                                {/*Icon should be SVG*/}
-                                                <img src="https://via.placeholder.com/120x100.png"/>
-                                            </div>
-                                            <p class="tile-title">Aumente as visitas à loja</p>
-                                            <p class="tile-body">Receba mais clientes na loja com anúncios que
-                                                ajudam as
-                                                pessoas a encontrar sua empresa no mapa</p>
+                                            <BenefitCard header="Receba mais chamadas"
+                                                         subHeader="Receba mais chamadas de clientes com anúncios que incluem seu número e um botão Clique para ligar."
+                                                         imgSrc="https://via.placeholder.com/120x100.png"/>
                                         </div>
                                         <div class="ae-home-tile col-sm-12 col-md-6 col-lg-3">
-                                            <div class="tile-header">
-                                                {/*Icon should be SVG*/}
-                                                <img src="https://via.placeholder.com/120x100.png"/>
-                                            </div>
-                                            <p class="tile-title">Aumente o número de visitas ao site</p>
-                                            <p class="tile-body">Aumente o número de vendas on-line, reservas ou
-                                                inscrições
-                                                na lista de
-                                                e-mails com anúncios na Internet que direcionam as pessoas para seu
-                                                site.</p>
+                                            <BenefitCard header="Aumente as visitas à loja"
+                                                         subHeader="Receba mais clientes na loja com anúncios que ajudam as pessoas a encontrar sua empresa no mapa."
+                                                         imgSrc="https://via.placeholder.com/120x100.png"/>
                                         </div>
                                     </div>
                                 </div>
@@ -109,10 +90,10 @@ export default class Home extends Component {
                         <div class="container ae-home">
                             <div class="row">
                                 <div class="col">
-                                    <div class="row justify-content-center ae-home-benefits-header mb-5">
-                                        <h2>Preços</h2>
+                                    <div class="row justify-content-center ae-home-benefits-header my-4">
+                                        <h2 class="ae-pricing__header">Preços</h2>
                                     </div>
-                                    <div class="row justify-content-center">
+                                    <div class="row justify-content-center mb-4">
                                         <div class="col-sm-12 col-md-4">
                                             <PricingCard title="Básico" price="0"
                                                          benefits={[
@@ -144,7 +125,7 @@ export default class Home extends Component {
 }
 
 const PricingCard = ({title, price, benefits = []}) => (
-    <div class="ae-home-pricing shadow">
+    <div class="ae-home-pricing shadow mb-4">
         <h3>{title}</h3>
         <div>
             <p class="text-black-50">$&nbsp;
@@ -159,5 +140,15 @@ const PricingCard = ({title, price, benefits = []}) => (
         <a class="ae-home-pricing__button">
             <span>Comece agora</span>
         </a>
+    </div>
+);
+
+const BenefitCard = ({header, subHeader, imgSrc}) => (
+    <div class="ae-home-tile">
+        <div class="tile-header">
+            <img src={imgSrc}/> {/*Icon should be SVG*/}
+        </div>
+        <p class="tile-title">{header}</p>
+        <p class="tile-body">{subHeader}</p>
     </div>
 );

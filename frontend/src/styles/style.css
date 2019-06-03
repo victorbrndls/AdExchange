@@ -89,13 +89,17 @@ body.auth #header {
 }
 
 .ae-home-section.ae-benefits, .ae-home-section.ae-pricing {
-    margin-bottom: 70px;
+    margin-bottom: 150px;
 }
 
 .ae-home-pricing {
     background-color: white;
     border-radius: 4px;
     padding: 20px;
+}
+
+.ae-home-section.ae-pricing{
+    background-color: #21bbc7;
 }
 
 .ae-home-pricing__price {
@@ -121,6 +125,11 @@ body.auth #header {
     border-radius: 2px;
     font-weight: 600;
     color: white !important;
+    cursor: pointer;
+}
+
+.ae-pricing__header{
+    font-weight: 600;
 }
 
 .ae-home-tile > .tile-header {
