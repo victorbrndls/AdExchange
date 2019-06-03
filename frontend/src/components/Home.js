@@ -25,77 +25,139 @@ export default class Home extends Component {
                     </div>
                 </div>
 
-                <div class="container ae-home">
-                    <section>
-                        <div class="row ae-home-banner">
-                            <div class="col-sm-12 col-md-5">
-                                <div class="row">
-                                    <h1 class="ae-home-banner__main-message">Faça seu site crescer com Adnamic</h1>
+                <div>
+                    <div class="ae-home-section">
+                        <div class="container ae-home">
+                            <div class="row ae-home-banner">
+                                <div class="col-sm-12 col-md-5">
+                                    <div class="row">
+                                        <h1 class="ae-home-banner__main-message">Faça seu site crescer com
+                                            Adnamic</h1>
+                                    </div>
+                                    <div class="row">
+                                        <p>Exiba anuncios para seus cliente e pague somente pelos resultados. Exiba
+                                            anuncios
+                                            para seus cliente e pague somente pelos resultados. Soapbox is the only
+                                            tool you
+                                            need to record, edit, and share videos in minutes. </p>
+                                    </div>
+                                    <div class="row">
+                                        <a class="p-3 my-3 ae-home-banner-button trans-0_3s">
+                                            <span>Comece agora</span>
+                                        </a>
+                                    </div>
                                 </div>
-                                <div class="row">
-                                    <p>Exiba anuncios para seus cliente e pague somente pelos resultados. Exiba anuncios
-                                        para seus cliente e pague somente pelos resultados. Soapbox is the only tool you
-                                        need to record, edit, and share videos in minutes. </p>
-                                </div>
-                                <div class="row">
-                                    <a class="p-3 my-3 ae-home-banner-button trans-0_3s">
-                                        <span>Comece agora</span>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-sm-0 col-md-1"/>
-                            <div class="col-sm-12 col-md-6">
-                                <div class="row">
-                                    <img src="https://via.placeholder.com/570x350.png"/> {/* //TODO add alt*/}
+                                <div class="col-sm-0 col-md-1"/>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="row">
+                                        <img src="https://via.placeholder.com/570x350.png"/> {/* //TODO add alt*/}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </section>
+                    </div>
 
-                    <section>
-                        <div class="row">
-                            <div class="col">
-                                <div class="row justify-content-center ae-home-benefits-header mb-5">
-                                    <h2>Alcance os resultados desejados</h2>
-                                </div>
-                                <div class="row justify-content-around">
-                                    <div class="ae-home-tile col-sm-12 col-md-6 col-lg-3">
-                                        <div class="tile-header">
-                                            {/*Icon should be SVG*/}
-                                            <img src="https://via.placeholder.com/120x100.png"/>
-                                        </div>
-                                        <p class="tile-title">Aumente o número de visitas ao site</p>
-                                        <p class="tile-body">Aumente o número de vendas on-line, reservas ou inscrições
-                                            na lista de
-                                            e-mails com anúncios na Internet que direcionam as pessoas para seu
-                                            site.</p>
+                    <div class="ae-home-section ae-benefits">
+                        <div class="container ae-home">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="row justify-content-center ae-home-benefits-header mb-5">
+                                        <h2>Alcance os resultados desejados</h2>
                                     </div>
-                                    <div class="ae-home-tile col-sm-12 col-md-6 col-lg-3">
-                                        <div class="tile-header">
-                                            {/*Icon should be SVG*/}
-                                            <img src="https://via.placeholder.com/120x100.png"/>
+                                    <div class="row justify-content-around">
+                                        <div class="ae-home-tile col-sm-12 col-md-6 col-lg-3">
+                                            <div class="tile-header">
+                                                {/*Icon should be SVG*/}
+                                                <img src="https://via.placeholder.com/120x100.png"/>
+                                            </div>
+                                            <p class="tile-title">Aumente o número de visitas ao site</p>
+                                            <p class="tile-body">Aumente o número de vendas on-line, reservas ou
+                                                inscrições
+                                                na lista de
+                                                e-mails com anúncios na Internet que direcionam as pessoas para seu
+                                                site.</p>
                                         </div>
-                                        <p class="tile-title">Aumente as visitas à loja</p>
-                                        <p class="tile-body">Receba mais clientes na loja com anúncios que ajudam as
-                                            pessoas a encontrar sua empresa no mapa</p>
-                                    </div>
-                                    <div class="ae-home-tile col-sm-12 col-md-6 col-lg-3">
-                                        <div class="tile-header">
-                                            {/*Icon should be SVG*/}
-                                            <img src="https://via.placeholder.com/120x100.png"/>
+                                        <div class="ae-home-tile col-sm-12 col-md-6 col-lg-3">
+                                            <div class="tile-header">
+                                                {/*Icon should be SVG*/}
+                                                <img src="https://via.placeholder.com/120x100.png"/>
+                                            </div>
+                                            <p class="tile-title">Aumente as visitas à loja</p>
+                                            <p class="tile-body">Receba mais clientes na loja com anúncios que
+                                                ajudam as
+                                                pessoas a encontrar sua empresa no mapa</p>
                                         </div>
-                                        <p class="tile-title">Aumente o número de visitas ao site</p>
-                                        <p class="tile-body">Aumente o número de vendas on-line, reservas ou inscrições
-                                            na lista de
-                                            e-mails com anúncios na Internet que direcionam as pessoas para seu
-                                            site.</p>
+                                        <div class="ae-home-tile col-sm-12 col-md-6 col-lg-3">
+                                            <div class="tile-header">
+                                                {/*Icon should be SVG*/}
+                                                <img src="https://via.placeholder.com/120x100.png"/>
+                                            </div>
+                                            <p class="tile-title">Aumente o número de visitas ao site</p>
+                                            <p class="tile-body">Aumente o número de vendas on-line, reservas ou
+                                                inscrições
+                                                na lista de
+                                                e-mails com anúncios na Internet que direcionam as pessoas para seu
+                                                site.</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </section>
+                    </div>
+
+                    <div class="ae-home-section ae-pricing">
+                        <div class="container ae-home">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="row justify-content-center ae-home-benefits-header mb-5">
+                                        <h2>Preços</h2>
+                                    </div>
+                                    <div class="row justify-content-center">
+                                        <div class="col-sm-12 col-md-4">
+                                            <PricingCard title="Básico" price="0"
+                                                         benefits={[
+                                                             "There are many variations of Lorem",
+                                                             "There are many variations of Lorem",
+                                                             "There are many variations of Lorem",
+                                                             "There are many variations of Lorem"
+                                                         ]}/>
+                                        </div>
+                                        <div class="col-sm-12 col-md-4">
+                                            <PricingCard title="Pro" price="13"
+                                                         benefits={[
+                                                             "Quickly build an effective pricing",
+                                                             "Quickly build an effective pricing",
+                                                             "Quickly build an effective pricing",
+                                                             "Quickly build an effective pricing",
+                                                             "Quickly build an effective pricing"
+                                                         ]}/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         )
     }
 }
+
+const PricingCard = ({title, price, benefits = []}) => (
+    <div class="ae-home-pricing shadow">
+        <h3>{title}</h3>
+        <div>
+            <p class="text-black-50">$&nbsp;
+                <span class="ae-home-pricing__price">{price}</span>
+                /mês</p>
+        </div>
+        <ul class="ae-home-pricing-benefits">
+            {benefits.map((benefit) => (
+                <li>{benefit}</li>
+            ))}
+        </ul>
+        <a class="ae-home-pricing__button">
+            <span>Comece agora</span>
+        </a>
+    </div>
+);
