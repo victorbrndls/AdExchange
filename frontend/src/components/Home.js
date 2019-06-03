@@ -91,10 +91,10 @@ export default class Home extends Component {
                     <div class="ae-home-section ae-features">
                         <div class="container ae-home">
                             <div class="row flex-column align-items-center">
-                                <div class="col-md-12 col-lg-10 ae-features-row">
+                                <div class="col-md-12 col-lg-11 ae-features-row">
                                     <div class="row">
                                         <div class="col">
-                                            <img src="https://picsum.photos/400/300"/>
+                                            <img class="ae-features-img" src="https://picsum.photos/450/300"/>
                                         </div>
                                         <div class="col">
                                             <h3 class="font-weight-bold">Monetized in minutes</h3>
@@ -107,7 +107,7 @@ export default class Home extends Component {
                                     </div>
                                 </div>
 
-                                <div class="col-md-12 col-lg-10 ae-features-row">
+                                <div class="col-md-12 col-lg-11 ae-features-row">
                                     <div class="row">
                                         <div class="col">
                                             <h3 class="font-weight-bold">No network - you are in control</h3>
@@ -117,15 +117,15 @@ export default class Home extends Component {
                                             </p>
                                         </div>
                                         <div class="col">
-                                            <img src="https://picsum.photos/400/300"/>
+                                            <img class="ae-features-img" src="https://picsum.photos/451/300"/>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-md-12 col-lg-10 ae-features-row">
+                                <div class="col-md-12 col-lg-11 ae-features-row">
                                     <div class="row">
                                         <div class="col">
-                                            <img src="https://picsum.photos/400/300"/>
+                                            <img class="ae-features-img" src="https://picsum.photos/449/300"/>
                                         </div>
                                         <div class="col">
                                             <h3 class="font-weight-bold">Monetized in minutes</h3>
@@ -159,7 +159,7 @@ export default class Home extends Component {
                                                          ]}/>
                                         </div>
                                         <div class="col-sm-12 col-md-4">
-                                            <PricingCard title="Pro" price="13"
+                                            <PricingCard title="Profissional" price="13"
                                                          benefits={[
                                                              "Websites ilimitados",
                                                              "Anuncios ilimitados",

@@ -88,8 +88,12 @@ body.auth #header {
     font-size: 44px;
 }
 
-.ae-home-section.ae-benefits, .ae-home-section.ae-pricing, .ae-home-section.ae-features {
+.ae-home-section.ae-benefits, .ae-home-section.ae-pricing {
     margin-bottom: 150px;
+}
+
+.ae-home-section.ae-features {
+    margin-bottom: 30px;
 }
 
 .ae-home-pricing {
@@ -99,7 +103,7 @@ body.auth #header {
 }
 
 .ae-home-section.ae-pricing {
-    background-color: #21bbc7;
+    background-color: #21bbc791;
 }
 
 .ae-home-pricing__price {
@@ -137,7 +141,7 @@ body.auth #header {
 }
 
 .ae-features-row {
-    margin-bottom: 70px;
+    margin-bottom: 90px;
 }
 
 .ae-features-text {
@@ -837,4 +841,10 @@ body.auth #header {
 
 .trans-0_3s {
     transition: all 0.3s;
+}
+
+@media (min-width: 768px) and (max-width: 992px) {
+    .ae-features-img {
+        width: 350px;
+    }
 }
