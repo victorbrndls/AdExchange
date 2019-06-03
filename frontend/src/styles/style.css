@@ -60,12 +60,13 @@ body.auth #header {
 }
 
 .ae-home-banner {
-    margin: 50px 0;
+    margin: 90px 0;
 }
 
 .ae-home-banner__main-message {
     font-size: 50px;
     font-weight: 600;
+    line-height: 1.4;
 }
 
 .ae-home-banner-button {
@@ -87,7 +88,7 @@ body.auth #header {
 }
 
 .ae-home > section {
-    margin-bottom: 100px;
+    padding-bottom: 100px;
 }
 
 .ae-home-tile {
@@ -104,6 +105,8 @@ body.auth #header {
 
 .ae-home-tile > .tile-header {
     height: 100px;
+    text-align: center;
+    margin-bottom: 25px;
 }
 
 .ae-home-tile > .tile-title {
