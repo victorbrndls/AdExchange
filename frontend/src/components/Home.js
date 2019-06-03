@@ -37,9 +37,9 @@ export default class Home extends Component {
                                     <div class="row">
                                         <p>Exiba anuncios para seus cliente e pague somente pelos resultados. Exiba
                                             anuncios
-                                            para seus cliente e pague somente pelos resultados. Soapbox is the only
-                                            tool you
-                                            need to record, edit, and share videos in minutes. </p>
+                                            para seus cliente e pague somente pelos resultados. We allow you to sell
+                                            custom ad spaces on-site and monetize your community through
+                                            privacy-preserving and ethical ad spaces.</p>
                                     </div>
                                     <div class="row">
                                         <a class="p-3 my-3 ae-home-banner-button trans-0_3s">
@@ -65,20 +65,75 @@ export default class Home extends Component {
                                         <h2>Alcance os resultados desejados</h2>
                                     </div>
                                     <div class="row justify-content-center">
+                                        <div class="ae-home-tile col-sm-12 col-md-6 col-lg-3">
+                                            <BenefitCard header="Aumente as visitas à loja"
+                                                         subHeader="Receba mais clientes na loja com anúncios que ajudam as pessoas a encontrar sua empresa no mapa."
+                                                         imgSrc="https://via.placeholder.com/120x100.png"/>
+                                        </div>
+
                                         <div class="col-sm-12 col-md-6 col-lg-3">
                                             <BenefitCard header="Aumente o número de visitas ao site"
                                                          subHeader="Aumente o número de vendas on-line, reservas ou inscrições na lista de e-mails com anúncios na Internet que direcionam as pessoas para seu site."
                                                          imgSrc="https://via.placeholder.com/120x100.png"/>
                                         </div>
+
                                         <div class="ae-home-tile col-sm-12 col-md-6 col-lg-3">
                                             <BenefitCard header="Receba mais chamadas"
                                                          subHeader="Receba mais chamadas de clientes com anúncios que incluem seu número e um botão Clique para ligar."
                                                          imgSrc="https://via.placeholder.com/120x100.png"/>
                                         </div>
-                                        <div class="ae-home-tile col-sm-12 col-md-6 col-lg-3">
-                                            <BenefitCard header="Aumente as visitas à loja"
-                                                         subHeader="Receba mais clientes na loja com anúncios que ajudam as pessoas a encontrar sua empresa no mapa."
-                                                         imgSrc="https://via.placeholder.com/120x100.png"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ae-home-section ae-features">
+                        <div class="container ae-home">
+                            <div class="row flex-column align-items-center">
+                                <div class="col-md-12 col-lg-10 ae-features-row">
+                                    <div class="row">
+                                        <div class="col">
+                                            <img src="https://picsum.photos/400/300"/>
+                                        </div>
+                                        <div class="col">
+                                            <h3 class="font-weight-bold">Monetized in minutes</h3>
+                                            <p class="ae-features-text">Setting up ad spaces is incredibly
+                                                quick. It only takes a few easy steps
+                                                to display and sell instantly bookable ad spaces and sponsorship spots
+                                                on your site.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 col-lg-10 ae-features-row">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h3 class="font-weight-bold">No network - you are in control</h3>
+                                            <p class="ae-features-text">Your ads are not being served
+                                                through a network, but purchased manually through your site. No tracking
+                                                needed. You decide what ads are going to show up.
+                                            </p>
+                                        </div>
+                                        <div class="col">
+                                            <img src="https://picsum.photos/400/300"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 col-lg-10 ae-features-row">
+                                    <div class="row">
+                                        <div class="col">
+                                            <img src="https://picsum.photos/400/300"/>
+                                        </div>
+                                        <div class="col">
+                                            <h3 class="font-weight-bold">Monetized in minutes</h3>
+                                            <p class="ae-features-text">Setting up ad spaces is incredibly
+                                                quick. It only takes a few easy steps
+                                                to display and sell instantly bookable ad spaces and sponsorship spots
+                                                on your site.
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -97,20 +152,19 @@ export default class Home extends Component {
                                         <div class="col-sm-12 col-md-4">
                                             <PricingCard title="Básico" price="0"
                                                          benefits={[
-                                                             "There are many variations of Lorem",
-                                                             "There are many variations of Lorem",
-                                                             "There are many variations of Lorem",
-                                                             "There are many variations of Lorem"
+                                                             "1 Website",
+                                                             "3 Spots",
+                                                             "4 Anuncios",
+                                                             "Editor de anuncio simples"
                                                          ]}/>
                                         </div>
                                         <div class="col-sm-12 col-md-4">
                                             <PricingCard title="Pro" price="13"
                                                          benefits={[
-                                                             "Quickly build an effective pricing",
-                                                             "Quickly build an effective pricing",
-                                                             "Quickly build an effective pricing",
-                                                             "Quickly build an effective pricing",
-                                                             "Quickly build an effective pricing"
+                                                             "Websites ilimitados",
+                                                             "Anuncios ilimitados",
+                                                             "Spots ilimitados",
+                                                             "Editor de anuncio PRO",
                                                          ]}/>
                                         </div>
                                     </div>
