@@ -3,10 +3,13 @@ package com.harystolho.adserver.services;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.stereotype.Service;
+
 import com.harystolho.adexchange.utils.AEUtils;
 import com.harystolho.adserver.tracker.Tracker;
 import com.harystolho.adserver.tracker.UserTrackerService;
 
+@Service
 public class TrackableRequestService {
 
 	private UserTrackerService userTrackerService;
