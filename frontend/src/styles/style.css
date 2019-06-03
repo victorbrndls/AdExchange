@@ -52,15 +52,71 @@ body.auth #header {
     padding: 2px 13px;
 }
 
-.ae-navbar--link:hover {
-    background-color: #0028ff29;
-}
-
 .ae-navbar--link > a {
     font-family: Raleway, serif;
     font-size: 20px;
     color: var(--ad-primary);
     text-decoration: none;
+}
+
+.ae-home-banner {
+    margin: 50px 0;
+}
+
+.ae-home-banner__main-message {
+    font-size: 50px;
+    font-weight: 600;
+}
+
+.ae-home-banner-button {
+    background-color: #2168c7;
+    cursor: pointer;
+}
+
+.ae-home-banner-button:hover {
+    background-color: #194a93;
+}
+
+.ae-home-banner-button span {
+    color: white;
+}
+
+.ae-home-benefits-header h2 {
+    font-weight: 400;
+    font-size: 44px;
+}
+
+.ae-home > section {
+    margin-bottom: 100px;
+}
+
+.ae-home-tile {
+
+}
+
+.ae-home-tile:first-of-type {
+
+}
+
+.ae-home-tile:last-of-type {
+
+}
+
+.ae-home-tile > .tile-header {
+    height: 100px;
+}
+
+.ae-home-tile > .tile-title {
+    font-weight: 600;
+    font-variant: all-petite-caps;
+}
+
+.ae-home-tile > .tile-body {
+    color: rgb(60, 64, 67);
+}
+
+.tile-title, .tile-body{
+    text-align: center;
 }
 
 .auth-sign {
@@ -108,7 +164,7 @@ body.auth #header {
     height: var(--header-height);
 }
 
-.dashboard__sidebar-logo{
+.dashboard__sidebar-logo {
     display: flex;
     box-shadow: inset 0 0 4px -2px #0000007a;
 }
@@ -719,17 +775,21 @@ body.auth #header {
     background-color: #7a7a7a87;
 }
 
-.dashboard-info-container{
+.dashboard-info-container {
     background-color: #fff3cd;
     color: #856404;
     padding: 2px 11px;
     border-radius: 4px;
 }
 
-.controlpanel-card__text h2, h4{
+.controlpanel-card__text h2, h4 {
     font-weight: 600;
 }
 
-.controlpanel-card__text span{
+.controlpanel-card__text span {
     color: deepskyblue;
+}
+
+.trans-0_3s {
+    transition: all 0.3s;
 }
