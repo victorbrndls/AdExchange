@@ -1,8 +1,5 @@
 import {Component} from "preact";
-import {Link} from "preact-router/match";
-
-import {auth} from "../auth";
-import {route} from "preact-router";
+import {Link} from "preact-router";
 
 export default class Home extends Component {
     constructor(props) {
@@ -27,25 +24,72 @@ export default class Home extends Component {
                         </div>
                     </div>
                 </div>
-                <div class="container">
-                    <div class="row">
-                        <div onClick={() => route('/dashboard/panel')}>Dashbaord</div>
-                    </div>
+
+                <div class="container ae-home">
+                    <section>
+                        <div class="row ae-home-banner">
+                            <div class="col-sm-12 col-md-5">
+                                <div class="row">
+                                    <h1 class="ae-home-banner__main-message">Faça seu site crescer com Adnamic</h1>
+                                </div>
+                                <div class="row">
+                                    <p>Exiba anuncios para seus cliente e pague somente pelos resultados</p>
+                                </div>
+                                <div class="row">
+                                    <a class="p-3 my-3 ae-home-banner-button trans-0_3s">
+                                        <span>Comece agora</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-sm-0 col-md-1"/>
+                            <div class="col-sm-12 col-md-6">
+                                <div class="row">
+                                    <img src="https://via.placeholder.com/570x350.png"/> {/* //TODO add alt*/}
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section>
+                        <div class="row">
+                            <div class="col">
+                                <div class="row justify-content-center ae-home-benefits-header mb-5">
+                                    <h2>Alcance os resultados desejados</h2>
+                                </div>
+                                <div class="row">
+                                    <div class="ae-home-tile col-sm-12 col-md-6 col-lg-4">
+                                        <div class="tile-header">
+                                            {/*Icon should be SVG*/}
+                                        </div>
+                                        <p class="tile-title">Aumente o número de visitas ao site</p>
+                                        <p class="tile-body">Aumente o número de vendas on-line, reservas ou inscrições
+                                            na lista de
+                                            e-mails com anúncios na Internet que direcionam as pessoas para seu
+                                            site.</p>
+                                    </div>
+                                    <div class="ae-home-tile col-sm-12 col-md-6 col-lg-4">
+                                        <div class="tile-header">
+                                            {/*Icon should be SVG*/}
+                                        </div>
+                                        <p class="tile-title">Aumente as visitas à loja</p>
+                                        <p class="tile-body">Receba mais clientes na loja com anúncios que ajudam as
+                                            pessoas a encontrar sua empresa no mapa</p>
+                                    </div>
+                                    <div class="ae-home-tile col-sm-12 col-md-6 col-lg-4">
+                                        <div class="tile-header">
+                                            {/*Icon should be SVG*/}
+                                        </div>
+                                        <p class="tile-title">Aumente o número de visitas ao site</p>
+                                        <p class="tile-body">Aumente o número de vendas on-line, reservas ou inscrições
+                                            na lista de
+                                            e-mails com anúncios na Internet que direcionam as pessoas para seu
+                                            site.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
                 </div>
             </div>
         )
     }
-}
-
-{/*
-<div>
-    <div
-        onClick={() => localStorage.setItem("adExchange.authToken", "eca70362be2f4b3eb7013210fd71e940cdc3a0a86bf743de88a344a70848a48bc5a58e9d65f443a7b1e9ccd62ef33b204aca4756fdf84e8cba3629a02f49d90f")}>
-        a@a
-    </div>
-    <div
-        onClick={() => localStorage.setItem("adExchange.authToken", "8e9d65f443a7b1e9cceca70362be2f4b3eb7013210fd71e86bf743de88a344a70848a48bc5a5df84e8cba36d62ef33b204aca4756fc3a0a29a02f49d90f940cd")}>
-        b@b
-    </div>
-</div>*/
 }
