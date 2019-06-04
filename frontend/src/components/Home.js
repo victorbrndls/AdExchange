@@ -65,22 +65,22 @@ export default class Home extends Component {
                                         <h2>Alcance os resultados desejados</h2>
                                     </div>
                                     <div class="row justify-content-center">
-                                        <div class="ae-home-tile col-sm-12 col-md-6 col-lg-3">
+                                        <div class="col-sm-12 col-md-6 col-lg-4">
                                             <BenefitCard header="Aumente as visitas à loja"
                                                          subHeader="Receba mais clientes na loja com anúncios que ajudam as pessoas a encontrar sua empresa no mapa."
-                                                         imgSrc="https://picsum.photos/120/101"/>
+                                                         imgSrc="/assets/small-business.png"/>
                                         </div>
 
-                                        <div class="col-sm-12 col-md-6 col-lg-3">
+                                        <div class="col-sm-12 col-md-6 col-lg-4">
                                             <BenefitCard header="Aumente o número de visitas ao site"
                                                          subHeader="Aumente o número de vendas on-line, reservas ou inscrições na lista de e-mails com anúncios na Internet que direcionam as pessoas para seu site."
-                                                         imgSrc="https://picsum.photos/120/102"/>
+                                                         imgSrc="/assets/small-web.png"/>
                                         </div>
 
-                                        <div class="ae-home-tile col-sm-12 col-md-6 col-lg-3">
+                                        <div class="col-sm-12 col-md-6 col-lg-4">
                                             <BenefitCard header="Receba mais chamadas"
                                                          subHeader="Receba mais chamadas de clientes com anúncios que incluem seu número e um botão Clique para ligar."
-                                                         imgSrc="https://picsum.photos/120/103"/>
+                                                         imgSrc="/assets/small-money-bag.png"/>
                                         </div>
                                     </div>
                                 </div>

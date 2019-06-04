@@ -78,6 +78,8 @@ body.auth #header {
 
 .ae-home-banner-button {
     background-color: #2168c7;
+    border-bottom: solid 2px #0b3b7b;
+    border-radius: 4px;
     cursor: pointer;
 }
 
@@ -92,6 +94,7 @@ body.auth #header {
 .ae-home-benefits-header h2 {
     font-family: 'Poppins', sans-serif;
     font-size: 44px;
+    color: #2850c1;
 }
 
 .ae-home-section.ae-benefits, .ae-home-section.ae-pricing {
@@ -109,7 +112,7 @@ body.auth #header {
 }
 
 .ae-home-section.ae-pricing {
-    background-color: #21bbc791;
+    /*background-color: #21bbc791;*/
 }
 
 .ae-home-pricing__price {
@@ -151,6 +154,15 @@ body.auth #header {
     font-size: 18px;
 }
 
+.ae-features-img{
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+}
+
+.ae-features-img:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.7rem 1rem rgba(0, 0, 0, 0.34);
+}
+
 .ae-home-tile > .tile-header {
     height: 100px;
     text-align: center;
@@ -160,10 +172,12 @@ body.auth #header {
 .ae-home-tile > .tile-title {
     font-weight: 600;
     font-variant: all-petite-caps;
+    min-height: 48px;
 }
 
 .ae-home-tile > .tile-body {
     color: rgb(60, 64, 67);
+    font-size: 18px;
 }
 
 .tile-title, .tile-body {
