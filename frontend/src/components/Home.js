@@ -65,19 +65,19 @@ export default class Home extends Component {
                                         <h2>Alcance os resultados desejados</h2>
                                     </div>
                                     <div class="row justify-content-center">
-                                        <div class="col-sm-12 col-md-6 col-lg-4">
+                                        <div class="col-sm-12 col-md-6 col-lg-4 ae-home-benefits-wrapper">
                                             <BenefitCard header="Aumente as visitas à loja"
                                                          subHeader="Receba mais clientes na loja com anúncios que ajudam as pessoas a encontrar sua empresa no mapa."
                                                          imgSrc="/assets/small-business.png"/>
                                         </div>
 
-                                        <div class="col-sm-12 col-md-6 col-lg-4">
+                                        <div class="col-sm-12 col-md-6 col-lg-4 ae-home-benefits-wrapper">
                                             <BenefitCard header="Aumente o número de visitas ao site"
                                                          subHeader="Aumente o número de vendas on-line, reservas ou inscrições na lista de e-mails com anúncios na Internet que direcionam as pessoas para seu site."
                                                          imgSrc="/assets/small-web.png"/>
                                         </div>
 
-                                        <div class="col-sm-12 col-md-6 col-lg-4">
+                                        <div class="col-sm-12 col-md-6 col-lg-4 ae-home-benefits-wrapper">
                                             <BenefitCard header="Receba mais chamadas"
                                                          subHeader="Receba mais chamadas de clientes com anúncios que incluem seu número e um botão Clique para ligar."
                                                          imgSrc="/assets/small-money-bag.png"/>
