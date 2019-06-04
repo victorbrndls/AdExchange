@@ -61,12 +61,12 @@ body.auth #header {
 }
 
 .ae-home-banner {
-    margin-top: 90px;
     margin-bottom: 150px;
 }
 
 .ae-home-banner__main-message {
     font-family: Raleway, serif;
+    color: white;
     font-size: 50px;
     font-weight: 600;
     line-height: 1.3;
@@ -76,19 +76,24 @@ body.auth #header {
     font-family: 'Poppins', sans-serif;
 }
 
+.ae-home-banner-subtext{
+    color: white;
+}
+
 .ae-home-banner-button {
-    background-color: #2168c7;
-    border-bottom: solid 2px #0b3b7b;
+    background-color: #fff;
+    border-bottom: solid 2px #a0a0a0;
     border-radius: 4px;
     cursor: pointer;
 }
 
 .ae-home-banner-button:hover {
-    background-color: #194a93;
+    box-shadow: 0 0 5px white;
 }
 
 .ae-home-banner-button span {
-    color: white;
+    color: #206cc8;
+    font-size: 18px;
 }
 
 .ae-home-benefits-wrapper{
@@ -110,8 +115,18 @@ body.auth #header {
     margin-bottom: 150px;
 }
 
+.ae-home-section.ae-benefits{
+    margin-top: 211px;
+}
+
 .ae-home-section.ae-features {
     margin-bottom: 30px;
+}
+
+.ae-hero{
+    position: relative;
+    background-color: #206cc8;
+    padding-top: 76px;
 }
 
 .ae-home-pricing {
@@ -135,14 +150,27 @@ body.auth #header {
     padding-left: 0;
     margin-bottom: 35px;
     height: 200px;
-    text-align: center;
     font-family: Raleway, serif;
     font-size: 19px;
     color: #4b4b4b;
+    margin-left: 19px
 }
 
 .ae-home-pricing-benefits li {
     margin-bottom: 7px;
+    position: relative;
+}
+
+.ae-home-pricing-benefits li::before{
+    content: '';
+    margin-right: 8px;
+    background-color: #2850c1;
+    width: 7px;
+    height: 7px;
+    position: absolute;
+    top: calc(50% - 3px);
+    left: -18px;
+    transform: rotateZ(45deg);
 }
 
 .ae-home-pricing__button {
@@ -185,7 +213,7 @@ body.auth #header {
 }
 
 .ae-home-tile > .tile-body {
-    color: rgb(60, 64, 67);
+    color: #6E7076;
     font-size: 18px;
 }
 

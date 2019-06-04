@@ -26,7 +26,10 @@ export default class Home extends Component {
                 </div>
 
                 <div>
-                    <div class="ae-home-section">
+                    <div class="ae-home-section ae-hero">
+                        <div style="position: absolute;top: 468px; width: 100%;">
+                            <img src="assets/waves.svg"/>
+                        </div>
                         <div class="container ae-home">
                             <div class="row ae-home-banner">
                                 <div class="col-sm-12 col-md-5">
@@ -35,7 +38,8 @@ export default class Home extends Component {
                                             Adnamic</h1>
                                     </div>
                                     <div class="row">
-                                        <p class="ae-home-banner-subtext">Exiba anuncios para seus cliente e pague somente pelos resultados. Exiba
+                                        <p class="ae-home-banner-subtext">Exiba anuncios para seus cliente e pague
+                                            somente pelos resultados. Exiba
                                             anuncios
                                             para seus cliente e pague somente pelos resultados. We allow you to sell
                                             custom ad spaces on-site and monetize your community through
@@ -182,9 +186,10 @@ const PricingCard = ({title, price, benefits = []}) => (
     <div class="ae-home-pricing shadow mb-4">
         <h3>{title}</h3>
         <div>
-            <p class="text-black-50">$&nbsp;
+            <p class="text-black-50">R$&nbsp;
                 <span class="ae-home-pricing__price">{price}</span>
-                /mês</p>
+                /mês
+            </p>
         </div>
         <ul class="ae-home-pricing-benefits">
             {benefits.map((benefit) => (
