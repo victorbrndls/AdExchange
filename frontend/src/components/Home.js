@@ -35,7 +35,7 @@ export default class Home extends Component {
                                             Adnamic</h1>
                                     </div>
                                     <div class="row">
-                                        <p>Exiba anuncios para seus cliente e pague somente pelos resultados. Exiba
+                                        <p class="ae-home-banner-subtext">Exiba anuncios para seus cliente e pague somente pelos resultados. Exiba
                                             anuncios
                                             para seus cliente e pague somente pelos resultados. We allow you to sell
                                             custom ad spaces on-site and monetize your community through
@@ -50,7 +50,7 @@ export default class Home extends Component {
                                 <div class="col-sm-0 col-md-1"/>
                                 <div class="col-sm-12 col-md-6">
                                     <div class="row">
-                                        <img src="https://via.placeholder.com/570x350.png"/> {/* //TODO add alt*/}
+                                        <img src="https://picsum.photos/570/350"/> {/* //TODO add alt*/}
                                     </div>
                                 </div>
                             </div>
@@ -68,19 +68,19 @@ export default class Home extends Component {
                                         <div class="ae-home-tile col-sm-12 col-md-6 col-lg-3">
                                             <BenefitCard header="Aumente as visitas à loja"
                                                          subHeader="Receba mais clientes na loja com anúncios que ajudam as pessoas a encontrar sua empresa no mapa."
-                                                         imgSrc="https://via.placeholder.com/120x100.png"/>
+                                                         imgSrc="https://picsum.photos/120/101"/>
                                         </div>
 
                                         <div class="col-sm-12 col-md-6 col-lg-3">
                                             <BenefitCard header="Aumente o número de visitas ao site"
                                                          subHeader="Aumente o número de vendas on-line, reservas ou inscrições na lista de e-mails com anúncios na Internet que direcionam as pessoas para seu site."
-                                                         imgSrc="https://via.placeholder.com/120x100.png"/>
+                                                         imgSrc="https://picsum.photos/120/102"/>
                                         </div>
 
                                         <div class="ae-home-tile col-sm-12 col-md-6 col-lg-3">
                                             <BenefitCard header="Receba mais chamadas"
                                                          subHeader="Receba mais chamadas de clientes com anúncios que incluem seu número e um botão Clique para ligar."
-                                                         imgSrc="https://via.placeholder.com/120x100.png"/>
+                                                         imgSrc="https://picsum.photos/120/103"/>
                                         </div>
                                     </div>
                                 </div>

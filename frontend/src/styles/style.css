@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway');
+@import url('https://fonts.googleapis.com/css?family=Poppins');
 
 :root {
     --ad-primary: #2b47bf;
@@ -65,9 +66,14 @@ body.auth #header {
 }
 
 .ae-home-banner__main-message {
+    font-family: Raleway, serif;
     font-size: 50px;
     font-weight: 600;
-    line-height: 1.4;
+    line-height: 1.3;
+}
+
+.ae-home-banner-subtext, .ae-features-text{
+    font-family: 'Poppins', sans-serif;
 }
 
 .ae-home-banner-button {
@@ -84,7 +90,7 @@ body.auth #header {
 }
 
 .ae-home-benefits-header h2 {
-    font-weight: 400;
+    font-family: 'Poppins', sans-serif;
     font-size: 44px;
 }
 
@@ -134,10 +140,6 @@ body.auth #header {
     font-weight: 600;
     color: white !important;
     cursor: pointer;
-}
-
-.ae-pricing__header {
-    font-weight: 600;
 }
 
 .ae-features-row {
