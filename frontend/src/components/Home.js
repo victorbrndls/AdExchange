@@ -39,11 +39,10 @@ export default class Home extends Component {
                                     </div>
                                     <div class="row">
                                         <p class="ae-home-banner-subtext">Exiba anuncios para seus cliente e pague
-                                            somente pelos resultados. Exiba
-                                            anuncios
-                                            para seus cliente e pague somente pelos resultados. We allow you to sell
-                                            custom ad spaces on-site and monetize your community through
-                                            privacy-preserving and ethical ad spaces.</p>
+                                            somente pelos resultados. Exiba anuncios para seus cliente e pague somente
+                                            pelos resultados. We allow you to sell custom ad spaces on-site and monetize
+                                            your community through privacy-preserving and ethical ad spaces.
+                                        </p>
                                     </div>
                                     <div class="row">
                                         <a class="p-3 my-3 ae-home-banner-button trans-0_3s">
