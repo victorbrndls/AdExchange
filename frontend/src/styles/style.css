@@ -21,7 +21,7 @@ body.auth #header {
     background-color: white;
 }
 
-.header #logo {
+.header.ae-logo {
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -31,7 +31,7 @@ body.auth #header {
     padding: 0 15px;
 }
 
-#logo > img {
+.ae-logo > img {
     height: 70px;
 }
 
@@ -240,6 +240,15 @@ body.auth #header {
 
 .tile-title, .tile-body {
     text-align: center;
+}
+
+.ae-footer-info > a{
+    color: black;
+}
+
+.ae-footer-info > a:hover{
+    font-weight: bold;
+    text-decoration: none;
 }
 
 .auth-sign {
@@ -944,8 +953,20 @@ body.auth #header {
         order: 1;
     }
 
-    .header #logo{
+    .header.ae-logo{
         padding: 0;
+    }
+
+    .ae-footer-copyright, .ae-footer-info{
+        margin: 6px;
+    }
+
+    .ae-footer-logo, .ae-footer-copyright{
+        text-align: center;
+    }
+
+    .ae-footer-info{
+        justify-content: center;
     }
 }
 

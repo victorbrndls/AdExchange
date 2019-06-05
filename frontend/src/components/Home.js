@@ -11,7 +11,7 @@ export default class Home extends Component {
             <div style="background-color: #f9fafc;">
                 <div class="header shadow-sm">
                     <div class="container">
-                        <div id="logo">
+                        <div class="ae-logo">
                             <img src="/assets/logo.png"/>
                         </div>
                         <div class="ae-navbar">
@@ -187,10 +187,35 @@ export default class Home extends Component {
                         </div>
                     </div>
 
-                    <div class="ae-home-section ae-pricing">
+                    {/*<div class="ae-home-section ae-cta">
                         <div class="container ae-home">
                             <div class="row">
-                                Comece agora
+                                <div class="col">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>*/}
+
+                    <div class="ae-home-section ae-footer shadow-lg">
+                        <div class="container ae-home py-3">
+                            <div class="row">
+                                <div class="col-xs-12 col-md-auto ae-logo ae-footer-logo">
+                                    <img src="/assets/logo.png"/>
+                                </div>
+
+                                <div class="col-sm-12 col-md ae-footer">
+                                    <div class="row align-items-center h-100 ae-footer-info">
+                                        <Link class="col-auto" href="mailto:tidderjail2@gmail.com">Contato</Link>
+                                        <Link class="col-auto" href="/policy">Política de Privacidade</Link>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md align-self-center ae-footer-copyright">
+                                    <span class="text-black-50">
+                                        © 2019 Adnamic. Todos os direitos reservados
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
