@@ -67,7 +67,7 @@ body.auth #header {
 .ae-home-banner__main-message {
     font-family: Raleway, serif;
     color: white;
-    font-size: 50px;
+    font-size: 48px;
     font-weight: 600;
     line-height: 1.3;
 }
@@ -78,6 +78,7 @@ body.auth #header {
 
 .ae-home-banner-subtext {
     color: white;
+    letter-spacing: 0.3px;
 }
 
 .ae-home-banner-button {
@@ -85,15 +86,23 @@ body.auth #header {
     border-bottom: solid 2px #a0a0a0;
     border-radius: 4px;
     cursor: pointer;
-}
-
-.ae-home-banner-button:hover {
-    box-shadow: 0 0 5px white;
-}
-
-.ae-home-banner-button span {
     color: #206cc8;
     font-size: 18px;
+}
+
+.ae-home-banner-button:hover{
+    text-decoration: none;
+}
+
+.ae-home-banner-button img{
+    display: none;
+    transition: all 0.5s;
+}
+
+.ae-home-banner-button:hover img{
+    display: inline-block;
+    height: 22px;
+    margin-left: 12px;
 }
 
 .ae-home-benefits-wrapper {
@@ -125,7 +134,7 @@ body.auth #header {
 
 .ae-hero {
     position: relative;
-    background-color: #206cc8;
+    background: linear-gradient(#2a4bc0, #206cc8);
     padding-top: 76px;
 }
 

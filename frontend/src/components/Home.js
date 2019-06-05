@@ -34,20 +34,23 @@ export default class Home extends Component {
                             <div class="row ae-home-banner">
                                 <div class="col-sm-12 col-lg-5 ae-hero-text">
                                     <div class="row">
-                                        <h1 class="ae-home-banner__main-message">Faça seu site crescer com
-                                            Adnamic</h1>
+                                        <h1 class="ae-home-banner__main-message">
+                                            Atraia novos clientes para sua empresa
+                                        </h1>
                                     </div>
                                     <div class="row">
-                                        <p class="ae-home-banner-subtext">Exiba anuncios para seus cliente e pague
-                                            somente pelos resultados. Exiba anuncios para seus cliente e pague somente
-                                            pelos resultados. We allow you to sell custom ad spaces on-site and monetize
-                                            your community through privacy-preserving and ethical ad spaces.
+                                        <p class="ae-home-banner-subtext">
+                                            Utilize o Adnamic para criar anúncios que fazem sua empresa vender
+                                            mais.
+                                            Tenha <b>controle</b> de seus anúncios escolhendo onde, por quanto tempo e
+                                            por qual valor serão exibidos.
                                         </p>
                                     </div>
                                     <div class="row ae-home-banner-wrapper">
-                                        <a class="p-3 my-3 ae-home-banner-button trans-0_3s">
-                                            <span>Comece agora</span>
-                                        </a>
+                                        <Link class="p-3 my-3 ae-home-banner-button" href="/auth?register">
+                                            Comece agora
+                                            <img src="assets/right-arrow.svg"/>
+                                        </Link>
                                     </div>
                                 </div>
                                 <div class="col-sm-0 col-md-1 ae-hero-spacer"/>
@@ -67,26 +70,28 @@ export default class Home extends Component {
                             <div class="row">
                                 <div class="col">
                                     <div class="row justify-content-center ae-home-benefits-header mb-5">
-                                        <h2>Alcance os resultados desejados</h2>
+                                        <h2>Porque escolher <b>Adnamic</b></h2>
                                     </div>
                                     <div class="row justify-content-center">
                                         <div class="col-sm-12 col-md-6 col-lg-4 ae-home-benefits-wrapper">
-                                            <BenefitCard header="Aumente as visitas à loja"
-                                                         subHeader="Receba mais clientes na loja com anúncios que ajudam as pessoas a encontrar sua empresa no mapa."
-                                                         imgSrc="/assets/small-business.png"/>
+                                            <BenefitCard header="Controle"
+                                                         subHeader="No Adnamic você escolhe em qual site mostrar seus anúncios, por quanto tempo e qual o modo de pagamento."
+                                                         imgSrc="/assets/small-control.png"/>
                                         </div>
 
                                         <div class="col-sm-12 col-md-6 col-lg-4 ae-home-benefits-wrapper">
-                                            <BenefitCard header="Aumente o número de visitas ao site"
-                                                         subHeader="Aumente o número de vendas on-line, reservas ou inscrições na lista de e-mails com anúncios na Internet que direcionam as pessoas para seu site."
-                                                         imgSrc="/assets/small-web.png"/>
+                                            <BenefitCard header="Análise"
+                                                         subHeader="Veja dados de seus anúncios como quantidade de cliques e visualizações."
+                                                         imgSrc="/assets/small-graph.png"/>
                                         </div>
 
                                         <div class="col-sm-12 col-md-6 col-lg-4 ae-home-benefits-wrapper">
-                                            <BenefitCard header="Receba mais chamadas"
-                                                         subHeader="Receba mais chamadas de clientes com anúncios que incluem seu número e um botão Clique para ligar."
-                                                         imgSrc="/assets/small-money-bag.png"/>
+                                            <BenefitCard header="Prático"
+                                                         subHeader="Nossa plataforma conta com diversos recursos para criar seus anúncios de um jeito rápido e simples."
+                                                         imgSrc="/assets/small-exercise.png"/>
                                         </div>
+
+
                                     </div>
                                 </div>
                             </div>
