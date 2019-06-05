@@ -76,7 +76,7 @@ body.auth #header {
     font-family: 'Poppins', sans-serif;
 }
 
-.ae-home-banner-subtext{
+.ae-home-banner-subtext {
     color: white;
 }
 
@@ -96,7 +96,7 @@ body.auth #header {
     font-size: 18px;
 }
 
-.ae-home-benefits-wrapper{
+.ae-home-benefits-wrapper {
     transition: all 0.3s;
 }
 
@@ -115,7 +115,7 @@ body.auth #header {
     margin-bottom: 150px;
 }
 
-.ae-home-section.ae-benefits{
+.ae-home-section.ae-benefits {
     margin-top: 211px;
 }
 
@@ -123,16 +123,26 @@ body.auth #header {
     margin-bottom: 30px;
 }
 
-.ae-hero{
+.ae-hero {
     position: relative;
     background-color: #206cc8;
     padding-top: 76px;
+}
+
+.ae-hero__wave {
+    position: absolute;
+    top: 100%;
+    width: 100%;
 }
 
 .ae-home-pricing {
     background-color: white;
     border-radius: 4px;
     padding: 20px;
+}
+
+.ae-home-pricing:hover {
+    box-shadow: 0 .5rem 2rem rgba(0, 0, 0, 0.25) !important;
 }
 
 .ae-home-section.ae-pricing {
@@ -161,7 +171,7 @@ body.auth #header {
     position: relative;
 }
 
-.ae-home-pricing-benefits li::before{
+.ae-home-pricing-benefits li::before {
     content: '';
     margin-right: 8px;
     background-color: #2850c1;
@@ -189,6 +199,11 @@ body.auth #header {
 .ae-features-text {
     color: #5C6F84;
     font-size: 18px;
+}
+
+.ae-features-title {
+    color: black;
+    font-weight: bold;
 }
 
 .ae-features-img {
@@ -896,8 +911,73 @@ body.auth #header {
     transition: all 0.3s;
 }
 
+.ae-features-image-wrapper img{
+    max-width: 100%;
+}
+
+/*Medium <-> Large*/
 @media (min-width: 768px) and (max-width: 992px) {
     .ae-features-img {
         width: 350px;
+    }
+}
+
+@media (max-width: 575.98px){
+    .ae-navbar-account__new{
+        display: none;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .ae-features-image-wrapper {
+        margin-bottom: 1rem;
+        order: 2;
+    }
+
+    .ae-features-text {
+        order: 1;
+    }
+
+    .header #logo{
+        padding: 0;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .ae-hero-spacer {
+        display: none;
+    }
+
+    .ae-home-banner {
+        flex-direction: column;
+    }
+
+    .ae-hero-text {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .ae-home-banner-wrapper {
+        justify-content: center;
+    }
+
+    .ae-home-benefits-header h2 {
+        text-align: center;
+    }
+
+    .ae-home-tile {
+        margin-bottom: 25px;
+    }
+
+    .ae-home-tile > .tile-header {
+        margin-bottom: 0;
+    }
+
+    .ae-features-row {
+        text-align: center;
+    }
+
+    .ae-features-row {
+        margin-bottom: 40px;
     }
 }

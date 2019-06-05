@@ -15,7 +15,7 @@ export default class Home extends Component {
                             <img src="/assets/logo.png"/>
                         </div>
                         <div class="ae-navbar">
-                            <div class="ae-navbar--link">
+                            <div class="ae-navbar--link ae-navbar-account__new">
                                 <Link href="/auth?register">Criar Conta</Link>
                             </div>
                             <div class="ae-navbar--link">
@@ -27,12 +27,12 @@ export default class Home extends Component {
 
                 <div>
                     <div class="ae-home-section ae-hero">
-                        <div style="position: absolute;top: 468px; width: 100%;">
+                        <div class="ae-hero__wave">
                             <img src="assets/waves.svg"/>
                         </div>
                         <div class="container ae-home">
                             <div class="row ae-home-banner">
-                                <div class="col-sm-12 col-md-5">
+                                <div class="col-sm-12 col-lg-5 ae-hero-text">
                                     <div class="row">
                                         <h1 class="ae-home-banner__main-message">Faça seu site crescer com
                                             Adnamic</h1>
@@ -44,16 +44,18 @@ export default class Home extends Component {
                                             your community through privacy-preserving and ethical ad spaces.
                                         </p>
                                     </div>
-                                    <div class="row">
+                                    <div class="row ae-home-banner-wrapper">
                                         <a class="p-3 my-3 ae-home-banner-button trans-0_3s">
                                             <span>Comece agora</span>
                                         </a>
                                     </div>
                                 </div>
-                                <div class="col-sm-0 col-md-1"/>
-                                <div class="col-sm-12 col-md-6">
+                                <div class="col-sm-0 col-md-1 ae-hero-spacer"/>
+                                <div class="col-sm-12 col-lg-6">
                                     <div class="row">
-                                        <img src="assets/hero-image.png"/> {/* //TODO add alt*/}
+                                        <div class="col">
+                                            <img style="width:100%;" src="assets/hero-image.png"/> {/* //TODO add alt*/}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -96,11 +98,11 @@ export default class Home extends Component {
                             <div class="row flex-column align-items-center">
                                 <div class="col-md-12 col-lg-11 ae-features-row">
                                     <div class="row">
-                                        <div class="col">
+                                        <div class="col-sm-12 col-md ae-features-image-wrapper">
                                             <img class="ae-features-img" src="https://picsum.photos/450/300"/>
                                         </div>
                                         <div class="col">
-                                            <h3 class="font-weight-bold">Monetized in minutes</h3>
+                                            <h3 class="ae-features-title">Monetized in minutes</h3>
                                             <p class="ae-features-text">Setting up ad spaces is incredibly
                                                 quick. It only takes a few easy steps
                                                 to display and sell instantly bookable ad spaces and sponsorship spots
@@ -113,13 +115,13 @@ export default class Home extends Component {
                                 <div class="col-md-12 col-lg-11 ae-features-row">
                                     <div class="row">
                                         <div class="col">
-                                            <h3 class="font-weight-bold">No network - you are in control</h3>
+                                            <h3 class="ae-features-title">No network - you are in control</h3>
                                             <p class="ae-features-text">Your ads are not being served
                                                 through a network, but purchased manually through your site. No tracking
                                                 needed. You decide what ads are going to show up.
                                             </p>
                                         </div>
-                                        <div class="col">
+                                        <div class="col-sm-12 col-md ae-features-image-wrapper">
                                             <img class="ae-features-img" src="https://picsum.photos/451/300"/>
                                         </div>
                                     </div>
@@ -127,11 +129,11 @@ export default class Home extends Component {
 
                                 <div class="col-md-12 col-lg-11 ae-features-row">
                                     <div class="row">
-                                        <div class="col">
+                                        <div class="col-sm-12 col-md ae-features-image-wrapper">
                                             <img class="ae-features-img" src="https://picsum.photos/449/300"/>
                                         </div>
                                         <div class="col">
-                                            <h3 class="font-weight-bold">Monetized in minutes</h3>
+                                            <h3 class="ae-features-title">Monetized in minutes</h3>
                                             <p class="ae-features-text">Setting up ad spaces is incredibly
                                                 quick. It only takes a few easy steps
                                                 to display and sell instantly bookable ad spaces and sponsorship spots
@@ -152,7 +154,7 @@ export default class Home extends Component {
                                         <h2 class="ae-pricing__header">Preços</h2>
                                     </div>
                                     <div class="row justify-content-center mb-4">
-                                        <div class="col-sm-12 col-md-4">
+                                        <div class="col-sm-9 col-md-6 col-lg-5 col-xl-4">
                                             <PricingCard title="Básico" price="0"
                                                          benefits={[
                                                              "1 Website",
@@ -161,7 +163,7 @@ export default class Home extends Component {
                                                              "Editor de anuncio simples"
                                                          ]}/>
                                         </div>
-                                        <div class="col-sm-12 col-md-4">
+                                        <div class="col-sm-9 col-md-6 col-lg-5 col-xl-4">
                                             <PricingCard title="Profissional" price="13"
                                                          benefits={[
                                                              "Websites ilimitados",
