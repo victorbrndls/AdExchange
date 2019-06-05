@@ -54,7 +54,7 @@ export default class Home extends Component {
                                 <div class="col-sm-0 col-md-1"/>
                                 <div class="col-sm-12 col-md-6">
                                     <div class="row">
-                                        <img src="https://picsum.photos/570/350"/> {/* //TODO add alt*/}
+                                        <img src="assets/hero-image.png"/> {/* //TODO add alt*/}
                                     </div>
                                 </div>
                             </div>
