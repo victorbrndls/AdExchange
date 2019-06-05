@@ -101,17 +101,21 @@ export default class Home extends Component {
                     <div class="ae-home-section ae-features">
                         <div class="container ae-home">
                             <div class="row flex-column align-items-center">
+                                <div class="row justify-content-center ae-home-benefits-header mb-5">
+                                    <h2>Como funciona</h2>
+                                </div>
+
                                 <div class="col-md-12 col-lg-11 ae-features-row">
                                     <div class="row">
                                         <div class="col-sm-12 col-md ae-features-image-wrapper">
                                             <img class="ae-features-img" src="https://picsum.photos/450/300"/>
                                         </div>
                                         <div class="col">
-                                            <h3 class="ae-features-title">Monetized in minutes</h3>
-                                            <p class="ae-features-text">Setting up ad spaces is incredibly
-                                                quick. It only takes a few easy steps
-                                                to display and sell instantly bookable ad spaces and sponsorship spots
-                                                on your site.
+                                            <h3 class="ae-features-title">Crie seu anúncio</h3>
+                                            <p class="ae-features-text">
+                                                Por causa de nossa grande coleção de modelos, você não presisa ser um
+                                                designer para fazer um bom anúncio, basta escolher um modelo e
+                                                prencher os dados. Simples e prático.
                                             </p>
                                         </div>
                                     </div>
@@ -120,10 +124,11 @@ export default class Home extends Component {
                                 <div class="col-md-12 col-lg-11 ae-features-row">
                                     <div class="row">
                                         <div class="col">
-                                            <h3 class="ae-features-title">No network - you are in control</h3>
-                                            <p class="ae-features-text">Your ads are not being served
-                                                through a network, but purchased manually through your site. No tracking
-                                                needed. You decide what ads are going to show up.
+                                            <h3 class="ae-features-title">Faça uma proposta</h3>
+                                            <p class="ae-features-text">
+                                                Utilize nossos filtros para selecionar qual o site correto para exibir
+                                                seu anúncio e envie uma proposta com o anúncio que deseja usar, o modo
+                                                de pagamento e o valor que está disposto a pagar.
                                             </p>
                                         </div>
                                         <div class="col-sm-12 col-md ae-features-image-wrapper">
@@ -138,11 +143,10 @@ export default class Home extends Component {
                                             <img class="ae-features-img" src="https://picsum.photos/449/300"/>
                                         </div>
                                         <div class="col">
-                                            <h3 class="ae-features-title">Monetized in minutes</h3>
-                                            <p class="ae-features-text">Setting up ad spaces is incredibly
-                                                quick. It only takes a few easy steps
-                                                to display and sell instantly bookable ad spaces and sponsorship spots
-                                                on your site.
+                                            <h3 class="ae-features-title">Seu anúncio está funcionando</h3>
+                                            <p class="ae-features-text">
+                                                Caso o dono do site aceite sua proposta, o seu anúncio já estará
+                                                disponível para visualização.
                                             </p>
                                         </div>
                                     </div>
@@ -182,6 +186,15 @@ export default class Home extends Component {
                             </div>
                         </div>
                     </div>
+
+                    <div class="ae-home-section ae-pricing">
+                        <div class="container ae-home">
+                            <div class="row">
+                                Comece agora
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         )
@@ -211,7 +224,7 @@ const PricingCard = ({title, price, benefits = []}) => (
 const BenefitCard = ({header, subHeader, imgSrc}) => (
     <div class="ae-home-tile">
         <div class="tile-header">
-            <img src={imgSrc}/> {/*Icon should be SVG*/}
+            <img src={imgSrc}/>
         </div>
         <p class="tile-title">{header}</p>
         <p class="tile-body">{subHeader}</p>

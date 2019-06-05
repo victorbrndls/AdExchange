@@ -103,6 +103,7 @@ body.auth #header {
     display: inline-block;
     height: 22px;
     margin-left: 12px;
+    animation: increaseWidth 0.4s;
 }
 
 .ae-home-benefits-wrapper {
@@ -152,10 +153,6 @@ body.auth #header {
 
 .ae-home-pricing:hover {
     box-shadow: 0 .5rem 2rem rgba(0, 0, 0, 0.25) !important;
-}
-
-.ae-home-section.ae-pricing {
-    /*background-color: #21bbc791;*/
 }
 
 .ae-home-pricing__price {
@@ -988,5 +985,15 @@ body.auth #header {
 
     .ae-features-row {
         margin-bottom: 40px;
+    }
+}
+
+@keyframes increaseWidth {
+    0% {
+        width: 0;
+    }
+
+    100%{
+        width: 25px;
     }
 }
