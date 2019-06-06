@@ -53,6 +53,10 @@ body.auth #header {
     padding: 2px 13px;
 }
 
+.ae-navbar--link:hover {
+    box-shadow: 0 0 2px #294ec1;
+}
+
 .ae-navbar--link > a {
     font-family: Raleway, serif;
     font-size: 20px;

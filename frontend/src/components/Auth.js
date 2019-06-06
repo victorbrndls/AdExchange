@@ -3,6 +3,8 @@ import {route} from 'preact-router';
 import {login, logout, createAccount, auth} from "../auth";
 import UrlUtils from "./utils/UrlUtils";
 
+const ENTER_KEY_CODE = 13;
+
 export default class Auth extends Component {
     constructor(props) {
         super(props);
@@ -65,6 +67,17 @@ export default class Auth extends Component {
 
     };
 
+    handlePasswordKeyUp(e) {
+        if (e.keyCode === ENTER_KEY_CODE)
+            this.submit();
+    }
+
+    submit() {
+        let mode = this.state.mode;
+
+        mode === 'LOGIN' ? this.login() : this.createAccount();
+    }
+
     render({url}, {mode, email, password, error, newAccount}) {
         if (auth.isUserAuthenticated()) {
             if (UrlUtils.include('/logout'))
@@ -110,7 +123,8 @@ export default class Auth extends Component {
                                             <span class="input-group-text">Senha</span>
                                         </div>
                                         <input type="password" class="form-control" value={password}
-                                               onChange={(e) => this.setState({password: e.target.value})}/>
+                                               onChange={(e) => this.setState({password: e.target.value})}
+                                               onKeyUp={this.handlePasswordKeyUp.bind(this)}/>
                                     </div>
                                     {error.password && (
                                         <small class="mt-1">{error.password}</small>
@@ -119,7 +133,7 @@ export default class Auth extends Component {
                             </div>
 
                             <button id="authSubmit" class="btn btn-primary"
-                                    onClick={mode === 'LOGIN' ? this.login.bind(this) : this.createAccount.bind(this)}>
+                                    onClick={this.submit.bind(this)}>
                                 Enviar
                             </button>
                         </div>
