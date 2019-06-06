@@ -797,7 +797,7 @@ body.auth #header {
     vertical-align: middle;
 }
 
-.topbar-item-bell{
+.topbar-item-bell {
     margin-right: 15px;
     font-size: 22px;
     cursor: pointer;
@@ -947,40 +947,17 @@ body.auth #header {
 }
 
 .card-notification {
-    overflow-y: hidden;
     width: 485px;
     z-index: 1000;
     font-size: initial;
+    height: 450px;
+    overflow-y: auto;
 }
 
-.card-notification-arrow {
+.topbar-item-bell--dropdown {
     position: absolute;
-    bottom: 6px;
-    left: calc(50% - 10px);
-    z-index: 1;
-}
-
-.card-notification-arrow > i {
-    font-size: 22px;
-    cursor: pointer;
-}
-
-.card-notification::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 35px;
-    background: linear-gradient(#ffffff96, #fff);
-    bottom: 0;
-}
-
-.card-notification__extended {
-    height: auto;
-    padding-bottom: 30px;
-}
-
-.card-notification__retracted {
-    height: 430px;
+    cursor: initial;
+    right: -18px;
 }
 
 /*Medium <-> Large*/

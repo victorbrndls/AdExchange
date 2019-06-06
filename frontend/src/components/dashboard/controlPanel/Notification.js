@@ -7,8 +7,7 @@ export default class NotificationCard extends Component {
         super(props);
 
         this.state = {
-            notifications: [],
-            extended: false
+            notifications: []
         };
     }
 
@@ -18,12 +17,11 @@ export default class NotificationCard extends Component {
         });
     }
 
-    render({}, {notifications, extended}) {
+    render({}, {notifications}) {
         return (
             <div>
                 <div
-                    class={`card card-notification mb-3 ${extended ?
-                        'card-notification__extended' : 'card-notification__retracted'}`}>
+                    class="card card-notification mb-3">
                     <div class="card-header dashboard-panel__notification-card">
                         <span class="dashboard-panel__notification-header">Notificações</span>
                     </div>
@@ -33,10 +31,6 @@ export default class NotificationCard extends Component {
                                 <NotificationItem {...notif}/>
                             </div>
                         ))}
-                    </div>
-                    <div class={`card-notification-arrow ${extended ? 'fa-rotate-180' : ''}`}
-                         onClick={() => this.setState({extended: !extended})}>
-                        <i class="fa fa-angle-double-down" aria-hidden="true"/>
                     </div>
                 </div>
             </div>

@@ -176,7 +176,7 @@ class NotificationIcon extends Component {
             <div class="dashboard__main-topbar--item topbar-item-bell position-relative">
                 <i class="fa fa-bell" aria-hidden="true" onClick={() => this.setState({open: !open})}/>
                 {open && (
-                    <div class="position-absolute" style="right: 0;">
+                    <div class="topbar-item-bell--dropdown">
                         <NotificationCard/>
                     </div>
                 )}
