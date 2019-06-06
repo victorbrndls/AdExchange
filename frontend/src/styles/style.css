@@ -794,6 +794,13 @@ body.auth #header {
 .dashboard__main-topbar--item {
     display: inline-block;
     align-self: center;
+    vertical-align: middle;
+}
+
+.topbar-item-bell{
+    margin-right: 15px;
+    font-size: 22px;
+    cursor: pointer;
 }
 
 .auth--new-account {
@@ -939,12 +946,14 @@ body.auth #header {
     max-width: 100%;
 }
 
-.card-notification{
-    height: 360px;
+.card-notification {
     overflow-y: hidden;
+    width: 485px;
+    z-index: 1000;
+    font-size: initial;
 }
 
-.card-notification-arrow{
+.card-notification-arrow {
     position: absolute;
     bottom: 6px;
     left: calc(50% - 10px);
@@ -956,13 +965,22 @@ body.auth #header {
     cursor: pointer;
 }
 
-.card-notification::after{
+.card-notification::after {
     content: '';
     position: absolute;
     width: 100%;
     height: 35px;
     background: linear-gradient(#ffffff96, #fff);
     bottom: 0;
+}
+
+.card-notification__extended {
+    height: auto;
+    padding-bottom: 30px;
+}
+
+.card-notification__retracted {
+    height: 430px;
 }
 
 /*Medium <-> Large*/

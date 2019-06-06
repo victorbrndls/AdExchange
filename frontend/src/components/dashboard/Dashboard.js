@@ -12,6 +12,8 @@ import AccountManager from "../../managers/AccountManager";
 import {route} from "preact-router";
 
 import '../../assets/font-awesome-4.7.0/css/font-awesome.min.css'
+import {Dropdown} from "../utils/Components";
+import NotificationCard from "./controlPanel/Notification";
 
 export default class Dashboard extends Component {
     constructor(props) {
@@ -84,6 +86,9 @@ export default class Dashboard extends Component {
                                         </Link>
                                     </div>
                                 </Dropdown>*/}
+
+                                <NotificationIcon/>
+
                                 <div class="dashboard__main-topbar--item">
                                     <Link href="/auth/logout" activeClassName="active">
                                         Logout
@@ -155,4 +160,27 @@ export class AccountBalance extends Component {
         )
     }
 
+}
+
+class NotificationIcon extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            open: false
+        }
+    }
+
+    render({}, {open}) {
+        return (
+            <div class="dashboard__main-topbar--item topbar-item-bell position-relative">
+                <i class="fa fa-bell" aria-hidden="true" onClick={() => this.setState({open: !open})}/>
+                {open && (
+                    <div class="position-absolute" style="right: 0;">
+                        <NotificationCard/>
+                    </div>
+                )}
+            </div>
+        )
+    }
 }
