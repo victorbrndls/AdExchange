@@ -72,11 +72,6 @@ export default class Dashboard extends Component {
                     <div class="dashboard__main-topbar">
                         <div class="dashboard__main-topbar__left">
                             <div class="dashboard__main-topbar--item">
-                                <Link href="/" activeClassName="active">
-                                    <div>Home</div>
-                                </Link>
-                            </div>
-                            <div class="dashboard__main-topbar--item ml-4">
                                 <AccountBalance/>
                             </div>
                         </div>

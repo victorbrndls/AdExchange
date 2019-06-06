@@ -5,8 +5,8 @@ import Logger from './components/utils/Logger';
 const storage = window.localStorage;
 
 let auth = {
-    getToken: () => getToken(),
-    isUserAuthenticated: () => getToken() !== null
+    getToken,
+    isUserAuthenticated
 };
 
 function login(email, password) {
@@ -53,6 +53,10 @@ function saveToken(token) {
 
 function getToken() {
     return storage.getItem('adExchange.authToken');
+}
+
+function isUserAuthenticated() {
+    return getToken() !== null;
 }
 
 /**

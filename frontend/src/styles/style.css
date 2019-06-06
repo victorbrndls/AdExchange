@@ -939,6 +939,32 @@ body.auth #header {
     max-width: 100%;
 }
 
+.card-notification{
+    height: 360px;
+    overflow-y: hidden;
+}
+
+.card-notification-arrow{
+    position: absolute;
+    bottom: 6px;
+    left: calc(50% - 10px);
+    z-index: 1;
+}
+
+.card-notification-arrow > i {
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.card-notification::after{
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 35px;
+    background: linear-gradient(#ffffff96, #fff);
+    bottom: 0;
+}
+
 /*Medium <-> Large*/
 @media (min-width: 768px) and (max-width: 992px) {
     .ae-features-img {

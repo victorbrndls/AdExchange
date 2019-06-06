@@ -79,13 +79,11 @@ export default class Auth extends Component {
     }
 
     render({url}, {mode, email, password, error, newAccount}) {
-        if (auth.isUserAuthenticated()) {
-            if (UrlUtils.include('/logout'))
+        if (auth.isUserAuthenticated())
+            if (UrlUtils.include('/logout')) {
                 logout();
-
-            route('/');
-            return;
-        }
+                route('/');
+            }
 
         return (
             <div class="auth-background">
