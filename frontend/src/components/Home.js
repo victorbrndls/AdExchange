@@ -107,8 +107,8 @@ export default class Home extends Component {
 
                                 <div class="col-md-12 col-lg-11 ae-features-row">
                                     <div class="row">
-                                        <div class="col-sm-12 col-md ae-features-image-wrapper">
-                                            <img class="ae-features-img" src="https://picsum.photos/450/300"/>
+                                        <div class="col-sm-12 col-md ae-features-image-wrapper text-center">
+                                            <img class="ae-features-img" src="assets/data.svg"/>
                                         </div>
                                         <div class="col">
                                             <h3 class="ae-features-title">Crie seu anúncio</h3>
@@ -131,16 +131,16 @@ export default class Home extends Component {
                                                 de pagamento e o valor que está disposto a pagar.
                                             </p>
                                         </div>
-                                        <div class="col-sm-12 col-md ae-features-image-wrapper">
-                                            <img class="ae-features-img" src="https://picsum.photos/451/300"/>
+                                        <div class="col-sm-12 col-md ae-features-image-wrapper text-center">
+                                            <img class="ae-features-img" src="assets/proposal.svg"/>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-12 col-lg-11 ae-features-row">
                                     <div class="row">
-                                        <div class="col-sm-12 col-md ae-features-image-wrapper">
-                                            <img class="ae-features-img" src="https://picsum.photos/449/300"/>
+                                        <div class="col-sm-12 col-md ae-features-image-wrapper text-center">
+                                            <img class="ae-features-img" src="assets/cloud.svg"/>
                                         </div>
                                         <div class="col">
                                             <h3 class="ae-features-title">Seu anúncio está funcionando</h3>
@@ -206,7 +206,7 @@ export default class Home extends Component {
 
                                 <div class="col-sm-12 col-md ae-footer">
                                     <div class="row align-items-center h-100 ae-footer-info">
-                                        <Link class="col-auto" href="mailto:tidderjail2@gmail.com">Contato</Link>
+                                        <a native class="col-auto" href="mailto:tidderjail2@gmail.com">Contato</a>
                                         <Link class="col-auto" href="/policy">Política de Privacidade</Link>
                                     </div>
                                 </div>

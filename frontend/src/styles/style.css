@@ -149,6 +149,7 @@ body.auth #header {
     background-color: white;
     border-radius: 4px;
     padding: 20px;
+    transition: all 0.3s;
 }
 
 .ae-home-pricing:hover {
@@ -196,6 +197,11 @@ body.auth #header {
     font-weight: 600;
     color: white !important;
     cursor: pointer;
+    transition: all 0.3s;
+}
+
+.ae-home-pricing__button:hover {
+    background-color: #d35100;
 }
 
 .ae-features-row {
@@ -213,13 +219,12 @@ body.auth #header {
 }
 
 .ae-features-img {
-    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
-    transition: all 0.3s;
+    height: 240px;
+    transition: all 0.5s;
 }
 
 .ae-features-img:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0.7rem 1rem rgba(0, 0, 0, 0.34);
+    transform: translateY(-5px);
 }
 
 .ae-home-tile > .tile-header {
