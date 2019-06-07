@@ -91,21 +91,18 @@ export default class ControlPanel extends Component {
         let filledArray = [];
 
         for (let i = 0; i < array.length; i++) {
-            if (i === array.length - 1) {
-                filledArray.push(array[i]);
-                continue;
-            }
+            let nextDateObj = array[i + 1] || {date: new Date()}; // Next date or today's date
+            let currentDateObj = array[i];
 
-            let next = array[i + 1];
-            let current = array[i];
-            let currentDate = new Date(current.date);
+            let currentDate = new Date(currentDateObj.date);
 
-            let diff = (new Date(next.date) - currentDate) / DAY_MILLIS - 1;
+            let dayDiff = (new Date(nextDateObj.date) - currentDate) / DAY_MILLIS - 1;
 
-            filledArray.push(current);
+            filledArray.push(currentDateObj);
 
-            if (diff > 0) {
-                for (let x = 0; x < diff; x++) {
+            // If there are 1 or more days between the two dates, add the missing ones
+            if (dayDiff > 0) {
+                for (let x = 0; x < dayDiff; x++) {
                     let missingDate = new Date(currentDate - -(DAY_MILLIS * (x + 1))); // the '+' sign doesn't work
                     filledArray.push(this.createAnalyticModel(`${missingDate.getUTCFullYear()}-${missingDate.getUTCMonth() + 1}-${missingDate.getUTCDate()}`, 0, 0, 0, 0));
                 }
