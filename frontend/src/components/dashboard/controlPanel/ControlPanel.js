@@ -91,19 +91,14 @@ export default class ControlPanel extends Component {
         let filledArray = [];
 
         for (let i = 0; i < array.length; i++) {
-            if (i === array.length - 1) { // Last day
-                filledArray.push(array[i]);
+            let nextDateObj = array[i + 1] || {date: new Date()}; // Next date or today's date
+            let currentDateObj = array[i];
 
-                continue;
-            }
+            let currentDate = new Date(currentDateObj.date);
+            
+            let dayDiff = (new Date(nextDateObj.date) - currentDate) / DAY_MILLIS - 1;
 
-            let next = array[i + 1];
-            let current = array[i];
-            let currentDate = new Date(current.date);
-
-            let dayDiff = (new Date(next.date) - currentDate) / DAY_MILLIS - 1;
-
-            filledArray.push(current);
+            filledArray.push(currentDateObj);
 
             // If there are 1 or more days between the two dates, add the missing ones
             if (dayDiff > 0) {
