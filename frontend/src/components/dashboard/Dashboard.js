@@ -14,6 +14,7 @@ import {route} from "preact-router";
 import '../../assets/font-awesome-4.7.0/css/font-awesome.min.css'
 import {Dropdown} from "../utils/Components";
 import NotificationCard from "./controlPanel/Notification";
+import NotificationManager from "../../managers/NotificationManager";
 
 export default class Dashboard extends Component {
     constructor(props) {
@@ -167,14 +168,34 @@ class NotificationIcon extends Component {
         super(props);
 
         this.state = {
-            open: false
+            open: false,
+            notifyNewNotifications: false
         }
     }
 
-    render({}, {open}) {
+    handleIconClick() {
+        this.setState({open: !this.state.open});
+
+        if (this.state.notifyNewNotifications) {
+            NotificationManager.setNotificationsStatus({newNotifications: false}).then(() => {
+                this.setState({notifyNewNotifications: false});
+            });
+        }
+    }
+
+    componentDidMount() {
+        NotificationManager.getNotificationsStatus().then((status) => {
+            this.setState({
+                notifyNewNotifications: status.notifyNewNotifications
+            });
+        });
+    }
+
+    render({}, {open, notifyNewNotifications}) {
         return (
             <div class="dashboard__main-topbar--item topbar-item-bell position-relative">
-                <i class="fa fa-bell" aria-hidden="true" onClick={() => this.setState({open: !open})}/>
+                <i class={`fa fa-bell ${notifyNewNotifications ? 'color-changing-bell' : ''}`} aria-hidden="true"
+                   onClick={this.handleIconClick.bind(this)}/>
                 {open && (
                     <div class="topbar-item-bell--dropdown">
                         <NotificationCard/>

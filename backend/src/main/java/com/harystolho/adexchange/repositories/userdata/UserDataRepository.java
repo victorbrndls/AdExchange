@@ -14,4 +14,8 @@ public interface UserDataRepository {
 
 	void saveNotifications(String userId, List<Notification> notifications);
 
+	Boolean getNotificationsStatus(String accountId);
+
+	void setNotificationsStatus(String accountId, boolean status);
+
 }

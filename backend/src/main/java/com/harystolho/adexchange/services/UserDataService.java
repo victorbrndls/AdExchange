@@ -28,12 +28,21 @@ public class UserDataService {
 		notifications.add(notif);
 
 		userDataRepository.saveNotifications(userId, notifications);
+		userDataRepository.setNotificationsStatus(userId, true);
 
 		return ServiceResponseType.OK;
 	}
 
 	public List<Notification> getNotificationsForUser(String userId) {
 		return userDataRepository.getNotifications(userId);
+	}
+
+	public Boolean getNotificationsStatusForUser(String accountId) {
+		return userDataRepository.getNotificationsStatus(accountId);
+	}
+
+	public void setNotificationsStatusForUser(String accountId, boolean status) {
+		userDataRepository.setNotificationsStatus(accountId, status);
 	}
 
 	private void removeExcessNotifications(List<Notification> notifications) {
@@ -43,4 +52,5 @@ public class UserDataService {
 			notifications.remove(0);
 		}
 	}
+
 }

@@ -47,4 +47,23 @@ public class UserDataRepositoryImpl implements UserDataRepository {
 
 	}
 
+	@Override
+	public Boolean getNotificationsStatus(String accountId) {
+		Query query = Query.query(Criteria.where("_id").is(accountId));
+		query.fields().include("notifyNewNotifications");
+
+		UserData userData = mongoOperations.findOne(query, UserData.class);
+
+		return userData == null ? false : userData.shouldNotifyNewNotifications();
+	}
+
+	@Override
+	public void setNotificationsStatus(String accountId, boolean status) {
+		Query query = Query.query(Criteria.where("_id").is(accountId));
+
+		Update update = Update.update("notifyNewNotifications", status);
+		mongoOperations.updateFirst(query, update, UserData.class);
+
+	}
+
 }

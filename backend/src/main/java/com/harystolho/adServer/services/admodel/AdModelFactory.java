@@ -72,7 +72,7 @@ public class AdModelFactory {
 	private AdModel buildUsingSpot(Spot spot) {
 		Pair<String, AdSource> adPair = getAdId(spot, spot.getContract());
 
-		Ad ad = adService.getAdById(adPair.getFist()).getReponse();
+		Ad ad = adService.getAdById(adPair.getFirst()).getReponse();
 
 		if (ad == null)
 			return errorAdModel("INVALID_AD_ID");

@@ -14,7 +14,7 @@ public class Pair<K, V> {
 		return new Pair<K, V>(k, v);
 	}
 
-	public K getFist() {
+	public K getFirst() {
 		return first;
 	}
 

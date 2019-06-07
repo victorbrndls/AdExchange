@@ -29,6 +29,15 @@ public class NotificationService {
 		return ServiceResponse.ok(userDataService.getNotificationsForUser(accountId));
 	}
 
+	public ServiceResponse<Boolean> getNotificationStatusForUser(String accountId) {
+		return ServiceResponse.ok(userDataService.getNotificationsStatusForUser(accountId));
+	}
+
+	public ServiceResponseType setNotificationStatusForUser(String accountId, boolean status) {
+		userDataService.setNotificationsStatusForUser(accountId, status);
+		return ServiceResponseType.OK;
+	}
+
 	public ServiceResponseType emitNewProposalNotification(Proposal proposal) {
 		Account account = accountService.getAccountById(proposal.getProposerId()).getReponse();
 		Website website = websiteService.getWebsiteById(proposal.getWebsiteId()).getReponse();

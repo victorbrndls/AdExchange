@@ -61,7 +61,7 @@ public class BalanceTest {
 		values.add(Pair.of("400.996", "401.00"));
 
 		for (Pair<String, String> pair : values) {
-			Balance balance = new Balance(pair.getFist());
+			Balance balance = new Balance(pair.getFirst());
 			assertEquals(pair.getSecond(), balance.toString());
 		}
 	}
