@@ -152,21 +152,23 @@ export default class ControlPanel extends Component {
     }
 
     render({}, {chartData, contracts}) {
-        let chartColumnClass = "col-xl-5 col-md-6";
+        let chartColumnClass = "col-lg-12 col-xl-6";
 
         return (
             <div>
-                <div>
+                <div class="control-panel-container">
                     {this.requestContracts.bind(this)()}
-                    <div style="max-width: 300px;" class="mb-2">
-                        <select class='custom-select' onChange={e => this.handleContractChange(e.target.value)}>
-                            <option value="-1">Selecione um contrato</option>
-                            {contracts.map((contract) => (
-                                <option
-                                    value={contract.id}>{(contract.acceptorContractName ? contract.acceptorContractName : contract.creatorContractName) || "*Contrato sem nome*"}
-                                </option>
-                            ))}
-                        </select>
+                    <div class="mb-2 row">
+                        <div class="col-sm-8 col-md-5 col-lg-5 col-xl-3">
+                            <select class='custom-select' onChange={e => this.handleContractChange(e.target.value)}>
+                                <option value="-1">Selecione um contrato</option>
+                                {contracts.map((contract) => (
+                                    <option
+                                        value={contract.id}>{(contract.acceptorContractName ? contract.acceptorContractName : contract.creatorContractName) || "*Contrato sem nome*"}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
                     </div>
                     <div class="row">
                         <div class={chartColumnClass}>
