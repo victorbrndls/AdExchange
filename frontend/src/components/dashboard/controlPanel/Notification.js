@@ -52,15 +52,15 @@ class NotificationItem extends Component {
 
     render(props) {
         let type = props.type;
-        let notification = this.notificationMapper[type];
+        let NotificationTypeConstructor = this.notificationMapper[type];
 
-        if (!notification)
+        if (!NotificationTypeConstructor)
             return;
 
         return (
             <div class="dashboard-panel__notification--item">
-                <i class={`fa ${notification._iconClass} notification-icon`}/>
-                <span>{notification._messageConvertor({...props})}</span>
+                <i class={`fa ${NotificationTypeConstructor._iconClass} notification-icon`}/>
+                <span>{NotificationTypeConstructor._messageConvertor({...props})}</span>
             </div>
         )
     }
@@ -74,13 +74,16 @@ class NotificationType {
 }
 
 let NewProposalNotification = new NotificationType('fa-envelope',
-    ({senderName, websiteName}) => `${senderName || 'Alguem'} enviou uma proposta para '${websiteName}'`);
+    ({senderName = 'Alguem', websiteName}) => (
+        <span>{senderName} enviou uma proposta para <i>{websiteName}</i></span>));
 
 let RejectedProposalNotification = new NotificationType('fa-minus',
-    ({senderName, websiteName}) => `${senderName || 'Alguem'} rejeitou a proposta para '${websiteName}'`);
+    ({senderName = 'Alguem', websiteName}) => (
+        <span>{senderName} rejeitou a proposta para <i>{websiteName}</i></span>));
 
 let ReviewedProposalNotification = new NotificationType('fa-repeat',
-    ({senderName, websiteName}) => `${senderName || 'Alguem'} revisou a proposta para '${websiteName}' e enviou-la novamente`);
+    ({senderName = 'Alguem', websiteName}) => (
+        <span>{senderName} revisou a proposta para <i>{websiteName}</i> e enviou-la novamente</span>));
 
 let AcceptedProposalNotification = new NotificationType('fa-check',
-    ({websiteName}) => `A proposta para '${websiteName}' foi aceita`);
+    ({websiteName}) => (<span>A proposta para <i>{websiteName}</i> foi aceita</span>));
