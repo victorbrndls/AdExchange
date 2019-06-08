@@ -837,6 +837,8 @@ body.auth #header {
 .dashboard-panel__notifications {
     padding-bottom: 2px;
     padding-top: 2px;
+    height: 450px;
+    overflow-y: auto;
 }
 
 .notification-icon {
@@ -950,14 +952,13 @@ body.auth #header {
     width: 485px;
     z-index: 1000;
     font-size: initial;
-    height: 450px;
-    overflow-y: auto;
 }
 
 .topbar-item-bell--dropdown {
     position: absolute;
     cursor: initial;
     right: -18px;
+    z-index: 1000;
 }
 
 .color-changing-bell {

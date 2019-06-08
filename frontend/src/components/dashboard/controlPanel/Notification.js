@@ -21,7 +21,7 @@ export default class NotificationCard extends Component {
         return (
             <div>
                 <div
-                    class="card card-notification mb-3">
+                    class="card card-notification">
                     <div class="card-header dashboard-panel__notification-card">
                         <span class="dashboard-panel__notification-header">Notificações</span>
                     </div>
@@ -74,13 +74,13 @@ class NotificationType {
 }
 
 let NewProposalNotification = new NotificationType('fa-envelope',
-    ({senderName, websiteName}) => `${senderName || 'Alguem'} enviou uma proposta para ${websiteName}`);
+    ({senderName, websiteName}) => `${senderName || 'Alguem'} enviou uma proposta para '${websiteName}'`);
 
 let RejectedProposalNotification = new NotificationType('fa-minus',
-    ({senderName, websiteName}) => `${senderName || 'Alguem'} rejeitou a proposta para ${websiteName}`);
+    ({senderName, websiteName}) => `${senderName || 'Alguem'} rejeitou a proposta para '${websiteName}'`);
 
 let ReviewedProposalNotification = new NotificationType('fa-repeat',
-    ({senderName, websiteName}) => `${senderName || 'Alguem'} revisou a proposta para ${websiteName} e enviou-la novamente`);
+    ({senderName, websiteName}) => `${senderName || 'Alguem'} revisou a proposta para '${websiteName}' e enviou-la novamente`);
 
 let AcceptedProposalNotification = new NotificationType('fa-check',
-    ({websiteName}) => `A proposta para ${websiteName} foi aceita`);
+    ({websiteName}) => `A proposta para '${websiteName}' foi aceita`);

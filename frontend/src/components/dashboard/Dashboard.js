@@ -197,7 +197,7 @@ class NotificationIcon extends Component {
                 <i class={`fa fa-bell ${notifyNewNotifications ? 'color-changing-bell' : ''}`} aria-hidden="true"
                    onClick={this.handleIconClick.bind(this)}/>
                 {open && (
-                    <div class="topbar-item-bell--dropdown">
+                    <div class="topbar-item-bell--dropdown shadow">
                         <NotificationCard/>
                     </div>
                 )}
