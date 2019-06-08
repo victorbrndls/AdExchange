@@ -475,7 +475,7 @@ body.auth #header {
 }
 
 .dashboard__main-content-container {
-    width: 1000px;
+    max-width: 1000px;
     margin: auto;
 }
 
@@ -971,7 +971,52 @@ body.auth #header {
 .control-panel-container {
     max-width: 1350px;
     margin: auto;
+}
 
+.websites-account-header {
+    font-family: Raleway, serif;
+    font-size: 30px;
+    border-bottom: solid 2px #1768c8;
+}
+
+.add-balance-card {
+    display: flex;
+    flex-direction: column;
+    padding: 9px 8px 17px 8px;
+    background-color: white;
+    border-radius: 6px;
+    margin-bottom: 14px;
+}
+
+.add-balance-card-header {
+    margin-bottom: 15px;
+    text-align: center;
+    height: 90px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.add-balance-card-body {
+    font-size: 18px;
+}
+
+.add-balance-card-header-icon {
+    position: absolute;
+    align-self: center;
+}
+
+.add-balance-card-body__buy {
+    background-color: orange;
+    padding: 8px 23px;
+}
+
+.font-raleway {
+    font-family: Raleway, serif;
+}
+
+.font-poppins {
+    font-family: Poppins, serif;
 }
 
 /*
