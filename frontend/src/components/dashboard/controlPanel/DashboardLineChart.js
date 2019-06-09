@@ -34,7 +34,7 @@ export default class DashboardChartContainer extends Component {
     }
 
     renderChart() {
-        LazyLoading.getChartJS().then((Chart)=>{
+        LazyLoading.getChartJS().then((Chart) => {
             if (this.chart) {
                 let chartData = this.chart.data;
                 let data = this.data;
@@ -81,8 +81,8 @@ export default class DashboardChartContainer extends Component {
         });
     }
 
-    componentWillUnmount(){
-        if(this.chart)
+    componentWillUnmount() {
+        if (this.chart)
             this.chart.destroy();
     }
 
@@ -98,10 +98,18 @@ export default class DashboardChartContainer extends Component {
                     <div class="controlpanel-card__text">
                         <h2 class="m-0">{total.reduce(reducer)}</h2>
                         <span>{name}</span>
+                        <abbr
+                            title={`O numero total de ${name} no anúncio desse contrato. Se uma mesma pessoas interagiu 4 vezes com mesmo anúncio, isso conta 4 interações.`}>
+                            <i class="fa fa-question fa-abbr-icon" aria-hidden="true"/>
+                        </abbr>
                     </div>
                     <div class="controlpanel-card__text text-right">
                         <h2 class="m-0">{unique.reduce(reducer)}</h2>
                         <span>{uniqueName}</span>
+                        <abbr
+                            title={`O numero de ${uniqueName} no anúncio desse contrato. Se uma mesma pessoas interagiu 4 vezes com mesmo anúncio, isso conta 1 interações.`}>
+                            <i class="fa fa-question fa-abbr-icon" aria-hidden="true"/>
+                        </abbr>
                     </div>
                 </div>
                 <div class="to-remove">

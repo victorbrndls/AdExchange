@@ -1025,6 +1025,12 @@ body.auth #header {
     font-family: Poppins, serif;
 }
 
+.fa-abbr-icon{
+    font-size: 12px !important;
+    vertical-align: super;
+    color: grey;
+}
+
 /*
     ====================
         Media queries
