@@ -71,9 +71,9 @@ export default class Account extends Component {
     render({}, {name, email, password, error}) {
         return (
             <div>
-                <Match path={"/dashboard/account"} not>
+                {/*<Match path={"/dashboard/account"} not>
                     <LeftArrow cb={() => route('/dashboard/account')}/>
-                </Match>
+                </Match>*/}
 
                 <div class="dashboard__main-content-container">
                     <Match path="/dashboard/account" exact>

@@ -1009,6 +1009,12 @@ body.auth #header {
 .add-balance-card-body__buy {
     background-color: orange;
     padding: 8px 23px;
+    color: black;
+}
+
+.add-balance-card-body__buy:hover{
+    text-decoration: none;
+    color: black;
 }
 
 .font-raleway {
