@@ -18,6 +18,7 @@ application.properties
 .classpath
 backend/todo
 db
+frontend/build
 
 # External tool builders
 .externalToolBuilders/
