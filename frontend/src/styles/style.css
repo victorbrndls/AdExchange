@@ -986,6 +986,11 @@ body.auth #header {
     background-color: white;
     border-radius: 6px;
     margin-bottom: 14px;
+    transition: all 0.3s;
+}
+
+.add-balance-card:hover {
+    transform: scale(1.1);
 }
 
 .add-balance-card-header {
@@ -1008,13 +1013,17 @@ body.auth #header {
 
 .add-balance-card-body__buy {
     background-color: orange;
+    border-radius: 4px;
     padding: 8px 23px;
     color: black;
+    transition: all 0.4s;
+    cursor: pointer;
 }
 
 .add-balance-card-body__buy:hover{
     text-decoration: none;
-    color: black;
+    background-color: black;
+    color: orange;
 }
 
 .font-raleway {
