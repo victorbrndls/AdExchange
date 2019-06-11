@@ -16,8 +16,10 @@ public class ServiceResponse<T> {
 		INVALID_SPOT_NAME, // Spot
 
 		INVALID_ACCOUNT_ID, INVALID_ACCOUNT_NAME, INVALID_ACCOUNT_BALANCE, INSUFFICIENT_ACCOUNT_BALANCE, // Account
-		
-		INVALID_PRODUCT_ID // Payment
+
+		INVALID_PRODUCT_ID, // Payment
+
+		INVALID_URL, CONNECTION_ERROR, ERROR_HTTP_RESPONSE, ERROR_READING_RESPONSE // Http
 	}
 
 	private ServiceResponseType errorType;
@@ -79,7 +81,7 @@ public class ServiceResponse<T> {
 	public static <T> ServiceResponse<T> fail(String message) {
 		return new ServiceResponse<T>(ServiceResponseType.FAIL, message);
 	}
-	
+
 	public static <T> ServiceResponse<T> fail() {
 		return new ServiceResponse<T>(ServiceResponseType.FAIL, "");
 	}
