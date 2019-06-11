@@ -4,6 +4,10 @@ import PaymentManager from "../../../managers/PaymentManager";
 export default class AddBalance extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            error: undefined
+        };
     }
 
     displayCheckout(balanceProduct) {
@@ -11,27 +15,39 @@ export default class AddBalance extends Component {
             let code = data.checkoutCode;
 
             PagSeguroLightbox(code);
-
-            console.log(data);
         }).catch((error) => {
-            switch (error){
+            switch (error) {
                 case 'FAIL/':
-                    //TODO show error message
+                    this.setState({
+                        error: {
+                            title: "Erro ao realizar pagamento",
+                            message: "Houve um erro em nosso sistema e a função de pagamentos não está funcionando no momento. Tente mais tarde novamente."
+                        }
+                    });
                     break;
             }
         });
     }
 
-    render() {
+    render({}, {error}) {
         return (
             <div class="container">
-                <div class="row mb-5">
+                <div class="row mb-4">
                     <div class="col websites-account-header">
                         Adicionar Saldo
                     </div>
                 </div>
 
-                <div class="row justify-content-center">
+                {error && (<div class="shadow-sm dashboard-error-container dashboard-container-wrapper">
+                    <dl>
+                        <dt>{error.title}</dt>
+                        <dd>
+                            {error.message}
+                        </dd>
+                    </dl>
+                </div>)}
+
+                <div class="mt-4 row justify-content-center">
                     <PaymentCard leftOffset={[40]}
                                  data={["23,00", "25,00", this.displayCheckout.bind(this, PaymentManager.BALANCE_PRODUCT.BALANCE_25)]}/>
                     <PaymentCard leftOffset={[35, 45]}

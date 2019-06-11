@@ -925,11 +925,19 @@ body.auth #header {
     background-color: #7a7a7a87;
 }
 
+.dashboard-container-wrapper{
+    padding: 2px 11px;
+    border-radius: 4px;
+}
+
 .dashboard-info-container {
     background-color: #fff3cd;
     color: #856404;
-    padding: 2px 11px;
-    border-radius: 4px;
+}
+
+.dashboard-error-container {
+    background-color: #ffcdcd;
+    color: #850404;
 }
 
 .controlpanel-card__text h2, h4 {
