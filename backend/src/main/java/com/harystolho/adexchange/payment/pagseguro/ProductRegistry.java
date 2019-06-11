@@ -1,11 +1,11 @@
-package com.harystolho.adexchange.payment;
+package com.harystolho.adexchange.payment.pagseguro;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-import com.harystolho.adexchange.payment.PaymentProduct.PaymentProductType;
+import com.harystolho.adexchange.payment.pagseguro.PaymentProduct.PaymentProductType;
 
 /**
  * Stores all the products that can be bought

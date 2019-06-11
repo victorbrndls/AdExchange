@@ -1,4 +1,4 @@
-package com.harystolho.adexchange.payment;
+package com.harystolho.adexchange.payment.pagseguro;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -26,7 +26,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.harystolho.adexchange.payment.PaymentProduct.PaymentProductType;
+import com.harystolho.adexchange.payment.pagseguro.PaymentProduct.PaymentProductType;
 import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
 import com.harystolho.adexchange.utils.ParameterStringBuilder;
@@ -43,34 +43,29 @@ public class PaymentCheckoutGenerator {
 
 	private static final Logger logger = LogManager.getLogger();
 
+	private static final String CHECKOUT_ENDPOINT = "/checkout";
 	private final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
-	@Value("${payment.authentication.email}")
-	private String authenticationEmail;
-
-	@Value("${payment.authentication.token}")
-	private String authenticationToken;
-
-	@Value("${payment.endpoint.checkout}")
-	private String checkoutEndpoint;
-
+	private PaymentConfiguration configuration;
 	private final ProductRegistry productRegistry;
 
-	private PaymentCheckoutGenerator(ProductRegistry productRegistry) {
+	private PaymentCheckoutGenerator(PaymentConfiguration configuration, ProductRegistry productRegistry) {
+		this.configuration = configuration;
 		this.productRegistry = productRegistry;
 	}
 
 	/**
-	 * Generates a checkout code for the specified {product}
+	 * Generates a checkout code for the specified {product}. The checkout code is
+	 * used to tell PagSeguro which product the person is buying
 	 * 
 	 * @param product
 	 * @return the checkout code
 	 */
 	public ServiceResponse<String> generateCheckoutCode(PaymentProductType product) {
 		try {
-			return generateCheckoutCode(new URL(checkoutEndpoint), product);
+			return generateCheckoutCode(new URL(configuration.getEndpoint() + CHECKOUT_ENDPOINT), product);
 		} catch (MalformedURLException e) {
-			logger.throwing(e);
+			logger.catching(e);
 			return ServiceResponse.fail();
 		}
 	}
@@ -83,16 +78,10 @@ public class PaymentCheckoutGenerator {
 			return ServiceResponse.fail("");
 		}
 
-		return generateCheckoutCode(url, product);
+		return generatePagSeguroCheckoutCode(url, product);
 	}
 
-	private ServiceResponse<String> generateCheckoutCode(URL url, PaymentProduct product) {
-		ServiceResponse<String> response = generatePagSeguroCheckoutCode(url, product);
-
-		return response;
-	}
-
-	public ServiceResponse<String> generatePagSeguroCheckoutCode(URL url, PaymentProduct product) {
+	protected ServiceResponse<String> generatePagSeguroCheckoutCode(URL url, PaymentProduct product) {
 		HttpURLConnection conn = connectToCheckoutEndpoint(url);
 
 		if (conn == null)
@@ -113,11 +102,12 @@ public class PaymentCheckoutGenerator {
 
 	/**
 	 * 
-	 * @param responseCode the http response code returned by the checkout endpoint
+	 * @param responseCode       the http response code returned by the checkout
+	 *                           endpoint
 	 * @param connectionResponse the connection response as XML
 	 * @return
 	 */
-	public ServiceResponse<String> generatePagSeguroCheckoutCode(int responseCode, String connectionResponse) {
+	private ServiceResponse<String> generatePagSeguroCheckoutCode(int responseCode, String connectionResponse) {
 		if (responseCode > 300) {
 			logger.error("PagSeguro's API returned error, [errorCode: {}, response: {}]", responseCode,
 					connectionResponse);
@@ -130,22 +120,6 @@ public class PaymentCheckoutGenerator {
 			return ServiceResponse.fail();
 
 		return ServiceResponse.ok(checkoutResponse.getReponse());
-	}
-
-	private HttpURLConnection connectToCheckoutEndpoint(URL url) {
-		HttpURLConnection conn = buildUrlConnection(url); // TODO Maybe close the connection ?
-
-		if (conn == null)
-			return null;
-
-		try {
-			conn.connect();
-		} catch (IOException e) {
-			logger.throwing(e);
-			return null;
-		}
-
-		return conn;
 	}
 
 	private ServiceResponse<String> readCheckoutCodeFromXMLResponse(String xmlResponse) {
@@ -217,8 +191,8 @@ public class PaymentCheckoutGenerator {
 
 	private ServiceResponseType addProductToConnection(URLConnection conn, PaymentProduct product) {
 		Map<String, String> params = new HashMap<>();
-		params.put("email", authenticationEmail);
-		params.put("token", authenticationToken);
+		params.put("email", configuration.getEmail());
+		params.put("token", configuration.getToken());
 
 		params.put("currency", "BRL");
 		params.put("shippingAddressRequired", "false");
@@ -240,6 +214,22 @@ public class PaymentCheckoutGenerator {
 
 			return ServiceResponseType.FAIL;
 		}
+	}
+
+	private HttpURLConnection connectToCheckoutEndpoint(URL url) {
+		HttpURLConnection conn = buildUrlConnection(url); // TODO Maybe close the connection ?
+
+		if (conn == null)
+			return null;
+
+		try {
+			conn.connect();
+		} catch (IOException e) {
+			logger.throwing(e);
+			return null;
+		}
+
+		return conn;
 	}
 
 	private HttpsURLConnection buildUrlConnection(URL url) {

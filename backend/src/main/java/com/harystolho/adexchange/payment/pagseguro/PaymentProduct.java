@@ -1,4 +1,4 @@
-package com.harystolho.adexchange.payment;
+package com.harystolho.adexchange.payment.pagseguro;
 
 import java.util.HashMap;
 import java.util.Map;

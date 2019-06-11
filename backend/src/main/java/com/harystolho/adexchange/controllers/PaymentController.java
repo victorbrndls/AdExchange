@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.harystolho.adexchange.payment.PaymentCheckoutGenerator;
-import com.harystolho.adexchange.payment.PaymentProduct.PaymentProductType;
+import com.harystolho.adexchange.payment.pagseguro.PaymentCheckoutGenerator;
+import com.harystolho.adexchange.payment.pagseguro.PaymentProduct.PaymentProductType;
 import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.utils.AEUtils;
 import com.harystolho.adexchange.utils.JsonResponse;
