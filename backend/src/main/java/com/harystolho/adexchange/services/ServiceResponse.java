@@ -79,6 +79,10 @@ public class ServiceResponse<T> {
 	public static <T> ServiceResponse<T> fail(String message) {
 		return new ServiceResponse<T>(ServiceResponseType.FAIL, message);
 	}
+	
+	public static <T> ServiceResponse<T> fail() {
+		return new ServiceResponse<T>(ServiceResponseType.FAIL, "");
+	}
 
 	public static <T> ServiceResponse<T> ok(T response) {
 		return new ServiceResponse<T>(ServiceResponseType.OK, "", response);

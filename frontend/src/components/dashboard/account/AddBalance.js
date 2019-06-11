@@ -14,7 +14,11 @@ export default class AddBalance extends Component {
 
             console.log(data);
         }).catch((error) => {
-
+            switch (error){
+                case 'FAIL/':
+                    //TODO show error message
+                    break;
+            }
         });
     }
 

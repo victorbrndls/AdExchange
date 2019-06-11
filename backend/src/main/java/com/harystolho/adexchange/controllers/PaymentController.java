@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.harystolho.adexchange.payment.PaymentCheckoutGenerator;
-import com.harystolho.adexchange.payment.PaymentProduct;
+import com.harystolho.adexchange.payment.PaymentProduct.PaymentProductType;
 import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.utils.AEUtils;
 import com.harystolho.adexchange.utils.JsonResponse;
@@ -25,7 +25,7 @@ public class PaymentController {
 
 	@PostMapping("/api/v1/payments/checkout")
 	public ResponseEntity<Object> getCheckoutCode(@RequestAttribute("ae.accountId") String accountId,
-			PaymentProduct product) {
+			PaymentProductType product) {
 
 		ServiceResponse<String> response = paymentCheckoutGenerator.generateCheckoutCode(product);
 
