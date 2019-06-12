@@ -1053,6 +1053,24 @@ body.auth #header {
     color: grey;
 }
 
+.help-header{
+    font-size: 31px;
+    font-family: Raleway, serif;
+    background: linear-gradient(6deg, #237bc5, #0e8ed6);
+    padding: 7px 15px;
+    color: white;
+}
+
+.help-item--container{
+    background-color: #fff;
+    padding: 12px 9px;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+}
+
+.help-item--container:hover {
+    transform: scale(1.04);
+}
+
 /*
     ====================
         Media queries

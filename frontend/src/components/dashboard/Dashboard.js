@@ -9,13 +9,12 @@ import Spots from "./spots/Spots";
 import ControlPanel from "./controlPanel/ControlPanel";
 import Account from "./account/Account";
 import AccountManager from "../../managers/AccountManager";
-import {route} from "preact-router";
-
-import '../../assets/font-awesome-4.7.0/css/font-awesome.min.css'
-import {Dropdown} from "../utils/Components";
 import NotificationCard from "./controlPanel/Notification";
 import NotificationManager from "../../managers/NotificationManager";
-import Help from "./help/Help";
+import Help from "async!./help/Help";
+
+import '../../assets/font-awesome-4.7.0/css/font-awesome.min.css'
+import {route} from "preact-router";
 
 export default class Dashboard extends Component {
     constructor(props) {
