@@ -1,5 +1,7 @@
 package com.harystolho.adexchange.utils;
 
+import org.springframework.util.Base64Utils;
+
 /**
  * Encrypts and compares passwords
  * 
@@ -9,7 +11,7 @@ package com.harystolho.adexchange.utils;
 public class PasswordSecurity {
 
 	public static String encryptPassword(String password) {
-		return password;
+		return Base64Utils.encodeToString(password.getBytes());
 	}
 
 	/**
