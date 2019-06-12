@@ -12,6 +12,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import com.harystolho.adexchange.payment.pagseguro.PaymentProduct.PaymentProductType;
+import com.harystolho.adexchange.payment.pagseguro.http.PagSeguroHttpClient;
+import com.harystolho.adexchange.payment.pagseguro.http.PagSeguroHttpClientFactory;
 import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
 import com.harystolho.adexchange.utils.Pair;
@@ -31,12 +33,15 @@ public class PaymentCheckoutGenerator {
 
 	private static final String CHECKOUT_ENDPOINT = "/checkout";
 
-	private PaymentConfiguration configuration;
+	private final PaymentConfiguration configuration;
 	private final ProductRegistry productRegistry;
+	private final PagSeguroHttpClientFactory pagSeguroHttpClientFactory;
 
-	private PaymentCheckoutGenerator(PaymentConfiguration configuration, ProductRegistry productRegistry) {
+	private PaymentCheckoutGenerator(PaymentConfiguration configuration, ProductRegistry productRegistry,
+			PagSeguroHttpClientFactory pagSeguroHttpClientFactory) {
 		this.configuration = configuration;
 		this.productRegistry = productRegistry;
+		this.pagSeguroHttpClientFactory = pagSeguroHttpClientFactory;
 	}
 
 	/**
@@ -47,15 +52,10 @@ public class PaymentCheckoutGenerator {
 	 * @return the checkout code
 	 */
 	public ServiceResponse<String> generateCheckoutCode(PaymentProductType product) {
-		try {
-			return generateCheckoutCode(new URL(configuration.getEndpoint() + CHECKOUT_ENDPOINT), product);
-		} catch (MalformedURLException e) {
-			logger.catching(e);
-			return ServiceResponse.fail();
-		}
+		return generateCheckoutCode(configuration.getEndpoint() + CHECKOUT_ENDPOINT, product);
 	}
 
-	private ServiceResponse<String> generateCheckoutCode(URL url, PaymentProductType type) {
+	private ServiceResponse<String> generateCheckoutCode(String url, PaymentProductType type) {
 		PaymentProduct product = productRegistry.getProduct(type);
 
 		if (product == null) {
@@ -66,11 +66,12 @@ public class PaymentCheckoutGenerator {
 		return generatePagSeguroCheckoutCode(url, product);
 	}
 
-	private ServiceResponse<String> generatePagSeguroCheckoutCode(URL url, PaymentProduct product) {
-		PagSeguroHttpClient client = new PagSeguroHttpClient();
+	private ServiceResponse<String> generatePagSeguroCheckoutCode(String url, PaymentProduct product) {
+		PagSeguroHttpClient client = pagSeguroHttpClientFactory.createClient(configuration.getEmail(),
+				configuration.getToken());
 
 		client.setUrl(url);
-		client.setBodyParams(convertProductToConnectionHeaders(product));
+		client.addBodyParams(product.getFieldsAsMap());
 
 		Pair<ServiceResponseType, String> response = client.connect();
 
@@ -78,20 +79,6 @@ public class PaymentCheckoutGenerator {
 			return ServiceResponse.fail();
 
 		return readCheckoutCodeFromXMLResponse(response.getSecond());
-	}
-
-	private Map<String, String> convertProductToConnectionHeaders(PaymentProduct product) {
-		Map<String, String> params = new HashMap<>();
-
-		params.put("email", configuration.getEmail());
-		params.put("token", configuration.getToken());
-
-		params.put("currency", "BRL");
-		params.put("shippingAddressRequired", "false");
-
-		params.putAll(product.getFieldsAsMap());
-
-		return params;
 	}
 
 	private ServiceResponse<String> readCheckoutCodeFromXMLResponse(String xmlResponse) {

@@ -26,15 +26,6 @@ public class PaymentCheckoutGeneratorTest {
 	private PaymentConfiguration paymentConfiguration;
 
 	@Test
-	public void generateCheckoutWithInvalidApiEndpoint_ShouldFail() {
-		Mockito.when(paymentConfiguration.getEndpoint()).thenReturn("invalid://sandbox.pagseguro.uol.com.br");
-
-		ServiceResponse<String> response = checkoutGenerator.generateCheckoutCode(null);
-
-		assertEquals(ServiceResponseType.FAIL, response.getErrorType());
-	}
-
-	@Test
 	public void generateCheckoutForInvalidProduct_ShouldFail() {
 		Mockito.when(paymentConfiguration.getEndpoint()).thenReturn("https://sandbox.pagseguro.uol.com.br");
 

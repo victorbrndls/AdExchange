@@ -1,4 +1,4 @@
-package com.harystolho.adexchange.payment.pagseguro;
+package com.harystolho.adexchange.payment.pagseguro.http;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -30,18 +31,23 @@ public class PagSeguroHttpClient {
 
 	private HttpURLConnection conn;
 
-	private URL url;
+	private String url;
 	private Map<String, String> bodyParams;
 
-	public PagSeguroHttpClient() {
+	protected PagSeguroHttpClient() {
+		bodyParams = new HashMap<>();
 	}
 
 	public void setUrl(URL url) {
+		this.url = url.toExternalForm();
+	}
+
+	public void setUrl(String url) {
 		this.url = url;
 	}
 
-	public void setBodyParams(Map<String, String> headers) {
-		this.bodyParams = headers;
+	public void addBodyParams(Map<String, String> params) {
+		this.bodyParams.putAll(params);
 	}
 
 	public Pair<ServiceResponseType, String> connect() {
@@ -84,9 +90,9 @@ public class PagSeguroHttpClient {
 		}
 	}
 
-	private ServiceResponseType createConnection(URL url) {
+	private ServiceResponseType createConnection(String url) {
 		try {
-			HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+			HttpsURLConnection conn = (HttpsURLConnection) new URL(url).openConnection();
 
 			conn.setRequestMethod("POST");
 			conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=ISO-8859-1");
@@ -125,4 +131,5 @@ public class PagSeguroHttpClient {
 			return 500; // 500 is a generic error
 		}
 	}
+
 }
