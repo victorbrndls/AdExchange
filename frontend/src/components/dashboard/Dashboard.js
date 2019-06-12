@@ -14,19 +14,27 @@ import NotificationManager from "../../managers/NotificationManager";
 import Help from "async!./help/Help";
 
 import '../../assets/font-awesome-4.7.0/css/font-awesome.min.css'
+import anime from 'animejs';
 import {route} from "preact-router";
 
 export default class Dashboard extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            mobile: false
+        }
     }
 
-    render({}, {}) {
+    render({}, {mobile}) {
         return (
             <div id="dashboard" class="h-100">
-                <div class="dashboard__sidebar">
+                <div class={`dashboard__sidebar ${mobile ? 'mobile-visible' : ''}`}>
                     <div class="dashboard__sidebar-logo">
                         <img src="/assets/logo.png"/>
+                        <div class="menu-mobile" onClick={() => this.setState({mobile: !mobile})}>
+                            <i class="fa fa-bars vertical-align-middle" aria-hidden="true"/>
+                        </div>
                     </div>
                     <div class="dashboard__sidebar-bar d-flex flex-column">
                         <div>
@@ -78,10 +86,13 @@ export default class Dashboard extends Component {
 
                 <div class="dashboard__main">
                     <div class="dashboard__main-topbar">
-                        <div class="dashboard__main-topbar__left">
-                            <div class="dashboard__main-topbar--item">
-                                <AccountBalance/>
+                        <div class="dashboard__main-topbar--item">
+                            <div class="menu-mobile" onClick={() => this.setState({mobile: !mobile})}>
+                                <i class="fa fa-bars" aria-hidden="true"/>
                             </div>
+                        </div>
+                        <div class="dashboard__main-topbar--item menu-item-balance">
+                            <AccountBalance/>
                         </div>
                         <div class="dashboard__main-topbar__right">
                             <div class="d-inline-block align-self-center">
@@ -95,7 +106,7 @@ export default class Dashboard extends Component {
 
                                 <NotificationIcon/>
 
-                                <div class="dashboard__main-topbar--item">
+                                <div class="dashboard__main-topbar--item menu-item-logout">
                                     <Link href="/auth/logout" activeClassName="active">
                                         Logout
                                     </Link>
@@ -103,6 +114,7 @@ export default class Dashboard extends Component {
                             </div>
                         </div>
                     </div>
+
                     <div class="dashboard__main-content">
                         <div style="height: 100%; padding: 16px;">
                             <Match path="/dashboard/panel" include>
