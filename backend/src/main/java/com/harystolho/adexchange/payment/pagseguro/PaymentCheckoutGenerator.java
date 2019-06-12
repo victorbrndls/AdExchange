@@ -70,7 +70,7 @@ public class PaymentCheckoutGenerator {
 		PagSeguroHttpClient client = new PagSeguroHttpClient();
 
 		client.setUrl(url);
-		client.setHeaders(convertProductToConnectionHeaders(product));
+		client.setBodyParams(convertProductToConnectionHeaders(product));
 
 		Pair<ServiceResponseType, String> response = client.connect();
 

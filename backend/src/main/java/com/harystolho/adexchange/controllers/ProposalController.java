@@ -23,7 +23,6 @@ import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
 import com.harystolho.adexchange.utils.AEUtils;
 import com.harystolho.adexchange.utils.JsonResponse;
-import com.harystolho.adexchange.utils.Nothing;
 
 @RestController
 @CrossOrigin(origins = AEUtils.corsOrigin)
@@ -100,12 +99,12 @@ public class ProposalController {
 	public ResponseEntity<Object> deleteProposal(@RequestAttribute("ae.accountId") String accountId,
 			@PathVariable String id) {
 
-		ServiceResponse<Nothing> response = proposalService.deleteProposalById(accountId, id);
+		ServiceResponseType response = proposalService.deleteProposalById(accountId, id);
 
-		switch (response.getErrorType()) {
+		switch (response) {
 		case PROPOSAL_NOT_IN_NEW:
 		case PROPOSAL_NOT_IN_SENT:
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getErrorType().toString());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		default:
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}
@@ -116,11 +115,11 @@ public class ProposalController {
 	public ResponseEntity<Object> rejectProposal(@RequestAttribute("ae.accountId") String accountId,
 			@PathVariable String id) {
 
-		ServiceResponse<Nothing> response = proposalService.rejectProposalById(accountId, id);
+		ServiceResponseType response = proposalService.rejectProposalById(accountId, id);
 
-		switch (response.getErrorType()) {
+		switch (response) {
 		case PROPOSAL_NOT_IN_NEW:
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getErrorType().toString());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		default:
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}

@@ -16,41 +16,41 @@ import org.apache.logging.log4j.Logger;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
 import com.harystolho.adexchange.utils.Pair;
 import com.harystolho.adexchange.utils.ParameterStringBuilder;
+import com.harystolho.adexchange.utils.StreamUtils;
 
+/**
+ * Used to connect to PagSeguro's API
+ * 
+ * @author Harystolho
+ *
+ */
 public class PagSeguroHttpClient {
 
 	private static final Logger logger = LogManager.getLogger();
 
 	private HttpURLConnection conn;
+
 	private URL url;
-	private Map<String, String> headers;
+	private Map<String, String> bodyParams;
 
 	public PagSeguroHttpClient() {
-	}
-
-	public URL getUrl() {
-		return url;
 	}
 
 	public void setUrl(URL url) {
 		this.url = url;
 	}
 
-	public Map<String, String> getHeaders() {
-		return headers;
-	}
-
-	public void setHeaders(Map<String, String> headers) {
-		this.headers = headers;
+	public void setBodyParams(Map<String, String> headers) {
+		this.bodyParams = headers;
 	}
 
 	public Pair<ServiceResponseType, String> connect() {
-		createConnection(getUrl());
+		ServiceResponseType connectionResponse = createConnection(url);
 
-		if (conn == null)
+		if (connectionResponse != ServiceResponseType.OK)
 			return Pair.of(ServiceResponseType.CONNECTION_ERROR, null);
 
-		ServiceResponseType wResponse = writeHeadersToRequest();
+		ServiceResponseType wResponse = writeBodyToRequest();
 
 		if (wResponse != ServiceResponseType.OK)
 			return Pair.of(ServiceResponseType.CONNECTION_ERROR, null);
@@ -72,26 +72,19 @@ public class PagSeguroHttpClient {
 		return Pair.of(ServiceResponseType.OK, response);
 	}
 
+	/**
+	 * @return the input stream content or <code>null</code>
+	 */
 	private String readInputStream() {
-		try {
-			InputStreamReader ist = new InputStreamReader(conn.getInputStream());
-			BufferedReader br = new BufferedReader(ist);
-
-			String line;
-			StringBuilder sb = new StringBuilder();
-
-			while ((line = br.readLine()) != null) {
-				sb.append(line);
-			}
-
-			return sb.toString();
+		try (InputStreamReader ist = new InputStreamReader(conn.getInputStream())) {
+			return StreamUtils.readBufferedReader(new BufferedReader(ist));
 		} catch (IOException e) {
 			logger.catching(e);
 			return null;
 		}
 	}
 
-	private void createConnection(URL url) {
+	private ServiceResponseType createConnection(URL url) {
 		try {
 			HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
 
@@ -103,19 +96,19 @@ public class PagSeguroHttpClient {
 			conn.connect();
 
 			this.conn = conn;
+
+			return ServiceResponseType.OK;
 		} catch (IOException e) {
 			logger.catching(e);
+			return ServiceResponseType.FAIL;
 		}
 	}
 
-	private ServiceResponseType writeHeadersToRequest() {
-		try {
-			DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
-
-			dos.writeBytes(ParameterStringBuilder.getParamsString(headers));
+	private ServiceResponseType writeBodyToRequest() {
+		try (DataOutputStream dos = new DataOutputStream(conn.getOutputStream())) {
+			dos.writeBytes(ParameterStringBuilder.getParamsString(bodyParams));
 
 			dos.flush();
-			dos.close();
 
 			return ServiceResponseType.OK;
 		} catch (IOException e) {
@@ -129,7 +122,6 @@ public class PagSeguroHttpClient {
 			return conn.getResponseCode();
 		} catch (IOException e) {
 			logger.catching(e);
-
 			return 500; // 500 is a generic error
 		}
 	}

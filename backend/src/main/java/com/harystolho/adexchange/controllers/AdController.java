@@ -22,8 +22,8 @@ import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.parser.ad.TagNode;
 import com.harystolho.adexchange.services.AdService;
 import com.harystolho.adexchange.services.ServiceResponse;
+import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
 import com.harystolho.adexchange.utils.AEUtils;
-import com.harystolho.adexchange.utils.Nothing;
 
 @RestController
 @CrossOrigin(origins = AEUtils.corsOrigin)
@@ -100,13 +100,13 @@ public class AdController {
 	@DeleteMapping("/api/v1/ads/{id}")
 	public ResponseEntity<Object> deleteAd(@RequestAttribute("ae.accountId") String accountId,
 			@PathVariable String id) {
-		ServiceResponse<Nothing> response = adService.deleteAdById(accountId, id);
+		ServiceResponseType response = adService.deleteAdById(accountId, id);
 
-		switch (response.getErrorType()) {
+		switch (response) {
 		case FAIL:
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getFullMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		default:
-			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response.getReponse());
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 		}
 
 	}
