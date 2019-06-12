@@ -15,6 +15,7 @@ import '../../assets/font-awesome-4.7.0/css/font-awesome.min.css'
 import {Dropdown} from "../utils/Components";
 import NotificationCard from "./controlPanel/Notification";
 import NotificationManager from "../../managers/NotificationManager";
+import Help from "./help/Help";
 
 export default class Dashboard extends Component {
     constructor(props) {
@@ -62,6 +63,11 @@ export default class Dashboard extends Component {
                             </div>
                         </div>
                         <div class="flex-grow-1 d-flex flex-column justify-content-end">
+                            <div class="dashboard__sidebar--item">
+                                <Link href="/dashboard/help" activeClassName="active">
+                                    <div class="dashboard__sidebar--item-container">Ajuda</div>
+                                </Link>
+                            </div>
                             <div class="dashboard__sidebar--item">
                                 <Link href="/dashboard/account" activeClassName="active">
                                     <div class="dashboard__sidebar--item-container">Conta</div>
@@ -122,6 +128,10 @@ export default class Dashboard extends Component {
 
                             <Match path="/dashboard/spots" include>
                                 <Spots/>
+                            </Match>
+
+                            <Match path="/dashboard/help" include>
+                                <Help/>
                             </Match>
 
                             <Match path="/dashboard/account" include>

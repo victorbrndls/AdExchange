@@ -87,7 +87,7 @@ export default class Home extends Component {
 
                                         <div class="col-sm-12 col-md-6 col-lg-4 ae-home-benefits-wrapper">
                                             <BenefitCard header="Prático"
-                                                         subHeader="Nossa plataforma conta com diversos recursos para criar seus anúncios de um jeito rápido e simples."
+                                                         subHeader="Nossa plataforma conta com diversos recursos para criar seus anúncios de um jeito simples e rápido."
                                                          imgSrc="/assets/small-exercise.png"/>
                                         </div>
 
@@ -182,6 +182,16 @@ export default class Home extends Component {
                                                          ]}/>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ae-home-section ae-website-owner">
+                        <div class="container ae-home">
+                            <div class="row">
+                                <div class="col">
+
                                 </div>
                             </div>
                         </div>
