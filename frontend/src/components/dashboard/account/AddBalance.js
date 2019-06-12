@@ -6,7 +6,8 @@ export default class AddBalance extends Component {
         super(props);
 
         this.state = {
-            error: undefined
+            error: undefined,
+            success: undefined
         };
     }
 
@@ -14,7 +15,7 @@ export default class AddBalance extends Component {
         PaymentManager.getCheckoutCode(balanceProduct).then((data) => {
             let code = data.checkoutCode;
 
-            PagSeguroLightbox(code);
+            PagSeguroLightbox(code, this.pagseguroCallback());
         }).catch((error) => {
             switch (error) {
                 case 'FAIL/':
@@ -22,14 +23,31 @@ export default class AddBalance extends Component {
                         error: {
                             title: "Erro ao realizar pagamento",
                             message: "Houve um erro em nosso sistema e a função de pagamentos não está funcionando no momento. Tente mais tarde novamente."
-                        }
+                        },
+                        success: undefined
                     });
                     break;
             }
         });
     }
 
-    render({}, {error}) {
+    pagseguroCallback() {
+        return {
+            success: (transactionCode) => {
+                this.setState({
+                    success: {
+                        title: "Pagamento realizado com sucesso.",
+                        message: "O seu pagamento foi realizado com sucesso, em momentos você receberá o seu em sua conta."},
+                    error: undefined
+                });
+            },
+            abort: () => {
+
+            }
+        }
+    }
+
+    render({}, {error, success}) {
         return (
             <div class="container">
                 <div class="row mb-4">
@@ -43,6 +61,15 @@ export default class AddBalance extends Component {
                         <dt>{error.title}</dt>
                         <dd>
                             {error.message}
+                        </dd>
+                    </dl>
+                </div>)}
+
+                {success && (<div class="shadow-sm dashboard-success-container dashboard-container-wrapper">
+                    <dl>
+                        <dt>{success.title}</dt>
+                        <dd>
+                            {success.message}
                         </dd>
                     </dl>
                 </div>)}

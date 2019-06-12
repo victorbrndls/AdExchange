@@ -940,6 +940,11 @@ body.auth #header {
     color: #850404;
 }
 
+.dashboard-success-container{
+    background-color: #cdffcd;
+    color: #04851b;
+}
+
 .controlpanel-card__text h2, h4 {
     font-weight: 600;
 }
