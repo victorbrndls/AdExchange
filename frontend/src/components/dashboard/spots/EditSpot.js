@@ -86,7 +86,7 @@ export default class EditSpot extends Component {
                     Spot
                 </div>
 
-                <div class="mb-2 shadow-sm dashboard-info-container">
+                <div class="mb-2 shadow-sm dashboard-info-container dashboard-container-wrapper">
                     <dl>
                         <dt>Usar anúncio de contrato</dt>
                         <dd>

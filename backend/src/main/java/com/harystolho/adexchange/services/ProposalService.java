@@ -15,7 +15,6 @@ import com.harystolho.adexchange.models.Proposal;
 import com.harystolho.adexchange.repositories.proposal.ProposalRepository;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
 import com.harystolho.adexchange.utils.AEUtils;
-import com.harystolho.adexchange.utils.Nothing;
 
 @Service
 public class ProposalService {
@@ -85,27 +84,27 @@ public class ProposalService {
 		return ServiceResponse.ok(saved);
 	}
 
-	public ServiceResponse<Nothing> deleteProposalById(String accountId, String id) {
+	public ServiceResponseType deleteProposalById(String accountId, String id) {
 		Proposal proposal = proposalRepository.getById(id);
 
 		if (proposal.isRejected()) {
 			if (!containsProposalInNew(accountId, proposal))
-				return ServiceResponse.proposalNotInNew();
+				return ServiceResponseType.PROPOSAL_NOT_IN_NEW;
 		} else {
 			if (!containsProposalInSent(accountId, proposal))
-				return ServiceResponse.proposalNotInSent();
+				return ServiceResponseType.PROPOSAL_NOT_IN_SENT;
 		}
 
 		proposalRepository.deleteById(id);
 
-		return ServiceResponse.ok(null);
+		return ServiceResponseType.OK;
 	}
 
-	public ServiceResponse<Nothing> rejectProposalById(String accountId, String id) {
+	public ServiceResponseType rejectProposalById(String accountId, String id) {
 		Proposal proposal = proposalRepository.getById(id);
 
 		if (!containsProposalInNew(accountId, proposal)) // Only proposals in new can be rejected
-			return ServiceResponse.proposalNotInNew();
+			return ServiceResponseType.PROPOSAL_NOT_IN_NEW;
 
 		proposal.setRejected(true);
 		swapProposalLocation(proposal);
@@ -120,7 +119,7 @@ public class ProposalService {
 
 		proposalRepository.save(proposal);
 
-		return ServiceResponse.ok(null);
+		return ServiceResponseType.OK;
 	}
 
 	public ServiceResponseType reviewProposal(String accountId, String id, String duration, String paymentMethod,

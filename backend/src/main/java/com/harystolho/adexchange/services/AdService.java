@@ -13,7 +13,6 @@ import com.harystolho.adexchange.parser.ad.AdContentParser;
 import com.harystolho.adexchange.parser.ad.TagNode;
 import com.harystolho.adexchange.repositories.ad.AdRepository;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
-import com.harystolho.adexchange.utils.Nothing;
 
 @Service
 public class AdService {
@@ -128,15 +127,15 @@ public class AdService {
 	}
 
 	// TODO also delete the proposals that have this ad in them
-	public ServiceResponse<Nothing> deleteAdById(String accountId, String id) {
+	public ServiceResponseType deleteAdById(String accountId, String id) {
 		Ad ad = adRepository.getAdById(id);
 
 		if (ad != null && ad.getAccountId().equals(accountId)) {
 			adRepository.removeById(id);
-			return ServiceResponse.ok(null);
+			return ServiceResponseType.OK;
 		}
 
-		return ServiceResponse.fail("The Ad doesn't belong to this account");
+		return ServiceResponseType.FAIL;
 	}
 
 	public String duplicateAd(String adId) {

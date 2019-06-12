@@ -18,7 +18,6 @@ import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.models.ads.Ad.AdType;
 import com.harystolho.adexchange.repositories.proposal.ProposalRepository;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
-import com.harystolho.adexchange.utils.Nothing;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProposalServiceTest {
@@ -104,9 +103,9 @@ public class ProposalServiceTest {
 		Ad ad = new Ad(AdType.TEXT);
 		ad.setAccountId("acc1");
 
-		ServiceResponse<Nothing> response = proposalService.deleteProposalById("acc123", "123");
+		ServiceResponseType response = proposalService.deleteProposalById("acc123", "123");
 
-		assertEquals(ServiceResponseType.PROPOSAL_NOT_IN_SENT, response.getErrorType());
+		assertEquals(ServiceResponseType.PROPOSAL_NOT_IN_SENT, response);
 	}
 
 	@Test
@@ -118,8 +117,7 @@ public class ProposalServiceTest {
 		p.setInProposerSent(true);
 		Mockito.when(proposalRepository.getById("p_dp")).thenReturn(p);
 
-		assertEquals(ServiceResponseType.PROPOSAL_NOT_IN_NEW,
-				proposalService.deleteProposalById("ac99", "p_dp").getErrorType());
+		assertEquals(ServiceResponseType.PROPOSAL_NOT_IN_NEW, proposalService.deleteProposalById("ac99", "p_dp"));
 	}
 
 	@Test
@@ -131,8 +129,7 @@ public class ProposalServiceTest {
 		p.setInProposerSent(false);
 		Mockito.when(proposalRepository.getById("p_dp")).thenReturn(p);
 
-		assertEquals(ServiceResponseType.PROPOSAL_NOT_IN_SENT,
-				proposalService.deleteProposalById("ac99", "p_dp").getErrorType());
+		assertEquals(ServiceResponseType.PROPOSAL_NOT_IN_SENT, proposalService.deleteProposalById("ac99", "p_dp"));
 	}
 
 	@Test
@@ -144,9 +141,8 @@ public class ProposalServiceTest {
 		p.setInProposerSent(true);
 		Mockito.when(proposalRepository.getById("pnrnin")).thenReturn(p);
 
-		assertEquals(ServiceResponseType.OK, proposalService.deleteProposalById("1234", "pnrnin").getErrorType());
-		assertEquals(ServiceResponseType.PROPOSAL_NOT_IN_SENT,
-				proposalService.deleteProposalById("abcd", "pnrnin").getErrorType());
+		assertEquals(ServiceResponseType.OK, proposalService.deleteProposalById("1234", "pnrnin"));
+		assertEquals(ServiceResponseType.PROPOSAL_NOT_IN_SENT, proposalService.deleteProposalById("abcd", "pnrnin"));
 	}
 
 	@Test
@@ -158,9 +154,8 @@ public class ProposalServiceTest {
 		p.setInProposerSent(false);
 		Mockito.when(proposalRepository.getById("pnrnis")).thenReturn(p);
 
-		assertEquals(ServiceResponseType.PROPOSAL_NOT_IN_SENT,
-				proposalService.deleteProposalById("1234", "pnrnis").getErrorType());
-		assertEquals(ServiceResponseType.OK, proposalService.deleteProposalById("abcd", "pnrnis").getErrorType());
+		assertEquals(ServiceResponseType.PROPOSAL_NOT_IN_SENT, proposalService.deleteProposalById("1234", "pnrnis"));
+		assertEquals(ServiceResponseType.OK, proposalService.deleteProposalById("abcd", "pnrnis"));
 	}
 
 	@Test
@@ -171,8 +166,7 @@ public class ProposalServiceTest {
 		p.setInProposerSent(true);
 		Mockito.when(proposalRepository.getById("pr")).thenReturn(p);
 
-		assertEquals(ServiceResponseType.PROPOSAL_NOT_IN_NEW,
-				proposalService.rejectProposalById("1234", "pr").getErrorType());
+		assertEquals(ServiceResponseType.PROPOSAL_NOT_IN_NEW, proposalService.rejectProposalById("1234", "pr"));
 	}
 
 	@Test
@@ -183,8 +177,7 @@ public class ProposalServiceTest {
 		p.setInProposerSent(false);
 		Mockito.when(proposalRepository.getById("pr2")).thenReturn(p);
 
-		assertEquals(ServiceResponseType.PROPOSAL_NOT_IN_NEW,
-				proposalService.rejectProposalById("abcd", "pr2").getErrorType());
+		assertEquals(ServiceResponseType.PROPOSAL_NOT_IN_NEW, proposalService.rejectProposalById("abcd", "pr2"));
 	}
 
 	@Test
@@ -195,7 +188,7 @@ public class ProposalServiceTest {
 		p.setInProposerSent(false);
 		Mockito.when(proposalRepository.getById("pr3")).thenReturn(p);
 
-		assertEquals(ServiceResponseType.OK, proposalService.rejectProposalById("1234", "pr3").getErrorType());
+		assertEquals(ServiceResponseType.OK, proposalService.rejectProposalById("1234", "pr3"));
 
 		assertEquals(true, p.isRejected());
 		assertEquals(true, p.isInProposerSent());
@@ -210,7 +203,7 @@ public class ProposalServiceTest {
 		p.setInProposerSent(true);
 		Mockito.when(proposalRepository.getById("pr4")).thenReturn(p);
 
-		assertEquals(ServiceResponseType.OK, proposalService.rejectProposalById("abcd", "pr4").getErrorType());
+		assertEquals(ServiceResponseType.OK, proposalService.rejectProposalById("abcd", "pr4"));
 
 		assertEquals(true, p.isRejected());
 		assertEquals(false, p.isInProposerSent());

@@ -1,25 +1,64 @@
 import {Component} from "preact";
-import {Link} from "preact-router";
+import PaymentManager from "../../../managers/PaymentManager";
 
 export default class AddBalance extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            error: undefined
+        };
     }
 
-    render() {
+    displayCheckout(balanceProduct) {
+        PaymentManager.getCheckoutCode(balanceProduct).then((data) => {
+            let code = data.checkoutCode;
+
+            PagSeguroLightbox(code);
+        }).catch((error) => {
+            switch (error) {
+                case 'FAIL/':
+                    this.setState({
+                        error: {
+                            title: "Erro ao realizar pagamento",
+                            message: "Houve um erro em nosso sistema e a função de pagamentos não está funcionando no momento. Tente mais tarde novamente."
+                        }
+                    });
+                    break;
+            }
+        });
+    }
+
+    render({}, {error}) {
         return (
             <div class="container">
-                <div class="row mb-5">
+                <div class="row mb-4">
                     <div class="col websites-account-header">
                         Adicionar Saldo
                     </div>
                 </div>
 
-                <div class="row justify-content-center">
-                    <PaymentCard leftOffset={[40]} data={["23,00", "25,00", "https://www.youtube.com/1"]}/>
-                    <PaymentCard leftOffset={[35, 45]} data={["45,00", "50,00", "https://www.youtube.com/2"]}/>
-                    <PaymentCard leftOffset={[30, 50, 40]} data={["95,00", "00,00", "https://www.youtube.com/3"]}/>
+                {error && (<div class="shadow-sm dashboard-error-container dashboard-container-wrapper">
+                    <dl>
+                        <dt>{error.title}</dt>
+                        <dd>
+                            {error.message}
+                        </dd>
+                    </dl>
+                </div>)}
+
+                <div class="mt-4 row justify-content-center">
+                    <PaymentCard leftOffset={[40]}
+                                 data={["23,00", "25,00", this.displayCheckout.bind(this, PaymentManager.BALANCE_PRODUCT.BALANCE_25)]}/>
+                    <PaymentCard leftOffset={[35, 45]}
+                                 data={["45,00", "50,00", this.displayCheckout.bind(this, PaymentManager.BALANCE_PRODUCT.BALANCE_50)]}/>
+                    <PaymentCard leftOffset={[30, 50, 40]}
+                                 data={["95,00", "100,00", this.displayCheckout.bind(this, PaymentManager.BALANCE_PRODUCT.BALANCE_100)]}/>
                 </div>
+
+                <script type="text/javascript"
+                        src="https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.lightbox.js">
+                </script>
             </div>
         )
     }
@@ -45,9 +84,9 @@ const PaymentCardBody = ({data}) => (
         </div>
         <div class="font-poppins mb-3 text-black-50">R$ {data[1]}</div>
         <div class="text-center">
-            <a native href={data[2]} class="add-balance-card-body__buy font-raleway font-weight-bold">
+            <span class="add-balance-card-body__buy font-raleway font-weight-bold" onClick={() => data[2]()}>
                 <span>Comprar</span>
-            </a>
+            </span>
         </div>
     </div>
 );
