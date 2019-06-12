@@ -51,11 +51,7 @@ public class PaymentCheckoutGenerator {
 	 * @param product
 	 * @return the checkout code
 	 */
-	public ServiceResponse<String> generateCheckoutCode(PaymentProductType product) {
-		return generateCheckoutCode(configuration.getEndpoint() + CHECKOUT_ENDPOINT, product);
-	}
-
-	private ServiceResponse<String> generateCheckoutCode(String url, PaymentProductType type) {
+	public ServiceResponse<String> generateCheckoutCode(PaymentProductType type) {
 		PaymentProduct product = productRegistry.getProduct(type);
 
 		if (product == null) {
@@ -63,7 +59,7 @@ public class PaymentCheckoutGenerator {
 			return ServiceResponse.fail("");
 		}
 
-		return generatePagSeguroCheckoutCode(url, product);
+		return generatePagSeguroCheckoutCode(configuration.getEndpoint() + CHECKOUT_ENDPOINT, product);
 	}
 
 	private ServiceResponse<String> generatePagSeguroCheckoutCode(String url, PaymentProduct product) {

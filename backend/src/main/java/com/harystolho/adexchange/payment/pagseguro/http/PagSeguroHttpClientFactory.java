@@ -3,6 +3,9 @@ package com.harystolho.adexchange.payment.pagseguro.http;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class PagSeguroHttpClientFactory {
 
 	public PagSeguroHttpClient createClient(String authenticationEmail, String authenticationToken) {

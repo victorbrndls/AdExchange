@@ -95,8 +95,7 @@ public class AccountServiceTest {
 		Mockito.when(authRepository.getByEmail(Mockito.anyString()))
 				.thenReturn(new Account("email@valid.com", PasswordSecurity.encryptPassword("123456")));
 
-		ServiceResponse<String> response = accountService.login("email@valid.com",
-				PasswordSecurity.encryptPassword("123456"));
+		ServiceResponse<String> response = accountService.login("email@valid.com", "123456");
 		assertEquals(ServiceResponseType.OK, response.getErrorType());
 	}
 
