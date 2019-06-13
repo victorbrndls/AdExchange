@@ -1070,13 +1070,28 @@ body.auth #header {
 }
 
 .help-item--container {
-    background-color: #fff;
-    padding: 12px 9px;
     box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
+    border-radius: 8px;
+}
+
+.help-item--container--header {
+    padding: 8px;
+    border-bottom: solid 1px grey;
+    border-radius: 8px 8px 0 0;
+    background-color: rgba(85, 85, 85, 0.85);
+    font-family: Poppins, serif;
+    font-size: 19px;
+    color: white;
+}
+
+.help-item--container--body {
+    background-color: white;
+    padding: 7px;
+    border-radius: 0 0 8px 8px;
 }
 
 .help-item--container:hover {
-    transform: scale(1.04);
+    transform: scale(1.01);
 }
 
 .menu-mobile {
@@ -1090,6 +1105,13 @@ body.auth #header {
     vertical-align: middle;
 }
 
+.help-subitem-margin {
+    margin-left: 17px;
+}
+
+.help-subitem-text{
+    color: #646464;
+}
 
 /*
     ====================
@@ -1202,7 +1224,7 @@ body.auth #header {
     .dashboard__sidebar {
         position: absolute;
         width: 0;
-        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+        box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
     }
 
     :root {
