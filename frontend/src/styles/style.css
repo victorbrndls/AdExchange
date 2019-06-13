@@ -296,6 +296,9 @@ body.auth #header {
 .dashboard__sidebar {
     overflow-y: hidden;
     width: var(--dashboard-sidebar-width);
+    background-color: white;
+    height: 100%;
+    z-index: 1200;
 }
 
 .dashboard__main {
@@ -1083,20 +1086,10 @@ body.auth #header {
     cursor: pointer;
 }
 
-.dashboard__sidebar.mobile-visible {
-    position: absolute;
-    display: block;
-    background-color: white;
-    height: 100%;
-    z-index: 1020;
-
-    animation: menuWidthChange 0.5s;
-    animation-fill-mode: forwards;
-}
-
 .vertical-align-middle {
     vertical-align: middle;
 }
+
 
 /*
     ====================
@@ -1207,7 +1200,9 @@ body.auth #header {
     }
 
     .dashboard__sidebar {
-        display: none;
+        position: absolute;
+        width: 0;
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
     }
 
     :root {
@@ -1243,14 +1238,5 @@ body.auth #header {
     to {
         color: firebrick;
         transform: scale(1.3);
-    }
-}
-
-@keyframes menuWidthChange {
-    from {
-        width: 0;
-    }
-    to {
-        width: 230px;
     }
 }

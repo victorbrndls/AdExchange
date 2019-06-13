@@ -26,13 +26,22 @@ export default class Dashboard extends Component {
         }
     }
 
+    handleMobileStateUpdate(mobile) {
+        anime({
+            targets: '.dashboard__sidebar',
+            width: mobile ? 230 : 0,
+            duration: 500,
+            easing: 'easeInOutCubic',
+        }).finished.then(() => this.setState({mobile: mobile}));
+    }
+
     render({}, {mobile}) {
         return (
             <div id="dashboard" class="h-100">
-                <div class={`dashboard__sidebar ${mobile ? 'mobile-visible' : ''}`}>
+                <div class="dashboard__sidebar">
                     <div class="dashboard__sidebar-logo">
                         <img src="/assets/logo.png"/>
-                        <div class="menu-mobile" onClick={() => this.setState({mobile: !mobile})}>
+                        <div class="menu-mobile" onClick={() => this.handleMobileStateUpdate(!mobile)}>
                             <i class="fa fa-bars vertical-align-middle" aria-hidden="true"/>
                         </div>
                     </div>
@@ -87,7 +96,7 @@ export default class Dashboard extends Component {
                 <div class="dashboard__main">
                     <div class="dashboard__main-topbar">
                         <div class="dashboard__main-topbar--item">
-                            <div class="menu-mobile" onClick={() => this.setState({mobile: !mobile})}>
+                            <div class="menu-mobile" onClick={() => this.handleMobileStateUpdate(!mobile)}>
                                 <i class="fa fa-bars" aria-hidden="true"/>
                             </div>
                         </div>
