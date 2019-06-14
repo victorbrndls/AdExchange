@@ -1067,6 +1067,7 @@ body.auth #header {
     background: linear-gradient(6deg, #237bc5, #0e8ed6);
     padding: 7px 15px;
     color: white;
+    border-radius: 6px;
 }
 
 .help-item--container {
@@ -1079,14 +1080,14 @@ body.auth #header {
     border-bottom: solid 1px grey;
     border-radius: 8px 8px 0 0;
     background-color: rgba(85, 85, 85, 0.85);
-    font-family: Poppins, serif;
+    font-family: Raleway, serif;
     font-size: 19px;
     color: white;
 }
 
 .help-item--container--body {
     background-color: white;
-    padding: 7px;
+    padding: 9px;
     border-radius: 0 0 8px 8px;
 }
 
@@ -1111,7 +1112,10 @@ body.auth #header {
 
 .help-subitem-text{
     color: #646464;
+    font-family: Poppins, serif;
 }
+
+
 
 /*
     ====================
