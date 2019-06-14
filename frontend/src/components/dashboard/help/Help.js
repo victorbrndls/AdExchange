@@ -32,9 +32,9 @@ export default class Help extends Component {
                             <dt>Tenho um website</dt>
                             <dd class="help-subitem-margin help-subitem-text">
                                 Na página ‘Websites’ você pode adicionar/editar o seu site ao nossa lista de
-                                sitescadastrados.Construa um boa descrição, descreva qual tipo de conteúdo você posta,
-                                qual seu públicoalvo e o número de visualizações mensais. Será ela que convencerá outras
-                                pessoas aanunciarem emseu website.
+                                sites cadastrados. Construa um boa descrição, descreva qual tipo de conteúdo você posta,
+                                qual seu público alvo e o número de visualizações mensais. Será ela que convencerá outras
+                                pessoas a anunciarem em seu website.
                             </dd>
 
                             <dt>Quero anunciar em um website</dt>
@@ -77,7 +77,7 @@ export default class Help extends Component {
                                     </li>
                                     <li>
                                         Aceitar a proposta clicando no botão “Aceitar Proposta”. Quando a proposta for
-                                        aceita pelo dono do site ela se torna um contrato que está disponível na página
+                                        aceita pelo dono do site ela se torna um contrato que estará disponível na página
                                         ‘Contratos’.
                                     </li>
                                 </ul>
@@ -88,8 +88,68 @@ export default class Help extends Component {
 
                         <HelpItem title={"Contratos"}>
                             <span class="help-subitem-text">
-                                
+                                Um contrato é um acordo entre uma pessoa que deseja anunciar e um dono de website. Após
+                                ser criado um contrato não pode ser modificado nem deletado. No contrato há informações
+                                sobre qual anuncio será utilizado, sua validade, o método e valor de pagamento.
                             </span>
+
+                            <dt>Como criar um contrato</dt>
+                            <dd class="help-subitem-margin help-subitem-text">
+                                Quando uma proposta é aceita por um dono de website, ela se torna um contrato. (Leia o
+                                item "Propostas" para mais informações)
+                            </dd>
+                        </HelpItem>
+
+                        <HelpItem title={"Anúncios"}>
+                            <span class="help-subitem-text">
+                                Na página “Anúncios” você pode visualizar seus anúncios existentes ou criar novos.
+                            </span>
+
+                            <dt>Como criar um anúncio</dt>
+                            <dd class="help-subitem-margin help-subitem-text">
+                                Dentro da página ‘Anúncios’ clique no botão “Criar Anúncio”. Na tela que aparecerá você
+                                deve preencher informações como nome do anúncio e escolher qual modelo de anúncio que
+                                usar, após isso clique no botão “Criar”.
+                            </dd>
+                        </HelpItem>
+
+                        <HelpItem title={"Spots"}>
+                            <dt>Como criar um Spot</dt>
+                            <dd class="help-subitem-margin help-subitem-text">
+                                O Spot é um objeto que referencia um anúncio que você deseja exibir e um anúncio reserva
+                                caso exista. Cada Spot tem um ID único que é usado para referenciá-lo em seu site. Para
+                                exibir um anúncio em seu site, entre na página ‘Spots’ e clique no botão “Criar Spot”.
+                                Após isso selecione o contrato do anúncio que deseja exibir e um anúncio reserva que
+                                aparecerá caso ocorra um erro ao mostrar o anúncio principal, depois clique em “Criar”.
+                                Copie o <span style="color:red;">script¹</span> abaixo para algum lugar dentro da página
+                                onde você deseja exibir seu
+                                Spot. Volte para a página ‘Spots’ e nela aparecerá o Spot que foi criado. Agora copie o
+                                <span style="color:blue;"> script²</span> onde você quer exibir seu anúncio. Copie o
+                                ‘Id’ do Spot que você deseja
+                                mostrar e substitua o campo {"{id-do-spot}"} no <span
+                                style="color:blue;"> script²</span> que você colou em seu site.
+                            </dd>
+
+                            <dt style="color:red;">Script¹</dt>
+                            <dd>
+                                <div class="help-subitem-text">
+                                    Esse script só precisa ser colocado 1 vez por página.
+                                </div>
+                                <code class="ml-3">
+                                    {"<script src=\"http://localhost:8081/AdExchange.js\" async></script>"}
+                                </code>
+                            </dd>
+
+                            <dt style="color:blue;">Script²</dt>
+                            <dd>
+                                <div class="help-subitem-text">
+                                    Coloque esse script quantas vezes você quiser por página, cada script mostrará o
+                                    anúncio referenciado pelo Spot.
+                                </div>
+                                <code class="ml-3">
+                                    {"<div data-ae-id=\"{id-do-spot}\"></div>"}
+                                </code>
+                            </dd>
                         </HelpItem>
 
                     </div>
