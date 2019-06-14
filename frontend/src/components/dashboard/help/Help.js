@@ -33,7 +33,8 @@ export default class Help extends Component {
                             <dd class="help-subitem-margin help-subitem-text">
                                 Na página ‘Websites’ você pode adicionar/editar o seu site ao nossa lista de
                                 sites cadastrados. Construa um boa descrição, descreva qual tipo de conteúdo você posta,
-                                qual seu público alvo e o número de visualizações mensais. Será ela que convencerá outras
+                                qual seu público alvo e o número de visualizações mensais. Será ela que convencerá
+                                outras
                                 pessoas a anunciarem em seu website.
                             </dd>
 
@@ -77,7 +78,8 @@ export default class Help extends Component {
                                     </li>
                                     <li>
                                         Aceitar a proposta clicando no botão “Aceitar Proposta”. Quando a proposta for
-                                        aceita pelo dono do site ela se torna um contrato que estará disponível na página
+                                        aceita pelo dono do site ela se torna um contrato que estará disponível na
+                                        página
                                         ‘Contratos’.
                                     </li>
                                 </ul>
@@ -149,6 +151,13 @@ export default class Help extends Component {
                                 <code class="ml-3">
                                     {"<div data-ae-id=\"{id-do-spot}\"></div>"}
                                 </code>
+                            </dd>
+
+                            <dt>Como exibir um anúncio próprio</dt>
+                            <dd class="help-subitem-margin help-subitem-text">
+                                Para exibir um anúncio que você mesmo criou em seu site, entre na página ‘Spots’ e clique no botão
+                                “Criar Spot”. Após isso deixe o campo "Contrato" vazio e selecione o anúncio que deseja
+                                exibir como anúncio reserva, depois clique em “Criar”.
                             </dd>
                         </HelpItem>
 
