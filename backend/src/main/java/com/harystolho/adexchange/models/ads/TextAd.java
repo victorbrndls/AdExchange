@@ -8,7 +8,14 @@ import com.harystolho.adexchange.parser.ad.TagNode;
 
 public class TextAd extends Ad {
 
+	public enum TextAlignment {
+		LEFT, CENTER, RIGHT
+	}
+
 	private String text;
+
+	private TextAlignment textAlignment;
+
 	private String bgColor;
 	private String textColor;
 
@@ -25,6 +32,14 @@ public class TextAd extends Ad {
 
 	public void setText(String text) {
 		this.text = text;
+	}
+
+	public TextAlignment getTextAlignment() {
+		return textAlignment;
+	}
+
+	public void setTextAlignment(TextAlignment textAlignment) {
+		this.textAlignment = textAlignment;
 	}
 
 	public String getBgColor() {

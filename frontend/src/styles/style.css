@@ -1115,6 +1115,27 @@ body.auth #header {
     font-family: Poppins, serif;
 }
 
+.create-add__btn-border{
+    border: solid 1px #bfbfbf;
+    color: #2455c0;
+    padding: 4px 10px;
+}
+
+.create-add__btn-border:hover{
+    background-color: white;
+}
+
+.create--add__btn-border--active{
+    border: solid 2px #2455c0;
+    z-index: 1;
+}
+.create-add__btn-border:first-child{
+    border-radius: 4px 0 0 4px;
+}
+
+.create-add__btn-border:last-of-type{
+    border-radius: 0 4px 4px 0;
+}
 
 
 /*

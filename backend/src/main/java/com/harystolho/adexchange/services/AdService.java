@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.models.ads.ImageAd;
 import com.harystolho.adexchange.models.ads.TextAd;
+import com.harystolho.adexchange.models.ads.TextAd.TextAlignment;
 import com.harystolho.adexchange.parser.ad.AdContentParser;
 import com.harystolho.adexchange.parser.ad.TagNode;
 import com.harystolho.adexchange.repositories.ad.AdRepository;
@@ -77,9 +78,10 @@ public class AdService {
 	}
 
 	public ServiceResponse<Ad> createOrUpdateAd(String accountId, String id, String name, String type, String refUrl,
-			String text, String bgColor, String textColor, String imageUrl) {
+			String text, String textAlignment, String bgColor, String textColor, String imageUrl) {
 
-		ServiceResponseType error = verifyAdFields(name, type, refUrl, text, bgColor, textColor, imageUrl);
+		ServiceResponseType error = verifyAdFields(name, type, refUrl, text, textAlignment, bgColor, textColor,
+				imageUrl);
 		if (error != ServiceResponseType.OK)
 			return ServiceResponse.error(error);
 
@@ -102,6 +104,7 @@ public class AdService {
 		if (type.equals("TEXT")) {
 			TextAd tAd = new TextAd();
 			tAd.setText(text);
+			tAd.setTextAlignment(TextAlignment.valueOf(textAlignment));
 			tAd.setBgColor(bgColor);
 			tAd.setTextColor(textColor);
 			ad = tAd;
@@ -156,8 +159,8 @@ public class AdService {
 		adRepository.removeById(id);
 	}
 
-	private ServiceResponseType verifyAdFields(String name, String type, String refUrl, String text, String bgColor,
-			String textColor, String imageUrl) {
+	private ServiceResponseType verifyAdFields(String name, String type, String refUrl, String text,
+			String textAlignment, String bgColor, String textColor, String imageUrl) {
 
 		if (!StringUtils.hasText(name))
 			return ServiceResponseType.INVALID_AD_NAME;
@@ -168,6 +171,12 @@ public class AdService {
 		if (type.equals("TEXT")) {
 			if (!StringUtils.hasText(text))
 				return ServiceResponseType.INVALID_AD_TEXT;
+
+			try {
+				TextAlignment.valueOf(textAlignment);
+			} catch (Exception e) {
+				return ServiceResponseType.INVALID_AD_TEXT_ALIGNMENT;
+			}
 
 			if (!bgColor.matches(HEX_COLOR_REGEX))
 				return ServiceResponseType.INVALID_AD_BG_COLOR;

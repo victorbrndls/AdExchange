@@ -7,6 +7,7 @@ import org.springframework.data.convert.ReadingConverter;
 import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.models.ads.ImageAd;
 import com.harystolho.adexchange.models.ads.TextAd;
+import com.harystolho.adexchange.models.ads.TextAd.TextAlignment;
 
 @ReadingConverter
 public class AdReaderConverter implements Converter<Document, Ad> {
@@ -19,6 +20,7 @@ public class AdReaderConverter implements Converter<Document, Ad> {
 		case "TEXT":
 			TextAd textAd = new TextAd();
 			textAd.setText(source.getString("text"));
+			textAd.setTextAlignment(TextAlignment.valueOf(source.getString("textAlignment")));
 			textAd.setTextColor(source.getString("textColor"));
 			textAd.setBgColor(source.getString("bgColor"));
 			ad = textAd;

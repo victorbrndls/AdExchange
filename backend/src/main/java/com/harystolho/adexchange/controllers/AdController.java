@@ -79,11 +79,11 @@ public class AdController {
 	@RequestMapping(method = { RequestMethod.POST, RequestMethod.PUT }, path = { "/api/v1/ads", "/api/v1/ads/{id}" })
 	public ResponseEntity<Object> createOrUpdateAd(HttpServletRequest req,
 			@RequestAttribute("ae.accountId") String accountId, String name, String type, String refUrl, //
-			@RequestParam(required = false) String text, @RequestParam(required = false) String bgColor,
-			@RequestParam(required = false) String textColor, @RequestParam(required = false) String imageUrl,
-			@PathVariable(required = false) String id) {
+			@RequestParam(required = false) String text, @RequestParam(required = false) String textAlignment,
+			@RequestParam(required = false) String bgColor, @RequestParam(required = false) String textColor,
+			@RequestParam(required = false) String imageUrl, @PathVariable(required = false) String id) {
 
-		ServiceResponse<Ad> response = adService.createOrUpdateAd(accountId, id, name, type, refUrl, text, bgColor,
+		ServiceResponse<Ad> response = adService.createOrUpdateAd(accountId, id, name, type, refUrl, text, textAlignment, bgColor,
 				textColor, imageUrl);
 
 		switch (response.getErrorType()) {

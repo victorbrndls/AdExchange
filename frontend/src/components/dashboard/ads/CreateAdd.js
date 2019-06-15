@@ -31,6 +31,7 @@ export default class CreateAdd extends Component {
             ad: {
                 type: 'TEXT',
                 text: DEFAULT_TEXT,
+                textAlignment: 'LEFT', // LEFT, CENTER or RIGHT
                 bgColor: "#f2f2f2",
                 textColor: "#000",
             }
@@ -110,6 +111,9 @@ export default class CreateAdd extends Component {
             case 'INVALID_AD_TEXT':
                 this.setState({error: {...error, adText: "Texto do anúncio inválido."}});
                 return;
+            case 'INVALID_AD_TEXT_ALIGNMENT':
+                this.setState({error: {...error, adTextAlignment: "Alinhamento do texto inválido."}});
+                return;
             case 'INVALID_AD_BG_COLOR':
                 this.setState({error: {...error, adBgColor: "Cor de fundo inválida."}});
                 return;
@@ -133,6 +137,7 @@ export default class CreateAdd extends Component {
         switch (ad.type) {
             case 'TEXT':
                 formData.append('text', ad.text);
+                formData.append('textAlignment', ad.textAlignment);
                 formData.append('bgColor', ad.bgColor);
                 formData.append('textColor', ad.textColor);
                 break;
@@ -176,7 +181,9 @@ export default class CreateAdd extends Component {
                                             <TextAd
                                                 parsedOutput={ad.parsedOutput || DEFAULT_PARSED_OUTPUT}
                                                 bgColor={ad.bgColor}
-                                                textColor={ad.textColor}/>
+                                                textColor={ad.textColor}
+                                                textAlignment={ad.textAlignment}
+                                            />
                                         </div>
                                         <div
                                             class={`ads-ad__checkbox-box ${ad.type === 'TEXT' ? "active" : ""}`}/>
@@ -214,6 +221,30 @@ export default class CreateAdd extends Component {
                                     <small class="form-text ad-error">
                                         {error.adText}
                                     </small>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Formatação do texto</label>
+                                    <div class="btn-group btn-group-toggle d-block" data-toggle="buttons">
+                                        <label
+                                            class={`create-add__btn-border ${ad.textAlignment === 'LEFT' ? 'create--add__btn-border--active' : ''}`}
+                                            onClick={() => this.setState({ad: {...ad, textAlignment: 'LEFT'}})}>
+                                            <i class="fa fa-align-left" aria-hidden="true"/>
+                                        </label>
+                                        <label
+                                            class={`create-add__btn-border ${ad.textAlignment === 'CENTER' ? 'create--add__btn-border--active' : ''}`}
+                                            onClick={() => this.setState({ad: {...ad, textAlignment: 'CENTER'}})}>
+                                            <i class="fa fa-align-center" aria-hidden="true"/>
+                                        </label>
+                                        <label
+                                            class={`create-add__btn-border ${ad.textAlignment === 'RIGHT' ? 'create--add__btn-border--active' : ''}`}
+                                            onClick={() => this.setState({ad: {...ad, textAlignment: 'RIGHT'}})}>
+                                            <i class="fa fa-align-right" aria-hidden="true"/>
+                                        </label>
+                                        <small class="form-text ad-error">
+                                            {error.adTextAlignment}
+                                        </small>
+                                    </div>
                                 </div>
 
                                 <div class="form-group websites-add__form">
@@ -293,10 +324,10 @@ export default class CreateAdd extends Component {
     }
 }
 
-export let TextAd = ({refUrl, parsedOutput, bgColor, textColor}) => (
+export let TextAd = ({refUrl, parsedOutput, bgColor, textColor, textAlignment}) => (
     <a native href={refUrl} target="_blank" style="text-decoration: none;">
         <div class="ae-ad text"
-             style={`background-color: ${bgColor || "#f2f2f2"}; color: ${textColor || "#000"};`}>
+             style={`background-color: ${bgColor || "#f2f2f2"}; color: ${textColor || "#000"}; text-align: ${textAlignment}`}>
             {Array.isArray(parsedOutput) ? parsedOutput.map((node) => <CodeMapper {...node}/>) : ""}
         </div>
     </a>
