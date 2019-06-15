@@ -31,9 +31,10 @@ public class AdTemplateService {
 		// Escape the content to prevent attacks
 		String bgColor = Escape.htmlElementContent(ad.getBgColor());
 		String textColor = Escape.htmlElementContent(ad.getTextColor());
+		String alignment = Escape.htmlElementContent(ad.getTextAlignment().toString());
 		String text = getTextAdParsedOutputAsHTML(ad);
 
-		return String.format(templateReader.getTemplate("TEXT"), bgColor, textColor, text);
+		return String.format(templateReader.getTemplate("TEXT"), bgColor, textColor, alignment, text);
 	}
 
 	public String assembleUsingImageAd(ImageAd ad) {
