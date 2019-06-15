@@ -21,6 +21,7 @@ public class AdReaderConverter implements Converter<Document, Ad> {
 			TextAd textAd = new TextAd();
 			textAd.setText(source.getString("text"));
 			textAd.setTextAlignment(TextAlignment.valueOf(source.getString("textAlignment")));
+			textAd.setTextSize(source.getInteger("textSize", 16));
 			textAd.setTextColor(source.getString("textColor"));
 			textAd.setBgColor(source.getString("bgColor"));
 			ad = textAd;

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.harystolho.adexchange.controllers.models.AdBuilderModel;
 import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.parser.ad.TagNode;
 import com.harystolho.adexchange.services.AdService;
@@ -80,11 +81,13 @@ public class AdController {
 	public ResponseEntity<Object> createOrUpdateAd(HttpServletRequest req,
 			@RequestAttribute("ae.accountId") String accountId, String name, String type, String refUrl, //
 			@RequestParam(required = false) String text, @RequestParam(required = false) String textAlignment,
-			@RequestParam(required = false) String bgColor, @RequestParam(required = false) String textColor,
-			@RequestParam(required = false) String imageUrl, @PathVariable(required = false) String id) {
+			@RequestParam(required = false) int textSize, @RequestParam(required = false) String bgColor,
+			@RequestParam(required = false) String textColor, @RequestParam(required = false) String imageUrl,
+			@PathVariable(required = false) String id) {
 
-		ServiceResponse<Ad> response = adService.createOrUpdateAd(accountId, id, name, type, refUrl, text, textAlignment, bgColor,
-				textColor, imageUrl);
+		ServiceResponse<Ad> response = adService.createOrUpdateAd(new AdBuilderModel().setAccountId(accountId).setId(id)
+				.setName(name).setType(type).setRefUrl(refUrl).setText(text).setTextAlignment(textAlignment)
+				.setTextSize(textSize).setBgColor(bgColor).setTextColor(textColor).setImageUrl(imageUrl));
 
 		switch (response.getErrorType()) {
 		case OK:

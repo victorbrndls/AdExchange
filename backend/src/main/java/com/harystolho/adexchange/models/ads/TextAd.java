@@ -15,6 +15,7 @@ public class TextAd extends Ad {
 	private String text;
 
 	private TextAlignment textAlignment;
+	private int textSize;
 
 	private String bgColor;
 	private String textColor;
@@ -64,6 +65,14 @@ public class TextAd extends Ad {
 
 	public void setParsedOutput(List<TagNode> parsedOutput) {
 		this.parsedOutput = parsedOutput;
+	}
+
+	public int getTextSize() {
+		return textSize;
+	}
+
+	public void setTextSize(int textSize) {
+		this.textSize = textSize;
 	}
 
 }

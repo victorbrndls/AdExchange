@@ -32,6 +32,7 @@ export default class CreateAdd extends Component {
                 type: 'TEXT',
                 text: DEFAULT_TEXT,
                 textAlignment: 'LEFT', // LEFT, CENTER or RIGHT
+                textSize: 16,
                 bgColor: "#f2f2f2",
                 textColor: "#000",
             }
@@ -114,6 +115,9 @@ export default class CreateAdd extends Component {
             case 'INVALID_AD_TEXT_ALIGNMENT':
                 this.setState({error: {...error, adTextAlignment: "Alinhamento do texto inválido."}});
                 return;
+            case 'INVALID_AD_TEXT_SIZE':
+                this.setState({error: {...error, adTextSize: "Tamanho da fonte inválido."}});
+                return;
             case 'INVALID_AD_BG_COLOR':
                 this.setState({error: {...error, adBgColor: "Cor de fundo inválida."}});
                 return;
@@ -138,6 +142,7 @@ export default class CreateAdd extends Component {
             case 'TEXT':
                 formData.append('text', ad.text);
                 formData.append('textAlignment', ad.textAlignment);
+                formData.append('textSize', ad.textSize);
                 formData.append('bgColor', ad.bgColor);
                 formData.append('textColor', ad.textColor);
                 break;
@@ -183,6 +188,7 @@ export default class CreateAdd extends Component {
                                                 bgColor={ad.bgColor}
                                                 textColor={ad.textColor}
                                                 textAlignment={ad.textAlignment}
+                                                textSize={ad.textSize}
                                             />
                                         </div>
                                         <div
@@ -223,42 +229,89 @@ export default class CreateAdd extends Component {
                                     </small>
                                 </div>
 
-                                <div class="form-group">
-                                    <label>Formatação do texto</label>
-                                    <div class="btn-group btn-group-toggle d-block" data-toggle="buttons">
-                                        <label
-                                            class={`create-add__btn-border ${ad.textAlignment === 'LEFT' ? 'create--add__btn-border--active' : ''}`}
-                                            onClick={() => this.setState({ad: {...ad, textAlignment: 'LEFT'}})}>
-                                            <i class="fa fa-align-left" aria-hidden="true"/>
-                                        </label>
-                                        <label
-                                            class={`create-add__btn-border ${ad.textAlignment === 'CENTER' ? 'create--add__btn-border--active' : ''}`}
-                                            onClick={() => this.setState({ad: {...ad, textAlignment: 'CENTER'}})}>
-                                            <i class="fa fa-align-center" aria-hidden="true"/>
-                                        </label>
-                                        <label
-                                            class={`create-add__btn-border ${ad.textAlignment === 'RIGHT' ? 'create--add__btn-border--active' : ''}`}
-                                            onClick={() => this.setState({ad: {...ad, textAlignment: 'RIGHT'}})}>
-                                            <i class="fa fa-align-right" aria-hidden="true"/>
-                                        </label>
-                                        <small class="form-text ad-error">
-                                            {error.adTextAlignment}
-                                        </small>
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <div class="form-group websites-add__form">
+                                            <label>Formatação do texto</label>
+                                            <div class="btn-group btn-group-toggle d-block" data-toggle="buttons">
+                                                <label
+                                                    class={`create-add__btn-border ${ad.textAlignment === 'LEFT' ? 'create--add__btn-border--active' : ''}`}
+                                                    onClick={() => this.setState({ad: {...ad, textAlignment: 'LEFT'}})}>
+                                                    <i class="fa fa-align-left" aria-hidden="true"/>
+                                                </label>
+                                                <label
+                                                    class={`create-add__btn-border ${ad.textAlignment === 'CENTER' ? 'create--add__btn-border--active' : ''}`}
+                                                    onClick={() => this.setState({
+                                                        ad: {
+                                                            ...ad,
+                                                            textAlignment: 'CENTER'
+                                                        }
+                                                    })}>
+                                                    <i class="fa fa-align-center" aria-hidden="true"/>
+                                                </label>
+                                                <label
+                                                    class={`create-add__btn-border ${ad.textAlignment === 'RIGHT' ? 'create--add__btn-border--active' : ''}`}
+                                                    onClick={() => this.setState({
+                                                        ad: {
+                                                            ...ad,
+                                                            textAlignment: 'RIGHT'
+                                                        }
+                                                    })}>
+                                                    <i class="fa fa-align-right" aria-hidden="true"/>
+                                                </label>
+                                                <small class="form-text ad-error">
+                                                    {error.adTextAlignment}
+                                                </small>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="form-group websites-add__form">
-                                    <label>Cor de fundo</label>
-                                    <input class="form-control ads-ad__color-picker" type="color"
-                                           value={ad.bgColor}
-                                           onChange={(e) => this.setState({ad: {...ad, bgColor: e.target.value}})}/>
-                                </div>
+                                    <div class="col-auto">
+                                        <div class="form-group websites-add__form">
+                                            <label>Cor de fundo</label>
+                                            <input class="form-control ads-ad__color-picker" type="color"
+                                                   value={ad.bgColor}
+                                                   onChange={(e) => this.setState({
+                                                       ad: {
+                                                           ...ad,
+                                                           bgColor: e.target.value
+                                                       }
+                                                   })}/>
+                                        </div>
+                                    </div>
 
-                                <div class="form-group websites-add__form">
-                                    <label>Cor do texto</label>
-                                    <input id="ad-textColor" class="form-control ads-ad__color-picker" type="color"
-                                           value={ad.textColor}
-                                           onChange={(e) => this.setState({ad: {...ad, textColor: e.target.value}})}/>
+                                    <div class="col-auto">
+                                        <div class="form-group websites-add__form">
+                                            <label>Cor do texto</label>
+                                            <input id="ad-textColor" class="form-control ads-ad__color-picker"
+                                                   type="color"
+                                                   value={ad.textColor}
+                                                   onChange={(e) => this.setState({
+                                                       ad: {
+                                                           ...ad,
+                                                           textColor: e.target.value
+                                                       }
+                                                   })}/>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-auto">
+                                        <div class="form-group websites-add__form">
+                                            <label>Tamanho da fonte (px)</label>
+                                            <input class="form-control ads-ad__color-picker"
+                                                   type="text"
+                                                   value={ad.textSize}
+                                                   onChange={(e) => this.setState({
+                                                       ad: {
+                                                           ...ad,
+                                                           textSize: e.target.value
+                                                       }
+                                                   })}/>
+                                            <small class="form-text ad-error">
+                                                {error.adTextSize}
+                                            </small>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="form-group websites-add__form">
@@ -324,14 +377,22 @@ export default class CreateAdd extends Component {
     }
 }
 
-export let TextAd = ({refUrl, parsedOutput, bgColor, textColor, textAlignment}) => (
-    <a native href={refUrl} target="_blank" style="text-decoration: none;">
-        <div class="ae-ad text"
-             style={`background-color: ${bgColor || "#f2f2f2"}; color: ${textColor || "#000"}; text-align: ${textAlignment}`}>
-            {Array.isArray(parsedOutput) ? parsedOutput.map((node) => <CodeMapper {...node}/>) : ""}
-        </div>
-    </a>
-);
+export let TextAd = ({refUrl, parsedOutput, bgColor, textColor, textAlignment, textSize}) => {
+    let style = `
+        background-color: ${bgColor || "#f2f2f2"};
+        color: ${textColor || "#000"};
+        text-align: ${textAlignment};
+        font-size: ${textSize}px;
+    `;
+
+    return (
+        <a native href={refUrl} target="_blank" style="text-decoration: none;">
+            <div class="ae-ad text" style={style}>
+                {Array.isArray(parsedOutput) ? parsedOutput.map((node) => <CodeMapper {...node}/>) : ""}
+            </div>
+        </a>
+    )
+};
 
 let CodeMapper = ({tag, content}) => (
     tag === 'b' ? (<b>{content}</b>) : tag === 'i' ? (<i>{content}</i>) : (<span>{content}</span>)
