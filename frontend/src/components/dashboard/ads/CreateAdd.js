@@ -223,7 +223,7 @@ export default class CreateAdd extends Component {
                                     </small>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group websites-add__form">
                                     <label>Formatação do texto</label>
                                     <div class="btn-group btn-group-toggle d-block" data-toggle="buttons">
                                         <label
