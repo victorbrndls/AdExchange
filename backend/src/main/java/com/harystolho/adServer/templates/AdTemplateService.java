@@ -32,9 +32,10 @@ public class AdTemplateService {
 		String bgColor = Escape.htmlElementContent(ad.getBgColor());
 		String textColor = Escape.htmlElementContent(ad.getTextColor());
 		String alignment = Escape.htmlElementContent(ad.getTextAlignment().toString());
+		String size = Escape.htmlElementContent(ad.getTextSize());
 		String text = getTextAdParsedOutputAsHTML(ad);
 
-		return String.format(templateReader.getTemplate("TEXT"), bgColor, textColor, alignment, text);
+		return String.format(templateReader.getTemplate("TEXT"), bgColor, textColor, alignment, size, text);
 	}
 
 	public String assembleUsingImageAd(ImageAd ad) {

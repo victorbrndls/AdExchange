@@ -116,7 +116,7 @@ export default class CreateAdd extends Component {
                 this.setState({error: {...error, adTextAlignment: "Alinhamento do texto inválido."}});
                 return;
             case 'INVALID_AD_TEXT_SIZE':
-                this.setState({error: {...error, adTextAlignment: "Tamanho da fonte inválido."}});
+                this.setState({error: {...error, adTextSize: "Tamanho da fonte inválido."}});
                 return;
             case 'INVALID_AD_BG_COLOR':
                 this.setState({error: {...error, adBgColor: "Cor de fundo inválida."}});

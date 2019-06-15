@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.harystolho.adexchange.controllers.models.AdBuilderModel;
 import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.models.ads.ImageAd;
 import com.harystolho.adexchange.models.ads.TextAd;
@@ -77,20 +78,18 @@ public class AdService {
 		return ServiceResponse.ok(adRepository.getAdsById(Arrays.asList(ids.split(","))));
 	}
 
-	public ServiceResponse<Ad> createOrUpdateAd(String accountId, String id, String name, String type, String refUrl,
-			String text, String textAlignment, String bgColor, String textColor, String imageUrl) {
+	public ServiceResponse<Ad> createOrUpdateAd(AdBuilderModel model) {
 
-		ServiceResponseType error = verifyAdFields(name, type, refUrl, text, textAlignment, bgColor, textColor,
-				imageUrl);
+		ServiceResponseType error = verifyAdFields(model);
 		if (error != ServiceResponseType.OK)
 			return ServiceResponse.error(error);
 
 		boolean updateExistingAd = false;
 
-		if (id != null) { // Update existing ad
-			Ad adToUpdate = adRepository.getAdById(id);
+		if (model.getId() != null) { // Update existing ad
+			Ad adToUpdate = adRepository.getAdById(model.getId());
 			if (adToUpdate != null) {
-				if (!adToUpdate.isAuthorized(accountId)) // Check if user has authorization to update the ad
+				if (!adToUpdate.isAuthorized(model.getAccountId())) // Check if user has authorization to update the ad
 					return ServiceResponse.unauthorized();
 
 				updateExistingAd = true;
@@ -101,25 +100,27 @@ public class AdService {
 
 		Ad ad = null;
 
-		if (type.equals("TEXT")) {
+		if (model.getType().equals("TEXT")) {
 			TextAd tAd = new TextAd();
-			tAd.setText(text);
-			tAd.setTextAlignment(TextAlignment.valueOf(textAlignment));
-			tAd.setBgColor(bgColor);
-			tAd.setTextColor(textColor);
+			tAd.setText(model.getText());
+			tAd.setTextAlignment(TextAlignment.valueOf(model.getTextAlignment()));
+			tAd.setTextSize(model.getTextSize());
+			tAd.setBgColor(model.getBgColor());
+			tAd.setTextColor(model.getTextColor());
 			ad = tAd;
-		} else if (type.equals("IMAGE")) {
+		} else if (model.getType().equals("IMAGE")) {
 			ImageAd iAd = new ImageAd();
-			iAd.setImageUrl(imageUrl);
+			iAd.setImageUrl(model.getImageUrl());
 			ad = iAd;
 		}
 
-		ad.setName(name);
-		ad.setRefUrl(refUrl);
-		ad.setAccountId(accountId);
+		ad.setName(model.getName());
+		ad.setRefUrl(model.getRefUrl());
+		ad.setAccountId(model.getAccountId());
 
 		if (updateExistingAd)
-			ad.setId(id);
+			// Set the id so the db replaces the old version instead of creating a new one
+			ad.setId(model.getId());
 
 		return ServiceResponse.ok(adRepository.save(ad));
 	}
@@ -159,34 +160,36 @@ public class AdService {
 		adRepository.removeById(id);
 	}
 
-	private ServiceResponseType verifyAdFields(String name, String type, String refUrl, String text,
-			String textAlignment, String bgColor, String textColor, String imageUrl) {
+	private ServiceResponseType verifyAdFields(AdBuilderModel model) {
 
-		if (!StringUtils.hasText(name))
+		if (!StringUtils.hasText(model.getName()))
 			return ServiceResponseType.INVALID_AD_NAME;
 
-		if (!refUrl.matches(URL_REGEX))
+		if (!model.getRefUrl().matches(URL_REGEX))
 			return ServiceResponseType.INVALID_AD_REF_URL;
 
-		if (type.equals("TEXT")) {
-			if (!StringUtils.hasText(text))
+		if (model.getType().equals("TEXT")) {
+			if (!StringUtils.hasText(model.getText()))
 				return ServiceResponseType.INVALID_AD_TEXT;
 
 			try {
-				TextAlignment.valueOf(textAlignment);
+				TextAlignment.valueOf(model.getTextAlignment());
 			} catch (Exception e) {
 				return ServiceResponseType.INVALID_AD_TEXT_ALIGNMENT;
 			}
 
-			if (!bgColor.matches(HEX_COLOR_REGEX))
+			if (model.getTextSize() < 1)
+				return ServiceResponseType.INVALID_AD_TEXT_SIZE;
+			
+			if (!model.getBgColor().matches(HEX_COLOR_REGEX))
 				return ServiceResponseType.INVALID_AD_BG_COLOR;
 
-			if (!textColor.matches(HEX_COLOR_REGEX))
+			if (!model.getTextColor().matches(HEX_COLOR_REGEX))
 				return ServiceResponseType.INVALID_AD_TEXT_COLOR;
 
 			return ServiceResponseType.OK;
-		} else if (type.equals("IMAGE")) {
-			if (!imageUrl.matches(URL_REGEX))
+		} else if (model.getType().equals("IMAGE")) {
+			if (!model.getImageUrl().matches(URL_REGEX))
 				return ServiceResponseType.INVALID_AD_IMAGE_URL;
 
 			return ServiceResponseType.OK;
