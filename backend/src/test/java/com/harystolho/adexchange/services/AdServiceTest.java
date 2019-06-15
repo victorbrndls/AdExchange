@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import com.harystolho.adexchange.controllers.models.AdBuilderModel;
 import com.harystolho.adexchange.models.ads.Ad;
 import com.harystolho.adexchange.models.ads.ImageAd;
 import com.harystolho.adexchange.models.ads.TextAd;
@@ -37,8 +38,10 @@ public class AdServiceTest {
 	@Test
 	public void createAdWithInvalidTypeShouldReturnError() {
 		for (String type : Arrays.asList("", "   ", "", "text", "life", "IM AGE", "_TEXT_", " TEXT")) {
-			ServiceResponse<Ad> response = adService.createOrUpdateAd(validAccountId, null, validName, type,
-					validRefUrl, "", validTextAlignment, "", "", "");
+			;
+			ServiceResponse<Ad> response = adService
+					.createOrUpdateAd(new AdBuilderModel().setAccountId(validAccountId).setName(validName).setType(type)
+							.setRefUrl(validRefUrl).setText(validText).setTextAlignment(validTextAlignment));
 
 			assertEquals("Type: " + type, ServiceResponseType.INVALID_AD_TYPE, response.getErrorType());
 		}
@@ -48,8 +51,9 @@ public class AdServiceTest {
 	public void createAdWithInvalidRefUrlShouldReturnError() {
 		for (String url : Arrays.asList("", " ", "https://", "http://", "http", " https://", "\">https", "some s",
 				"https://url .com", "<input>", "ftp://", "://")) {
-			ServiceResponse<Ad> response = adService.createOrUpdateAd(validAccountId, null, validName, "TEXT", url, "",
-					validTextAlignment, "", "", "");
+			ServiceResponse<Ad> response = adService
+					.createOrUpdateAd(new AdBuilderModel().setAccountId(validAccountId).setName(validName)
+							.setType("TEXT").setRefUrl(url).setText(validText).setTextAlignment(validTextAlignment));
 
 			assertEquals("Ref Url: " + url, ServiceResponseType.INVALID_AD_REF_URL, response.getErrorType());
 		}
@@ -58,8 +62,9 @@ public class AdServiceTest {
 	@Test
 	public void createAdWithInvalidBgColorShouldReturnError() {
 		for (String color : Arrays.asList("", "#", " ", "", "ffw#", "# ", "# 57f", "__", "a-z", "$#$")) {
-			ServiceResponse<Ad> response = adService.createOrUpdateAd(validAccountId, null, validName, "TEXT",
-					validRefUrl, validText, validTextAlignment, color, "#fff", "");
+			ServiceResponse<Ad> response = adService.createOrUpdateAd(new AdBuilderModel().setAccountId(validAccountId)
+					.setName(validName).setType("TEXT").setRefUrl(validRefUrl).setText(validText)
+					.setTextAlignment(validTextAlignment).setBgColor(color));
 
 			assertEquals("Color: " + color, ServiceResponseType.INVALID_AD_BG_COLOR, response.getErrorType());
 		}
@@ -67,16 +72,27 @@ public class AdServiceTest {
 
 	@Test
 	public void createAdWithInvalidTextAlignment_ShouldFail() {
-		ServiceResponse<Ad> response = adService.createOrUpdateAd(validAccountId, null, validName, "TEXT", validRefUrl,
-				validText, "INVADLID_SWH", "#000", "#fff", "");
+		ServiceResponse<Ad> response = adService
+				.createOrUpdateAd(new AdBuilderModel().setAccountId(validAccountId).setName(validName).setType("TEXT")
+						.setRefUrl(validRefUrl).setText(validText).setTextAlignment("DIA(F*&S"));
 
 		assertEquals(ServiceResponseType.INVALID_AD_TEXT_ALIGNMENT, response.getErrorType());
 	}
 
 	@Test
+	public void createAdWithInvalidTextSize_ShouldFail() {
+		ServiceResponse<Ad> response = adService
+				.createOrUpdateAd(new AdBuilderModel().setName(validName).setType("TEXT").setRefUrl(validRefUrl)
+						.setText(validText).setTextAlignment(validTextAlignment).setTextSize(-1));
+
+		assertEquals(ServiceResponseType.INVALID_AD_TEXT_SIZE, response.getErrorType());
+	}
+
+	@Test
 	public void updateAdWithInvalidAdId() {
-		ServiceResponse<Ad> response = adService.createOrUpdateAd(validAccountId, "null-ad-id", validName, "TEXT",
-				validRefUrl, validText, validTextAlignment, validColor, validColor, null);
+		ServiceResponse<Ad> response = adService.createOrUpdateAd(new AdBuilderModel().setAccountId(validAccountId)
+				.setId("invalid-ad-id").setName(validName).setType("TEXT").setRefUrl(validRefUrl).setText(validText)
+				.setTextAlignment(validTextAlignment));
 
 		assertEquals(ServiceResponseType.INVALID_AD_ID, response.getErrorType());
 	}
@@ -87,8 +103,9 @@ public class AdServiceTest {
 		ad.setAccountId("abc");
 		Mockito.when(adRepository.getAdById("123")).thenReturn(ad);
 
-		ServiceResponse<Ad> response = adService.createOrUpdateAd("acc-gigi", "123", validName, "TEXT", validRefUrl,
-				validText, validTextAlignment, validColor, validColor, null);
+		ServiceResponse<Ad> response = adService.createOrUpdateAd(
+				new AdBuilderModel().setAccountId("acc-gigi").setId("123").setName(validName).setType("TEXT")
+						.setRefUrl(validRefUrl).setText(validText).setTextAlignment(validTextAlignment));
 
 		assertEquals(ServiceResponseType.UNAUTHORIZED, response.getErrorType());
 	}
@@ -97,8 +114,9 @@ public class AdServiceTest {
 	public void createTextAd_ShouldWork() {
 		Mockito.when(adRepository.save(Mockito.any())).thenAnswer((inv) -> inv.getArgument(0));
 
-		ServiceResponse<Ad> response = adService.createOrUpdateAd("a4", null, "Texto", "TEXT", validRefUrl,
-				"Life is cool", "RIGHT", "#fff", "#014", null);
+		ServiceResponse<Ad> response = adService.createOrUpdateAd(
+				new AdBuilderModel().setAccountId("acc").setName("Texto").setType("TEXT").setRefUrl(validRefUrl)
+						.setText("Life is cool").setTextAlignment("RIGHT").setBgColor("#fff").setTextColor("#014"));
 
 		assertEquals(ServiceResponseType.OK, response.getErrorType());
 
@@ -114,12 +132,12 @@ public class AdServiceTest {
 	public void createImageAd_ShouldWork() {
 		Mockito.when(adRepository.save(Mockito.any())).thenAnswer((inv) -> inv.getArgument(0));
 
-		ServiceResponse<Ad> response = adService.createOrUpdateAd(null, null, "Unimage", "IMAGE", validRefUrl, null,
-				null, null, null, "http://localhost:8080.png");
+		ServiceResponse<Ad> response = adService.createOrUpdateAd(new AdBuilderModel().setName("Unimage")
+				.setType("IMAGE").setRefUrl(validRefUrl).setImageUrl("http://localhost:8080.png"));
 
 		assertEquals(ServiceResponseType.OK, response.getErrorType());
 
-		ImageAd ad =(ImageAd) response.getReponse();
+		ImageAd ad = (ImageAd) response.getReponse();
 		assertEquals("Unimage", ad.getName());
 		assertEquals("http://localhost:8080.png", ad.getImageUrl());
 	}
@@ -134,8 +152,9 @@ public class AdServiceTest {
 
 		Mockito.when(adRepository.save(Mockito.any())).thenAnswer(inv -> inv.getArgument(0));
 
-		ServiceResponse<Ad> response = adService.createOrUpdateAd("acc-kiki", "789", "newName", "TEXT", validRefUrl,
-				validText, validTextAlignment, validColor, validColor, null);
+		ServiceResponse<Ad> response = adService.createOrUpdateAd(new AdBuilderModel().setAccountId("acc-kiki")
+				.setId("789").setName("newName").setType("TEXT").setRefUrl(validRefUrl).setText(validText)
+				.setTextAlignment(validTextAlignment).setTextColor(validColor).setBgColor(validColor));
 
 		assertEquals("newName", response.getReponse().getName());
 		assertEquals("789", response.getReponse().getId());
