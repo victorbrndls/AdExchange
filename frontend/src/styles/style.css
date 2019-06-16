@@ -1137,6 +1137,13 @@ body.auth #header {
     border-radius: 0 4px 4px 0;
 }
 
+.create-add__btn-border.create-add__btn-border--disabled{
+    color: #6c757d;
+}
+
+.create-add__btn-border.create-add__btn-border--disabled:hover{
+    background-color: inherit;
+}
 
 /*
     ====================

@@ -2,24 +2,8 @@ import {Component} from "preact";
 import "../../../styles/ae.css";
 import {HOST} from "../../../configs";
 import {AdAxiosGet, AdAxiosPost} from "../../../auth";
+import AdCarousel from "./AdCarousel";
 import {route} from "preact-router";
-
-const DEFAULT_TEXT = "Anúncio de texto, voce pode alterar **o estilo** do texto nos __campos abaixo__.";
-const DEFAULT_PARSED_OUTPUT = [{
-    tag: 'span',
-    content: 'Anúncio de texto, voce pode alterar '
-}, {
-    tag: 'b',
-    content: 'o estilo '
-}, {
-    tag: 'span',
-    content: 'do texto nos '
-}, {
-    tag: 'i',
-    content: 'campos abaixo.'
-}];
-
-const DEFAULT_IMAGE_URL = "/assets/CreateAdd_ImageAd.jpg";
 
 export default class CreateAdd extends Component {
     constructor(props) {
@@ -30,11 +14,7 @@ export default class CreateAdd extends Component {
             mode: 'NEW',
             ad: {
                 type: 'TEXT',
-                text: DEFAULT_TEXT,
-                textAlignment: 'LEFT', // LEFT, CENTER or RIGHT
-                textSize: 16,
-                bgColor: "#f2f2f2",
-                textColor: "#000",
+                ...AdCarousel.TextAds[0]
             }
         };
 
@@ -64,8 +44,9 @@ export default class CreateAdd extends Component {
         }
     }
 
-    handleAdCheckbox(type) {
-        this.setState({ad: {...this.state.ad, type: type}});
+    handleAdTypeChange(type) {
+        if (this.state.mode !== 'EDIT') // Don't change the type if the mode is EDIT
+            this.setState({ad: {...this.state.ad, type: type}});
     }
 
     handleTextChange(e) {
@@ -177,35 +158,40 @@ export default class CreateAdd extends Component {
 
                         <div class="form-group websites-add__form">
                             <label>Modelo do Anúncio</label>
-                            <div style="display: flex;">
 
-                                <div class="dashboard-add__blocking-container">
-                                    {edit_m && ad.type !== 'TEXT' && (<div class="blocking-container"/>)}
-                                    <div class="ads-ad__checkbox" onClick={this.handleAdCheckbox.bind(this, 'TEXT')}>
-                                        <div class="shadow ads-ad-wrapper">
-                                            <TextAd
-                                                parsedOutput={ad.parsedOutput || DEFAULT_PARSED_OUTPUT}
-                                                bgColor={ad.bgColor}
-                                                textColor={ad.textColor}
-                                                textAlignment={ad.textAlignment}
-                                                textSize={ad.textSize}
-                                            />
-                                        </div>
-                                        <div
-                                            class={`ads-ad__checkbox-box ${ad.type === 'TEXT' ? "active" : ""}`}/>
-                                    </div>
-                                </div>
+                            <div class="btn-group btn-group-toggle d-block" data-toggle="buttons">
+                                <label
+                                    class={`create-add__btn-border ${ad.type === 'TEXT' ? 'create--add__btn-border--active ' : ''}
+                                     ${edit_m && ad.type !== 'TEXT' ? 'create-add__btn-border--disabled' : ''}`}
+                                    onClick={() => this.handleAdTypeChange('TEXT')}>
+                                    Texto
+                                </label>
+                                <label
+                                    class={`create-add__btn-border ${ad.type === 'IMAGE' ? 'create--add__btn-border--active ' : ''}
+                                     ${edit_m && ad.type !== 'IMAGE' ? 'create-add__btn-border--disabled' : ''}`}
+                                    onClick={() => this.handleAdTypeChange('IMAGE')}>
+                                    Imagem
+                                </label>
+                            </div>
 
-                                <div class="dashboard-add__blocking-container">
-                                    {edit_m && ad.type !== 'IMAGE' && (<div class="blocking-container"/>)}
-                                    <div class="ads-ad__checkbox" onClick={this.handleAdCheckbox.bind(this, 'IMAGE')}>
+                            <div style="display: flex; overflow-y: auto;">
+
+                                {ad.type === 'TEXT' && AdCarousel.TextAds.map((ad) => (
+                                    <div class="m-4">
                                         <div class="shadow ads-ad-wrapper">
-                                            <ImageAd imageUrl={ad.imageUrl || DEFAULT_IMAGE_URL}/>
+                                            <TextAd {...ad}/>
                                         </div>
-                                        <div
-                                            class={`ads-ad__checkbox-box ${ad.type === 'IMAGE' ? "active" : ""}`}/>
                                     </div>
-                                </div>
+                                ))}
+
+                                {ad.type === 'IMAGE' && AdCarousel.ImageAds.map((ad) => (
+                                    <div class="m-4">
+                                        <div class="shadow ads-ad-wrapper">
+                                            <ImageAd {...ad}/>
+                                        </div>
+                                    </div>
+                                ))}
+
                             </div>
                         </div>
 
