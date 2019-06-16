@@ -23,13 +23,24 @@ public class TagNodeWriter {
 	}
 
 	private void appendTagTo(TagNode tag, StringBuilder sb) {
-		appendCommonTagTo(tag, sb);
+		switch (tag.getTag()) {
+		case "br":
+			appendSingleTagTo(tag, sb);
+			break;
+		default:
+			appendCommonTagTo(tag, sb);
+			break;
+		}
 	}
 
 	private void appendCommonTagTo(TagNode tag, StringBuilder sb) {
 		sb.append("<" + tag.getTag() + ">");
 		sb.append(Escape.htmlElementContent(tag.getContent()));
 		sb.append("</" + tag.getTag() + ">");
+	}
+	
+	private void appendSingleTagTo(TagNode tag, StringBuilder sb) {
+		sb.append("<" + tag.getTag() + "/>");
 	}
 
 }

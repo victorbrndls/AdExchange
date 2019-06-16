@@ -99,4 +99,50 @@ public class AdContentParserTest {
 		assertEquals(output.get(3).getTag(), "b");
 		assertEquals(output.get(3).getContent(), "sheep");
 	}
+	
+	
+	@Test
+	public void parseInput_WithNewLine() {
+		AdContentParser parser = new AdContentParser();
+		parser.setInput("this\\\\new"); // Only 2 backslashes
+
+		List<TagNode> output = parser.parse();
+
+		assertEquals("this", output.get(0).getContent());
+
+		assertEquals("br" ,output.get(1).getTag());
+
+		assertEquals("new", output.get(2).getContent());
+	}
+	
+	@Test
+	public void parseInput_WithSingleBackslash_ShouldNotCreateNewLine() {
+		AdContentParser parser = new AdContentParser();
+		parser.setInput("this\\new"); // Only 1 backslash
+
+		List<TagNode> output = parser.parse();
+
+		assertEquals("this\\new", output.get(0).getContent());
+	}
+	
+	@Test
+	public void parseInput_useNewLineInsideBold() {
+		AdContentParser parser = new AdContentParser();
+		parser.setInput("text **bold\\\\green** end"); // Only 2 backslashes
+
+		List<TagNode> output = parser.parse();
+
+		assertEquals("text ", output.get(0).getContent());
+
+		assertEquals("b" ,output.get(1).getTag());
+		assertEquals("bold" , output.get(1).getContent());
+		
+		assertEquals("br", output.get(2).getTag());
+		
+		assertEquals("b", output.get(3).getTag());
+		assertEquals("green" , output.get(3).getContent());
+		
+		assertEquals("span", output.get(4).getTag());
+		assertEquals(" end", output.get(4).getContent());
+	}
 }

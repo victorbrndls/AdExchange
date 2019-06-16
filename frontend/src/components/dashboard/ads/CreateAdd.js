@@ -254,6 +254,8 @@ export default class CreateAdd extends Component {
                                         </small>
                                         <br/>
                                         <small class="ml-3">**frase em negrito** => <b>frase em negrito</b></small>
+                                        <br/>
+                                        <small class="ml-3">\\ => Quebra de linha</small>
                                     </div>
 
                                     <small class="form-text ad-error">
@@ -427,7 +429,7 @@ export let TextAd = ({refUrl, parsedOutput, bgColor, textColor, textAlignment, t
 };
 
 let CodeMapper = ({tag, content}) => (
-    tag === 'b' ? (<b>{content}</b>) : tag === 'i' ? (<i>{content}</i>) : (<span>{content}</span>)
+    tag === 'b' ? (<b>{content}</b>) : tag === 'i' ? (<i>{content}</i>) : tag === 'br' ? (<br/>) : (<span>{content}</span>)
 );
 
 export let ImageAd = ({refUrl, imageUrl}) => (

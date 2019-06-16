@@ -23,12 +23,18 @@ public class AdContentParser {
 
 		charHandler.put('*', this::parseAsteriskChar);
 		charHandler.put('_', this::parseUnderscoreChar);
+		charHandler.put('\\', this::parseBackslashChar); // Only 1 backslash
 	}
 
 	public void setInput(String input) {
 		this.input = input;
 	}
 
+	/**
+	 * Converts the {input} into the formated result
+	 * 
+	 * @return
+	 */
 	public List<TagNode> parse() {
 		int inputLength = this.input.length();
 
@@ -68,6 +74,24 @@ public class AdContentParser {
 		parseTwoCharCode('_', "i");
 	}
 
+	private void parseBackslashChar(Character c) {
+		if (doubleChar(c)) {
+			// If there is a new line inside an existing tag, the existing tag should
+			// continue after the new line
+			String lastTag = currentNode.getTag(); // Save tag to restore later
+
+			appendCurrentNode();
+
+			appendNode(new TagNode("br")); // Add the new line
+
+			this.currentNode = new TagNode(lastTag); // Open the last tag again
+
+			this.pos++; // Skip the second backslash
+		} else {
+			parseDefaultChar(c);
+		}
+	}
+
 	/**
 	 * Most of the time 2 chars are used to format some text, for example the '**'
 	 * code is used to make the text bold, the '__' to make the text italic. This
@@ -77,8 +101,7 @@ public class AdContentParser {
 	 * @param htmlTag
 	 */
 	private void parseTwoCharCode(char code, String htmlTag) {
-		// If there are 2 chars that are equal next to each other
-		if (getCharAt(pos) == code && getCharAt(pos + 1) == code) {
+		if (doubleChar(code)) {
 			appendCurrentNode();
 
 			if (this.currentNode == null || (this.currentNode != null && !this.currentNode.getTag().equals(htmlTag))) {
@@ -97,10 +120,22 @@ public class AdContentParser {
 		return this.input.charAt(index);
 	}
 
+	/**
+	 * @param c
+	 * @return <code>true</code> if the current char and the next char are equal to
+	 *         {c}
+	 */
+	private boolean doubleChar(char c) {
+		return getCharAt(pos) == c && getCharAt(pos + 1) == c;
+	}
+
 	private void appendCurrentNode() {
-		if (currentNode != null) {
-			this.output.add(currentNode);
-		}
+		if (currentNode != null)
+			appendNode(currentNode);
+	}
+
+	private void appendNode(TagNode node) {
+		this.output.add(node);
 	}
 
 }
