@@ -19,7 +19,7 @@ const DEFAULT_PARSED_OUTPUT = [{
     content: 'campos abaixo.'
 }];
 
-const DEFAULT_IMAGE_URL = "https://i.imgur.com/k2AxKqQ.png";
+const DEFAULT_IMAGE_URL = "/assets/CreateAdd_ImageAd.jpg";
 
 export default class CreateAdd extends Component {
     constructor(props) {
