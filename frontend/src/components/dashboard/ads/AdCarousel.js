@@ -23,7 +23,7 @@ const TextAds = [
         textSize: 16,
     },
     {
-        text: "**Aumente a divulgação de seus produtos** anunciando em nosso site. Clique aqui para saber como.",
+        text: "**Aumente a divulgação de seus produtos** anunciando em nosso site. \\\\ \\\\Clique aqui para saber como.",
         parsedOutput: [
             {
                 "tag": "b",
@@ -31,10 +31,40 @@ const TextAds = [
             },
             {
                 "tag": "span",
-                "content": " anunciando em nosso site. Clique aqui para saber como."
+                "content": " anunciando em nosso site. "
+            }, {
+                "tag": "br",
+                "content": ""
+            }, {
+                "tag": "span"
+            }, {
+                "tag": "br"
+            }, {
+                "tag": "span",
+                "content": "Clique aqui para saber como."
             }],
         bgColor: "#ffffff",
         textColor: "#000000",
+        textAlignment: "CENTER",
+        textSize: 18,
+    },
+    {
+        text: "Anúncio livre! \\\\ \\\\**Divulgue seu produto aqui!!!**",
+        parsedOutput: [
+            {
+                "tag": "span",
+                "content": "Anúncio livre! "
+            }, {
+                "tag": "br",
+                "content": ""
+            }, {
+                "tag": "br"
+            }, {
+                "tag": "b",
+                "content": "Divulgue seu produto aqui!!!"
+            }],
+        bgColor: "#0080ff",
+        textColor: "#ffffff",
         textAlignment: "CENTER",
         textSize: 18,
     }
@@ -43,6 +73,9 @@ const TextAds = [
 const ImageAds = [
     {
         imageUrl: "https://i.imgur.com/SQFA7oF.jpg"
+    },
+    {
+        imageUrl: "https://i.imgur.com/3L4dJX7.jpg"
     }
 ];
 

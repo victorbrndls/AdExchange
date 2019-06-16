@@ -418,7 +418,7 @@ export let TextAd = ({refUrl, parsedOutput, bgColor, textColor, textAlignment, t
         text-align: ${textAlignment};
         font-size: ${textSize}px;
     `;
-
+    
     return (
         <a native href={refUrl} target="_blank" style="text-decoration: none;">
             <div class="ae-ad text" style={style}>
