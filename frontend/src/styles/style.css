@@ -450,7 +450,7 @@ body.auth #header {
     margin-bottom: 7px;
 }
 
-.websites-add__form label {
+.websites-add__form label, .ae-label {
     font-variant: small-caps;
     color: #2455c0;
 }
@@ -1143,6 +1143,17 @@ body.auth #header {
 
 .create-add__btn-border.create-add__btn-border--disabled:hover{
     background-color: inherit;
+}
+
+.ads-more-templates{
+    cursor: pointer;
+}
+
+.ads-more-templates-container{
+    display: flex;
+    max-height: 0;
+    overflow-y: hidden;
+    overflow-x: auto;
 }
 
 /*

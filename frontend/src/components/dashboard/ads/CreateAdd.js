@@ -4,6 +4,12 @@ import {HOST} from "../../../configs";
 import {AdAxiosGet, AdAxiosPost} from "../../../auth";
 import AdCarousel from "./AdCarousel";
 import {route} from "preact-router";
+import anime from "animejs";
+
+const DEFAULT_AD_BY_TYPE = {
+    'TEXT': AdCarousel.TextAds[0],
+    'IMAGE': AdCarousel.ImageAds[0]
+};
 
 export default class CreateAdd extends Component {
     constructor(props) {
@@ -17,6 +23,8 @@ export default class CreateAdd extends Component {
                 ...AdCarousel.TextAds[0]
             }
         };
+
+        this.showTemplates = false;
 
         this.updateMode();
         this.requestAdInformation();
@@ -46,13 +54,26 @@ export default class CreateAdd extends Component {
 
     handleAdTypeChange(type) {
         if (this.state.mode !== 'EDIT') // Don't change the type if the mode is EDIT
-            this.setState({ad: {...this.state.ad, type: type}});
+            this.setState({ad: {type: type, ...DEFAULT_AD_BY_TYPE[type]}});
+    }
+
+    setAdTemplate(ad, type) {
+        this.setState({ad: {type: type, ...ad}});
     }
 
     handleTextChange(e) {
         this.setState({ad: {...this.state.ad, text: e.target.value}});
 
         this.parseTextInput(this.state.ad.text);
+    }
+
+    handleShowTemplatesChange(open) {
+        anime({
+            targets: '.ads-more-templates-container',
+            maxHeight: open ? 300 : 0,
+            duration: 500,
+            easing: 'easeInOutCubic',
+        }).finished.then(() => this.showTemplates = open);
     }
 
     parseTextInput(input) {
@@ -174,25 +195,51 @@ export default class CreateAdd extends Component {
                                 </label>
                             </div>
 
-                            <div style="display: flex; overflow-y: auto;">
-
-                                {ad.type === 'TEXT' && AdCarousel.TextAds.map((ad) => (
-                                    <div class="m-4">
-                                        <div class="shadow ads-ad-wrapper">
+                            <div class="d-flex justify-content-center">
+                                <div class="m-4">
+                                    <div class="shadow ads-ad-wrapper">
+                                        {ad.type === 'TEXT' && (
                                             <TextAd {...ad}/>
-                                        </div>
-                                    </div>
-                                ))}
+                                        )}
 
-                                {ad.type === 'IMAGE' && AdCarousel.ImageAds.map((ad) => (
-                                    <div class="m-4">
-                                        <div class="shadow ads-ad-wrapper">
+                                        {ad.type === 'IMAGE' && (
                                             <ImageAd {...ad}/>
-                                        </div>
+                                        )}
                                     </div>
-                                ))}
-
+                                </div>
                             </div>
+
+                            <div>
+                                <div class="text-center">
+                                    <label class="ae-label ads-more-templates"
+                                           onClick={() => this.handleShowTemplatesChange(!this.showTemplates)}>
+                                        Ver outros modelos
+                                    </label>
+                                </div>
+
+                                <div class="ads-more-templates-container">
+
+                                    {ad.type === 'TEXT' && AdCarousel.TextAds.map((ad) => (
+                                        <div class="m-4">
+                                            <div class="shadow ads-ad-wrapper"
+                                                 onClick={() => this.setAdTemplate(ad, 'TEXT')}>
+                                                <TextAd {...ad}/>
+                                            </div>
+                                        </div>
+                                    ))}
+
+                                    {ad.type === 'IMAGE' && AdCarousel.ImageAds.map((ad) => (
+                                        <div class="m-4">
+                                            <div class="shadow ads-ad-wrapper"
+                                                 onClick={() => this.setAdTemplate(ad, 'IMAGE')}>
+                                                <ImageAd {...ad}/>
+                                            </div>
+                                        </div>
+                                    ))}
+
+                                </div>
+                            </div>
+
                         </div>
 
                         {ad.type === 'TEXT' && (
