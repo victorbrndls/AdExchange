@@ -71,7 +71,7 @@ export default class CreateAdd extends Component {
         anime({
             targets: '.ads-more-templates-container',
             maxHeight: open ? 300 : 0,
-            duration: 500,
+            duration: 700,
             easing: 'easeInOutCubic',
         }).finished.then(() => this.showTemplates = open);
     }
@@ -239,7 +239,6 @@ export default class CreateAdd extends Component {
 
                                 </div>
                             </div>
-
                         </div>
 
                         {ad.type === 'TEXT' && (
@@ -399,7 +398,7 @@ export default class CreateAdd extends Component {
                             </div>
                         )}
 
-                        <div class="btn dashboard-add__button"
+                        <div class="btn dashboard-add__button mb-4"
                              onClick={this.submitAd.bind(this)}>
                             {edit_m ? 'Salvar' : 'Criar'}
                         </div>
