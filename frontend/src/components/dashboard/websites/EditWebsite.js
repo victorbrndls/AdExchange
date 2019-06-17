@@ -143,7 +143,8 @@ export default class EditWebsite extends Component {
                             <div class="col-lg-6 col-xl-4">
                                 <div class="form-group websites-add__form">
                                     <label>Nome</label>
-                                    <input id="name" class="form-control" maxLength="40" value={website.name}
+                                    <input id="name" class="form-control" placeholder="Nome do Website" maxLength="40"
+                                           value={website.name}
                                            onChange={(e) => {
                                                this.setState({website: {...website, name: e.target.value}})
                                            }}/>
@@ -155,7 +156,7 @@ export default class EditWebsite extends Component {
 
                             <div class="col-lg-6 col-xl-4">
                                 <div class="form-group websites-add__form">
-                                    <label>URL</label>
+                                    <label>URL do Website</label>
                                     <input id="url" class="form-control  " placeholder="https://..." value={website.url}
                                            onChange={(e) => {
                                                this.setState({website: {...website, url: e.target.value}})
@@ -168,23 +169,34 @@ export default class EditWebsite extends Component {
 
                             <div class="col-lg-6 col-xl-4">
                                 <div class="form-group websites-add__form">
+                                    <label>Impressões mensais</label>
+                                    <abbr
+                                        title="O número de visualizações mensais em seu site">
+                                        <i class="fa fa-question fa-abbr-icon" aria-hidden="true"/>
+                                    </abbr>
+                                    <input id="logoURL" class="form-control" placeholder="1500"
+                                           value={website.monthlyImpressions} onChange={(e) => {
+                                        this.setState({website: {...website, monthlyImpressions: e.target.value}})
+                                    }}/>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-8 col-xl-6 d-flex">
+                                <div class="form-group websites-add__form flex-grow-1">
                                     <label>URL da logo</label>
                                     <input id="logoURL" class="form-control " placeholder="https://..."
                                            value={website.logoUrl} onChange={(e) => {
                                         this.setState({website: {...website, logoUrl: e.target.value}})
                                     }}/>
+                                    <small class="form-text text-muted">Use uma imagem quadrada preferencialmente
+                                    </small>
+                                </div>
+                                <div class="ml-3">
+                                    <img class="websites-add--logo" src={website.logoUrl || "/assets/placeholder.png"}/>
                                 </div>
                             </div>
 
-                            <div class="col-lg-6 col-xl-4">
-                                <div class="form-group websites-add__form">
-                                    <label>Impressões por mês</label>
-                                    <input id="logoURL" class="form-control " placeholder="https://..."
-                                           value={website.logoUrl} onChange={(e) => {
-                                        this.setState({website: {...website, logoUrl: e.target.value}})
-                                    }}/>
-                                </div>
-                            </div>
+
                         </div>
 
                         <div class="row">
@@ -192,7 +204,8 @@ export default class EditWebsite extends Component {
                                 <div class="form-group websites-add__form">
                                     <label>Descrição</label>
                                     <textarea id="description" class="form-control" maxLength="1500"
-                                              placeholder="Descrição" style="height: 250px;" value={website.description}
+                                              placeholder="Descreva qual tipo de conteúdo você posta, qual seu público alvo, etc...."
+                                              style="height: 250px;" value={website.description}
                                               onChange={(e) => {
                                                   this.setState({website: {...website, description: e.target.value}})
                                               }}/>

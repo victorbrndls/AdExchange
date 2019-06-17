@@ -1157,6 +1157,11 @@ body.auth #header {
     overflow-x: auto;
 }
 
+.websites-add--logo{
+    height: 100px;
+    width: 100px;
+}
+
 /*
     ====================
         Media queries
