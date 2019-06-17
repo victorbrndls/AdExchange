@@ -139,44 +139,68 @@ export default class EditWebsite extends Component {
                     </div>
 
                     <div style="margin-top: 5px;">
-                        <div class="form-group websites-add__form">
-                            <label>Nome</label>
-                            <input id="name" class="form-control w-25 " maxLength="40" value={website.name}
-                                   onChange={(e) => {
-                                       this.setState({website: {...website, name: e.target.value}})
-                                   }}/>
-                            <small class="form-text ad-error">
-                                {error.name}
-                            </small>
-                        </div>
-                        <div class="form-group websites-add__form">
-                            <label>URL</label>
-                            <input id="url" class="form-control w-25 " placeholder="https://..." value={website.url}
-                                   onChange={(e) => {
-                                       this.setState({website: {...website, url: e.target.value}})
-                                   }}/>
-                            <small class="form-text ad-error">
-                                {error.url}
-                            </small>
-                        </div>
-                        <div class="form-group websites-add__form">
-                            <label>URL da logo</label>
-                            <input id="logoURL" class="form-control w-25" placeholder="https://..."
-                                   value={website.logoUrl} onChange={(e) => {
-                                this.setState({website: {...website, logoUrl: e.target.value}})
-                            }}/>
+                        <div class="row">
+                            <div class="col-lg-6 col-xl-4">
+                                <div class="form-group websites-add__form">
+                                    <label>Nome</label>
+                                    <input id="name" class="form-control" maxLength="40" value={website.name}
+                                           onChange={(e) => {
+                                               this.setState({website: {...website, name: e.target.value}})
+                                           }}/>
+                                    <small class="form-text ad-error">
+                                        {error.name}
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-xl-4">
+                                <div class="form-group websites-add__form">
+                                    <label>URL</label>
+                                    <input id="url" class="form-control  " placeholder="https://..." value={website.url}
+                                           onChange={(e) => {
+                                               this.setState({website: {...website, url: e.target.value}})
+                                           }}/>
+                                    <small class="form-text ad-error">
+                                        {error.url}
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-xl-4">
+                                <div class="form-group websites-add__form">
+                                    <label>URL da logo</label>
+                                    <input id="logoURL" class="form-control " placeholder="https://..."
+                                           value={website.logoUrl} onChange={(e) => {
+                                        this.setState({website: {...website, logoUrl: e.target.value}})
+                                    }}/>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-xl-4">
+                                <div class="form-group websites-add__form">
+                                    <label>Impressões por mês</label>
+                                    <input id="logoURL" class="form-control " placeholder="https://..."
+                                           value={website.logoUrl} onChange={(e) => {
+                                        this.setState({website: {...website, logoUrl: e.target.value}})
+                                    }}/>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="form-group websites-add__form">
-                            <label>Descrição</label>
-                            <textarea id="description" class="form-control" maxLength="1500"
-                                      placeholder="Descrição" style="height: 250px;" value={website.description}
-                                      onChange={(e) => {
-                                          this.setState({website: {...website, description: e.target.value}})
-                                      }}/>
-                            <small class="form-text ad-error">
-                                {error.description}
-                            </small>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group websites-add__form">
+                                    <label>Descrição</label>
+                                    <textarea id="description" class="form-control" maxLength="1500"
+                                              placeholder="Descrição" style="height: 250px;" value={website.description}
+                                              onChange={(e) => {
+                                                  this.setState({website: {...website, description: e.target.value}})
+                                              }}/>
+                                    <small class="form-text ad-error">
+                                        {error.description}
+                                    </small>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -195,7 +219,7 @@ export default class EditWebsite extends Component {
                             </small>
                         </div>
 
-                        <div class="btn dashboard-add__button"
+                        <div class="btn dashboard-add__button mb-4"
                              onClick={this.addWebsite.bind(this)}>
                             Adicionar
                         </div>
