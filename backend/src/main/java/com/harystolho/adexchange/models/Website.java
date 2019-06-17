@@ -15,6 +15,7 @@ public class Website {
 
 	private String name;
 	private String url;
+	private int monthlyImpressions;
 	private String logoUrl;
 	private String description;
 	private String[] categories;
@@ -41,6 +42,15 @@ public class Website {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	
+	public int getMonthlyImpressions() {
+		return monthlyImpressions;
+	}
+
+	public void setMonthlyImpressions(int monthlyImpressions) {
+		this.monthlyImpressions = monthlyImpressions;
 	}
 
 	public String getLogoUrl() {

@@ -5,8 +5,11 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.harystolho.adexchange.controllers.models.WebsiteBuilderModel;
 import com.harystolho.adexchange.models.Website;
 import com.harystolho.adexchange.repositories.website.WebsiteRepository;
+import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
+import com.harystolho.adexchange.utils.AEUtils;
 
 @Service
 public class WebsiteService {
@@ -25,27 +28,28 @@ public class WebsiteService {
 		return ServiceResponse.ok(websiteRepository.getById(id));
 	}
 
-	public ServiceResponse<Website> createWebsite(String accountId, String id, String name, String url, String logoURL,
-			String description, String cats) {
-		String[] categories = StringUtils.commaDelimitedListToStringArray(cats);
-
-		if (!verifyWebsiteCreationFields(name, url, logoURL, description, categories))
-			return ServiceResponse.fail("Invalid fields");
+	public ServiceResponse<Website> createWebsite(WebsiteBuilderModel model) {
+		ServiceResponseType response = verifyWebsiteCreationFields(model);
+		if (response != ServiceResponseType.OK)
+			return ServiceResponse.error(response);
 
 		Website website = null;
 
-		if (id != null) // If the id is not null this means the user is editing an existing website
-			website = websiteRepository.getById(id);
+		if (model.getId() != null) { // If the id is not null this means the user is editing an existing website
+			website = websiteRepository.getById(model.getId());
+
+			if (!website.isAuthorized(model.getAccountId()))
+				return ServiceResponse.error(ServiceResponseType.UNAUTHORIZED);
+		}
 
 		if (website == null)
-			website = new Website(accountId, url);
+			website = new Website(model.getAccountId(), model.getUrl());
 
-		// TODO Check if person updating is owner
-
-		website.setName(name);
-		website.setLogoUrl(logoURL);
-		website.setDescription(description);
-		website.setCategories(categories);
+		website.setName(model.getName());
+		website.setMonthlyImpressions(Integer.parseInt(model.getMonthlyImpressions()));
+		website.setLogoUrl(model.getLogoURL());
+		website.setDescription(model.getDescription());
+		website.setCategories(StringUtils.commaDelimitedListToStringArray(model.getCategories()));
 
 		return ServiceResponse.ok(websiteRepository.save(website));
 	}
@@ -78,18 +82,26 @@ public class WebsiteService {
 		return false;
 	}
 
-	private boolean verifyWebsiteCreationFields(String name, String url, String logoUrl, String description,
-			String[] categories) {
-		if (description.length() < 10)
-			return false;
+	private ServiceResponseType verifyWebsiteCreationFields(WebsiteBuilderModel model) {
+		if (model.getName().trim().length() < 2)
+			return ServiceResponseType.INVALID_WEBSITE_NAME;
 
-		if (url.length() < 5)
-			return false;
+		if (!model.getUrl().matches(AEUtils.URL_REGEX))
+			return ServiceResponseType.INVALID_WEBSITE_URL;
 
-		if (!verifyCategories(categories))
-			return false;
+		try {
+			Integer.parseInt(model.getMonthlyImpressions());
+		} catch (Exception e) {
+			return ServiceResponseType.INVALID_WEBSITE_IMPRESSIONS;
+		}
 
-		return true;
+		if (model.getDescription().trim().length() < 10)
+			return ServiceResponseType.INVALID_WEBSITE_DESCRIPTION;
+
+		if (!verifyCategories(StringUtils.commaDelimitedListToStringArray(model.getCategories())))
+			return ServiceResponseType.INVALID_WEBSITE_CATEGORIES;
+
+		return ServiceResponseType.OK;
 	}
 
 	/**
@@ -106,6 +118,7 @@ public class WebsiteService {
 			if (!category.toUpperCase().equals(category))
 				return false;
 		}
+
 		if (categories.length > 3)
 			return false;
 

@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.harystolho.adexchange.controllers.models.WebsiteBuilderModel;
 import com.harystolho.adexchange.models.Website;
 import com.harystolho.adexchange.services.ServiceResponse;
 import com.harystolho.adexchange.services.WebsiteService;
@@ -59,21 +61,24 @@ public class WebsiteController {
 
 			return ResponseEntity.status(HttpStatus.CREATED).body(node);
 		}
-
 	}
 
 	@PostMapping("/api/v1/websites")
 	public ResponseEntity<Object> createorUpdateWebsite(@RequestAttribute("ae.accountId") String accountId, String id,
-			String name, String url, String logoURL, String description, String categories) {
+			@RequestParam(defaultValue = "") String name, @RequestParam(defaultValue = "") String url,
+			@RequestParam(defaultValue = "") String monthlyImpressions, String logoURL,
+			@RequestParam(defaultValue = "") String description,
+			@RequestParam(defaultValue = "null") String categories) {
 
-		ServiceResponse<Website> response = websiteService.createWebsite(accountId, id, name, url, logoURL, description,
-				categories);
+		ServiceResponse<Website> response = websiteService.createWebsite(new WebsiteBuilderModel()
+				.setAccountId(accountId).setId(id).setName(name).setUrl(url).setLogoUrl(logoURL)
+				.setDescription(description).setCategories(categories).setMonthlyImpressions(monthlyImpressions));
 
 		switch (response.getErrorType()) {
-		case FAIL:
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getFullMessage());
-		default:
+		case OK:
 			return ResponseEntity.status(HttpStatus.CREATED).body(response.getReponse());
+		default:
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response.getErrorType());
 		}
 	}
 

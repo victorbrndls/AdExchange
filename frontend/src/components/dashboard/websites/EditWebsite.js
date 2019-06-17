@@ -19,6 +19,7 @@ export default class EditWebsite extends Component {
                 id: null,
                 name: "",
                 url: "",
+                monthlyImpressions: "",
                 logoUrl: "",
                 description: "",
                 categories: []
@@ -54,15 +55,13 @@ export default class EditWebsite extends Component {
     }
 
     addWebsite() {
-        if (!this.verifyFields())
-            return;
-
         let wb = this.state.website;
 
         let formData = new FormData();
         formData.append('id', wb.id);
         formData.append('name', wb.name);
         formData.append('url', wb.url);
+        formData.append('monthlyImpressions', wb.monthlyImpressions);
         formData.append('logoURL', wb.logoUrl);
         formData.append('description', wb.description);
         formData.append('categories', wb.categories);
@@ -70,43 +69,31 @@ export default class EditWebsite extends Component {
         AdAxiosPost.post(`${HOST}/api/v1/websites`, formData).then(() => {
             route('/dashboard/websites');
             this.props.reload();
+        }).catch((error) => {
+            this.handleErrorResponse(error.response.data);
         });
     }
 
-    verifyFields() {
+    handleErrorResponse(error) {
         this.setState({error: {}});
 
-        if (this.state.website.name.length < 2) {
-            this.setState({
-                error: {
-                    ...this.state.error,
-                    name: "O nome do website deve conter pelo menos 2 caracteres"
-                }
-            });
-            return false;
+        switch (error) {
+            case 'INVALID_WEBSITE_NAME':
+                this.setState({error: {name: "Nome do website deve ter pelo menos 2 caracteres"}});
+                return;
+            case 'INVALID_WEBSITE_DESCRIPTION':
+                this.setState({error: {description: "Por favor forneça uma descriçao melhor de seu website"}});
+                return;
+            case 'INVALID_WEBSITE_URL':
+                this.setState({error: {url: "O url do website nao é válido"}});
+                return;
+            case 'INVALID_WEBSITE_CATEGORIES':
+                this.setState({error: {categories: "Selecione pelo menos 1 categoria"}});
+                return;
+            case 'INVALID_WEBSITE_IMPRESSIONS':
+                this.setState({error: {monthlyImpressions: "Impressões mensais deve ser um número"}});
+                return;
         }
-
-        if (this.state.website.url.length < 5) {
-            this.setState({error: {...this.state.error, url: "O url do website não é válido"}});
-            return false;
-        }
-
-        if (this.state.website.description.length < 25) {
-            this.setState({
-                error: {
-                    ...this.state.error,
-                    description: "Por favor forneça uma descrição melhor de seu website"
-                }
-            });
-            return false;
-        }
-
-        if (this.selectedCheckBox < 1) {
-            this.setState({error: {...this.state.error, categories: "Por favor selecione pelo menos 1 categoria"}});
-            return false;
-        }
-
-        return true;
     }
 
     handleCheckBoxClick(e) {
@@ -178,6 +165,9 @@ export default class EditWebsite extends Component {
                                            value={website.monthlyImpressions} onChange={(e) => {
                                         this.setState({website: {...website, monthlyImpressions: e.target.value}})
                                     }}/>
+                                    <small class="form-text ad-error">
+                                        {error.monthlyImpressions}
+                                    </small>
                                 </div>
                             </div>
 

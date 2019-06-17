@@ -14,6 +14,8 @@ public class AEUtils {
 
 	public static final String corsOrigin = "http://localhost:8081";
 
+	public static final String URL_REGEX = "^(https{0,1}:\\/\\/)\\S+";
+	
 	public static boolean isIdValid(String id) {
 		return StringUtils.hasText(id);
 	}

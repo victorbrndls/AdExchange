@@ -15,12 +15,12 @@ import com.harystolho.adexchange.parser.ad.AdContentParser;
 import com.harystolho.adexchange.parser.ad.TagNode;
 import com.harystolho.adexchange.repositories.ad.AdRepository;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
+import com.harystolho.adexchange.utils.AEUtils;
 
 @Service
 public class AdService {
 
 	private static final String HEX_COLOR_REGEX = "^(#[0-9a-z]{1,6})";
-	private static final String URL_REGEX = "^(https{0,1}:\\/\\/)\\S+";
 
 	private AdRepository adRepository;
 
@@ -165,7 +165,7 @@ public class AdService {
 		if (!StringUtils.hasText(model.getName()))
 			return ServiceResponseType.INVALID_AD_NAME;
 
-		if (!model.getRefUrl().matches(URL_REGEX))
+		if (!model.getRefUrl().matches(AEUtils.URL_REGEX))
 			return ServiceResponseType.INVALID_AD_REF_URL;
 
 		if (model.getType().equals("TEXT")) {
@@ -189,7 +189,7 @@ public class AdService {
 
 			return ServiceResponseType.OK;
 		} else if (model.getType().equals("IMAGE")) {
-			if (!model.getImageUrl().matches(URL_REGEX))
+			if (!model.getImageUrl().matches(AEUtils.URL_REGEX))
 				return ServiceResponseType.INVALID_AD_IMAGE_URL;
 
 			return ServiceResponseType.OK;

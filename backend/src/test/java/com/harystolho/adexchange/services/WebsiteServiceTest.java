@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import com.harystolho.adexchange.controllers.models.WebsiteBuilderModel;
 import com.harystolho.adexchange.models.Website;
 import com.harystolho.adexchange.repositories.website.WebsiteRepository;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
@@ -25,49 +26,37 @@ public class WebsiteServiceTest {
 	@Mock
 	WebsiteRepository websiteRepository;
 
+	private static final WebsiteBuilderModel validModel = new WebsiteBuilderModel().setAccountId("acc1")
+			.setName("Valid Name").setDescription("Some valid description").setUrl("https://adnamic.com")
+			.setLogoUrl("https://adnamic.png").setMonthlyImpressions("23").setCategories("BUSINESS,LIFE");
+
 	@Test
 	public void createWebsiteWithInvalidURL() {
-		ServiceResponse<Website> response = websiteService.createWebsite("", null, "some name", "http", "",
-				"this is a very big description for this website", "OTHER");
+		ServiceResponse<Website> response = websiteService
+				.createWebsite(validModel.clone().setUrl("hxxp://intenet.com"));
 
-		assertEquals(ServiceResponseType.FAIL, response.getErrorType());
+		assertEquals(ServiceResponseType.INVALID_WEBSITE_URL, response.getErrorType());
 	}
 
 	@Test
 	public void createWebsiteWithNoDescription() {
-		ServiceResponse<Website> response = websiteService.createWebsite("", null, "some name",
-				"https://ad-exchange.com", "", "to small", "OTHER");
+		ServiceResponse<Website> response = websiteService.createWebsite(validModel.clone().setDescription(""));
 
-		assertEquals(ServiceResponseType.FAIL, response.getErrorType());
+		assertEquals(ServiceResponseType.INVALID_WEBSITE_DESCRIPTION, response.getErrorType());
 	}
 
 	@Test
 	public void createWebsiteWithValidFields() {
-		String url = "https://ad-exchange.com";
-		String description = "this is a very big description for this website";
-
-		Website website = new Website(null, url);
-		website.setDescription(description);
-
-		Mockito.when(websiteRepository.save(Mockito.any())).thenReturn(website);
-
-		ServiceResponse<Website> response = websiteService.createWebsite("", null, "some name", url, "", description,
-				"OTHER");
+		ServiceResponse<Website> response = websiteService.createWebsite(validModel);
 
 		assertEquals(ServiceResponseType.OK, response.getErrorType());
-
-		assertEquals(url, response.getReponse().getUrl());
-		assertEquals(description, response.getReponse().getDescription());
 	}
 
 	@Test
-	public void createWebsiteWithValidCategory() {
-		Mockito.when(websiteRepository.save(Mockito.any())).thenReturn(new Website("", ""));
+	public void createWebsiteWithInvalidCategory() {
+		ServiceResponse<Website> response = websiteService.createWebsite(validModel.clone().setCategories("asdsa"));
 
-		ServiceResponse<Website> response = websiteService.createWebsite("", null, "some name",
-				"https://ad-exchange.com", "", "some description to use", "UPPER");
-
-		assertEquals(ServiceResponseType.OK, response.getErrorType());
+		assertEquals(ServiceResponseType.INVALID_WEBSITE_CATEGORIES, response.getErrorType());
 	}
 
 	@Test
@@ -75,11 +64,10 @@ public class WebsiteServiceTest {
 		List<String> categories = Arrays.asList("UppeR", ".ddg9e", "lower", "OPER,LIFE,Drinks", "  ,  ");
 
 		for (String cat : categories) {
-			ServiceResponse<Website> response = websiteService.createWebsite("", null, "some name",
-					"https://ad-exchange.com", "", "some description to use", cat);
+			ServiceResponse<Website> response = websiteService.createWebsite(validModel.clone().setCategories(cat));
 
-			assertEquals(String.format("Should return FAIL but didn't. Category:[%s]", cat), ServiceResponseType.FAIL,
-					response.getErrorType());
+			assertEquals(String.format("Should return FAIL but didn't. Category:[%s]", cat),
+					ServiceResponseType.INVALID_WEBSITE_CATEGORIES, response.getErrorType());
 		}
 	}
 
@@ -87,12 +75,27 @@ public class WebsiteServiceTest {
 	public void updateWebsiteShouldWork() {
 		Website w = new Website("", "");
 		w.setName("OldName");
+		w.setAccountId("a1");
 		Mockito.when(websiteRepository.getById("w1")).thenReturn(w);
 
-		ServiceResponse<Website> response = websiteService.createWebsite(null, "w1", "newName",
-				"https://ad-exchang1e.com", "", "Some long description to pass the tests", "UPPER");
+		ServiceResponse<Website> response = websiteService.createWebsite(new WebsiteBuilderModel().setAccountId("a1")
+				.setId("w1").setName("newName").setUrl("https://ad-exchang1e.com").setMonthlyImpressions("1")
+				.setDescription("some long description").setCategories("UPPER"));
 
+		assertEquals(ServiceResponseType.OK, response.getErrorType());
 		assertEquals("newName", w.getName());
+	}
+
+	@Test
+	public void updateWebsiteWithUnauthorizedAccount_ShouldFail() {
+		Website w = new Website("", "");
+		w.setAccountId("a23");
+		Mockito.when(websiteRepository.getById("w2")).thenReturn(w);
+
+		ServiceResponse<Website> response = websiteService
+				.createWebsite(validModel.clone().setAccountId("b1").setId("w2"));
+
+		assertEquals(ServiceResponseType.UNAUTHORIZED, response.getErrorType());
 	}
 
 }
