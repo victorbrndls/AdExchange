@@ -58,7 +58,16 @@ export default class CreateAdd extends Component {
     }
 
     setAdTemplate(ad, type) {
-        this.setState({ad: {type: type, ...ad}});
+        this.setState({
+            ad: {
+                type: type, ...ad,
+
+                // Keep the existing values
+                id: this.state.ad.id,
+                name: this.state.ad.name,
+                refUrl: this.state.ad.refUrl
+            }
+        });
     }
 
     handleTextChange(e) {
@@ -418,7 +427,7 @@ export let TextAd = ({refUrl, parsedOutput, bgColor, textColor, textAlignment, t
         text-align: ${textAlignment};
         font-size: ${textSize}px;
     `;
-    
+
     return (
         <a native href={refUrl} target="_blank" style="text-decoration: none;">
             <div class="ae-ad text" style={style}>
@@ -429,7 +438,8 @@ export let TextAd = ({refUrl, parsedOutput, bgColor, textColor, textAlignment, t
 };
 
 let CodeMapper = ({tag, content}) => (
-    tag === 'b' ? (<b>{content}</b>) : tag === 'i' ? (<i>{content}</i>) : tag === 'br' ? (<br/>) : (<span>{content}</span>)
+    tag === 'b' ? (<b>{content}</b>) : tag === 'i' ? (<i>{content}</i>) : tag === 'br' ? (<br/>) : (
+        <span>{content}</span>)
 );
 
 export let ImageAd = ({refUrl, imageUrl}) => (

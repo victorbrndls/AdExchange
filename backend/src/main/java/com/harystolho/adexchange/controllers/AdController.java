@@ -81,9 +81,9 @@ public class AdController {
 	public ResponseEntity<Object> createOrUpdateAd(HttpServletRequest req,
 			@RequestAttribute("ae.accountId") String accountId, String name, String type, String refUrl, //
 			@RequestParam(required = false) String text, @RequestParam(required = false) String textAlignment,
-			@RequestParam(required = false) int textSize, @RequestParam(required = false) String bgColor,
-			@RequestParam(required = false) String textColor, @RequestParam(required = false) String imageUrl,
-			@PathVariable(required = false) String id) {
+			@RequestParam(required = false, defaultValue = "16") int textSize,
+			@RequestParam(required = false) String bgColor, @RequestParam(required = false) String textColor,
+			@RequestParam(required = false) String imageUrl, @PathVariable(required = false) String id) {
 
 		ServiceResponse<Ad> response = adService.createOrUpdateAd(new AdBuilderModel().setAccountId(accountId).setId(id)
 				.setName(name).setType(type).setRefUrl(refUrl).setText(text).setTextAlignment(textAlignment)
