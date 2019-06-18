@@ -7,6 +7,7 @@ import Match from "../../utils/Match";
 import ShowWebsite from "./ShowWebsite";
 import {CATEGORIES_PT} from "../../utils/WebsiteCategory";
 import {LeftArrow} from "../../utils/Components";
+import anime from "animejs";
 
 export default class Websites extends Component {
     constructor(props) {
@@ -47,10 +48,16 @@ export default class Websites extends Component {
                     <Match path="/dashboard/websites" exact>
                         <div>
                             <div>
-                                <div class="websites-add dashboard-website__rounded-button" onClick={() => route('/dashboard/websites/edit?type=new')}>
+                                <div class="websites-add dashboard-website__rounded-button mb-3"
+                                     onClick={() => route('/dashboard/websites/edit?type=new')}>
                                     Adicionar seu Website
                                 </div>
+
+                                <div class="d-flex">
+                                    <WebsiteFilter/>
+                                </div>
                             </div>
+
                             <div style="margin-top: 15px;">
                                 {websites.map((ws) => (
                                     <Website {...ws} />
@@ -103,6 +110,95 @@ export class Website extends Component {
                         ))}
                     </div>
                 </div>
+            </div>
+        )
+    }
+}
+
+class WebsiteFilter extends Component {
+    constructor(props) {
+        super(props);
+
+        this.CATEGORIES = CATEGORIES_PT;
+
+        this.state = {
+            open: false,
+            filters: {
+                ...Object.keys(this.CATEGORIES).reduce((acc, current) => {
+                    acc[current] = true;
+                    return acc;
+                }, {})
+            }
+        };
+    }
+
+    handleFilterItemClick(item) {
+        this.setState({filters: {...this.state.filters, [item]: !this.state.filters[item]}});
+    }
+
+    // Animate dropdown
+    handleOpenClick(open) {
+        if (open) {
+            this.setState({open}, () => {
+                anime({
+                    targets: '.websites-filter-dropdown',
+                    height: document.getElementsByClassName('websites-filter-dropdown--list')[0].clientHeight || 892,
+                    duration: 700,
+                    easing: 'easeInOutCubic',
+                });
+            });
+        } else {
+            anime({
+                targets: '.websites-filter-dropdown',
+                height: 0,
+                duration: 700,
+                easing: 'easeInOutCubic',
+            }).finished.then(() => this.setState({open}));
+        }
+    }
+
+    /**
+     *
+     * @param select {Boolean} If TRUE selects all filters, if FALSE selects none.
+     */
+    updateFilters(select) {
+        let filters = this.state.filters;
+
+        Object.keys(filters).forEach((key) => {
+            filters[key] = select;
+        });
+
+        this.setState({filters: filters});
+    }
+
+    render({}, {open, filters}) {
+        return (
+            <div class="position-relative">
+                <div class={`websites-filter-container shadow-sm ${open ? 'filter--active' : ''}`}
+                     onClick={() => this.handleOpenClick(!open)}>
+                    Escolher Filtro
+                    <i class="fa fa-caret-down ml-2" aria-hidden="true"/>
+                </div>
+                {open && (
+                    <div class="websites-filter-dropdown shadow-sm">
+                        <ul class="list-unstyled websites-filter-dropdown--list">
+                            <li class="websites-filter__command" onClick={() => this.updateFilters(true)}>
+                                Selecionar Todos
+                            </li>
+                            <li class="websites-filter__command" onClick={() => this.updateFilters(false)}>
+                                Remover Filtro
+                            </li>
+
+                            {Object.entries(this.CATEGORIES).map((entry) => (
+                                <li class={`websites-filter--item ${filters[entry[0]] ? 'filter--active' : ''}`}
+                                    onClick={() => this.handleFilterItemClick(entry[0])}>
+                                    <div class="blocking-container" style={'left: 0'}/>
+                                    {entry[1]}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
             </div>
         )
     }
