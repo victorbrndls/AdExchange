@@ -20,7 +20,9 @@ export default class Websites extends Component {
 
         this.methods = {
             // Function implemented by WebsiteFilters that returns the selected filters
-            getFilters: () => []
+            getFilters: () => [],
+            closeFilterDropdown: () => {
+            }
         }
     }
 
@@ -29,7 +31,7 @@ export default class Websites extends Component {
     }
 
     requestWebsites() {
-        WebsiteManager.getWebsites().then((data)=>{
+        WebsiteManager.getWebsites().then((data) => {
             this.setState({
                 websites: data
             })
@@ -37,9 +39,11 @@ export default class Websites extends Component {
     }
 
     requestWebsitesWithFilter() {
+        this.methods.closeFilterDropdown();
+
         let filters = this.methods.getFilters();
 
-        WebsiteManager.getWebsiteWithCategories(filters).then((data)=>{
+        WebsiteManager.getWebsiteWithCategories(filters).then((data) => {
             this.setState({
                 websites: data
             })
@@ -82,6 +86,10 @@ export default class Websites extends Component {
                                 {websites.map((ws) => (
                                     <Website {...ws} />
                                 ))}
+
+                                {websites.length === 0 && (
+                                    <div class="proposal__none">Nenhum no momento</div>
+                                )}
                             </div>
                         </div>
                     </Match>
@@ -158,7 +166,9 @@ class WebsiteFilter extends Component {
 
                 return acc;
             }, []);
-        }
+        };
+
+        props.methods.closeFilterDropdown = () => this.handleOpenClick(false);
     }
 
     handleFilterItemClick(item) {

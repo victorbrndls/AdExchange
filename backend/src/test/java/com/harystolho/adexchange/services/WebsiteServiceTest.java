@@ -1,5 +1,6 @@
 package com.harystolho.adexchange.services;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
@@ -98,4 +99,17 @@ public class WebsiteServiceTest {
 		assertEquals(ServiceResponseType.UNAUTHORIZED, response.getErrorType());
 	}
 
+	@Test
+	public void getWebsiteWithNoCategories_ShouldReturnAll() {
+		websiteService.getWebsites("");
+
+		Mockito.verify(websiteRepository).getWebsites();
+	}
+
+	@Test
+	public void getWebsiteWithCategories_ShouldReturnOnlyThatMatch() {
+		websiteService.getWebsites("ART");
+
+		Mockito.verify(websiteRepository).getWebsites(Mockito.any());
+	}
 }
