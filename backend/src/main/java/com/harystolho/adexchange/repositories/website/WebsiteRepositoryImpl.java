@@ -1,6 +1,9 @@
 package com.harystolho.adexchange.repositories.website;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -23,6 +26,13 @@ public class WebsiteRepositoryImpl implements WebsiteRepository {
 	@Override
 	public List<Website> getWebsites() {
 		return mongoOperations.findAll(Website.class);
+	}
+
+	@Override
+	public List<Website> getWebsites(Set<String> filters) {
+		Query query = Query.query(Criteria.where("categories").in(filters));
+
+		return mongoOperations.find(query, Website.class);
 	}
 
 	@Override

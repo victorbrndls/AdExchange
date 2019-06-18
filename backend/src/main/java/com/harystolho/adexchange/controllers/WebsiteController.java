@@ -34,8 +34,8 @@ public class WebsiteController {
 	}
 
 	@GetMapping("/api/v1/websites")
-	public ResponseEntity<Object> getWebsites() {
-		ServiceResponse<List<Website>> response = websiteService.getWebsites();
+	public ResponseEntity<Object> getWebsites(@RequestParam(required = false, defaultValue = "") String categories) {
+		ServiceResponse<List<Website>> response = websiteService.getWebsites(categories);
 
 		switch (response.getErrorType()) {
 		case FAIL:

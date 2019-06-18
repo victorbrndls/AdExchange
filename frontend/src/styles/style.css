@@ -1226,6 +1226,11 @@ body.auth #header {
     cursor: pointer;
 }
 
+.website-filter{
+    background-color: #4068ff;
+    margin-left: 20px;
+}
+
 /*
     ====================
         Media queries

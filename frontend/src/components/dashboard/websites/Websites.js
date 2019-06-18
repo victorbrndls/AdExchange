@@ -8,6 +8,7 @@ import ShowWebsite from "./ShowWebsite";
 import {CATEGORIES_PT} from "../../utils/WebsiteCategory";
 import {LeftArrow} from "../../utils/Components";
 import anime from "animejs";
+import WebsiteManager from "../../../managers/WebsiteManager";
 
 export default class Websites extends Component {
     constructor(props) {
@@ -16,6 +17,11 @@ export default class Websites extends Component {
         this.state = {
             websites: []
         };
+
+        this.methods = {
+            // Function implemented by WebsiteFilters that returns the selected filters
+            getFilters: () => []
+        }
     }
 
     componentDidMount() {
@@ -23,9 +29,19 @@ export default class Websites extends Component {
     }
 
     requestWebsites() {
-        AdAxiosGet.get(`${HOST}/api/v1/websites`).then((response) => {
+        WebsiteManager.getWebsites().then((data)=>{
             this.setState({
-                websites: response.data
+                websites: data
+            })
+        });
+    }
+
+    requestWebsitesWithFilter() {
+        let filters = this.methods.getFilters();
+
+        WebsiteManager.getWebsiteWithCategories(filters).then((data)=>{
+            this.setState({
+                websites: data
             })
         });
     }
@@ -54,11 +70,15 @@ export default class Websites extends Component {
                                 </div>
 
                                 <div class="d-flex">
-                                    <WebsiteFilter/>
+                                    <WebsiteFilter methods={this.methods}/>
+                                    <div class="website-filter dashboard-website__rounded-button mb-3"
+                                         onClick={() => this.requestWebsitesWithFilter()}>
+                                        Filtrar
+                                    </div>
                                 </div>
                             </div>
 
-                            <div style="margin-top: 15px;">
+                            <div>
                                 {websites.map((ws) => (
                                     <Website {...ws} />
                                 ))}
@@ -130,6 +150,15 @@ class WebsiteFilter extends Component {
                 }, {})
             }
         };
+
+        props.methods.getFilters = () => {
+            return Object.keys(this.state.filters).reduce((acc, current) => {
+                if (this.state.filters[current])
+                    acc.push(current);
+
+                return acc;
+            }, []);
+        }
     }
 
     handleFilterItemClick(item) {

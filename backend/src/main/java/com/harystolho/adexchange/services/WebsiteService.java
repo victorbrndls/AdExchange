@@ -1,6 +1,7 @@
 package com.harystolho.adexchange.services;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -20,8 +21,13 @@ public class WebsiteService {
 		this.websiteRepository = websiteRepository;
 	}
 
-	public ServiceResponse<List<Website>> getWebsites() {
-		return ServiceResponse.ok(websiteRepository.getWebsites());
+	public ServiceResponse<List<Website>> getWebsites(String categories) {
+		Set<String> categoriesSet = StringUtils.commaDelimitedListToSet(categories);
+
+		if (categoriesSet.isEmpty())
+			return ServiceResponse.ok(websiteRepository.getWebsites());
+
+		return ServiceResponse.ok(websiteRepository.getWebsites(categoriesSet));
 	}
 
 	public ServiceResponse<Website> getWebsiteById(String id) {
