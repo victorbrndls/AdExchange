@@ -44,7 +44,7 @@ public class WebsiteService {
 		if (model.getId() != null) { // If the id is not null this means the user is editing an existing website
 			website = websiteRepository.getById(model.getId());
 
-			if (!website.isAuthorized(model.getAccountId()))
+			if (website != null && !website.isAuthorized(model.getAccountId()))
 				return ServiceResponse.error(ServiceResponseType.UNAUTHORIZED);
 		}
 
