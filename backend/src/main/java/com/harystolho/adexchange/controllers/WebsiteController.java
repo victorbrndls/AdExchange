@@ -34,7 +34,7 @@ public class WebsiteController {
 	}
 
 	@GetMapping("/api/v1/websites")
-	public ResponseEntity<Object> getWebsites(@RequestParam(required = false, defaultValue = "") String categories) {
+	public ResponseEntity<Object> getWebsites(@RequestParam(defaultValue = "") String categories) {
 		ServiceResponse<List<Website>> response = websiteService.getWebsites(categories);
 
 		switch (response.getErrorType()) {
@@ -43,7 +43,6 @@ public class WebsiteController {
 		default:
 			return ResponseEntity.status(HttpStatus.CREATED).body(response.getReponse());
 		}
-
 	}
 
 	@GetMapping("/api/v1/websites/{id}")
