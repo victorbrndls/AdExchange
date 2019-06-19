@@ -22,7 +22,7 @@ public class CachedUserInteractionRepositoryImpl implements UserInteractionRepos
 
 	@Override
 	public UserInteraction getByInteractorId(String interactorId) {
-		return Optional.of(cache.get(interactorId)).orElseGet(() -> {
+		return Optional.ofNullable(cache.get(interactorId)).orElseGet(() -> {
 			UserInteraction ui = userInteractionRepository.getByInteractorId(interactorId);
 
 			if (ui != null)

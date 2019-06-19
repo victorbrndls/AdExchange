@@ -1,5 +1,6 @@
 package com.harystolho.adserver.tracker;
 
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -58,13 +59,11 @@ public class UserTrackerService {
 	 *         map this tracker to the ad id.
 	 */
 	public boolean hasTrackerInteractedWith(Tracker tracker, String interaction) {
-		Set<String> listByCookie = userInteractionRepository.getByInteractorId(tracker.getCookie().getValue())
-				.getInteractions();
+		Set<String> listByCookie = getInteractions(tracker.getCookie().getValue());
 		if (listByCookie != null && listByCookie.contains(interaction))
 			return true;
 
-		Set<String> listByClientAddr = userInteractionRepository.getByInteractorId(tracker.getClientAddr())
-				.getInteractions();
+		Set<String> listByClientAddr = getInteractions(tracker.getClientAddr());
 		if (listByClientAddr != null && listByClientAddr.contains(interaction))
 			return true;
 
@@ -87,7 +86,7 @@ public class UserTrackerService {
 	}
 
 	private void interactTrackerIdentifierWith(String interactorId, String interactionId) {
-		UserInteraction ui = Optional.of(userInteractionRepository.getByInteractorId(interactorId))
+		UserInteraction ui = Optional.ofNullable(userInteractionRepository.getByInteractorId(interactorId))
 				.orElse(createUserInteractor(interactorId));
 
 		ui.addInteraction(interactionId);
@@ -99,6 +98,12 @@ public class UserTrackerService {
 		ui.setInteractorId(interactorId);
 
 		return ui;
+	}
+
+	private Set<String> getInteractions(String interactorId) {
+		UserInteraction ui = userInteractionRepository.getByInteractorId(interactorId);
+
+		return ui != null ? ui.getInteractions() : new HashSet<>();
 	}
 
 }

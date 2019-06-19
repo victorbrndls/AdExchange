@@ -38,6 +38,7 @@ public class EventDispatcher {
 				handler.onEvent((E) event);
 			} catch (NullPointerException e) {
 				logger.error("Can't find a handler for: {}", event.getClass());
+				logger.throwing(e);
 			}
 		});
 	}
