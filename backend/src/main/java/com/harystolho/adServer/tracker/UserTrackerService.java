@@ -1,29 +1,25 @@
 package com.harystolho.adserver.tracker;
 
-import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import javax.servlet.http.Cookie;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
 import com.harystolho.adexchange.utils.AEUtils;
+import com.harystolho.adserver.tracker.repository.UserInteractionRepository;
 
-// when user goes to /redict add a cookie
-// req.getRemoteAddr()
-// req.getRemoteHost()
-
-@Service
+@Service // TODO move this to Redis in the future
 public class UserTrackerService {
 
 	public static final String COOKIE_NAME = "t_ae";
 
-	// Maps a tracker id(cookie value, remote addr) to some id
-	private final MultiValueMap<String, String> trackerIdToInteraction;
+	private UserInteractionRepository userInteractionRepository;
 
-	private UserTrackerService() {
-		this.trackerIdToInteraction = new LinkedMultiValueMap<>();
+	private UserTrackerService(@Qualifier("userInteractionCache") UserInteractionRepository userTrackerRepository) {
+		this.userInteractionRepository = userTrackerRepository;
 	}
 
 	public boolean isTrackerValid(Tracker tracker) {
@@ -55,19 +51,21 @@ public class UserTrackerService {
 
 	/**
 	 * @param tracker
-	 * @param interactor
-	 * @return <code>true</code> if the tracker has interacted with the interactor.
-	 *         The interactor is an identifier for some other object, for example if
-	 *         the user identified by this tracker has clicked some ad, you can map
-	 *         this tracker to the ad id.
+	 * @param interaction
+	 * @return <code>true</code> if the tracker has interacted with the interaction.
+	 *         The interaction is an identifier for some other object, for example
+	 *         if the user identified by this tracker has clicked some ad, you can
+	 *         map this tracker to the ad id.
 	 */
-	public boolean hasTrackerInteractedWith(Tracker tracker, String interactor) {
-		List<String> listByCookie = trackerIdToInteraction.get(tracker.getCookie().getValue());
-		if (listByCookie != null && listByCookie.contains(interactor))
+	public boolean hasTrackerInteractedWith(Tracker tracker, String interaction) {
+		Set<String> listByCookie = userInteractionRepository.getByInteractorId(tracker.getCookie().getValue())
+				.getInteractions();
+		if (listByCookie != null && listByCookie.contains(interaction))
 			return true;
 
-		List<String> listByClientAddr = trackerIdToInteraction.get(tracker.getClientAddr());
-		if (listByClientAddr != null && listByClientAddr.contains(interactor))
+		Set<String> listByClientAddr = userInteractionRepository.getByInteractorId(tracker.getClientAddr())
+				.getInteractions();
+		if (listByClientAddr != null && listByClientAddr.contains(interaction))
 			return true;
 
 		return false;
@@ -78,11 +76,29 @@ public class UserTrackerService {
 	 * collide
 	 * 
 	 * @param tracker
-	 * @param interactorId
+	 * @param interactionId
 	 */
-	public void interactTrackerWith(Tracker tracker, String interactorId) {
-		trackerIdToInteraction.add(tracker.getCookie().getValue(), interactorId);
-		trackerIdToInteraction.add(tracker.getClientAddr(), interactorId);
+	public void interactTrackerWith(Tracker tracker, String interactionId) {
+		String cookie = tracker.getCookie().getValue();
+		String addr = tracker.getClientAddr();
+
+		interactTrackerIdentifierWith(cookie, interactionId);
+		interactTrackerIdentifierWith(addr, interactionId);
+	}
+
+	private void interactTrackerIdentifierWith(String interactorId, String interactionId) {
+		UserInteraction ui = Optional.of(userInteractionRepository.getByInteractorId(interactorId))
+				.orElse(createUserInteractor(interactorId));
+
+		ui.addInteraction(interactionId);
+		userInteractionRepository.save(ui);
+	}
+
+	private UserInteraction createUserInteractor(String interactorId) {
+		UserInteraction ui = new UserInteraction();
+		ui.setInteractorId(interactorId);
+
+		return ui;
 	}
 
 }
