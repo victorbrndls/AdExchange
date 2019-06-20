@@ -3,6 +3,7 @@ package com.harystolho.adserver.tracker.repository;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import com.harystolho.adserver.tracker.UserInteraction;
@@ -24,8 +25,9 @@ public class UserInteractionRepositoryImpl implements UserInteractionRepository 
 	}
 
 	@Override
-	public UserInteraction save(UserInteraction userInteraction) {
-		return mongoOperations.save(userInteraction);
+	public void save(UserInteraction userInteraction) {
+		mongoOperations.upsert(Query.query(Criteria.where("interactorId").is(userInteraction.getInteractorId())),
+				new Update().addToSet("interactions").each(userInteraction.getInteractions()), UserInteraction.class);
 	}
 
 }

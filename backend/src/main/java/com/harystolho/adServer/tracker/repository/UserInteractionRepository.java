@@ -6,5 +6,5 @@ public interface UserInteractionRepository {
 
 	public UserInteraction getByInteractorId(String interactorId);
 
-	public UserInteraction save(UserInteraction userInteraction);
+	public void save(UserInteraction userInteraction);
 }
