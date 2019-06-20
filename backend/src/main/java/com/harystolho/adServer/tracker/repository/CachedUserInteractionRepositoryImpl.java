@@ -1,78 +1,55 @@
 package com.harystolho.adserver.tracker.repository;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Set;
 
-import org.springframework.scheduling.annotation.Scheduled;
+import javax.annotation.PreDestroy;
+
 import org.springframework.stereotype.Service;
 
-import com.harystolho.adexchange.utils.Pair;
+import com.harystolho.adserver.cache.EntriesEvictionListener;
+import com.harystolho.adserver.cache.LRUCache;
 import com.harystolho.adserver.tracker.UserInteraction;
 
 @Service(value = "userInteractionCache")
-public class CachedUserInteractionRepositoryImpl implements UserInteractionRepository {
-
-	private static final long CLEAN_UP_DELAY = 1000 * 10; // 2 Minutes
-	private static final long MAX_ENTRY_TIME = 1000 * 20; // 5 Minutes
+public class CachedUserInteractionRepositoryImpl
+		implements UserInteractionRepository, EntriesEvictionListener<UserInteraction> {
 
 	private UserInteractionRepository userInteractionRepository;
 
-	private Map<String, Pair<UserInteraction, Long>> storage;
-	// TODO send the storage entries to db when applications shuts down
-	
-	private CachedUserInteractionRepositoryImpl(UserInteractionRepository userInteractionRepository) {
+	private LRUCache<UserInteraction> cache;
+
+	private CachedUserInteractionRepositoryImpl(UserInteractionRepository userInteractionRepository,
+			LRUCache<UserInteraction> cache) {
 		this.userInteractionRepository = userInteractionRepository;
-		this.storage = new ConcurrentHashMap<>();
+		this.cache = cache;
 	}
 
 	@Override
 	public UserInteraction getByInteractorId(String interactorId) {
-		return Optional.ofNullable(getFromStorage(interactorId)).orElseGet(() -> {
+		return Optional.ofNullable(cache.get(interactorId)).orElseGet(() -> {
 			UserInteraction ui = userInteractionRepository.getByInteractorId(interactorId);
 
 			if (ui != null)
-				storeOnCache(ui);
+				cache.store(interactorId, ui);
 
 			return ui;
 		});
 	}
 
-	private UserInteraction getFromStorage(String interactorId) {
-		Pair<UserInteraction, Long> pair = storage.get(interactorId);
-
-		if (pair == null)
-			return null;
-
-		pair.setSecond(System.currentTimeMillis()); // Update last used time
-
-		return pair.getFirst();
+	@Override
+	public void save(UserInteraction userInteraction) {
+		cache.store(userInteraction.getInteractorId(), userInteraction);
 	}
 
 	@Override
-	public void save(UserInteraction userInteraction) {
-		storeOnCache(userInteraction);
-	}
-
-	private void storeOnCache(UserInteraction ui) {
-		storage.put(ui.getInteractorId(), Pair.of(ui, System.currentTimeMillis()));
-	}
-
-	@Scheduled(fixedDelay = CLEAN_UP_DELAY)
-	public void removeLeastRecentlyUsed() {
-		Iterator<Entry<String, Pair<UserInteraction, Long>>> it = storage.entrySet().iterator();
-
-		while (it.hasNext()) {
-			Entry<String, Pair<UserInteraction, Long>> entry = it.next();
-
-			if (entry.getValue().getSecond() + MAX_ENTRY_TIME > System.currentTimeMillis()) {
-				System.out.println("removing: " + entry.getValue().getFirst().getInteractorId());
-				it.remove();
-				userInteractionRepository.save(entry.getValue().getFirst());
-			}
-		}
+	public void onEntriesEviction(Set<UserInteraction> entries) {
 
 	}
+
+	@PreDestroy
+	public void destroy() {
+		// TODO send the storage entries to db when applications shuts down
+	}
+
 }
