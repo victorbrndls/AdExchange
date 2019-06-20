@@ -15,13 +15,14 @@ import com.harystolho.adserver.tracker.UserInteraction;
 @Service(value = "userInteractionCache")
 public class CachedUserInteractionRepositoryImpl implements UserInteractionRepository {
 
-	private static final int CLEAN_UP_DELAY = 1000 * 60 * 2; // 2 Minutes
-	private static final int MAX_ENTRY_TIME = 1000 * 60 * 5; // 5 Minutes
+	private static final long CLEAN_UP_DELAY = 1000 * 10; // 2 Minutes
+	private static final long MAX_ENTRY_TIME = 1000 * 20; // 5 Minutes
 
 	private UserInteractionRepository userInteractionRepository;
 
 	private Map<String, Pair<UserInteraction, Long>> storage;
-
+	// TODO send the storage entries to db when applications shuts down
+	
 	private CachedUserInteractionRepositoryImpl(UserInteractionRepository userInteractionRepository) {
 		this.userInteractionRepository = userInteractionRepository;
 		this.storage = new ConcurrentHashMap<>();
@@ -69,6 +70,7 @@ public class CachedUserInteractionRepositoryImpl implements UserInteractionRepos
 			if (entry.getValue().getSecond() + MAX_ENTRY_TIME > System.currentTimeMillis()) {
 				System.out.println("removing: " + entry.getValue().getFirst().getInteractorId());
 				it.remove();
+				userInteractionRepository.save(entry.getValue().getFirst());
 			}
 		}
 
