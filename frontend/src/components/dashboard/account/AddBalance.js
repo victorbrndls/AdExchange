@@ -22,7 +22,7 @@ export default class AddBalance extends Component {
                     this.setState({
                         error: {
                             title: "Erro ao realizar pagamento",
-                            message: "Houve um erro em nosso sistema e a função de pagamentos não está funcionando no momento. Tente mais tarde novamente."
+                            message: "Houve um erro em nosso sistema e a função de pagamentos não está funcionando no momento. Tente novamente mais tarde."
                         },
                         success: undefined
                     });
@@ -37,7 +37,7 @@ export default class AddBalance extends Component {
                 this.setState({
                     success: {
                         title: "Pagamento realizado com sucesso.",
-                        message: "O seu pagamento foi realizado com sucesso, em momentos você receberá o seu em sua conta."},
+                        message: "O seu pagamento foi realizado com sucesso, em momentos você receberá o saldo em sua conta."},
                     error: undefined
                 });
             },

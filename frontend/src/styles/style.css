@@ -912,18 +912,23 @@ body.auth #header {
     background-color: orangered;
 }
 
-.dashboard__account-balance i {
-    font-size: 16px;
-    margin-left: 9px;
+.dashboard__account-balance{
+    display: flex;
+}
+
+.dashboard__account-balance__icon{
+    padding: 0;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 50%;
-    padding: 4px 7px;
-    box-shadow: 0 0 5px #9f9f9f96;
+    background-color: #245fc5;
     cursor: pointer;
 }
 
-.dashboard__account-balance i:hover {
 
-}
 
 .dashboard-add__blocking-container {
     position: relative;
@@ -956,10 +961,12 @@ body.auth #header {
 
 .controlpanel-card__text h2, h4 {
     font-weight: 600;
+    text-align: center;
 }
 
 .controlpanel-card__text span {
-    color: deepskyblue;
+    font-variant: small-caps;
+    font-family: Raleway, serif;
 }
 
 .trans-0_3s {
@@ -1046,6 +1053,14 @@ body.auth #header {
     text-decoration: none;
     background-color: black;
     color: orange;
+}
+
+.ae-font-primary{
+    font-family: Raleway, serif;
+}
+
+.ae-font-secundary{
+    font-family: Poppins, serif;
 }
 
 .font-raleway {

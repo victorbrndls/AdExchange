@@ -94,7 +94,7 @@ export default class DashboardChartContainer extends Component {
 
         return (
             <div class="card mb-4">
-                <div class="card-body d-flex justify-content-between">
+                <div class="card-body d-flex justify-content-around">
                     <div class="controlpanel-card__text">
                         <h2 class="m-0">{total.reduce(reducer)}</h2>
                         <span>{name}</span>
@@ -107,7 +107,7 @@ export default class DashboardChartContainer extends Component {
                         <h2 class="m-0">{unique.reduce(reducer)}</h2>
                         <span>{uniqueName}</span>
                         <abbr
-                            title={`O numero de ${uniqueName} no anúncio desse contrato. Se uma mesma pessoas interagiu 4 vezes com mesmo anúncio, isso conta 1 interações.`}>
+                            title={`O numero de ${uniqueName} no anúncio desse contrato. Se uma mesma pessoas interagiu 4 vezes com mesmo anúncio, isso conta 1 interação.`}>
                             <i class="fa fa-question fa-abbr-icon" aria-hidden="true"/>
                         </abbr>
                     </div>
