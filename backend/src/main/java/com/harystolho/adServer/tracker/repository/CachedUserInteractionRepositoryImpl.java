@@ -23,6 +23,8 @@ public class CachedUserInteractionRepositoryImpl
 			LRUCache<UserInteraction> cache) {
 		this.userInteractionRepository = userInteractionRepository;
 		this.cache = cache;
+
+		this.cache.setEntriesEvictionListener(this);
 	}
 
 	@Override
@@ -44,7 +46,7 @@ public class CachedUserInteractionRepositoryImpl
 
 	@Override
 	public void onEntriesEviction(Set<UserInteraction> entries) {
-
+		entries.forEach((entry) -> userInteractionRepository.save(entry));
 	}
 
 	@PreDestroy

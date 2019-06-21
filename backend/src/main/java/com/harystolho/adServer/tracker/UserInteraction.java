@@ -45,4 +45,9 @@ public class UserInteraction {
 		this.interactions.add(interaction);
 	}
 
+	@Override
+	public String toString() {
+		return String.format("InteractorId: %s / Interactions: %s", interactorId, interactions);
+	}
+	
 }

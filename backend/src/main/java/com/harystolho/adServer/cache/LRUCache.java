@@ -76,19 +76,19 @@ public class LRUCache<T> {
 	@Scheduled(fixedDelay = CLEAN_UP_DELAY)
 	public void cleanUp() {
 		Iterator<Entry<String, CacheObject<T>>> it = cache.entrySet().iterator();
-
 		Set<T> entriesRemoved = new LinkedHashSet<>();
 
 		while (it.hasNext()) {
-			Entry<String, CacheObject<T>> entry = it.next();
+			CacheObject<T> entry = it.next().getValue();
 
-			if (shouldRemoveEntry(entry.getValue())) {
+			if (shouldRemoveEntry(entry)) {
 				it.remove();
-				entriesRemoved.add(entry.getValue().getObject());
+				entriesRemoved.add(entry.getObject());
 			}
 		}
 
-		entriesEvictionListener.onEntriesEviction(entriesRemoved);
+		if (entriesEvictionListener != null)
+			entriesEvictionListener.onEntriesEviction(entriesRemoved);
 	}
 
 	private boolean shouldRemoveEntry(CacheObject<T> entry) {
