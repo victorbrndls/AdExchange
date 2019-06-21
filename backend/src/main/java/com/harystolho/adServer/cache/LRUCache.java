@@ -17,7 +17,9 @@ import org.springframework.stereotype.Service;
 @Scope(scopeName = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class LRUCache<T> {
 
-	private final long CLEAN_UP_DELAY;
+	// Can't set this value using constructor because @Scheduled annotation doesn't
+	// allow
+	private final long CLEAN_UP_DELAY = 1000 * 60 * 2; // 2 Minutes
 	private final long ENTRY_TTL;
 
 	private Map<String, CacheObject<T>> cache;
@@ -25,11 +27,10 @@ public class LRUCache<T> {
 	private EntriesEvictionListener<T> entriesEvictionListener;
 
 	public LRUCache() {
-		this(Duration.ofMinutes(2).toMillis(), Duration.ofMinutes(5).toMillis());
+		this(Duration.ofMinutes(5).toMillis());
 	}
 
-	public LRUCache(long cleanUpDelay, long entryTTL) {
-		this.CLEAN_UP_DELAY = cleanUpDelay;
+	public LRUCache(long entryTTL) {
 		this.ENTRY_TTL = entryTTL;
 
 		this.cache = new ConcurrentHashMap<>();

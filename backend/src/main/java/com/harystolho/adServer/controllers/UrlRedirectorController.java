@@ -37,7 +37,7 @@ public class UrlRedirectorController {
 	@GetMapping(path = REDIRECT_ENDPOINT + "/{id}")
 	public void redirect(HttpServletRequest req, HttpServletResponse res, @PathVariable String id) {
 		Tracker tracker = trackableRequestService.addTrackerToRequest(req, res);
-		
+
 		ServiceResponse<String> response = urlRedirectorService.getRefUrlUsingRequestPath(req.getRequestURI());
 
 		try {
