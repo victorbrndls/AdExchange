@@ -61,9 +61,9 @@ export default class DashboardPieChart extends Component {
     render() {
         return (
             <div class="card mb-4">
-                <div class="card-body d-flex justify-content-between">
+                <div class="card-body d-flex justify-content-center">
                     <div class="controlpanel-card__text">
-                        <h4 class="m-0">Proporção de cliques para visualizações</h4>
+                        <h5 class="m-0 ae-font-primary">Proporção de cliques para visualizações</h5>
                     </div>
                 </div>
                 <div>
