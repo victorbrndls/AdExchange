@@ -68,12 +68,30 @@ export default class AdvertiserHome extends Component {
                                 <FeatureCard header="Lorem Ipsum Dolor"
                                              message="Duis et mollis ipsum. Nunc fringillta ornare urna, in luctus dui suscipit porta. Etiam convallis, ex quis efficitur blandit, felis arcu tincidunt nunc, commodo malesuada purus elit ut metus. "
                                              imageSrc="https://img.icons8.com/color/344/lock-2.png"/>
-                            </div>
-                            <div class="row justify-content-center">
                                 <FeatureCard header="Lorem Ipsum Dolor"
                                              message="Duis et mollis ipsum. Nunc fringillta ornare urna, in luctus dui suscipit porta. Etiam convallis, ex quis efficitur blandit, felis arcu tincidunt nunc, commodo malesuada purus elit ut metus. "
                                              imageSrc="https://img.icons8.com/color/344/lock-2.png"/>
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="ae-home-section ae-home-how_to">
+                        <div class="container">
+                            <div class="row mb-5">
+                                <div class="col ae-home-how_to--header">
+                                    Como Funciona
+                                </div>
+                            </div>
+
+                            <HowToCard imageSrc="https://i.imgur.com/wPuGiHs.png" header="Curabitur at ipsum elit"
+                                       message="Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Quisque interdum odio nisl, id lacinia ex ultricies at. Quisque urna ex, viverra in cursus nec, viverra ullamcorper dolor. Nullam fringilla risus eu interdum lacinia. Etiam eu venenatis ligula. "/>
+
+                            <HowToCard imageSrc="https://i.imgur.com/wPuGiHs.png" header="Curabitur at ipsum elit"
+                                       message="Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Quisque interdum odio nisl, id lacinia ex ultricies at. Quisque urna ex, viverra in cursus nec, viverra ullamcorper dolor. Nullam fringilla risus eu interdum lacinia. Etiam eu venenatis ligula. "/>
+
+                            <HowToCard imageSrc="https://i.imgur.com/wPuGiHs.png" header="Curabitur at ipsum elit"
+                                       message="Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Quisque interdum odio nisl, id lacinia ex ultricies at. Quisque urna ex, viverra in cursus nec, viverra ullamcorper dolor. Nullam fringilla risus eu interdum lacinia. Etiam eu venenatis ligula. "/>
+
                         </div>
                     </div>
                 </div>
@@ -101,3 +119,19 @@ const FeatureCard = ({imageSrc, header, message}) => (
         </div>
     </div>
 );
+
+const HowToCard = ({imageSrc, header, message}) => (
+    <div class="row justify-content-around ae-home-how_to__card">
+        <div class="col-md-5 col-lg-5 ae-home-how_to__card--image">
+            <div class="image-bg-rotation position-relative">
+                <img class="shadow position-relative" src={imageSrc}/>
+            </div>
+        </div>
+        <div class="col-md-5 col-lg-5">
+            <div class="row ae-home-how_to__card--header">
+                {header}
+            </div>
+            <div class="row ae-home-how_to__card--message">{message}</div>
+        </div>
+    </div>
+)
