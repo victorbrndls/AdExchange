@@ -1296,25 +1296,25 @@ body.auth #header {
     width: 100%;
 }
 
-.ae-home-hero--trial{
+.ae-home-hero--trial {
     background-color: white;
     height: var(--hero-trial-height);
     padding: 12px 25px;
 }
 
-.ae-home-hero--trial-header{
+.ae-home-hero--trial-header {
     font-family: Quicksand, serif;
     font-weight: bold;
     color: #454545;
     font-size: 30px;
 }
 
-.ae-home-hero-trial--message{
+.ae-home-hero-trial--message {
     font-family: Quicksand, serif;
     color: #656565;
 }
 
-.ae-home-hero-trial--button{
+.ae-home-hero-trial--button {
     background-color: #2756c3;
     color: white;
     padding: 7px 14px;
@@ -1326,23 +1326,48 @@ body.auth #header {
     transition: all 0.4s;
 }
 
-.ae-home-hero-trial--button:hover{
+.ae-home-hero-trial--button:hover {
     text-decoration: none;
     color: var(--ad-primary);
     background-color: white;
     border: solid 2px var(--ad-primary);
 }
 
-.ae-home-hero-trial--container{
+.ae-home-hero-trial--container {
     justify-content: center;
     position: absolute;
     width: 100%;
     bottom: -85px;
 }
 
-.ae-home-hero--container{
+.ae-home-hero--container {
     position: relative;
     padding-bottom: calc(90px + (var(--hero-trial-height) / 2));
+}
+
+.ae-home-features {
+    margin-top: calc((var(--hero-trial-height) / 2) + 110px);
+}
+
+.ae-home-features-card{
+    box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, 0.21);
+    padding: 13px 21px;
+}
+
+.ae-home-features-card--image{
+    width: 29px;
+    height: 29px;
+}
+
+.ae-home-features-card--header{
+    font-family: Raleway, serif;
+    font-size: 20px;
+    padding-left: 0;
+}
+
+.ae-home-features-card--message{
+    color: #656565;
+    font-family: Quicksand, serif;
 }
 
 /*

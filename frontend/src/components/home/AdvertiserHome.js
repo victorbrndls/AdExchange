@@ -38,7 +38,7 @@ export default class AdvertiserHome extends Component {
                                     <div class="ae-home-hero--trial shadow container-fluid">
                                         <div class="row mb-2">
                                             <div class="col ae-home-hero--trial-header">
-                                                Start Your Free Trial
+                                                Start your free trial
                                             </div>
                                         </div>
                                         <div class="row">
@@ -58,6 +58,24 @@ export default class AdvertiserHome extends Component {
                             </div>
                         </div>
                     </div>
+
+                    <div class="ae-home-section ae-home-features">
+                        <div class="container">
+                            <div class="row justify-content-around mb-5">
+                                <FeatureCard header="Lorem Ipsum Dolor"
+                                             message="Duis et mollis ipsum. Nunc fringillta ornare urna, in luctus dui suscipit porta. Etiam convallis, ex quis efficitur blandit, felis arcu tincidunt nunc, commodo malesuada purus elit ut metus. "
+                                             imageSrc="https://img.icons8.com/color/344/lock-2.png"/>
+                                <FeatureCard header="Lorem Ipsum Dolor"
+                                             message="Duis et mollis ipsum. Nunc fringillta ornare urna, in luctus dui suscipit porta. Etiam convallis, ex quis efficitur blandit, felis arcu tincidunt nunc, commodo malesuada purus elit ut metus. "
+                                             imageSrc="https://img.icons8.com/color/344/lock-2.png"/>
+                            </div>
+                            <div class="row justify-content-center">
+                                <FeatureCard header="Lorem Ipsum Dolor"
+                                             message="Duis et mollis ipsum. Nunc fringillta ornare urna, in luctus dui suscipit porta. Etiam convallis, ex quis efficitur blandit, felis arcu tincidunt nunc, commodo malesuada purus elit ut metus. "
+                                             imageSrc="https://img.icons8.com/color/344/lock-2.png"/>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div>footer</div>
             </div>
@@ -65,3 +83,21 @@ export default class AdvertiserHome extends Component {
     }
 
 }
+
+const FeatureCard = ({imageSrc, header, message}) => (
+    <div class="col-lg-5 ae-home-features-card">
+        <div class="row mb-2">
+            <div class="col-auto">
+                <img class="ae-home-features-card--image" src={imageSrc}/>
+            </div>
+            <div class="col ae-home-features-card--header">
+                {header}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col ae-home-features-card--message">
+                {message}
+            </div>
+        </div>
+    </div>
+);
