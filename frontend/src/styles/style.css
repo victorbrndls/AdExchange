@@ -7,6 +7,8 @@
     --ad-secundary: #206cc8;
     --dashboard-sidebar-width: 250px;
     --header-height: 60px;
+
+    --hero-trial-height: 170px;
 }
 
 html, body {
@@ -1252,7 +1254,8 @@ body.auth #header {
 }
 
 .ae-home-hero {
-    padding: 90px 0;
+    position: relative;
+    padding: 90px 0 0 0;
     background: linear-gradient(130deg, var(--ad-primary), #0cabd7);
 }
 
@@ -1285,6 +1288,61 @@ body.auth #header {
     background-color: white;
     top: calc(50% - 2.5px);
     left: -15px;
+}
+
+.ae-home-hero--bg {
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+.ae-home-hero--trial{
+    background-color: white;
+    height: var(--hero-trial-height);
+    padding: 12px 25px;
+}
+
+.ae-home-hero--trial-header{
+    font-family: Quicksand, serif;
+    font-weight: bold;
+    color: #454545;
+    font-size: 30px;
+}
+
+.ae-home-hero-trial--message{
+    font-family: Quicksand, serif;
+    color: #656565;
+}
+
+.ae-home-hero-trial--button{
+    background-color: #2756c3;
+    color: white;
+    padding: 7px 14px;
+    border-radius: 40px;
+    font-family: Quicksand, serif;
+    font-size: 29px;
+    border: solid 2px transparent;
+
+    transition: all 0.4s;
+}
+
+.ae-home-hero-trial--button:hover{
+    text-decoration: none;
+    color: var(--ad-primary);
+    background-color: white;
+    border: solid 2px var(--ad-primary);
+}
+
+.ae-home-hero-trial--container{
+    justify-content: center;
+    position: absolute;
+    width: 100%;
+    bottom: -85px;
+}
+
+.ae-home-hero--container{
+    position: relative;
+    padding-bottom: calc(90px + (var(--hero-trial-height) / 2));
 }
 
 /*
