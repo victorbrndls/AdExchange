@@ -23,6 +23,7 @@ export default class AdvertiserHome extends Component {
                                     </div>
                                     <div class="row ae-home-hero__text ae-home-hero__secondary-text ml-1">
                                         <ul class="list-unstyled">
+                                            
                                             <li class="list-diamond">Organize your projects, your way</li>
                                             <li class="list-diamond">Track all your work in one place</li>
                                             <li class="list-diamond">Collaborate more effectively</li>
