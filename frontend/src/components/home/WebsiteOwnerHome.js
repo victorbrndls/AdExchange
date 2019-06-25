@@ -1,5 +1,6 @@
 import {Component} from "preact";
 import {Link} from "preact-router";
+import Header from "./Header";
 
 export default class WebsiteOwnerHome extends Component {
     constructor(props) {
@@ -9,20 +10,8 @@ export default class WebsiteOwnerHome extends Component {
     render() {
         return (
             <div style="background-color: #f9fafc;">
-                <div class="header shadow-sm">
-                    <div class="container">
-                        <div class="ae-logo">
-                            <img src="/assets/logo.png"/>
-                        </div>
-                        <div class="ae-navbar">
-                            <div class="ae-navbar--link ae-navbar-account__new">
-                                <Link href="/auth?register">Criar Conta</Link>
-                            </div>
-                            <div class="ae-navbar--link">
-                                <Link href="/auth?login">Entrar</Link>
-                            </div>
-                        </div>
-                    </div>
+                <div>
+                    <Header view='WEBSITE'/>
                 </div>
 
                 <div>
@@ -176,7 +165,7 @@ export default class WebsiteOwnerHome extends Component {
                                             <PricingCard title="Profissional" price="13"
                                                          benefits={[
                                                              "Websites ilimitados",
-                                                             "Anuncios ilimitados",
+                                                             "Anúncios ilimitados",
                                                              "Spots ilimitados",
                                                              "Editor de anuncio PRO",
                                                          ]}/>

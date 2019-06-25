@@ -104,7 +104,7 @@ export default class AdvertiserHome extends Component {
                         <div class="container">
                             <div class="row mb-5">
                                 <div class="col ae-home--section-header">
-                                    Precos
+                                    Preços
                                 </div>
                             </div>
 
@@ -121,10 +121,11 @@ export default class AdvertiserHome extends Component {
 
                                     <div class="mb-5">
                                         <ul class="list-unstyled ae-home-prices-card--features">
-                                            <li>Unlimited websites</li>
-                                            <li>20,000 Visits</li>
-                                            <li>Unlimited Ads</li>
-                                            <li>Free CDN</li>
+                                            <li>Website ilimitados</li>
+                                            <li>Anúncios ilimitados</li>
+                                            <li>Contratos ilimitados</li>
+                                            <li>Spots ilimitados</li>
+                                            <li>Taxa de transação baixa</li>
                                         </ul>
                                     </div>
 

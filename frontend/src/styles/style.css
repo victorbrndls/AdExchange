@@ -38,7 +38,7 @@ body.auth #header {
     padding: 0 15px;
 }
 
-.ae-logo > img {
+.ae-logo--img {
     height: 70px;
 }
 
@@ -50,7 +50,12 @@ body.auth #header {
 .ae-navbar {
     display: flex;
     justify-content: end;
+}
+
+.ae-menu {
     flex: 1;
+    display: flex;
+    margin-left: 30px;
 }
 
 .ae-navbar--link {
@@ -61,12 +66,17 @@ body.auth #header {
     transition: all 0.4s;
 }
 
+.ae-navbar--page {
+    margin: auto 15px;
+    transition: all 0.4s;
+}
+
 .ae-navbar--link:hover {
     background-color: var(--ad-primary);
 }
 
-.ae-navbar--link > a {
-    font-family: Raleway, serif;
+.ae-navbar--link > a, .ae-navbar--page a {
+    font-family: var(--home-font-secondary);
     font-size: 20px;
     color: var(--ad-primary);
     text-decoration: none;
@@ -74,6 +84,13 @@ body.auth #header {
 
 .ae-navbar--link:hover > a {
     color: white;
+}
+
+.ae-navbar--page a{
+    font-family: var(--home-font-secondary);
+    font-size: 14px;
+    color: var(--ad-primary);
+    text-decoration: none;
 }
 
 .ae-home-banner {
@@ -941,7 +958,6 @@ body.auth #header {
     cursor: pointer;
 }
 
-
 .dashboard-add__blocking-container {
     position: relative;
     margin: 0 10px 0 0;
@@ -1066,7 +1082,6 @@ body.auth #header {
     background-color: black;
     color: orange;
 }
-
 
 .ae-font-primary {
     font-family: Raleway, serif;
@@ -1496,12 +1511,8 @@ body.auth #header {
     background-color: var(--ad-primary);
 }
 
-.ae-home-hero-trial--button-container{
+.ae-home-hero-trial--button-container {
     text-align: right;
-}
-
-.ae-home-footer {
-
 }
 
 /*
@@ -1542,12 +1553,12 @@ body.auth #header {
         text-align: center;
     }
 
-    .ae-home-hero-trial--container{
+    .ae-home-hero-trial--container {
         bottom: auto;
         top: 90%;
     }
 
-    .ae-home-features{
+    .ae-home-features {
         margin-top: calc(450px + -28%);;
     }
 }
@@ -1588,20 +1599,24 @@ body.auth #header {
         order: 0;
     }
 
-    .ae-home-hero--image{
+    .ae-home-hero--image {
         width: 100%;
     }
 
-    .ae-home-how_to__card--image{
+    .ae-home-how_to__card--image {
         margin-bottom: 30px;
     }
 
-    .ae-home-how_to__card:nth-child(2n+1) .ae-home-how_to__card--image{
+    .ae-home-how_to__card:nth-child(2n+1) .ae-home-how_to__card--image {
         order: 0;
     }
 
-    .ae-home-how_to__card--text{
+    .ae-home-how_to__card--text {
         text-align: center;
+    }
+
+    .ae-menu{
+        display: none;
     }
 
 }
@@ -1677,16 +1692,16 @@ body.auth #header {
         content: none;
     }
 
-    .ae-home-hero--trial{
+    .ae-home-hero--trial {
         height: auto;
         text-align: center;
     }
 
-    .ae-home-hero-trial--message{
+    .ae-home-hero-trial--message {
         margin-bottom: 20px;
     }
 
-    .ae-home-hero-trial--button-container{
+    .ae-home-hero-trial--button-container {
         text-align: center;
         margin-bottom: 10px;
     }
