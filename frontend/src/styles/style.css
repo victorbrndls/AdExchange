@@ -1269,7 +1269,7 @@ body.auth #header {
 }
 
 .ae-home-hero__main-text {
-    width: 350px;
+    max-width: 400px;
     font-size: 51px;
     line-height: 60px;
 }
@@ -1437,7 +1437,7 @@ body.auth #header {
     transform: rotateZ(7deg);
 }
 
-.ae-home-prices{
+.ae-home-prices {
     margin-bottom: 150px;
 }
 
@@ -1451,8 +1451,8 @@ body.auth #header {
     transition: all 0.2s;
 }
 
-.ae-home-prices-card:hover{
- transform: translateY(-10px);
+.ae-home-prices-card:hover {
+    transform: translateY(-10px);
 }
 
 .ae-home-prices-card--header {
@@ -1463,6 +1463,7 @@ body.auth #header {
 }
 
 .ae-home-prices-card--price {
+    color: var(--ad-primary);
     font-weight: bold;
 }
 
@@ -1470,13 +1471,13 @@ body.auth #header {
     font-size: 60px;
 }
 
-.ae-home-prices-card--features{
+.ae-home-prices-card--features {
     color: #53546f;
     font-size: 20px;
     line-height: 1.8;
 }
 
-.ae-home-prices-card--cta{
+.ae-home-prices-card--cta {
     font-family: var(--home-font-primary);
     font-size: 27px;
     color: var(--ad-primary);
@@ -1487,10 +1488,14 @@ body.auth #header {
     transition: all 0.4s;
 }
 
-.ae-home-prices-card--cta:hover{
+.ae-home-prices-card--cta:hover {
     text-decoration: none;
     color: white;
     background-color: var(--ad-primary);
+}
+
+.ae-home-hero-trial--button-container{
+    text-align: right;
 }
 
 .ae-home-footer {
@@ -1530,6 +1535,19 @@ body.auth #header {
     .topbar-item-bell {
         display: none;
     }
+
+    .ae-home-hero__main-text {
+        text-align: center;
+    }
+
+    .ae-home-hero-trial--container{
+        bottom: auto;
+        top: 90%;
+    }
+
+    .ae-home-features{
+        margin-top: calc(450px + -28%);;
+    }
 }
 
 /*Max medium*/
@@ -1567,6 +1585,23 @@ body.auth #header {
     .ae-home-how_to__card--image {
         order: 0;
     }
+
+    .ae-home-hero--image{
+        width: 100%;
+    }
+
+    .ae-home-how_to__card--image{
+        margin-bottom: 30px;
+    }
+
+    .ae-home-how_to__card:nth-child(2n+1) .ae-home-how_to__card--image{
+        order: 0;
+    }
+
+    .ae-home-how_to__card--text{
+        text-align: center;
+    }
+
 }
 
 /*Max Large*/
@@ -1620,6 +1655,46 @@ body.auth #header {
 
     .menu-mobile {
         display: block;
+    }
+
+    .ae-home-hero--left {
+        margin-bottom: 30px;
+    }
+
+    .ae-home-hero__main-text {
+        max-width: none;
+        text-align: center;
+    }
+
+    .ae-home-hero--benefits-list {
+        text-align: center;
+        list-style: circle;
+    }
+
+    .ae-home-hero--benefits-list li::before {
+        content: none;
+    }
+
+    .ae-home-hero--trial{
+        height: auto;
+        text-align: center;
+    }
+
+    .ae-home-hero-trial--message{
+        margin-bottom: 20px;
+    }
+
+    .ae-home-hero-trial--button-container{
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+}
+
+/* Large devices (desktops, less than 1200px) */
+@media (max-width: 1199.98px) {
+    .ae-home-hero-trial--button {
+        font-size: 25px;
     }
 }
 
