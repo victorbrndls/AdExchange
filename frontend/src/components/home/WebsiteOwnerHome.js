@@ -1,7 +1,7 @@
 import {Component} from "preact";
 import {Link} from "preact-router";
 
-export default class Home extends Component {
+export default class WebsiteOwnerHome extends Component {
     constructor(props) {
         super(props);
     }

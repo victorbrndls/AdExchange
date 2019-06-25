@@ -1,10 +1,17 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway');
 @import url('https://fonts.googleapis.com/css?family=Poppins');
+@import url('https://fonts.googleapis.com/css?family=Quicksand:300,400,700');
 
 :root {
     --ad-primary: #2b47bf;
+    --ad-secundary: #206cc8;
     --dashboard-sidebar-width: 250px;
     --header-height: 60px;
+
+    --hero-trial-height: 170px;
+
+    --home-font-primary: Quicksand, serif;
+    --home-font-secondary: Raleway, serif;
 }
 
 html, body {
@@ -51,10 +58,11 @@ body.auth #header {
     border: solid 2px var(--ad-primary);
     border-radius: 6px;
     padding: 2px 13px;
+    transition: all 0.4s;
 }
 
 .ae-navbar--link:hover {
-    box-shadow: 0 0 2px #294ec1;
+    background-color: var(--ad-primary);
 }
 
 .ae-navbar--link > a {
@@ -62,6 +70,10 @@ body.auth #header {
     font-size: 20px;
     color: var(--ad-primary);
     text-decoration: none;
+}
+
+.ae-navbar--link:hover > a {
+    color: white;
 }
 
 .ae-home-banner {
@@ -252,7 +264,8 @@ body.auth #header {
 }
 
 .ae-footer-info > a {
-    color: black;
+    color: #282828;
+    font-family: var(--home-font-primary);
 }
 
 .ae-footer-info > a:hover {
@@ -912,11 +925,11 @@ body.auth #header {
     background-color: orangered;
 }
 
-.dashboard__account-balance{
+.dashboard__account-balance {
     display: flex;
 }
 
-.dashboard__account-balance__icon{
+.dashboard__account-balance__icon {
     padding: 0;
     width: 28px;
     height: 28px;
@@ -927,7 +940,6 @@ body.auth #header {
     background-color: #245fc5;
     cursor: pointer;
 }
-
 
 
 .dashboard-add__blocking-container {
@@ -1055,11 +1067,12 @@ body.auth #header {
     color: orange;
 }
 
-.ae-font-primary{
+
+.ae-font-primary {
     font-family: Raleway, serif;
 }
 
-.ae-font-secundary{
+.ae-font-secundary {
     font-family: Poppins, serif;
 }
 
@@ -1188,7 +1201,7 @@ body.auth #header {
     text-align: center;
 }
 
-.websites-filter-container.filter--active{
+.websites-filter-container.filter--active {
     border-radius: 5px 5px 0 0;
 }
 
@@ -1196,7 +1209,7 @@ body.auth #header {
     position: absolute;
     background-color: white;
     width: 100%;
-    height: 0px;
+    height: 0;
     overflow-y: hidden;
 }
 
@@ -1224,16 +1237,16 @@ body.auth #header {
     transform: rotate(45deg);
 }
 
-.websites-filter--item.filter--active::after{
+.websites-filter--item.filter--active::after {
     background-color: #245dc4;
     border: none;
 }
 
-.websites-filter-dropdown--list{
+.websites-filter-dropdown--list {
     padding-bottom: 7px;
 }
 
-.websites-filter__command{
+.websites-filter__command {
     font-family: Raleway, serif;
     font-weight: bold;
     padding: 5px 7px;
@@ -1241,9 +1254,254 @@ body.auth #header {
     cursor: pointer;
 }
 
-.website-filter{
+.website-filter {
     background-color: #4068ff;
     margin-left: 20px;
+}
+
+.ae-home-hero {
+    position: relative;
+    padding: 90px 0 0 0;
+    background: linear-gradient(130deg, var(--ad-primary), #0cabd7);
+}
+
+.ae-home-hero__text {
+    color: white;
+    font-family: Quicksand, serif;
+}
+
+.ae-home-hero__main-text {
+    max-width: 400px;
+    font-size: 51px;
+    line-height: 60px;
+}
+
+.ae-home-hero__secondary-text {
+    font-size: 20px;
+    line-height: 2;
+}
+
+.list-diamond {
+    position: relative;
+}
+
+.list-diamond::before {
+    content: '';
+    position: absolute;
+    transform: rotateZ(45deg);
+    width: 5px;
+    height: 5px;
+    background-color: white;
+    top: calc(50% - 2.5px);
+    left: -15px;
+}
+
+.ae-home-hero--bg {
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+.ae-home-hero--trial {
+    background-color: white;
+    height: var(--hero-trial-height);
+    padding: 12px 25px;
+}
+
+.ae-home-hero--trial-header {
+    font-family: Quicksand, serif;
+    font-weight: bold;
+    color: #454545;
+    font-size: 30px;
+}
+
+.ae-home-hero-trial--message {
+    font-family: Quicksand, serif;
+    color: #656565;
+}
+
+.ae-home-hero-trial--button {
+    background-color: #2756c3;
+    color: white;
+    padding: 7px 14px;
+    border-radius: 40px;
+    font-family: Quicksand, serif;
+    font-size: 29px;
+    border: solid 2px transparent;
+
+    transition: all 0.4s;
+}
+
+.ae-home-hero-trial--button:hover {
+    text-decoration: none;
+    color: var(--ad-primary);
+    background-color: white;
+    border: solid 2px var(--ad-primary);
+}
+
+.ae-home-hero-trial--container {
+    justify-content: center;
+    position: absolute;
+    width: 100%;
+    bottom: -85px;
+}
+
+.ae-home-hero--container {
+    position: relative;
+    padding-bottom: calc(90px + (var(--hero-trial-height) / 2));
+}
+
+.ae-home-features {
+    margin-top: calc((var(--hero-trial-height) / 2) + 110px);
+}
+
+.ae-home-features-card {
+    box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, 0.21);
+    padding: 13px 21px;
+    margin-bottom: 30px;
+    background-color: white;
+
+    transition: all 0.3s;
+}
+
+.ae-home-features-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, 0.32);
+}
+
+.ae-home-features-card--image {
+    width: 29px;
+    height: 29px;
+}
+
+.ae-home-features-card--header {
+    font-family: Raleway, serif;
+    font-size: 20px;
+    padding-left: 0;
+}
+
+.ae-home-features-card--message {
+    color: #656565;
+    font-family: Quicksand, serif;
+}
+
+.ae-home-how_to {
+    margin-top: 90px;
+}
+
+.ae-home--section-header {
+    font-family: var(--home-font-primary);
+    font-size: 48px;
+    color: #494a67;
+    font-weight: bold;
+    text-align: center;
+}
+
+.ae-home-how_to__card--header {
+    font-family: var(--home-font-secondary);
+    font-size: 26px;
+    margin-bottom: 13px;
+    color: #464646;
+}
+
+.ae-home-how_to__card--message {
+    color: #828397;
+    font-family: var(--home-font-secondary);
+    font-size: 17px;
+    line-height: 33px;
+}
+
+.ae-home-how_to__card--image img {
+    width: 100%;
+}
+
+.ae-home-how_to__card {
+    margin-bottom: 100px;
+}
+
+.ae-home-how_to__card:nth-child(odd) .ae-home-how_to__card--image {
+    order: 1;
+}
+
+.image-bg-rotation::before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 3px;
+    left: 0;
+    background-color: #f0f0f0;
+    transform: rotateZ(-7deg);
+    border-radius: 12px;
+}
+
+.ae-home-how_to__card:nth-child(odd) .image-bg-rotation::before {
+    transform: rotateZ(7deg);
+}
+
+.ae-home-prices {
+    margin-bottom: 150px;
+}
+
+.ae-home-prices-card {
+    text-align: center;
+    font-family: var(--home-font-primary);
+    padding: 15px 14px;
+    background-color: white;
+    border: 1px solid #d1e0ee;
+
+    transition: all 0.2s;
+}
+
+.ae-home-prices-card:hover {
+    transform: translateY(-10px);
+}
+
+.ae-home-prices-card--header {
+    color: #53546f;
+    font-family: var(--home-font-secondary);
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.ae-home-prices-card--price {
+    color: var(--ad-primary);
+    font-weight: bold;
+}
+
+.ae-home-prices-card--price--number {
+    font-size: 60px;
+}
+
+.ae-home-prices-card--features {
+    color: #53546f;
+    font-size: 20px;
+    line-height: 1.8;
+}
+
+.ae-home-prices-card--cta {
+    font-family: var(--home-font-primary);
+    font-size: 27px;
+    color: var(--ad-primary);
+    border: solid 2px var(--ad-primary);
+    padding: 6px 11px;
+    border-radius: 40px;
+
+    transition: all 0.4s;
+}
+
+.ae-home-prices-card--cta:hover {
+    text-decoration: none;
+    color: white;
+    background-color: var(--ad-primary);
+}
+
+.ae-home-hero-trial--button-container{
+    text-align: right;
+}
+
+.ae-home-footer {
+
 }
 
 /*
@@ -1279,6 +1537,19 @@ body.auth #header {
     .topbar-item-bell {
         display: none;
     }
+
+    .ae-home-hero__main-text {
+        text-align: center;
+    }
+
+    .ae-home-hero-trial--container{
+        bottom: auto;
+        top: 90%;
+    }
+
+    .ae-home-features{
+        margin-top: calc(450px + -28%);;
+    }
 }
 
 /*Max medium*/
@@ -1311,6 +1582,26 @@ body.auth #header {
     .control-panel-container {
         max-width: 730px;
         margin: 0 7px;
+    }
+
+    .ae-home-how_to__card--image {
+        order: 0;
+    }
+
+    .ae-home-hero--image{
+        width: 100%;
+    }
+
+    .ae-home-how_to__card--image{
+        margin-bottom: 30px;
+    }
+
+    .ae-home-how_to__card:nth-child(2n+1) .ae-home-how_to__card--image{
+        order: 0;
+    }
+
+    .ae-home-how_to__card--text{
+        text-align: center;
     }
 
 }
@@ -1366,6 +1657,46 @@ body.auth #header {
 
     .menu-mobile {
         display: block;
+    }
+
+    .ae-home-hero--left {
+        margin-bottom: 30px;
+    }
+
+    .ae-home-hero__main-text {
+        max-width: none;
+        text-align: center;
+    }
+
+    .ae-home-hero--benefits-list {
+        text-align: center;
+        list-style: circle;
+    }
+
+    .ae-home-hero--benefits-list li::before {
+        content: none;
+    }
+
+    .ae-home-hero--trial{
+        height: auto;
+        text-align: center;
+    }
+
+    .ae-home-hero-trial--message{
+        margin-bottom: 20px;
+    }
+
+    .ae-home-hero-trial--button-container{
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+}
+
+/* Large devices (desktops, less than 1200px) */
+@media (max-width: 1199.98px) {
+    .ae-home-hero-trial--button {
+        font-size: 25px;
     }
 }
 
