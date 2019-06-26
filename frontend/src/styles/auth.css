@@ -16,6 +16,12 @@
     font-size: 30px;
 }
 
+.ae-auth__header--success{
+    color: green;
+    font-family: var(--home-font-primary);
+    font-weight: 300;
+}
+
 .ae-auth--input {
     position: relative;
     border: solid 2px #d9d9d9;

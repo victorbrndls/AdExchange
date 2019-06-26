@@ -12,6 +12,7 @@ export default class Auth extends Component {
 
         this.state = {
             mode: 'REGISTER',
+            name: "",
             email: "",
             password: "",
             newAccount: false,
@@ -79,7 +80,7 @@ export default class Auth extends Component {
         mode === 'LOGIN' ? this.login() : this.createAccount();
     }
 
-    render({url}, {mode, email, password, error, newAccount}) {
+    render({url}, {mode, name, email, password, error, newAccount}) {
         if (auth.isUserAuthenticated())
             if (UrlUtils.include('/logout')) {
                 logout();
@@ -94,24 +95,48 @@ export default class Auth extends Component {
                     <div class="row justify-content-center">
                         <div class="col-12 col-sm-10 d-flex justify-content-center">
                             <div class="ae-auth-container shadow">
-                                <div class="ae-auth__header mb-5">
-                                    {mode === 'REGISTER' ? 'Criar Conta' : "Login"}
+                                <div class="mb-5">
+                                    <div class="ae-auth__header">
+                                        {mode === 'REGISTER' ? 'Criar Conta' : "Login"}
+                                    </div>
+
+                                    {newAccount && (
+                                        <span class="ae-auth__header--success mt-2">Conta criada com sucesso. Utilize-a para entrar em seu dashboard</span>
+                                    )}
                                 </div>
 
                                 <div class="mb-4">
                                     {mode === 'REGISTER' && (
                                         <div class="ae-auth--input-container" data-title="Nome">
-                                            <input class="ae-auth--input"/>
-                                            <small class="ae-auth--input-msg form-text text-danger">We'll never share your email with anyone else.</small>
+                                            <input class="ae-auth--input" value={name}
+                                                   onChange={(e) => this.setState({name: e.target.value})}/>
+                                            {error.name && (
+                                                <small
+                                                    class="ae-auth--input-msg form-text text-danger">{error.name}
+                                                </small>
+                                            )}
                                         </div>
                                     )}
 
                                     <div class="ae-auth--input-container" data-title="Email">
-                                        <input class="ae-auth--input"/>
+                                        <input class="ae-auth--input" value={email}
+                                               onChange={(e) => this.setState({email: e.target.value})}/>
+                                        {error.email && (
+                                            <small
+                                                class="ae-auth--input-msg form-text text-danger">{error.email}
+                                            </small>
+                                        )}
                                     </div>
 
                                     <div class="ae-auth--input-container" data-title="Senha">
-                                        <input class="ae-auth--input" type="password"/>
+                                        <input class="ae-auth--input" type="password" value={password}
+                                               onChange={(e) => this.setState({password: e.target.value})}
+                                               onKeyUp={this.handlePasswordKeyUp.bind(this)}/>
+                                        {error.password && (
+                                            <small
+                                                class="ae-auth--input-msg form-text text-danger">{error.password}
+                                            </small>
+                                        )}
                                     </div>
 
                                     {mode === 'LOGIN' && (
@@ -123,7 +148,7 @@ export default class Auth extends Component {
                                     )}
 
                                     <div>
-                                        <div class="ae-auth--confirm-btn">
+                                        <div class="ae-auth--confirm-btn" onClick={this.submit.bind(this)}>
                                             {mode === 'REGISTER' ? 'CRIAR' : "ENTRAR"}
                                         </div>
                                     </div>
@@ -149,7 +174,6 @@ export default class Auth extends Component {
                                         </div>
                                     </div>
                                 )}
-
 
                                 {mode === 'LOGIN' && (
                                     <div>
@@ -183,72 +207,4 @@ export default class Auth extends Component {
             </div>
         )
     }
-
-    render222222222222222222222222222222222222({url}, {mode, email, password, error, newAccount}) {
-        if (auth.isUserAuthenticated())
-            if (UrlUtils.include('/logout')) {
-                logout();
-                route('/');
-            }
-
-        return (
-            <div class="auth-background">
-                <div>
-                    <div id="auth">
-                        <div class="auth-sign-container">
-                            <div class={`auth-sign ${mode === 'LOGIN' ? 'active' : ''}`}
-                                 style="border-radius: .25rem 0 0 0" onClick={() => {
-                                this.setState({mode: 'LOGIN'});
-                            }}>Entrar
-                            </div>
-                            <div class={`auth-sign ${mode === 'REGISTER' ? 'active' : ''}`}
-                                 style="border-radius: 0 .25rem 0 0" onClick={() => {
-                                this.setState({mode: 'REGISTER'});
-                            }}>Criar
-                            </div>
-                        </div>
-                        <div>
-                            <div style="margin: 22px;">
-                                <div class="input-group mb-4">
-                                    <div class="auth-input-container">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">Email</span>
-                                        </div>
-                                        <input type="text" class="form-control" value={email}
-                                               onChange={(e) => this.setState({email: e.target.value})}/>
-                                    </div>
-                                    {error.email && (
-                                        <small class="mt-1">{error.email}</small>
-                                    )}
-                                </div>
-                                <div class="input-group mb-4">
-                                    <div class="auth-input-container">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">Senha</span>
-                                        </div>
-                                        <input type="password" class="form-control" value={password}
-                                               onChange={(e) => this.setState({password: e.target.value})}
-                                               onKeyUp={this.handlePasswordKeyUp.bind(this)}/>
-                                    </div>
-                                    {error.password && (
-                                        <small class="mt-1">{error.password}</small>
-                                    )}
-                                </div>
-                            </div>
-
-                            <button id="authSubmit" class="btn btn-primary"
-                                    onClick={this.submit.bind(this)}>
-                                Enviar
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                {newAccount && (
-                    <div class="auth--new-account">Agora você pode utilizar a conta que você acabou de criar para
-                        entrar</div>
-                )}
-            </div>
-        )
-    }
-
 }
