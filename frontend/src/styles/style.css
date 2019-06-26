@@ -359,12 +359,26 @@ body.auth #header {
 .dashboard__sidebar-bar {
     height: calc(100% - var(--header-height));
     box-shadow: 7px 0 15px 0 rgba(69, 90, 100, 0.09);
+    overflow-x: hidden;
 }
 
 .dashboard__main-content {
     height: calc(100% - var(--header-height));
     background-color: #eff3f6;
     overflow-y: auto;
+}
+
+.dashboard__sidebar--item{
+    transition: all 0.2s;
+}
+
+.dashboard__sidebar--item:hover {
+    box-shadow: 0 0 1rem rgba(0, 0, 0, .15);
+    transform: scale(1.05);
+}
+
+.dashboard__sidebar--item > a{
+    text-decoration: none;
 }
 
 .dashboard__sidebar--item > a.active .dashboard__sidebar--item-container {
@@ -1033,9 +1047,10 @@ body.auth #header {
 }
 
 .websites-account-header {
-    font-family: Raleway, serif;
+    font-family: Quicksand, serif;
     font-size: 30px;
-    border-bottom: solid 2px #1768c8;
+    color: #464646;
+    font-weight: 600;
 }
 
 .add-balance-card {
