@@ -138,12 +138,20 @@ export default class Auth extends Component {
                                         )}
                                     </div>
 
-                                    {mode === 'LOGIN' && (
+                                    {/*{mode === 'LOGIN' && (
                                         <div class="ae-auth--forgot-password-container">
                                             <a href="/auth" class="ae-auth--forgot-password no-decoration">
                                                 Esqueceu sua Senha?
                                             </a>
                                         </div>
+                                    )}*/}
+
+                                    {mode === 'REGISTER' && (
+                                    <div class="text-center mb-3" style={{lineHeight: 0.7}}>
+                                        <span class="text-muted" style={{fontSize: 11}}>
+                                            Ao criar a conta, você concorda com os Termos de Serviço do Adnamic
+                                        </span>
+                                    </div>
                                     )}
 
                                     <div>
