@@ -89,7 +89,7 @@ export default class Auth extends Component {
         return (
             <div class="ae-auth">
                 <div class="container">
-                    <div class="row d-none d-md-block" style={{height: 100}}/>
+                    <div class="row" style={{height: 100}}/>
 
                     <div class="row justify-content-center">
                         <div class="col-12 col-sm-10 d-flex justify-content-center">
@@ -136,19 +136,21 @@ export default class Auth extends Component {
                                         </div>
                                     </div>
 
-                                    <div class="ae-auth--sign-in-card">
+                                    {/*<div class="ae-auth--sign-in-card">
                                         <div class="ae-auth--sign-in-card__image-container">
                                             <SvgGoogle clazz="ae-auth--sign-in-card__image"/>
                                         </div>
                                         <div class="ae-auth--sign-in-card__text">
                                             Utilize sua conta Google
                                         </div>
-                                    </div>
+                                    </div>*/}
                                 </div>
 
                             </div>
                         </div>
                     </div>
+
+                    <div class="row" style={{height: 100}}/>
                 </div>
             </div>
         )

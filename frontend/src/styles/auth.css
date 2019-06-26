@@ -1,6 +1,6 @@
 .ae-auth {
-    height: 100%;
-    background: linear-gradient(0deg, #0cabd7cc, #0cabd7);
+    min-height: 100%;
+    background: linear-gradient(0deg, #26d0ffcc, #0cabd7);
 }
 
 .ae-auth-container {
@@ -55,8 +55,10 @@
 }
 
 .ae-auth--confirm-btn {
+    position: relative;
+    z-index: 1;
     background-color: #00a0cd;
-    padding: 15px 8px;
+    padding: 13px 8px;
     border-radius: 6px;
     cursor: pointer;
     color: white;
@@ -64,51 +66,98 @@
     font-weight: bold;
     text-align: center;
     font-size: 22px;
+    border: solid 2px transparent;
+    overflow: hidden;
+    transition: all 0.12s;
 }
 
-.ae-auth-divider--text{
+.ae-auth--confirm-btn::before{
+    content: '';
+    z-index: -1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: white;
+    transform-origin: center bottom;
+    transform: scaleY(0);
+    transition: transform 0.25s ease-in-out;
+}
+
+.ae-auth--confirm-btn:hover{
+    color: #00a0cd;
+    border: solid 2px #00a0cd;
+}
+
+.ae-auth--confirm-btn:hover::before {
+    transform-origin: center top;
+    transform: scaleY(1);
+}
+
+.ae-auth-divider--text {
     padding: 0 15px;
     color: #a5abb1;
 }
 
-.ae-auth-divider--line{
+.ae-auth-divider--line {
     width: 40%;
     border-bottom: solid 1px #d9d9d9;
     display: inline-block;
     vertical-align: middle;
 }
 
-.ae-auth--sign-in-card{
+.ae-auth--sign-in-card {
     display: flex;
     margin-bottom: 14px;
     cursor: pointer;
 }
 
-.ae-auth--sign-in-card:hover .ae-auth--sign-in-card__image-container{
-    background-color: #00a0cd;
+.ae-auth--sign-in-card:last-of-type {
+    margin-bottom: 0;
 }
 
-.ae-auth--sign-in-card:hover .ae-auth--sign-in-card__image{
+.ae-auth--sign-in-card:hover .ae-auth--sign-in-card__image {
     fill: white;
 }
 
-.ae-auth--sign-in-card__image-container{
+.ae-auth--sign-in-card__image-container {
+    position: relative;
     border: solid 2px #00a0cd;
     width: 52px;
-    height: 53px;
+    display: flex;
     border-radius: 4px 0 0 4px;
     padding: 12px;
-
-    transition: all 0.4s;
+    overflow: hidden;
 }
 
-.ae-auth--sign-in-card__image{
+.ae-auth--sign-in-card__image-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #00a0cd;
+
+    transform-origin: center right;
+    transform: scaleX(0);
+    transition: transform 0.30s ease-in-out;
+}
+
+.ae-auth--sign-in-card:hover .ae-auth--sign-in-card__image-container::before {
+    transform-origin: center left;
+    transform: scaleX(1);
+}
+
+.ae-auth--sign-in-card__image {
     fill: #00a0cd;
+    z-index: 1;
 
     transition: all 0.2s;
 }
 
-.ae-auth--sign-in-card__text{
+.ae-auth--sign-in-card__text {
     flex: 1;
     border: solid 2px #00a0cd;
     border-left: none;
@@ -119,4 +168,14 @@
     color: #00a0cd;
     font-size: 22px;
     font-family: var(--home-font-primary);
+}
+
+@media (max-width: 575.98px) {
+    .ae-auth__header {
+        font-size: 23px;
+    }
+
+    .ae-auth--sign-in-card__text {
+        font-size: 19px;
+    }
 }
