@@ -3,7 +3,7 @@ import {Router} from 'preact-router'
 import asyncComponent from "./utils/AsyncComponent";
 
 import AdvertiserHome from "./home/AdvertiserHome";
-import Auth from "./Auth";
+import Auth from "./auth/Auth";
 import WebsiteOwnerHome from "./home/WebsiteOwnerHome";
 
 const Dashboard = asyncComponent(() =>

@@ -1,7 +1,8 @@
 import {Component} from "preact";
 import {route} from 'preact-router';
-import {login, logout, createAccount, auth} from "../auth";
-import UrlUtils from "./utils/UrlUtils";
+import {login, logout, createAccount, auth} from "../../auth";
+import UrlUtils from "../utils/UrlUtils";
+import {SvgGoogle, SvgUser} from "../utils/SvgCollection";
 
 const ENTER_KEY_CODE = 13;
 
@@ -86,6 +87,81 @@ export default class Auth extends Component {
             }
 
         return (
+            <div class="ae-auth">
+                <div class="container">
+                    <div class="row d-none d-md-block" style={{height: 100}}/>
+
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-sm-10 d-flex justify-content-center">
+                            <div class="ae-auth-container shadow">
+                                <div class="ae-auth__header mb-5">
+                                    Login to your account
+                                </div>
+
+                                <div class="mb-4">
+                                    <div class="ae-auth--input-container" data-title="Email">
+                                        <input class="ae-auth--input"/>
+                                    </div>
+
+                                    <div class="ae-auth--input-container" data-title="Senha">
+                                        <input class="ae-auth--input"/>
+                                    </div>
+
+                                    <div class="ae-auth--forgot-password-container">
+                                        <a href="/auth" class="ae-auth--forgot-password no-decoration">
+                                            Esqueceu sua Senha?
+                                        </a>
+                                    </div>
+
+                                    <div>
+                                        <div class="ae-auth--confirm-btn">
+                                            LOGIN
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="ae-auth-divider my-4">
+                                    <div class="ae-auth-divider--line"/>
+                                    <span class="ae-auth-divider--text">OU</span>
+                                    <div class="ae-auth-divider--line"/>
+                                </div>
+
+                                <div>
+                                    <div class="ae-auth--sign-in-card">
+                                        <div class="ae-auth--sign-in-card__image-container">
+                                            <SvgUser clazz="ae-auth--sign-in-card__image"/>
+                                        </div>
+                                        <div class="ae-auth--sign-in-card__text">
+                                            Crie uma Conta
+                                        </div>
+                                    </div>
+
+                                    <div class="ae-auth--sign-in-card">
+                                        <div class="ae-auth--sign-in-card__image-container">
+                                            <SvgGoogle clazz="ae-auth--sign-in-card__image"/>
+                                        </div>
+                                        <div class="ae-auth--sign-in-card__text">
+                                            Utilize sua conta Google
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+    render222222222222222222222222222222222222({url}, {mode, email, password, error, newAccount}) {
+        if (auth.isUserAuthenticated())
+            if (UrlUtils.include('/logout')) {
+                logout();
+                route('/');
+            }
+
+        return (
             <div class="auth-background">
                 <div>
                     <div id="auth">
@@ -144,4 +220,5 @@ export default class Auth extends Component {
             </div>
         )
     }
+
 }

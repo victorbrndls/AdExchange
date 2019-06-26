@@ -1,0 +1,122 @@
+.ae-auth {
+    height: 100%;
+    background: linear-gradient(0deg, #0cabd7cc, #0cabd7);
+}
+
+.ae-auth-container {
+    background-color: white;
+    padding: 30px;
+    width: 432px;
+    border-radius: 4px;
+}
+
+.ae-auth__header {
+    font-family: var(--home-font-secondary);
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.ae-auth--input {
+    position: relative;
+    border: solid 2px #d9d9d9;
+    padding: 10px 20px;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.ae-auth--input-container {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.ae-auth--input-container::before {
+    position: absolute;
+    content: attr(data-title);
+    z-index: 1;
+    color: #00a0cc;
+    top: -12px;
+    left: 19px;
+    font-size: 17px;
+    background-color: white;
+    padding: 0 5px;
+    font-family: var(--home-font-secondary);
+}
+
+.ae-auth--forgot-password-container {
+    text-align: right;
+    margin-top: -14px;
+    margin-bottom: 25px;
+}
+
+.ae-auth--forgot-password {
+    font-family: var(--home-font-secondary);
+    color: #00a0cd;
+    font-weight: bold;
+}
+
+.ae-auth--confirm-btn {
+    background-color: #00a0cd;
+    padding: 15px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: white;
+    font-family: var(--home-font-primary);
+    font-weight: bold;
+    text-align: center;
+    font-size: 22px;
+}
+
+.ae-auth-divider--text{
+    padding: 0 15px;
+    color: #a5abb1;
+}
+
+.ae-auth-divider--line{
+    width: 40%;
+    border-bottom: solid 1px #d9d9d9;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.ae-auth--sign-in-card{
+    display: flex;
+    margin-bottom: 14px;
+    cursor: pointer;
+}
+
+.ae-auth--sign-in-card:hover .ae-auth--sign-in-card__image-container{
+    background-color: #00a0cd;
+}
+
+.ae-auth--sign-in-card:hover .ae-auth--sign-in-card__image{
+    fill: white;
+}
+
+.ae-auth--sign-in-card__image-container{
+    border: solid 2px #00a0cd;
+    width: 52px;
+    height: 53px;
+    border-radius: 4px 0 0 4px;
+    padding: 12px;
+
+    transition: all 0.4s;
+}
+
+.ae-auth--sign-in-card__image{
+    fill: #00a0cd;
+
+    transition: all 0.2s;
+}
+
+.ae-auth--sign-in-card__text{
+    flex: 1;
+    border: solid 2px #00a0cd;
+    border-left: none;
+    border-radius: 0 4px 4px 0;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    color: #00a0cd;
+    font-size: 22px;
+    font-family: var(--home-font-primary);
+}
