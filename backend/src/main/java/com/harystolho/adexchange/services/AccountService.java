@@ -1,5 +1,7 @@
 package com.harystolho.adexchange.services;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -43,23 +45,17 @@ public class AccountService {
 	 * @param password
 	 * @return
 	 */
-	public ServiceResponse<Account> createOrUpdateAccount(String accountId, String email, String password) {
+	public ServiceResponse<Account> createOrUpdateAccount(String accountId, String name, String email,
+			String password) {
 		email = sanitizeEmail(email);
 
-		if (!verifyEmail(email))
-			return ServiceResponse.error(ServiceResponseType.INVALID_EMAIL);
+		ServiceResponseType response = verifyFields(name, email, password);
+		if (response != ServiceResponseType.OK)
+			return ServiceResponse.error(response);
 
-		if (!verifyPassword(password))
-			return ServiceResponse.error(ServiceResponseType.INVALID_PASSWORD);
+		Account acc = Optional.ofNullable(accountRepository.getById(accountId)).orElse(new Account());
 
-		if (emailExists(email))
-			return ServiceResponse.error(ServiceResponseType.EMAIL_ALREADY_EXISTS);
-
-		Account acc = accountRepository.getById(accountId); // Get account to update
-
-		if (acc == null) // If account is null
-			acc = new Account(); // Create a new account
-
+		acc.setFullName(name.trim());
 		acc.setEmail(email);
 		acc.setPassword(PasswordSecurity.encryptPassword(password));
 
@@ -99,10 +95,37 @@ public class AccountService {
 		if (acc == null)
 			return ServiceResponse.error(ServiceResponseType.INVALID_ACCOUNT_ID);
 
-		if (!StringUtils.hasText(name)) // TODO limit name size
+		if (!verifyAccountName(name))
 			return ServiceResponse.error(ServiceResponseType.INVALID_ACCOUNT_NAME);
 
-		acc.setFullName(name);
+		acc.setFullName(name.trim());
+		accountRepository.save(acc);
+
+		return ServiceResponse.ok(null);
+	}
+
+	/**
+	 * Updates the account email and password
+	 * 
+	 * @param accountId
+	 * @param name
+	 * @return
+	 */
+	public ServiceResponse<Account> updateAccountAuth(String accountId, String email, String password) {
+		Account acc = accountRepository.getById(accountId);
+
+		if (acc == null)
+			return ServiceResponse.error(ServiceResponseType.INVALID_ACCOUNT_ID);
+
+		if (!verifyEmail(email))
+			return ServiceResponse.error(ServiceResponseType.INVALID_EMAIL);
+
+		if (!verifyPassword(password))
+			return ServiceResponse.error(ServiceResponseType.INVALID_PASSWORD);
+
+		acc.setEmail(email);
+		acc.setPassword(PasswordSecurity.encryptPassword(password));
+
 		accountRepository.save(acc);
 
 		return ServiceResponse.ok(null);
@@ -116,37 +139,6 @@ public class AccountService {
 		} else {
 			return ServiceResponse.error(ServiceResponseType.INVALID_ACCOUNT_ID);
 		}
-	}
-
-	/**
-	 * Standardizes the email. Make it lower case so it's easier to find accounts by
-	 * email on the database
-	 * 
-	 * @param email
-	 * @return
-	 */
-	private String sanitizeEmail(String email) {
-		return email.trim().toLowerCase();
-	}
-
-	/**
-	 * @param email
-	 * @return true if the email is valid
-	 */
-	private boolean verifyEmail(String email) {
-		return email.matches("([\\w.]+@[\\w.]+)");
-	}
-
-	/**
-	 * @param email
-	 * @return true if the password is valid
-	 */
-	private boolean verifyPassword(String password) {
-		return password.length() >= 5;
-	}
-
-	private boolean emailExists(String email) {
-		return accountRepository.getByEmail(email) != null;
 	}
 
 	/**
@@ -295,6 +287,57 @@ public class AccountService {
 		Balance balance = acc.getBalance();
 
 		return balance.canSubtract(value); // If the balance can subtract another value it's because it's greater
+	}
+
+	/**
+	 * Standardizes the email. Make it lower case so it's easier to find accounts by
+	 * email on the database
+	 * 
+	 * @param email
+	 * @return
+	 */
+	private String sanitizeEmail(String email) {
+		return email.trim().toLowerCase();
+	}
+
+	private ServiceResponseType verifyFields(String name, String email, String password) {
+		if (!verifyAccountName(name))
+			return ServiceResponseType.INVALID_ACCOUNT_NAME;
+
+		if (!verifyEmail(email))
+			return ServiceResponseType.INVALID_EMAIL;
+
+		if (!verifyPassword(password))
+			return ServiceResponseType.INVALID_PASSWORD;
+
+		if (emailExists(email))
+			return ServiceResponseType.EMAIL_ALREADY_EXISTS;
+
+		return ServiceResponseType.OK;
+	}
+
+	private boolean verifyAccountName(String name) {
+		return StringUtils.hasText(name) && name.trim().length() >= 5;
+	}
+
+	/**
+	 * @param email
+	 * @return true if the email is valid
+	 */
+	private boolean verifyEmail(String email) {
+		return email.matches("([\\w.]+@[\\w.]+)");
+	}
+
+	/**
+	 * @param email
+	 * @return true if the password is valid
+	 */
+	private boolean verifyPassword(String password) {
+		return password.length() >= 5;
+	}
+
+	private boolean emailExists(String email) {
+		return accountRepository.getByEmail(email) != null;
 	}
 
 }

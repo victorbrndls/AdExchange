@@ -56,7 +56,7 @@ public class AccountController {
 	@PatchMapping(path = "/api/v1/account", params = "form=auth")
 	public ResponseEntity<Object> updateAccountAuth(@RequestAttribute("ae.accountId") String accountId, String email,
 			String password) {
-		ServiceResponse<Account> response = accountService.createOrUpdateAccount(accountId, email, password);
+		ServiceResponse<Account> response = accountService.updateAccountAuth(accountId, email, password);
 
 		switch (response.getErrorType()) {
 		case OK:

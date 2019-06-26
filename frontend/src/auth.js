@@ -26,8 +26,9 @@ function login(email, password) {
     })
 }
 
-function createAccount(email, password) {
+function createAccount(name, email, password) {
     let formData = new FormData();
+    formData.append('name', name);
     formData.append('email', email);
     formData.append('password', password);
 

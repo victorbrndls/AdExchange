@@ -1,6 +1,8 @@
 package com.harystolho.adexchange.services;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +27,7 @@ public class AccountServiceTest {
 	private static AccountService accountService;
 
 	@Mock
-	AccountRepository authRepository;
+	AccountRepository accountRepository;
 	@Mock
 	AuthService tokenService;
 	@Mock
@@ -34,34 +36,81 @@ public class AccountServiceTest {
 	EventDispatcher eventDispatcher;
 
 	@Test
+	public void createAccountWithInvalidName() {
+		ServiceResponse<Account> response = accountService.createOrUpdateAccount(null, "not", "valid@email.com",
+				"some random password");
+		assertEquals(ServiceResponseType.INVALID_ACCOUNT_NAME, response.getErrorType());
+	}
+
+	@Test
+	public void createAccountWithInvalidEmptyName_ShouldFail() {
+		ServiceResponse<Account> response = accountService.createOrUpdateAccount(null, "        ", "valid@email.com",
+				"some random password");
+		assertEquals(ServiceResponseType.INVALID_ACCOUNT_NAME, response.getErrorType());
+	}
+
+	@Test
 	public void createAccountWithInvalidEmail() {
-		ServiceResponse<Account> response = accountService.createOrUpdateAccount(null, "invalid.email",
+		ServiceResponse<Account> response = accountService.createOrUpdateAccount(null, "Valid name", "invalid.email",
 				"some random password");
 		assertEquals(ServiceResponseType.INVALID_EMAIL, response.getErrorType());
 	}
 
 	@Test
 	public void createAccountWithValidEmail() {
-		Mockito.when(authRepository.save(Mockito.any())).thenReturn(null);
-		Mockito.when(authRepository.getByEmail(Mockito.anyString())).thenReturn(null);
+		Mockito.when(accountRepository.save(Mockito.any())).thenReturn(null);
+		Mockito.when(accountRepository.getByEmail(Mockito.anyString())).thenReturn(null);
 
-		ServiceResponse<Account> response = accountService.createOrUpdateAccount(null, "valid2123@email.com",
-				"some random password");
+		ServiceResponse<Account> response = accountService.createOrUpdateAccount(null, "Vialid name",
+				"valid2123@email.com", "some random password");
 		assertEquals(ServiceResponseType.OK, response.getErrorType());
 	}
 
 	@Test
 	public void createAccountWithInvalidPassword() {
-		ServiceResponse<Account> response = accountService.createOrUpdateAccount(null, "valid@email.com", "smal");
+		ServiceResponse<Account> response = accountService.createOrUpdateAccount(null, "valid name", "valid@email.com",
+				"smal");
 		assertEquals(ServiceResponseType.INVALID_PASSWORD, response.getErrorType());
 	}
 
 	@Test
 	public void createAccountWithExistingEmail() {
-		Mockito.when(authRepository.getByEmail("valid@email.com")).thenReturn(new Account("", ""));
+		Mockito.when(accountRepository.getByEmail("valid@email.com")).thenReturn(new Account("", ""));
 
-		ServiceResponse<Account> response = accountService.createOrUpdateAccount(null, "valid@email.com", "123456");
+		ServiceResponse<Account> response = accountService.createOrUpdateAccount(null, "valid name", "valid@email.com",
+				"123456");
 		assertEquals(ServiceResponseType.EMAIL_ALREADY_EXISTS, response.getErrorType());
+	}
+
+	@Test
+	public void updateAccountWithInvalidName_ShouldFail() {
+		Mockito.when(accountRepository.getById("a76")).thenReturn(new Account());
+
+		ServiceResponse<Account> response = accountService.updateAccountInfo("a76", "dn        ");
+		assertEquals(ServiceResponseType.INVALID_ACCOUNT_NAME, response.getErrorType());
+	}
+
+	@Test
+	public void updateAccountWithValidName_ShouldWork() {
+		Account account = new Account();
+		Mockito.when(accountRepository.getById("a85")).thenReturn(account);
+
+		ServiceResponse<Account> response = accountService.updateAccountInfo("a85", "New Long Name");
+
+		assertEquals(ServiceResponseType.OK, response.getErrorType());
+		assertEquals("New Long Name", account.getFullName());
+	}
+
+	@Test
+	public void updateAccountWithValidEmail_ShouldWork() {
+		Account account = new Account();
+		Mockito.when(accountRepository.getById("a105")).thenReturn(account);
+
+		ServiceResponse<Account> response = accountService.updateAccountAuth("a105", "newemail@mail.com", "MyPassword");
+
+		assertEquals(ServiceResponseType.OK, response.getErrorType());
+
+		assertEquals("newemail@mail.com", account.getEmail());
 	}
 
 	@Test
@@ -75,7 +124,7 @@ public class AccountServiceTest {
 
 	@Test
 	public void loginWithNonExistentEmail() {
-		Mockito.when(authRepository.getByEmail(Mockito.anyString())).thenReturn(null);
+		Mockito.when(accountRepository.getByEmail(Mockito.anyString())).thenReturn(null);
 
 		ServiceResponse<String> response = accountService.login("this@doesnt.exist", "123456");
 		assertEquals(ServiceResponseType.FAIL, response.getErrorType());
@@ -83,7 +132,7 @@ public class AccountServiceTest {
 
 	@Test
 	public void loginWithWrongPassword() {
-		Mockito.when(authRepository.getByEmail(Mockito.anyString()))
+		Mockito.when(accountRepository.getByEmail(Mockito.anyString()))
 				.thenReturn(new Account("email@valid.com", PasswordSecurity.encryptPassword("123456")));
 
 		ServiceResponse<String> response = accountService.login("email@valid.com", "abc123");
@@ -92,7 +141,7 @@ public class AccountServiceTest {
 
 	@Test
 	public void loginWithCorrectPassword() {
-		Mockito.when(authRepository.getByEmail(Mockito.anyString()))
+		Mockito.when(accountRepository.getByEmail(Mockito.anyString()))
 				.thenReturn(new Account("email@valid.com", PasswordSecurity.encryptPassword("123456")));
 
 		ServiceResponse<String> response = accountService.login("email@valid.com", "123456");
@@ -103,7 +152,7 @@ public class AccountServiceTest {
 	public void addBalanceToAccountShouldWork() {
 		Account acc = new Account();
 		acc.setBalance(new Balance("5.12"));
-		Mockito.when(authRepository.getById("e864")).thenReturn(acc);
+		Mockito.when(accountRepository.getById("e864")).thenReturn(acc);
 
 		ServiceResponseType response = accountService.addBalanceToAccount("e864", new Balance("7.00"));
 		assertEquals(ServiceResponseType.OK, response);
@@ -115,7 +164,7 @@ public class AccountServiceTest {
 	public void subtractBalanceFromAccountShouldWork() {
 		Account acc = new Account();
 		acc.setBalance(new Balance("15.00"));
-		Mockito.when(authRepository.getById("o78")).thenReturn(acc);
+		Mockito.when(accountRepository.getById("o78")).thenReturn(acc);
 
 		ServiceResponseType response = accountService.subtractBalanceFromAccount("o78", new Balance("6.00"));
 		assertEquals(ServiceResponseType.OK, response);
@@ -127,7 +176,7 @@ public class AccountServiceTest {
 	public void subtractBalanceFromAccountThatDoesntHaveEnoughShouldFail() {
 		Account acc = new Account();
 		acc.setBalance(new Balance("4.00"));
-		Mockito.when(authRepository.getById("l79")).thenReturn(acc);
+		Mockito.when(accountRepository.getById("l79")).thenReturn(acc);
 
 		ServiceResponseType response = accountService.subtractBalanceFromAccount("l79", new Balance("6.00"));
 		assertEquals(ServiceResponseType.INSUFFICIENT_ACCOUNT_BALANCE, response);
@@ -136,16 +185,34 @@ public class AccountServiceTest {
 	}
 
 	@Test
+	public void hasAccountBalance_ShouldWork() {
+		Account acc = new Account();
+		acc.setBalance(new Balance("14.51"));
+		Mockito.when(accountRepository.getById("a187")).thenReturn(acc);
+
+		assertTrue(accountService.hasAccountBalance("a187", "14.00"));
+	}
+
+	@Test
+	public void hasAccountBalanceWithAccountThatDoesntHaveBalance_ShouldFail() {
+		Account acc = new Account();
+		acc.setBalance(new Balance("3.00"));
+		Mockito.when(accountRepository.getById("a198")).thenReturn(acc);
+
+		assertFalse(accountService.hasAccountBalance("a198", "4.00"));
+	}
+
+	@Test
 	public void transferBalanceShouldWork() {
 		Account a1 = new Account();
 		a1.setId("09_1");
 		a1.setBalance(new Balance("10.00"));
-		Mockito.when(authRepository.getById("09_1")).thenReturn(a1);
+		Mockito.when(accountRepository.getById("09_1")).thenReturn(a1);
 
 		Account a2 = new Account();
 		a2.setBalance(new Balance("1.00"));
 		a2.setId("09_2");
-		Mockito.when(authRepository.getById("09_2")).thenReturn(a2);
+		Mockito.when(accountRepository.getById("09_2")).thenReturn(a2);
 
 		accountService.transferBalance("09_1", "09_2", "3.00");
 
@@ -158,7 +225,7 @@ public class AccountServiceTest {
 
 	@Test
 	public void transferBalanceFromInvalidAccount() {
-		Mockito.when(authRepository.getById("03=51")).thenReturn(null);
+		Mockito.when(accountRepository.getById("03=51")).thenReturn(null);
 
 		accountService.transferBalance("03=51", "123", "1.00");
 
@@ -168,8 +235,8 @@ public class AccountServiceTest {
 
 	@Test
 	public void transferBalanceToInvalidAccount() {
-		Mockito.when(authRepository.getById("06_1")).thenReturn(new Account());
-		Mockito.when(authRepository.getById("06_2")).thenReturn(null);
+		Mockito.when(accountRepository.getById("06_1")).thenReturn(new Account());
+		Mockito.when(accountRepository.getById("06_2")).thenReturn(null);
 
 		accountService.transferBalance("06_1", "06_2", "3.00");
 
@@ -179,8 +246,8 @@ public class AccountServiceTest {
 
 	@Test
 	public void transferBalanceWithInvalidBalance() {
-		Mockito.when(authRepository.getById("06_1")).thenReturn(new Account());
-		Mockito.when(authRepository.getById("06_2")).thenReturn(new Account());
+		Mockito.when(accountRepository.getById("06_1")).thenReturn(new Account());
+		Mockito.when(accountRepository.getById("06_2")).thenReturn(new Account());
 
 		accountService.transferBalance("06_1", "06_2", "12,00");
 
@@ -194,8 +261,8 @@ public class AccountServiceTest {
 		a1.setId("96_1");
 		a1.setBalance(new Balance("10.00"));
 
-		Mockito.when(authRepository.getById("96_1")).thenReturn(a1);
-		Mockito.when(authRepository.getById("96_2")).thenReturn(new Account());
+		Mockito.when(accountRepository.getById("96_1")).thenReturn(a1);
+		Mockito.when(accountRepository.getById("96_2")).thenReturn(new Account());
 
 		accountService.transferBalance("96_1", "96_2", "14.00");
 

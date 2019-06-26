@@ -23,21 +23,22 @@ export default class Auth extends Component {
     }
 
     createAccount() {
-        createAccount(this.state.email, this.state.password).then(() => {
+        createAccount(this.state.name, this.state.email, this.state.password).then(() => {
             route('/auth?login&new_account');
             location.reload();
         }).catch((response) => {
-            this.setState({error: {}});
-
             switch (response) {
+                case "INVALID_ACCOUNT_NAME":
+                    this.setState({error: {name: "Esse nome é muito pequeno"}});
+                    return;
                 case "EMAIL_ALREADY_EXISTS":
-                    this.setState({error: {...this.state.error, email: "Esse email já existe"}});
+                    this.setState({error: {email: "Esse email já existe"}});
                     return;
                 case "INVALID_EMAIL":
-                    this.setState({error: {...this.state.error, email: "Esse email não é válido"}});
+                    this.setState({error: {email: "Esse email não é válido"}});
                     return;
                 case "INVALID_PASSWORD":
-                    this.setState({error: {...this.state.error, password: "Esse senha não é válida"}});
+                    this.setState({error: {password: "Esse senha não é válida"}});
                     return;
             }
         });
@@ -47,11 +48,9 @@ export default class Auth extends Component {
         login(this.state.email, this.state.password).then(() => {
             route('/dashboard/panel');
         }).catch((response) => {
-            this.setState({error: {}});
-
             switch (response) {
                 case "FAIL":
-                    this.setState({error: {...this.state.error, password: "Email ou senha incorretos"}});
+                    this.setState({error: {password: "Email ou senha incorretos"}});
                     return;
             }
         });
