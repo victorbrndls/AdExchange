@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway');
 @import url('https://fonts.googleapis.com/css?family=Poppins');
 @import url('https://fonts.googleapis.com/css?family=Quicksand:300,400,700');
-
 @import "./auth.css";
 
 :root {
@@ -88,7 +87,7 @@ body.auth #header {
     color: white;
 }
 
-.ae-navbar--page a{
+.ae-navbar--page a {
     font-family: var(--home-font-secondary);
     font-size: 14px;
     color: var(--ad-primary);
@@ -368,7 +367,7 @@ body.auth #header {
     overflow-y: auto;
 }
 
-.dashboard__sidebar--item{
+.dashboard__sidebar--item {
     transition: all 0.2s;
 }
 
@@ -377,7 +376,7 @@ body.auth #header {
     transform: scale(1.05);
 }
 
-.dashboard__sidebar--item > a{
+.dashboard__sidebar--item > a {
     text-decoration: none;
 }
 
@@ -960,6 +959,8 @@ body.auth #header {
 
 .dashboard__account-balance {
     display: flex;
+    height: 60px;
+    flex-direction: column;
 }
 
 .dashboard__account-balance__icon {
@@ -967,11 +968,33 @@ body.auth #header {
     width: 28px;
     height: 28px;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background-color: #245fc5;
     cursor: pointer;
+}
+
+.dashboard__account-balance__icon:hover {
+    transform: scale(1.1);
+}
+
+.dashboard__account-balance__icon--svg {
+    fill: #3c3c3c;
+}
+
+.dashboard__account-balance__text{
+    font-family: Quicksand, serif;
+    font-weight: 300;
+    font-size: 20px;
+    color: #737373;
+}
+
+.dashboard__account-balance__currency{
+    font-size: 12px;
+    margin-right: 4px;
+}
+
+.dashboard__account-balance__value{
+    font-weight: bold;
+    font-family: Quicksand, serif;
+    font-size: 20px;
 }
 
 .dashboard-add__blocking-container {
@@ -1532,7 +1555,7 @@ body.auth #header {
     text-align: right;
 }
 
-.no-decoration:hover{
+.no-decoration:hover {
     text-decoration: none;
 }
 
@@ -1636,7 +1659,7 @@ body.auth #header {
         text-align: center;
     }
 
-    .ae-menu{
+    .ae-menu {
         display: none;
     }
 

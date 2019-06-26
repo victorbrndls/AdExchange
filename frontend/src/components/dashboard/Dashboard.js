@@ -16,6 +16,7 @@ import Help from "async!./help/Help";
 import '../../assets/font-awesome-4.7.0/css/font-awesome.min.css'
 import anime from 'animejs';
 import {route} from "preact-router";
+import {SvgMoneyBars} from "../utils/SvgCollection";
 
 export default class Dashboard extends Component {
     constructor(props) {
@@ -184,17 +185,24 @@ export class AccountBalance extends Component {
 
     render({}, {balance}) {
         return (
-            <span class="dashboard__account-balance">
-                Saldo: R$ {balance}
-                <a class="dashboard__account-balance__icon ml-2" onClick={() => route('/dashboard/account/add-balance')}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                         color="white" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                         stroke-linejoin="round">
-                    <line x1="12" y1="5" x2="12" y2="19"/>
-                    <line x1="5" y1="12" x2="19" y2="12"/>
-                </svg>
-                </a>
-            </span>
+            <div class="d-flex">
+                <div class="dashboard__account-balance text-center">
+                <span class="dashboard__account-balance__text">
+                        Saldo
+                </span>
+                    <div style={{marginTop: -5}}>
+                        <span class="dashboard__account-balance__currency">R$</span>
+                        <span class="dashboard__account-balance__value">{balance}</span>
+                    </div>
+
+
+                </div>
+                <div class="align-self-center">
+                    <a class="dashboard__account-balance__icon ml-2" onClick={() => route('/dashboard/account/add-balance')}>
+                        <SvgMoneyBars class="dashboard__account-balance__icon--svg"/>
+                    </a>
+                </div>
+            </div>
         )
     }
 
