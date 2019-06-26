@@ -1,6 +1,6 @@
 .ae-auth {
     min-height: 100%;
-    background: linear-gradient(0deg, #26d0ffcc, #0cabd7);
+    background: linear-gradient(9deg, var(--ad-primary), #0cabd7);
 }
 
 .ae-auth-container {
@@ -72,7 +72,7 @@
 .ae-auth--confirm-btn {
     position: relative;
     z-index: 1;
-    background-color: #00a0cd;
+    background-color: #1982cd;
     padding: 13px 8px;
     border-radius: 6px;
     cursor: pointer;
@@ -153,7 +153,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #00a0cd;
+    background-color: #1982cd;
 
     transform-origin: center right;
     transform: scaleX(0);
