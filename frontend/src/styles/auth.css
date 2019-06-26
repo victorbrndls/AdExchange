@@ -11,7 +11,7 @@
 }
 
 .ae-auth__header {
-    font-family: var(--home-font-secondary);
+    font-family: var(--home-font-primary);
     font-weight: bold;
     font-size: 30px;
 }
@@ -22,11 +22,20 @@
     padding: 10px 20px;
     border-radius: 4px;
     width: 100%;
+    transition: border 0.4s;
+}
+
+.ae-auth--input:focus{
+    border: solid 2px #0dacd8;
+}
+
+.ae-auth--input-msg{
+    margin: 3px 13px;
 }
 
 .ae-auth--input-container {
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .ae-auth--input-container::before {
@@ -44,7 +53,7 @@
 
 .ae-auth--forgot-password-container {
     text-align: right;
-    margin-top: -14px;
+    margin-top: -24px;
     margin-bottom: 25px;
 }
 

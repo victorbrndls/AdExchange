@@ -95,30 +95,40 @@ export default class Auth extends Component {
                         <div class="col-12 col-sm-10 d-flex justify-content-center">
                             <div class="ae-auth-container shadow">
                                 <div class="ae-auth__header mb-5">
-                                    Login to your account
+                                    {mode === 'REGISTER' ? 'Criar Conta' : "Login"}
                                 </div>
 
                                 <div class="mb-4">
+                                    {mode === 'REGISTER' && (
+                                        <div class="ae-auth--input-container" data-title="Nome">
+                                            <input class="ae-auth--input"/>
+                                            <small class="ae-auth--input-msg form-text text-danger">We'll never share your email with anyone else.</small>
+                                        </div>
+                                    )}
+
                                     <div class="ae-auth--input-container" data-title="Email">
                                         <input class="ae-auth--input"/>
                                     </div>
 
                                     <div class="ae-auth--input-container" data-title="Senha">
-                                        <input class="ae-auth--input"/>
+                                        <input class="ae-auth--input" type="password"/>
                                     </div>
 
-                                    <div class="ae-auth--forgot-password-container">
-                                        <a href="/auth" class="ae-auth--forgot-password no-decoration">
-                                            Esqueceu sua Senha?
-                                        </a>
-                                    </div>
+                                    {mode === 'LOGIN' && (
+                                        <div class="ae-auth--forgot-password-container">
+                                            <a href="/auth" class="ae-auth--forgot-password no-decoration">
+                                                Esqueceu sua Senha?
+                                            </a>
+                                        </div>
+                                    )}
 
                                     <div>
                                         <div class="ae-auth--confirm-btn">
-                                            LOGIN
+                                            {mode === 'REGISTER' ? 'CRIAR' : "ENTRAR"}
                                         </div>
                                     </div>
                                 </div>
+
 
                                 <div class="ae-auth-divider my-4">
                                     <div class="ae-auth-divider--line"/>
@@ -126,17 +136,34 @@ export default class Auth extends Component {
                                     <div class="ae-auth-divider--line"/>
                                 </div>
 
-                                <div>
-                                    <div class="ae-auth--sign-in-card">
-                                        <div class="ae-auth--sign-in-card__image-container">
-                                            <SvgUser clazz="ae-auth--sign-in-card__image"/>
-                                        </div>
-                                        <div class="ae-auth--sign-in-card__text">
-                                            Crie uma Conta
+                                {mode === 'REGISTER' && (
+                                    <div>
+                                        <div class="ae-auth--sign-in-card"
+                                             onClick={() => this.setState({mode: 'LOGIN'})}>
+                                            <div class="ae-auth--sign-in-card__image-container">
+                                                <SvgUser clazz="ae-auth--sign-in-card__image"/>
+                                            </div>
+                                            <div class="ae-auth--sign-in-card__text">
+                                                Já possuo uma conta
+                                            </div>
                                         </div>
                                     </div>
+                                )}
 
-                                    {/*<div class="ae-auth--sign-in-card">
+
+                                {mode === 'LOGIN' && (
+                                    <div>
+                                        <div class="ae-auth--sign-in-card"
+                                             onClick={() => this.setState({mode: 'REGISTER'})}>
+                                            <div class="ae-auth--sign-in-card__image-container">
+                                                <SvgUser clazz="ae-auth--sign-in-card__image"/>
+                                            </div>
+                                            <div class="ae-auth--sign-in-card__text">
+                                                Criar uma conta
+                                            </div>
+                                        </div>
+
+                                        {/*<div class="ae-auth--sign-in-card">
                                         <div class="ae-auth--sign-in-card__image-container">
                                             <SvgGoogle clazz="ae-auth--sign-in-card__image"/>
                                         </div>
@@ -144,7 +171,8 @@ export default class Auth extends Component {
                                             Utilize sua conta Google
                                         </div>
                                     </div>*/}
-                                </div>
+                                    </div>
+                                )}
 
                             </div>
                         </div>
