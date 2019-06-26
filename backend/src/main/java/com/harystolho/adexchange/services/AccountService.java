@@ -307,11 +307,11 @@ public class AccountService {
 		if (!verifyEmail(email))
 			return ServiceResponseType.INVALID_EMAIL;
 
-		if (!verifyPassword(password))
-			return ServiceResponseType.INVALID_PASSWORD;
-
 		if (emailExists(email))
 			return ServiceResponseType.EMAIL_ALREADY_EXISTS;
+
+		if (!verifyPassword(password))
+			return ServiceResponseType.INVALID_PASSWORD;
 
 		return ServiceResponseType.OK;
 	}
