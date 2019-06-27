@@ -198,7 +198,7 @@ export class AccountBalance extends Component {
 
                 </div>
                 <div class="align-self-center">
-                    <a class="dashboard__account-balance__icon ml-2" onClick={() => route('/dashboard/account/add-balance')}>
+                    <a class="dashboard__account-balance__icon ml-2" onClick={() => route('/dashboard/account/balance')}>
                         <SvgMoneyBars class="dashboard__account-balance__icon--svg"/>
                     </a>
                 </div>

@@ -1572,7 +1572,7 @@ body.auth #header {
     cursor: pointer;
 }
 
-.balance-transfer--icon.selected::after{
+.balance-transfer--icon.selected::after {
     width: 100%
 }
 
@@ -1583,8 +1583,16 @@ body.auth #header {
     left: 0;
     background-color: #2b47bf;
     bottom: -1px;
-    transition: all 0.2s;
+}
 
+.balance-transfer-btn {
+    background-color: #ff9340;
+
+    transition: all 0.3s;
+}
+
+.balance-transfer-btn:hover {
+    background-color: #ff8a2c;
 }
 
 /*
@@ -1776,6 +1784,12 @@ body.auth #header {
     .ae-home-hero-trial--button-container {
         text-align: center;
         margin-bottom: 10px;
+    }
+
+    .balance-transfer-icon-container {
+        flex-direction: column;
+        height: auto;
+        text-align: center;
     }
 
 }
