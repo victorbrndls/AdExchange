@@ -1,5 +1,6 @@
 import {Component} from "preact";
 import PaymentManager from "../../../managers/PaymentManager";
+import {SvgPagSeguro} from "../../utils/SvgCollection";
 
 export default class AddBalance extends Component {
     constructor(props) {
@@ -37,7 +38,8 @@ export default class AddBalance extends Component {
                 this.setState({
                     success: {
                         title: "Pagamento realizado com sucesso.",
-                        message: "O seu pagamento foi realizado com sucesso, em momentos você receberá o saldo em sua conta."},
+                        message: "O seu pagamento foi realizado com sucesso, em momentos você receberá o saldo em sua conta."
+                    },
                     error: undefined
                 });
             },
@@ -49,46 +51,73 @@ export default class AddBalance extends Component {
 
     render({}, {error, success}) {
         return (
-            <div class="container">
-                <div class="row mb-4">
-                    <div class="col websites-account-header">
-                        Adicionar Saldo
+            <div>
+                <div class="container mb-5">
+                    <div class="row mb-4">
+                        <div class="col websites-account-header">
+                            Adicionar Saldo
+                        </div>
+                    </div>
+
+                    {error && (<div class="shadow-sm dashboard-error-container dashboard-container-wrapper">
+                        <dl>
+                            <dt>{error.title}</dt>
+                            <dd>
+                                {error.message}
+                            </dd>
+                        </dl>
+                    </div>)}
+
+                    {success && (<div class="shadow-sm dashboard-success-container dashboard-container-wrapper">
+                        <dl>
+                            <dt>{success.title}</dt>
+                            <dd>
+                                {success.message}
+                            </dd>
+                        </dl>
+                    </div>)}
+
+                    <div class="mt-4 row justify-content-center">
+                        <PaymentCard leftOffset={[40]}
+                                     data={["23,00", "25,00", this.displayCheckout.bind(this, PaymentManager.BALANCE_PRODUCT.BALANCE_25)]}/>
+                        <PaymentCard leftOffset={[35, 45]}
+                                     data={["45,00", "50,00", this.displayCheckout.bind(this, PaymentManager.BALANCE_PRODUCT.BALANCE_50)]}/>
+                        <PaymentCard leftOffset={[30, 50, 40]}
+                                     data={["95,00", "100,00", this.displayCheckout.bind(this, PaymentManager.BALANCE_PRODUCT.BALANCE_100)]}/>
+                    </div>
+
+                    <script type="text/javascript"
+                            src="https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.lightbox.js">
+                    </script>
+                </div>
+
+                <div class="container">
+                    <div class="row mb-3">
+                        <div class="col websites-account-header">
+                            Transferir Saldo
+                        </div>
+                    </div>
+
+                    <div class="row no-gutters balance-transfer-icon-container shadow">
+                        <div class="col-auto">
+                            <div class="balance-transfer--icon">
+                                <img src="/assets/balance-transfer/pagseguro.png" style={{height: 30}}/>
+                            </div>
+                        </div>
+
+                        <div class="col-auto">
+                            <div class="balance-transfer--icon">
+                                <span style={{fontSize: 20, fontFamily: 'Quicksand'}}>
+                                    Transferência Bancária
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-                {error && (<div class="shadow-sm dashboard-error-container dashboard-container-wrapper">
-                    <dl>
-                        <dt>{error.title}</dt>
-                        <dd>
-                            {error.message}
-                        </dd>
-                    </dl>
-                </div>)}
-
-                {success && (<div class="shadow-sm dashboard-success-container dashboard-container-wrapper">
-                    <dl>
-                        <dt>{success.title}</dt>
-                        <dd>
-                            {success.message}
-                        </dd>
-                    </dl>
-                </div>)}
-
-                <div class="mt-4 row justify-content-center">
-                    <PaymentCard leftOffset={[40]}
-                                 data={["23,00", "25,00", this.displayCheckout.bind(this, PaymentManager.BALANCE_PRODUCT.BALANCE_25)]}/>
-                    <PaymentCard leftOffset={[35, 45]}
-                                 data={["45,00", "50,00", this.displayCheckout.bind(this, PaymentManager.BALANCE_PRODUCT.BALANCE_50)]}/>
-                    <PaymentCard leftOffset={[30, 50, 40]}
-                                 data={["95,00", "100,00", this.displayCheckout.bind(this, PaymentManager.BALANCE_PRODUCT.BALANCE_100)]}/>
-                </div>
-
-                <script type="text/javascript"
-                        src="https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.lightbox.js">
-                </script>
             </div>
         )
     }
+
 }
 
 const PaymentCard = ({leftOffset, data}) => (

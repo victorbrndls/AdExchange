@@ -979,19 +979,19 @@ body.auth #header {
     fill: #3c3c3c;
 }
 
-.dashboard__account-balance__text{
+.dashboard__account-balance__text {
     font-family: Quicksand, serif;
     font-weight: 300;
     font-size: 20px;
     color: #737373;
 }
 
-.dashboard__account-balance__currency{
+.dashboard__account-balance__currency {
     font-size: 12px;
     margin-right: 4px;
 }
 
-.dashboard__account-balance__value{
+.dashboard__account-balance__value {
     font-weight: bold;
     font-family: Quicksand, serif;
     font-size: 20px;
@@ -1557,6 +1557,34 @@ body.auth #header {
 
 .no-decoration:hover {
     text-decoration: none;
+}
+
+.balance-transfer-icon-container {
+    background-color: white;
+    height: 45px;
+    border-radius: 8px;
+}
+
+.balance-transfer--icon {
+    margin: 0 8px;
+    padding: 7px 6px;
+    position: relative;
+    cursor: pointer;
+}
+
+.balance-transfer--icon.selected::after{
+    width: 100%
+}
+
+.balance-transfer--icon::after {
+    content: '';
+    position: absolute;
+    height: 3px;
+    left: 0;
+    background-color: #2b47bf;
+    bottom: -1px;
+    transition: all 0.2s;
+
 }
 
 /*
