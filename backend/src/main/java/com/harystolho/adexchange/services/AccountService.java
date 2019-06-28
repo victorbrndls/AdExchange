@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.harystolho.adexchange.auth.AuthService;
+import com.harystolho.adexchange.controllers.models.BalanceWithdrawModel;
 import com.harystolho.adexchange.events.EventDispatcher;
 import com.harystolho.adexchange.events.accounts.AccountBalanceChangedEvent;
 import com.harystolho.adexchange.log.Logger;
@@ -17,6 +18,7 @@ import com.harystolho.adexchange.models.account.Balance;
 import com.harystolho.adexchange.models.account.Balance.BalanceException;
 import com.harystolho.adexchange.repositories.account.AccountRepository;
 import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
+import com.harystolho.adexchange.utils.AEUtils;
 import com.harystolho.adexchange.utils.PasswordSecurity;
 
 @Service
@@ -117,7 +119,7 @@ public class AccountService {
 		if (acc == null)
 			return ServiceResponse.error(ServiceResponseType.INVALID_ACCOUNT_ID);
 
-		if (!verifyEmail(email))
+		if (!AEUtils.verifyEmail(email))
 			return ServiceResponse.error(ServiceResponseType.INVALID_EMAIL);
 
 		if (!verifyPassword(password))
@@ -304,7 +306,7 @@ public class AccountService {
 		if (!verifyAccountName(name))
 			return ServiceResponseType.INVALID_ACCOUNT_NAME;
 
-		if (!verifyEmail(email))
+		if (!AEUtils.verifyEmail(email))
 			return ServiceResponseType.INVALID_EMAIL;
 
 		if (emailExists(email))
@@ -318,14 +320,6 @@ public class AccountService {
 
 	private boolean verifyAccountName(String name) {
 		return StringUtils.hasText(name) && name.trim().length() >= 5;
-	}
-
-	/**
-	 * @param email
-	 * @return true if the email is valid
-	 */
-	private boolean verifyEmail(String email) {
-		return email.matches("([\\w.]+@[\\w.]+)");
 	}
 
 	/**

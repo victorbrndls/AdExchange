@@ -1595,6 +1595,13 @@ body.auth #header {
     background-color: #ff8a2c;
 }
 
+.balance-transfer-msg{
+    font-family: var(--home-font-primary);
+    font-weight: 300;
+}
+
+
+
 /*
     ====================
         Media queries

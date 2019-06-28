@@ -6,13 +6,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.harystolho.adexchange.controllers.models.BalanceWithdrawModel;
 import com.harystolho.adexchange.models.account.Account;
 import com.harystolho.adexchange.services.AccountService;
+import com.harystolho.adexchange.services.BalanceService;
 import com.harystolho.adexchange.services.ServiceResponse;
+import com.harystolho.adexchange.services.ServiceResponse.ServiceResponseType;
 import com.harystolho.adexchange.utils.AEUtils;
 import com.harystolho.adexchange.utils.JsonResponse;
 
@@ -21,10 +26,12 @@ import com.harystolho.adexchange.utils.JsonResponse;
 public class AccountController {
 
 	private AccountService accountService;
+	private BalanceService balanceService;
 
 	@Autowired
-	public AccountController(AccountService accountService) {
+	public AccountController(AccountService accountService, BalanceService balanceService) {
 		this.accountService = accountService;
+		this.balanceService = balanceService;
 	}
 
 	@GetMapping("/api/v1/account/me")
@@ -76,6 +83,25 @@ public class AccountController {
 					.pair("lastUpdate", System.currentTimeMillis()).build());
 		default:
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+	}
+
+	@PostMapping("/api/v1/account/withdraw-balance")
+	public ResponseEntity<Object> requestBalanceWithdraw(@RequestAttribute("ae.accountId") String accountId,
+			String mode, String value, @RequestParam(required = false) String email,
+			@RequestParam(required = false) String cpf, @RequestParam(required = false) String bankCode,
+			@RequestParam(required = false) String accountAgency,
+			@RequestParam(required = false) String accountNumber) {
+
+		ServiceResponseType response = balanceService.requestBalanceWithdraw(new BalanceWithdrawModel()
+				.setAccountId(accountId).setMode(mode).setValue(value).setEmail(email).setCpf(cpf).setBankCode(bankCode)
+				.setAccountAgency(accountAgency).setAccountNumber(accountNumber));
+
+		switch (response) {
+		case OK:
+			return ResponseEntity.status(HttpStatus.OK).body(null);
+		default:
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		}
 	}
 }

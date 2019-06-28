@@ -16,7 +16,7 @@ import Help from "async!./help/Help";
 import '../../assets/font-awesome-4.7.0/css/font-awesome.min.css'
 import anime from 'animejs';
 import {route} from "preact-router";
-import {SvgMoneyBars} from "../utils/SvgCollection";
+import {SvgWallet} from "../utils/SvgCollection";
 
 export default class Dashboard extends Component {
     constructor(props) {
@@ -199,7 +199,7 @@ export class AccountBalance extends Component {
                 </div>
                 <div class="align-self-center">
                     <a class="dashboard__account-balance__icon ml-2" onClick={() => route('/dashboard/account/balance')}>
-                        <SvgMoneyBars class="dashboard__account-balance__icon--svg"/>
+                        <SvgWallet class="dashboard__account-balance__icon--svg"/>
                     </a>
                 </div>
             </div>

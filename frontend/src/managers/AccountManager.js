@@ -46,9 +46,26 @@ function requestBalance() {
     });
 }
 
+function requestMoneyWithdraw(mode, value, params) {
+    let formData = new FormData();
+    formData.append("mode", mode);
+    formData.append("value", value);
+
+    Object.entries(params).forEach((entry) => formData.append(entry[0], entry[1]));
+
+    return new Promise((resolve, reject) => {
+        AdAxiosPost.post(`${HOST}/api/v1/account/withdraw-balance`, formData).then((response) => {
+            resolve(response.data);
+        }).catch((error) => {
+            reject(error.response.data);
+        });
+    });
+}
+
 export default {
     getMyAccount,
     saveAccountInfo,
     saveAccountAuth,
-    requestBalance
+    requestBalance,
+    requestMoneyWithdraw
 };
