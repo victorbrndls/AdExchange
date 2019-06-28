@@ -3,6 +3,7 @@ import PaymentManager from "../../../../managers/PaymentManager";
 import {SvgPagSeguro} from "../../../utils/SvgCollection";
 import Account from "../Account";
 import AccountManager from "../../../../managers/AccountManager";
+import CpfFormatter from "../../../utils/CpfFormatter";
 
 export default class TransferBalance extends Component {
     constructor(props) {
@@ -27,6 +28,15 @@ export default class TransferBalance extends Component {
                 [param]: value
             }
         })
+    }
+
+    handleCPFChange(cpf) {
+        this.setState({
+            params: {
+                ...this.state.params,
+                cpf: CpfFormatter.formatCpf(cpf)
+            }
+        });
     }
 
     requestMoneyWithdraw() {
@@ -144,8 +154,8 @@ export default class TransferBalance extends Component {
                                 <div class="col-12 col-sm-auto">
                                     <div class="form-group websites-add__form">
                                         <label>CPF</label>
-                                        <input class="form-control" value={params.cpf}
-                                               onChange={(e) => this.handleParamsChange('cpf', e.target.value)}/>
+                                        <input class="form-control" value={params.cpf} maxLength={14}
+                                               onKeyUp={(e) => this.handleCPFChange(e.target.value, e.target)}/>
                                         <small class="form-text ad-error">
                                             {error.cpf}
                                         </small>
