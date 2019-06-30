@@ -2,9 +2,9 @@ import {Component} from "preact";
 import {Router} from 'preact-router'
 import asyncComponent from "./utils/AsyncComponent";
 
-import AdvertiserHome from "./home/AdvertiserHome";
-import Auth from "./auth/Auth";
 import WebsiteOwnerHome from "./home/WebsiteOwnerHome";
+import Auth from "./auth/Auth";
+import AdvertiserHome from "./home/AdvertiserHome";
 
 const Dashboard = asyncComponent(() =>
     import('./dashboard/Dashboard').then(module => module.default)

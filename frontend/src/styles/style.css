@@ -1326,7 +1326,7 @@ body.auth #header {
 }
 
 .ae-home-hero__main-text {
-    max-width: 400px;
+    max-width: 443px;
     font-size: 51px;
     line-height: 60px;
 }
@@ -1600,6 +1600,9 @@ body.auth #header {
     font-weight: 300;
 }
 
+.ae-home-hero--image{
+    margin-top: -70px;
+}
 
 
 /*
@@ -1647,6 +1650,10 @@ body.auth #header {
 
     .ae-home-features {
         margin-top: calc(450px + -28%);;
+    }
+
+    .ae-home-hero--image {
+        margin-top: 0;
     }
 }
 

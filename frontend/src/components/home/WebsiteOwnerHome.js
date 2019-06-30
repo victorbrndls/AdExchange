@@ -1,6 +1,6 @@
 import {Component} from "preact";
-import {Link} from "preact-router";
 import Header from "./Header";
+import Footer from "./Footer";
 
 export default class WebsiteOwnerHome extends Component {
     constructor(props) {
@@ -9,134 +9,54 @@ export default class WebsiteOwnerHome extends Component {
 
     render() {
         return (
-            <div style="background-color: #f9fafc;">
+            <div style={{backgroundColor: '#F9F8FD'}}>
                 <div>
                     <Header view='WEBSITE'/>
                 </div>
 
                 <div>
-                    <div class="ae-home-section ae-hero">
-                        <div class="ae-hero__wave">
-                            <img src="assets/waves.svg"/>
-                        </div>
-                        <div class="container ae-home">
-                            <div class="row ae-home-banner">
-                                <div class="col-sm-12 col-lg-5 ae-hero-text">
-                                    <div class="row">
-                                        <h1 class="ae-home-banner__main-message">
-                                            Atraia novos clientes para sua empresa
-                                        </h1>
-                                    </div>
-                                    <div class="row">
-                                        <p class="ae-home-banner-subtext">
-                                            Utilize o Adnamic para criar anúncios que fazem sua empresa vender
-                                            mais.
-                                            Tenha <b>controle</b> de seus anúncios escolhendo onde, por quanto tempo e
-                                            por qual valor serão exibidos.
-                                        </p>
-                                    </div>
-                                    <div class="row ae-home-banner-wrapper">
-                                        <Link class="p-3 my-3 ae-home-banner-button" href="/auth?register">
-                                            Comece agora
-                                            <img src="assets/right-arrow.svg"/>
-                                        </Link>
-                                    </div>
-                                </div>
-                                <div class="col-sm-0 col-md-1 ae-hero-spacer"/>
-                                <div class="col-sm-12 col-lg-6">
-                                    <div class="row">
-                                        <div class="col">
-                                            <img style="width:100%;" src="assets/hero-image.png"/> {/* //TODO add alt*/}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="ae-home-section ae-benefits">
-                        <div class="container ae-home">
+                    <div class="ae-home-section ae-home-hero">
+                        <div class="container ae-home-hero--container">
                             <div class="row">
-                                <div class="col">
-                                    <div class="row justify-content-center ae-home-benefits-header mb-5">
-                                        <h2>Porque escolher <b>Adnamic</b></h2>
+                                <div class="col-md-12 col-lg-6 ae-home-hero--left">
+                                    <div class="row mb-3 row">
+                                        <div class="col ae-home-hero__text ae-home-hero__main-text">
+                                            Ganhe dinheiro com seu Website
+                                        </div>
                                     </div>
-                                    <div class="row justify-content-center">
-                                        <div class="col-sm-12 col-md-6 col-lg-4 ae-home-benefits-wrapper">
-                                            <BenefitCard header="Controle"
-                                                         subHeader="No Adnamic você escolhe em qual site mostrar seus anúncios, por quanto tempo e qual o modo de pagamento."
-                                                         imgSrc="/assets/small-control.png"/>
+                                    <div class="row ml-1 justify-content-md-center">
+                                        <div class="col ae-home-hero__text ae-home-hero__secondary-text">
+                                            <ul class="list-unstyled ae-home-hero--benefits-list">
+                                                <li class="list-diamond">Simples e rápido</li>
+                                                <li class="list-diamond">Não precisa entender de programação</li>
+                                                <li class="list-diamond">Exiba seus próprios anúncios</li>
+                                            </ul>
                                         </div>
-
-                                        <div class="col-sm-12 col-md-6 col-lg-4 ae-home-benefits-wrapper">
-                                            <BenefitCard header="Análise"
-                                                         subHeader="Veja dados de seus anúncios como quantidade de cliques e visualizações."
-                                                         imgSrc="/assets/small-graph.png"/>
-                                        </div>
-
-                                        <div class="col-sm-12 col-md-6 col-lg-4 ae-home-benefits-wrapper">
-                                            <BenefitCard header="Prático"
-                                                         subHeader="Nossa plataforma conta com diversos recursos para criar seus anúncios de um jeito simples e rápido."
-                                                         imgSrc="/assets/small-exercise.png"/>
-                                        </div>
-
-
                                     </div>
+                                </div>
+                                <div class="col-md-12 col-lg-6 text-center" style={{height: 230}}>
+                                    <img src="/assets/website-owner-home.svg" class="ae-home-hero--image"/>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="ae-home-section ae-features">
-                        <div class="container ae-home">
-                            <div class="row flex-column align-items-center">
-                                <div class="row justify-content-center ae-home-benefits-header mb-5">
-                                    <h2>Como funciona</h2>
-                                </div>
-
-                                <div class="col-md-12 col-lg-11 ae-features-row">
-                                    <div class="row">
-                                        <div class="col-sm-12 col-md ae-features-image-wrapper text-center">
-                                            <img class="ae-features-img" src="assets/data.svg"/>
+                            <div class="row ae-home-hero-trial--container">
+                                <div class="col-lg-10 col-xl-9">
+                                    <div class="ae-home-hero--trial shadow container-fluid">
+                                        <div class="row mb-2">
+                                            <div class="col ae-home-hero--trial-header">
+                                                Start your free trial
+                                            </div>
                                         </div>
-                                        <div class="col">
-                                            <h3 class="ae-features-title">Crie seu anúncio</h3>
-                                            <p class="ae-features-text">
-                                                Por causa de nossa grande coleção de modelos, você não presisa ser um
-                                                designer para fazer um bom anúncio, basta escolher um modelo e
-                                                prencher os dados. Simples e prático.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12 col-lg-11 ae-features-row">
-                                    <div class="row">
-                                        <div class="col">
-                                            <h3 class="ae-features-title">Faça uma proposta</h3>
-                                            <p class="ae-features-text">
-                                                Utilize nossos filtros para selecionar qual o site correto para exibir
-                                                seu anúncio e envie uma proposta com o anúncio que deseja usar, o modo
-                                                de pagamento e o valor que está disposto a pagar.
-                                            </p>
-                                        </div>
-                                        <div class="col-sm-12 col-md ae-features-image-wrapper text-center">
-                                            <img class="ae-features-img" src="assets/proposal.svg"/>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12 col-lg-11 ae-features-row">
-                                    <div class="row">
-                                        <div class="col-sm-12 col-md ae-features-image-wrapper text-center">
-                                            <img class="ae-features-img" src="assets/cloud.svg"/>
-                                        </div>
-                                        <div class="col">
-                                            <h3 class="ae-features-title">Seu anúncio está funcionando</h3>
-                                            <p class="ae-features-text">
-                                                Caso o dono do site aceite sua proposta, o seu anúncio já estará
-                                                disponível para visualização.
-                                            </p>
+                                        <div class="row">
+                                            <div class="col-12 col-lg-8 ae-home-hero-trial--message">
+                                                Duis et mollis ipsum. Nunc fringilla ornare urna, in luctus dui
+                                                suscipitt porta. Etiam convallis, ex quis efficitur blandit, felis arcu
+                                                tincidunt nunc, commodo malesuada purus elit ut metus.
+                                            </div>
+                                            <div class="col-12 col-lg-4 ae-home-hero-trial--button-container">
+                                                <a class="ae-home-hero-trial--button" href="/auth?register">
+                                                    Comece Agora
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -144,113 +64,129 @@ export default class WebsiteOwnerHome extends Component {
                         </div>
                     </div>
 
-                    <div class="ae-home-section ae-pricing">
-                        <div class="container ae-home">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="row justify-content-center ae-home-benefits-header my-4">
-                                        <h2 class="ae-pricing__header">Preços</h2>
+                    <div class="ae-home-section ae-home-features">
+                        <div class="container">
+                            <div class="row justify-content-around mb-5">
+                                <FeatureCard header="Controle em 1* lugar"
+                                             message="Tenha controle do que aparece em seu site escolhendo qual anuncios voce quer exibir"
+                                             imageSrc="https://img.icons8.com/color/344/lock-2.png"/>
+                                <FeatureCard header="Monitore o desempenho"
+                                             message="Duis et mollis ipsum. Nunc fringillta ornare urna, in luctus dui suscipit porta. Etiam convallis, ex quis efficitur blandit, felis arcu tincidunt nunc, commodo malesuada purus elit ut metus. "
+                                             imageSrc="https://img.icons8.com/color/344/lock-2.png"/>
+                                <FeatureCard header="Nos cuidamos de tudo"
+                                             message="Duis et mollis ipsum. Nunc fringillta ornare urna, in luctus dui suscipit porta. Etiam convallis, ex quis efficitur blandit, felis arcu tincidunt nunc, commodo malesuada purus elit ut metus. "
+                                             imageSrc="https://img.icons8.com/color/344/lock-2.png"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ae-home-section ae-home-how_to">
+                        <div class="container">
+                            <div class="row mb-5">
+                                <div class="col ae-home--section-header">
+                                    Como Funciona
+                                </div>
+                            </div>
+
+                            <HowToCard imageSrc="https://i.imgur.com/wPuGiHs.png" header="Curabitur at ipsum elit"
+                                       message="Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Quisque interdum odio nisl, id lacinia ex ultricies at. Quisque urna ex, viverra in cursus nec, viverra ullamcorper dolor. Nullam fringilla risus eu interdum lacinia. Etiam eu venenatis ligula. "/>
+
+                            <HowToCard imageSrc="https://i.imgur.com/wPuGiHs.png" header="Curabitur at ipsum elit"
+                                       message="Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Quisque interdum odio nisl, id lacinia ex ultricies at. Quisque urna ex, viverra in cursus nec, viverra ullamcorper dolor. Nullam fringilla risus eu interdum lacinia. Etiam eu venenatis ligula. "/>
+
+                            <HowToCard imageSrc="https://i.imgur.com/wPuGiHs.png" header="Curabitur at ipsum elit"
+                                       message="Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Quisque interdum odio nisl, id lacinia ex ultricies at. Quisque urna ex, viverra in cursus nec, viverra ullamcorper dolor. Nullam fringilla risus eu interdum lacinia. Etiam eu venenatis ligula. "/>
+
+                        </div>
+                    </div>
+
+                    <div class="ae-home-section ae-home-prices">
+                        <div class="container">
+                            <div class="row mb-5">
+                                <div class="col ae-home--section-header">
+                                    Preços
+                                </div>
+                            </div>
+
+                            <div class="row justify-content-center">
+                                <div class="col-8 col-sm-7 col-md-5 col-lg-4 shadow ae-home-prices-card">
+                                    <div class="ae-home-prices-card--header mb-1">
+                                        Starter
                                     </div>
-                                    <div class="row justify-content-center mb-4">
-                                        <div class="col-sm-9 col-md-6 col-lg-5 col-xl-4">
-                                            <PricingCard title="Básico" price="0"
-                                                         benefits={[
-                                                             "1 Website",
-                                                             "3 Spots",
-                                                             "4 Anuncios",
-                                                             "Editor de anuncio simples"
-                                                         ]}/>
-                                        </div>
-                                        <div class="col-sm-9 col-md-6 col-lg-5 col-xl-4">
-                                            <PricingCard title="Profissional" price="13"
-                                                         benefits={[
-                                                             "Websites ilimitados",
-                                                             "Anúncios ilimitados",
-                                                             "Spots ilimitados",
-                                                             "Editor de anuncio PRO",
-                                                         ]}/>
-                                        </div>
+                                    <div class="ae-home-prices-card--price mb-3">
+                                        <span>R$</span>
+                                        <span class="ae-home-prices-card--price--number">0</span>
+                                        <span>/mês</span>
+                                    </div>
+
+                                    <div class="mb-5">
+                                        <ul class="list-unstyled ae-home-prices-card--features">
+                                            <li>Website ilimitados</li>
+                                            <li>Anúncios ilimitados</li>
+                                            <li>Contratos ilimitados</li>
+                                            <li>Spots ilimitados</li>
+                                            <li>Taxa de transação baixa</li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="mb-2">
+                                        <a class="ae-home-prices-card--cta" href="/auth?register">
+                                            Comece Agora
+                                        </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="ae-home-section ae-website-owner">
-                        <div class="container ae-home">
-                            <div class="row">
-                                <div class="col">
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/*<div class="ae-home-section ae-cta">
-                        <div class="container ae-home">
-                            <div class="row">
-                                <div class="col">
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>*/}
-
-                    <div class="ae-home-section ae-footer shadow-lg">
-                        <div class="container ae-home py-3">
-                            <div class="row">
-                                <div class="col-xs-12 col-md-auto ae-logo ae-footer-logo">
-                                    <img src="/assets/logo.png"/>
-                                </div>
-
-                                <div class="col-sm-12 col-md ae-footer">
-                                    <div class="row align-items-center h-100 ae-footer-info">
-                                        <a native class="col-auto" href="mailto:tidderjail2@gmail.com">Contato</a>
-                                        <Link class="col-auto" href="/policy">Política de Privacidade</Link>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-12 col-md align-self-center ae-footer-copyright">
-                                    <span class="text-black-50">
-                                        © 2019 Adnamic. Todos os direitos reservados
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                <div>
+                    <Footer/>
                 </div>
             </div>
         )
     }
+
 }
 
-const PricingCard = ({title, price, benefits = []}) => (
-    <div class="ae-home-pricing shadow mb-4">
-        <h3>{title}</h3>
-        <div>
-            <p class="text-black-50">R$&nbsp;
-                <span class="ae-home-pricing__price">{price}</span>
-                /mês
-            </p>
+const FeatureCard = ({imageSrc, header, message}) => (
+    <div class="col-12 col-lg-5 ">
+        <div class="ae-home-features-card">
+            <div class="row mb-2">
+                <div class="col-auto">
+                    <img class="ae-home-features-card--image" src={imageSrc}/>
+                </div>
+                <div class="col ae-home-features-card--header">
+                    {header}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col ae-home-features-card--message">
+                    {message}
+                </div>
+            </div>
         </div>
-        <ul class="ae-home-pricing-benefits">
-            {benefits.map((benefit) => (
-                <li>{benefit}</li>
-            ))}
-        </ul>
-        <a class="ae-home-pricing__button">
-            <span>Comece agora</span>
-        </a>
     </div>
 );
 
-const BenefitCard = ({header, subHeader, imgSrc}) => (
-    <div class="ae-home-tile">
-        <div class="tile-header">
-            <img src={imgSrc}/>
+const HowToCard = ({imageSrc, header, message}) => (
+    <div class="row justify-content-around ae-home-how_to__card">
+        <div class="col-md-5 col-lg-5 ae-home-how_to__card--image">
+            <div class="image-bg-rotation position-relative">
+                <img class="shadow position-relative" src={imageSrc}/>
+            </div>
         </div>
-        <p class="tile-title">{header}</p>
-        <p class="tile-body">{subHeader}</p>
+        <div class="col-md-5 col-lg-5 ae-home-how_to__card--text">
+            <div class="row">
+                <div class="col ae-home-how_to__card--header">
+                    {header}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col ae-home-how_to__card--message">
+                    {message}
+                </div>
+            </div>
+        </div>
     </div>
-);
+)
