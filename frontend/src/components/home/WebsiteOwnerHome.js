@@ -43,14 +43,12 @@ export default class WebsiteOwnerHome extends Component {
                                     <div class="ae-home-hero--trial shadow container-fluid">
                                         <div class="row mb-2">
                                             <div class="col ae-home-hero--trial-header">
-                                                Start your free trial
+                                                Crie valor para seus visitantes
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-12 col-lg-8 ae-home-hero-trial--message">
-                                                Duis et mollis ipsum. Nunc fringilla ornare urna, in luctus dui
-                                                suscipitt porta. Etiam convallis, ex quis efficitur blandit, felis arcu
-                                                tincidunt nunc, commodo malesuada purus elit ut metus.
+                                                Exiba anúncios que são relevantes ao seu público aumentando ainda mais o valor gerado a eles.
                                             </div>
                                             <div class="col-12 col-lg-4 ae-home-hero-trial--button-container">
                                                 <a class="ae-home-hero-trial--button" href="/auth?register">
@@ -67,14 +65,14 @@ export default class WebsiteOwnerHome extends Component {
                     <div class="ae-home-section ae-home-features">
                         <div class="container">
                             <div class="row justify-content-around mb-5">
-                                <FeatureCard header="Controle em 1* lugar"
-                                             message="Tenha controle do que aparece em seu site escolhendo qual anuncios voce quer exibir"
+                                <FeatureCard header="Nós cuidamos de tudo"
+                                             message="O Adnamic cuida de toda a parte complicada para você, basta utilizar nossa plataforma intuitiva para adicionar anúncios ao seu website.   "
                                              imageSrc="https://img.icons8.com/color/344/lock-2.png"/>
                                 <FeatureCard header="Monitore o desempenho"
-                                             message="Duis et mollis ipsum. Nunc fringillta ornare urna, in luctus dui suscipit porta. Etiam convallis, ex quis efficitur blandit, felis arcu tincidunt nunc, commodo malesuada purus elit ut metus. "
+                                             message="Monitore o desempenho dos anúncios que aparecem em seu website, veja quantas pessoas estão clicando e visualizando eles."
                                              imageSrc="https://img.icons8.com/color/344/lock-2.png"/>
-                                <FeatureCard header="Nos cuidamos de tudo"
-                                             message="Duis et mollis ipsum. Nunc fringillta ornare urna, in luctus dui suscipit porta. Etiam convallis, ex quis efficitur blandit, felis arcu tincidunt nunc, commodo malesuada purus elit ut metus. "
+                                <FeatureCard header="Controle em 1º lugar"
+                                             message="Em nossa plataforma você escolhe quais anúncios aparecerão em seu website."
                                              imageSrc="https://img.icons8.com/color/344/lock-2.png"/>
                             </div>
                         </div>
@@ -88,14 +86,13 @@ export default class WebsiteOwnerHome extends Component {
                                 </div>
                             </div>
 
-                            <HowToCard imageSrc="https://i.imgur.com/wPuGiHs.png" header="Curabitur at ipsum elit"
-                                       message="Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Quisque interdum odio nisl, id lacinia ex ultricies at. Quisque urna ex, viverra in cursus nec, viverra ullamcorper dolor. Nullam fringilla risus eu interdum lacinia. Etiam eu venenatis ligula. "/>
+                            <HowToCard imageSrc="https://i.imgur.com/KAkFQap.png" header="Adicione seu Website"
+                                       message="Para que outras pessoas conseguam achar seu Website é necessário cadastrá-lo em nossa plataforma."/>
+                            <HowToCard imageSrc="https://i.imgur.com/pPeU4kW.png" header="Receba Propostas"
+                                       message="Após ter cadastrado seu Website, pessoas se interessam em anunciar em seu Website enviaram propostas para você."/>
 
-                            <HowToCard imageSrc="https://i.imgur.com/wPuGiHs.png" header="Curabitur at ipsum elit"
-                                       message="Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Quisque interdum odio nisl, id lacinia ex ultricies at. Quisque urna ex, viverra in cursus nec, viverra ullamcorper dolor. Nullam fringilla risus eu interdum lacinia. Etiam eu venenatis ligula. "/>
-
-                            <HowToCard imageSrc="https://i.imgur.com/wPuGiHs.png" header="Curabitur at ipsum elit"
-                                       message="Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Quisque interdum odio nisl, id lacinia ex ultricies at. Quisque urna ex, viverra in cursus nec, viverra ullamcorper dolor. Nullam fringilla risus eu interdum lacinia. Etiam eu venenatis ligula. "/>
+                            <HowToCard imageSrc="https://i.imgur.com/jXppkKZ.png" header="Exiba o Anúncio"
+                                       message="Caso você aceite a proposta, só falta exibir o anúncio em seu Website."/>
 
                         </div>
                     </div>

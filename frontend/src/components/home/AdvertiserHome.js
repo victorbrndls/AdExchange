@@ -200,7 +200,7 @@ export default class AdvertiserHome extends Component {
                         <div class="container ae-home py-3">
                             <div class="row">
                                 <div class="col-xs-12 col-md-auto ae-logo ae-footer-logo">
-                                    <img src="/assets/logo.png"/>
+                                    <img src="/assets/logo.png" class="ae-logo--img"/>
                                 </div>
 
                                 <div class="col-sm-12 col-md ae-footer">
