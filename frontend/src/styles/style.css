@@ -1413,7 +1413,7 @@ body.auth #header {
 .ae-home-features-card {
     box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, 0.21);
     padding: 13px 21px;
-    margin-bottom: 30px;
+    margin-bottom: 45px;
     background-color: white;
 
     transition: all 0.3s;
@@ -1457,6 +1457,7 @@ body.auth #header {
     font-size: 26px;
     margin-bottom: 13px;
     color: #464646;
+    font-weight: bold;
 }
 
 .ae-home-how_to__card--message {

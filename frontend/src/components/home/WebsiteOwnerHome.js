@@ -89,8 +89,7 @@ export default class WebsiteOwnerHome extends Component {
                             <HowToCard imageSrc="https://i.imgur.com/KAkFQap.png" header="Adicione seu Website"
                                        message="Para que outras pessoas conseguam achar seu Website é necessário cadastrá-lo em nossa plataforma."/>
                             <HowToCard imageSrc="https://i.imgur.com/pPeU4kW.png" header="Receba Propostas"
-                                       message="Após ter cadastrado seu Website, pessoas se interessam em anunciar em seu Website enviaram propostas para você."/>
-
+                                       message="Após ter cadastrado seu Website, as pessoas que se interessarem em anunciar em seu Website enviaram propostas para você."/>
                             <HowToCard imageSrc="https://i.imgur.com/jXppkKZ.png" header="Exiba o Anúncio"
                                        message="Caso você aceite a proposta, só falta exibir o anúncio em seu Website."/>
 

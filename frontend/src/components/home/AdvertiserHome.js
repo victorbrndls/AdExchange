@@ -152,7 +152,7 @@ export default class AdvertiserHome extends Component {
                                         <h2 class="ae-pricing__header">Preços</h2>
                                     </div>
                                     <div class="row justify-content-center mb-4">
-                                        <div class="col-sm-9 col-md-6 col-lg-5 col-xl-4">
+                                        {/*<div class="col-sm-9 col-md-6 col-lg-5 col-xl-4">
                                             <PricingCard title="Básico" price="0"
                                                          benefits={[
                                                              "1 Website",
@@ -160,9 +160,9 @@ export default class AdvertiserHome extends Component {
                                                              "4 Anuncios",
                                                              "Editor de anuncio simples"
                                                          ]}/>
-                                        </div>
+                                        </div>*/}
                                         <div class="col-sm-9 col-md-6 col-lg-5 col-xl-4">
-                                            <PricingCard title="Profissional" price="13"
+                                            <PricingCard title="Profissional" price="0"
                                                          benefits={[
                                                              "Websites ilimitados",
                                                              "Anúncios ilimitados",
@@ -239,7 +239,7 @@ const PricingCard = ({title, price, benefits = []}) => (
                 <li>{benefit}</li>
             ))}
         </ul>
-        <a class="ae-home-pricing__button">
+        <a class="ae-home-pricing__button" href='/auth?register'>
             <span>Comece agora</span>
         </a>
     </div>
