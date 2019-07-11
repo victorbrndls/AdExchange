@@ -95,7 +95,7 @@ export default class ControlPanel extends Component {
             let currentDateObj = array[i];
 
             let currentDate = new Date(currentDateObj.date);
-            
+
             let dayDiff = (new Date(nextDateObj.date) - currentDate) / DAY_MILLIS - 1;
 
             filledArray.push(currentDateObj);
@@ -160,7 +160,8 @@ export default class ControlPanel extends Component {
                     {this.requestContracts.bind(this)()}
                     <div class="mb-2 row">
                         <div class="col-sm-8 col-md-5 col-lg-5 col-xl-3">
-                            <select class='custom-select ae-font-primary' onChange={e => this.handleContractChange(e.target.value)}>
+                            <select class='custom-select ae-font-primary'
+                                    onChange={e => this.handleContractChange(e.target.value)}>
                                 <option value="-1">Selecione um contrato</option>
                                 {contracts.map((contract) => (
                                     <option
@@ -185,10 +186,7 @@ export default class ControlPanel extends Component {
                     </div>
                 </div>
 
-                {/*Remove this latter*/}
-                <div style="position: absolute;bottom: 15px;right: 22px;">
-                    Imagens, gráficos, vídeos, listas, links, gifs, infográficos
-                </div>
+                {/* //TODO Imagens, gráficos, vídeos, listas, links, gifs, infográficos*/}
             </div>
         )
     }
